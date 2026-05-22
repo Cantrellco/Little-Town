@@ -657,8 +657,16 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 
 .deco { position: absolute; pointer-events: none; z-index: 1; }
 .deco img { width: 100%; height: auto; display: block; }
-/* Floating decorations overlap headings on small screens — desktop only */
-@media (max-width: 880px) { .deco { display: none; } }
+/* On small screens, hide section/page-hero floaters (they overlap headings),
+   but keep a few in the home hero, repositioned over the illustration. */
+@media (max-width: 880px) {
+  .deco { display: none; }
+  .hero .deco { display: block; opacity: 0.85; }
+  .hero > .deco:nth-of-type(1) { top: auto !important; bottom: 20% !important; right: 3% !important; left: auto !important; width: 76px !important; } /* cloud */
+  .hero > .deco:nth-of-type(2) { top: auto !important; bottom: 8% !important; left: 5% !important; right: auto !important; width: 34px !important; }  /* balloon */
+  .hero > .deco:nth-of-type(3) { top: auto !important; bottom: 14% !important; right: 9% !important; left: auto !important; width: 20px !important; } /* star */
+  .hero > .deco:nth-of-type(4) { display: none !important; }
+}
 
 @keyframes bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 @keyframes sway  { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }

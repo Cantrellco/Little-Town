@@ -22,10 +22,9 @@
   <!-- label -->
   <text x="120" y="225" font-family="Poppins, sans-serif" font-size="13" font-weight="600" fill="#9b8e74">MAIN STREET</text>
   <!-- pin marker -->
-  <style>.mappin{animation:mappin 2.6s ease-in-out infinite}@keyframes mappin{0%,100%{translate:0 0}50%{translate:0 -6px}}@media(prefers-reduced-motion:reduce){.mappin{animation:none}}</style>
   <g transform="translate(279,180)">
     <ellipse cx="0" cy="34" rx="16" ry="5" fill="rgba(80,60,30,0.2)"/>
-    <g class="mappin">
+    <g><animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="2.6s" repeatCount="indefinite" additive="sum"/>
       <path d="M0 30 C-18 6 -18 -6 0 -22 C18 -6 18 6 0 30 Z" fill="#D64A3F"/>
       <circle cx="0" cy="-2" r="8" fill="#fff"/>
     </g>

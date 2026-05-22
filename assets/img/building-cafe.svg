@@ -10,8 +10,7 @@
   <line x1="210" y1="66" x2="168" y2="32" stroke="#b07d35" stroke-width="2"/>
   <!-- flag -->
   <line x1="168" y1="18" x2="168" y2="-2" stroke="#7a5a2e" stroke-width="3"/>
-  <style>.flag{transform-box:fill-box;transform-origin:0% 60%;animation:flag 2.3s ease-in-out infinite}@keyframes flag{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(5deg)}}@media(prefers-reduced-motion:reduce){.flag{animation:none}}</style>
-  <path class="flag" d="M168 2 L196 11 L168 20 Z" fill="#D64A3F"/>
+  <path d="M168 2 L196 11 L168 20 Z" fill="#D64A3F"><animateTransform attributeName="transform" type="rotate" values="-6 168 11;9 168 11;-6 168 11" dur="2.3s" repeatCount="indefinite"/></path>
   <circle cx="168" cy="18" r="5" fill="#D9A35E"/>
   <!-- cup sign -->
   <g transform="translate(168,112)">
