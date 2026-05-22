@@ -1,0 +1,45 @@
+name: Deploy site to GitHub Pages
+
+# Publishes the static prototype to GitHub Pages.
+# Requires repo Settings -> Pages -> Source: "GitHub Actions" (one-time setup).
+
+on:
+  push:
+    branches:
+      - main
+      - claude/little-town-playhouse-site-BdpLx
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage static site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' ./ _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
