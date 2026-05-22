@@ -31,6 +31,10 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          # Auto-create the Pages site via API on first run (needs a public repo
+          # on Free, or any plan that allows Pages). Avoids the manual Settings toggle.
+          enablement: true
 
       - name: Stage static site
         run: |
