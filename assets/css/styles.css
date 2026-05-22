@@ -776,3 +776,13 @@ a.btn--terracotta[href="memberships.html"]::after {
   .nav a::after { transition: none !important; }
   a.btn--red[href="memberships.html"]::after, a.btn--terracotta[href="memberships.html"]::after { animation: none !important; }
 }
+
+/* Touch devices have no hover — give springy feedback on tap so it still feels alive */
+@media (hover: none) {
+  .card { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease; }
+  .card:active { transform: translateY(-4px) scale(1.012); box-shadow: var(--shadow-md); }
+  .btn:active { transform: translateY(-1px) scale(0.97); }
+  .gallery figure:active { transform: translateY(-4px) rotate(-1.2deg); }
+  .reassure:active .chip, .value-card:active .chip { transform: rotate(-6deg) scale(1.08); }
+  .price-card:active { transform: translateY(-4px) scale(1.012); }
+}

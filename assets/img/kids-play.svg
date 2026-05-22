@@ -14,9 +14,9 @@
     .kleaf { transform-box: fill-box; transform-origin: bottom center; animation: ksway 4.5s ease-in-out infinite; }
     .ktwinkle { transform-box: fill-box; transform-origin: center; animation: ktwinkle 3.5s ease-in-out infinite; }
     .ktwinkle.slow { animation-duration: 4.4s; animation-delay: -1.2s; }
-    @keyframes kbob { 0%,100% { translate: 0 0; } 50% { translate: 0 -8px; } }
-    @keyframes kfloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
-    @keyframes ksway { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+    @keyframes kbob { 0%,100% { translate: 0 0; } 50% { translate: 0 -13px; } }
+    @keyframes kfloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+    @keyframes ksway { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
     @keyframes ktwinkle { 0%,100% { opacity: .5; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.15); } }
     @media (prefers-reduced-motion: reduce) { .kbob,.kfloat,.kleaf,.ktwinkle { animation: none; } }
   </style>

@@ -17,10 +17,10 @@
     .hkid  { animation: hbob 3.2s ease-in-out infinite; }
     .hkid.k2 { animation-duration: 2.6s; animation-delay: -.5s; }
     .hkid.k3 { animation-duration: 3.9s; animation-delay: -1s; }
-    @keyframes hdrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(30px); } }
-    @keyframes hsun   { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-    @keyframes hflag  { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(5deg); } }
-    @keyframes hbob   { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+    @keyframes hdrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(46px); } }
+    @keyframes hsun   { 0%,100% { transform: scale(1); } 50% { transform: scale(1.09); } }
+    @keyframes hflag  { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(9deg); } }
+    @keyframes hbob   { 0%,100% { translate: 0 0; } 50% { translate: 0 -12px; } }
     @media (prefers-reduced-motion: reduce) { .hcloud,.hsun,.hflag,.hkid { animation: none; } }
   </style>
   <defs>
