@@ -22,7 +22,7 @@
     </g>
   </defs>
 
-  <rect width="1600" height="720" fill="#e8f1ec"/>
+  <rect width="1600" height="720" fill="#c5e2ec"/>
 
   <!-- sun -->
   <circle cx="1400" cy="140" r="66" fill="#f6e3bf" opacity="0.5"><animate attributeName="r" values="66;72;66" dur="7s" repeatCount="indefinite"/></circle>
