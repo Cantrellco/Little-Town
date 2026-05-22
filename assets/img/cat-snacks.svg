@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Café category: Snacks (pretzel) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Snacks">
+  <path d="M14 30 C8 24 12 14 20 16 C26 17.5 24 26 18 26 C12 26 12 16 22 14
+           C32 12 36 24 30 30 C25 35 19 35 14 30 Z"
+        fill="none" stroke="#D9A35E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="17" cy="22" r="1.4" fill="#b07d35"/>
+  <circle cx="31" cy="22" r="1.4" fill="#b07d35"/>
+  <circle cx="24" cy="31" r="1.4" fill="#b07d35"/>
+</svg>

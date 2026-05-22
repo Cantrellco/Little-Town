@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Private Parties tower with bunting + balloons — placeholder illustration -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated party tower with bunting flags and balloons.">
+  <rect x="0" y="186" width="300" height="6" rx="3" fill="#e3d8c2"/>
+  <!-- bunting -->
+  <path d="M14 40 Q150 70 286 40" fill="none" stroke="#cdbfa6" stroke-width="2"/>
+  <g>
+    <path d="M40 47 l12 0 l-6 13 Z" fill="#D64A3F"/>
+    <path d="M78 53 l12 0 l-6 13 Z" fill="#9CB082"/>
+    <path d="M210 53 l12 0 l-6 13 Z" fill="#7FA8A0"/>
+    <path d="M248 47 l12 0 l-6 13 Z" fill="#D9A35E"/>
+  </g>
+  <!-- balloons -->
+  <g>
+    <ellipse cx="58" cy="96" rx="16" ry="20" fill="#D64A3F"/>
+    <path d="M58 116 q3 8 -2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>
+    <ellipse cx="240" cy="100" rx="15" ry="19" fill="#7FA8A0"/>
+    <path d="M240 119 q-3 8 2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>
+  </g>
+  <!-- tower -->
+  <rect x="112" y="80" width="100" height="108" rx="6" fill="#e7c389" stroke="#D9A35E" stroke-width="3"/>
+  <polygon points="102,80 162,28 222,80" fill="#c98f44"/>
+  <line x1="162" y1="28" x2="162" y2="8" stroke="#7a5a2e" stroke-width="3"/>
+  <path d="M162 12 L190 21 L162 30 Z" fill="#D64A3F"/>
+  <circle cx="162" cy="118" r="9" fill="#fff"/>
+  <path d="M138 188 v-36 a24 24 0 0 1 48 0 v36 Z" fill="#B5532E"/>
+  <circle cx="178" cy="166" r="3" fill="#f1ddd3"/>
+  <rect x="120" y="140" width="20" height="20" rx="5" fill="#eef4f2"/>
+  <rect x="184" y="140" width="20" height="20" rx="5" fill="#eef4f2"/>
+</svg>

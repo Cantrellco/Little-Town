@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Party gallery placeholder 2 — slide & tunnel play -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" role="img" aria-label="Illustrated children's slide and play tunnel.">
+  <rect width="220" height="180" fill="#eef4f2"/>
+  <path d="M0 150 H220" stroke="#e3d8c2" stroke-width="3"/>
+  <path d="M150 60 Q200 60 200 150" fill="none" stroke="#9cc6bf" stroke-width="22" stroke-linecap="round"/>
+  <path d="M150 60 Q200 60 200 150" fill="none" stroke="#7FA8A0" stroke-width="9" stroke-linecap="round"/>
+  <rect x="120" y="50" width="14" height="100" rx="6" fill="#D9A35E"/>
+  <ellipse cx="58" cy="120" rx="40" ry="26" fill="#7FA8A0"/>
+  <ellipse cx="58" cy="120" rx="26" ry="17" fill="#5d8a82"/>
+  <ellipse cx="58" cy="120" rx="13" ry="9" fill="#3f6a63"/>
+  <circle cx="150" cy="40" r="10" fill="#D64A3F"/>
+</svg>

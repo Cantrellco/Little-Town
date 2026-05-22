@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Visit Us — stylized illustrated map placeholder (NOT a real map). Final: embed real map. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" role="img" aria-label="Stylized illustrated map showing Little Town Playhouse on Main Street.">
+  <rect width="600" height="380" fill="#e6ecdd"/>
+  <!-- park / green -->
+  <rect x="40" y="40" width="150" height="120" rx="14" fill="#cfe0bd"/>
+  <circle cx="80" cy="80" r="14" fill="#9CB082"/>
+  <circle cx="120" cy="120" r="18" fill="#9CB082"/>
+  <circle cx="150" cy="70" r="12" fill="#9CB082"/>
+  <!-- water -->
+  <path d="M0 300 Q150 270 300 300 T600 290 V380 H0 Z" fill="#cfe1dd"/>
+  <!-- roads -->
+  <rect x="0" y="190" width="600" height="40" fill="#F7F3EC"/>
+  <rect x="260" y="0" width="38" height="380" fill="#F7F3EC"/>
+  <line x1="0" y1="210" x2="600" y2="210" stroke="#e3d8c2" stroke-width="3" stroke-dasharray="14 12"/>
+  <line x1="279" y1="0" x2="279" y2="380" stroke="#e3d8c2" stroke-width="3" stroke-dasharray="14 12"/>
+  <!-- city blocks -->
+  <rect x="330" y="60" width="90" height="90" rx="10" fill="#efe7d8"/>
+  <rect x="450" y="60" width="110" height="90" rx="10" fill="#efe7d8"/>
+  <rect x="330" y="250" width="90" height="90" rx="10" fill="#efe7d8"/>
+  <rect x="40" y="250" width="170" height="60" rx="10" fill="#efe7d8"/>
+  <!-- label -->
+  <text x="120" y="225" font-family="Poppins, sans-serif" font-size="13" font-weight="600" fill="#9b8e74">MAIN STREET</text>
+  <!-- pin marker -->
+  <g transform="translate(279,180)">
+    <ellipse cx="0" cy="34" rx="16" ry="5" fill="rgba(80,60,30,0.2)"/>
+    <path d="M0 30 C-18 6 -18 -6 0 -22 C18 -6 18 6 0 30 Z" fill="#D64A3F"/>
+    <circle cx="0" cy="-2" r="8" fill="#fff"/>
+  </g>
+</svg>

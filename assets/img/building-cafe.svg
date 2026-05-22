@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Café tower — placeholder illustration, final art by brand illustrator -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated café tower with a cup sign and flag.">
+  <rect x="0" y="186" width="300" height="6" rx="3" fill="#e3d8c2"/>
+  <!-- tower body -->
+  <rect x="108" y="74" width="120" height="114" rx="6" fill="#e7c389" stroke="#D9A35E" stroke-width="3"/>
+  <!-- roof -->
+  <polygon points="98,74 168,18 238,74" fill="#c98f44"/>
+  <line x1="126" y1="66" x2="168" y2="32" stroke="#b07d35" stroke-width="2"/>
+  <line x1="210" y1="66" x2="168" y2="32" stroke="#b07d35" stroke-width="2"/>
+  <!-- flag -->
+  <line x1="168" y1="18" x2="168" y2="-2" stroke="#7a5a2e" stroke-width="3"/>
+  <path d="M168 2 L196 11 L168 20 Z" fill="#D64A3F"/>
+  <circle cx="168" cy="18" r="5" fill="#D9A35E"/>
+  <!-- cup sign -->
+  <g transform="translate(168,112)">
+    <path d="M-22 -10 H18 V6 a16 16 0 0 1 -32 0 Z" fill="#fff"/>
+    <path d="M18 -4 a11 11 0 0 1 0 16" fill="none" stroke="#fff" stroke-width="5"/>
+    <path d="M-6 -24 q-5 5 0 10 M6 -24 q-5 5 0 10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- door + windows -->
+  <path d="M140 188 v-40 a28 28 0 0 1 56 0 v40 Z" fill="#B5532E"/>
+  <circle cx="184" cy="164" r="3" fill="#f1ddd3"/>
+  <rect x="120" y="150" width="22" height="22" rx="5" fill="#eef4f2"/>
+  <rect x="194" y="150" width="22" height="22" rx="5" fill="#eef4f2"/>
+  <!-- tree -->
+  <rect x="252" y="150" width="9" height="38" rx="4" fill="#a9763e"/>
+  <circle cx="256" cy="142" r="26" fill="#9CB082"/>
+  <circle cx="244" cy="154" r="16" fill="#8aa070"/>
+</svg>

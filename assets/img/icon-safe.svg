@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Safe & Clean icon -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Safe and clean">
+  <path d="M24 4 L40 10 V24 C40 34 33 41 24 44 C15 41 8 34 8 24 V10 Z" fill="#7FA8A0"/>
+  <path d="M24 8 L36 12.5 V24 C36 31.8 30.6 37.6 24 40 C17.4 37.6 12 31.8 12 24 V12.5 Z" fill="#dcebe8"/>
+  <path d="M17 24 l5 5 l9 -11" fill="none" stroke="#3f7a52" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

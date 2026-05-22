@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Party gallery placeholder 1 — cake & balloons -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" role="img" aria-label="Illustrated birthday cake with balloons.">
+  <rect width="220" height="180" fill="#fbf3e6"/>
+  <path d="M0 150 H220" stroke="#e3d8c2" stroke-width="3"/>
+  <ellipse cx="56" cy="60" rx="20" ry="25" fill="#D64A3F"/>
+  <ellipse cx="92" cy="48" rx="18" ry="23" fill="#7FA8A0"/>
+  <ellipse cx="160" cy="58" rx="20" ry="25" fill="#9CB082"/>
+  <line x1="56" y1="85" x2="60" y2="120" stroke="#cdbfa6" stroke-width="1.5"/>
+  <line x1="92" y1="71" x2="96" y2="120" stroke="#cdbfa6" stroke-width="1.5"/>
+  <line x1="160" y1="83" x2="156" y2="120" stroke="#cdbfa6" stroke-width="1.5"/>
+  <!-- cake -->
+  <rect x="84" y="118" width="56" height="32" rx="6" fill="#e7c389"/>
+  <rect x="84" y="118" width="56" height="12" rx="6" fill="#B5532E"/>
+  <line x1="112" y1="98" x2="112" y2="118" stroke="#D9A35E" stroke-width="3"/>
+  <path d="M112 92 q-4 4 0 8 q4 -4 0 -8" fill="#D64A3F"/>
+</svg>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Our Story — founder with child building the little town. Placeholder, final art by illustrator. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 380" role="img"
+     aria-label="Illustration of a parent and child playing with little wooden town buildings.">
+  <rect x="20" y="40" width="440" height="300" rx="24" fill="#eef4f2"/>
+  <!-- soft sun -->
+  <circle cx="380" cy="110" r="40" fill="#f6e3bf"/>
+  <!-- floor -->
+  <rect x="20" y="280" width="440" height="60" rx="0" fill="#efe7d8"/>
+  <path d="M20 280 H460" stroke="#e3d8c2" stroke-width="4"/>
+  <!-- adult figure -->
+  <g>
+    <circle cx="150" cy="150" r="30" fill="#D9A35E"/>
+    <circle cx="150" cy="150" r="30" fill="#e7c389"/>
+    <path d="M150 150 a30 30 0 0 1 -26 -16 q26 -14 52 0 a30 30 0 0 1 -26 16Z" fill="#c98f44"/>
+    <path d="M110 280 v-58 a40 40 0 0 1 80 0 v58 Z" fill="#7FA8A0"/>
+    <path d="M186 230 q34 6 44 30" fill="none" stroke="#7FA8A0" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <!-- child figure -->
+  <g>
+    <circle cx="250" cy="196" r="22" fill="#B5532E"/>
+    <circle cx="250" cy="196" r="22" fill="#c97a59"/>
+    <path d="M250 196 a22 22 0 0 1 -19 -11 q19 -10 38 0 a22 22 0 0 1 -19 11Z" fill="#8a3f23"/>
+    <path d="M222 280 v-40 a28 28 0 0 1 56 0 v40 Z" fill="#9CB082"/>
+    <path d="M226 250 q-20 6 -24 26" fill="none" stroke="#9CB082" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <!-- little town blocks on floor -->
+  <g>
+    <rect x="300" y="246" width="40" height="34" rx="4" fill="#e7c389" stroke="#D9A35E" stroke-width="2"/>
+    <polygon points="296,246 320,224 344,246" fill="#c98f44"/>
+    <line x1="320" y1="224" x2="320" y2="212" stroke="#7a5a2e" stroke-width="2.4"/>
+    <path d="M320 214 L334 219 L320 224 Z" fill="#D64A3F"/>
+    <rect x="314" y="262" width="12" height="18" rx="2" fill="#B5532E"/>
+  </g>
+  <g>
+    <rect x="348" y="252" width="34" height="28" rx="4" fill="#d6e6e2" stroke="#7FA8A0" stroke-width="2"/>
+    <polygon points="345,252 365,234 385,252" fill="#7FA8A0"/>
+  </g>
+  <!-- bush -->
+  <circle cx="70" cy="272" r="16" fill="#9CB082"/>
+  <circle cx="86" cy="276" r="12" fill="#8aa070"/>
+</svg>
