@@ -6,6 +6,20 @@
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img"
      aria-label="Illustrated children playing inside the playhouse — sliding, jumping and crawling among soft play shapes, with a window looking onto the little town.">
+  <style>
+    .kbob { animation: kbob 3s ease-in-out infinite; }
+    .kbob.slow { animation-duration: 3.8s; animation-delay: -.6s; }
+    .kfloat { animation: kfloat 4s ease-in-out infinite; }
+    .kfloat.slow { animation-duration: 5s; animation-delay: -1s; }
+    .kleaf { transform-box: fill-box; transform-origin: bottom center; animation: ksway 4.5s ease-in-out infinite; }
+    .ktwinkle { transform-box: fill-box; transform-origin: center; animation: ktwinkle 3.5s ease-in-out infinite; }
+    .ktwinkle.slow { animation-duration: 4.4s; animation-delay: -1.2s; }
+    @keyframes kbob { 0%,100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+    @keyframes kfloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+    @keyframes ksway { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+    @keyframes ktwinkle { 0%,100% { opacity: .5; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.15); } }
+    @media (prefers-reduced-motion: reduce) { .kbob,.kfloat,.kleaf,.ktwinkle { animation: none; } }
+  </style>
   <defs>
     <linearGradient id="winsky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#dcebe8"/><stop offset="1" stop-color="#eef4f2"/>
@@ -66,16 +80,16 @@
 
   <!-- potted plant (right) -->
   <g>
-    <path d="M832 300 q12 -54 0 -70 q24 18 14 70 Z" fill="#9CB082"/>
-    <path d="M848 300 q-8 -40 4 -56 q14 22 6 56 Z" fill="#8aa070"/>
+    <path class="kleaf" d="M832 300 q12 -54 0 -70 q24 18 14 70 Z" fill="#9CB082"/>
+    <path class="kleaf" d="M848 300 q-8 -40 4 -56 q14 22 6 56 Z" fill="#8aa070"/>
     <path d="M820 300 h44 l-6 -22 h-32 Z" fill="#B5532E"/>
   </g>
 
   <!-- balloons -->
   <g>
-    <ellipse cx="600" cy="120" rx="17" ry="21" fill="#D64A3F"/>
+    <ellipse class="kfloat" cx="600" cy="120" rx="17" ry="21" fill="#D64A3F"/>
     <path d="M600 141 q4 9 -2 18" stroke="#cdbfa6" stroke-width="1.6" fill="none"/>
-    <ellipse cx="636" cy="138" rx="14" ry="18" fill="#D9A35E"/>
+    <ellipse class="kfloat slow" cx="636" cy="138" rx="14" ry="18" fill="#D9A35E"/>
     <path d="M636 156 q-3 8 2 16" stroke="#cdbfa6" stroke-width="1.6" fill="none"/>
   </g>
 
@@ -95,7 +109,7 @@
   </g>
 
   <!-- Kid 2: jumping for joy (center) -->
-  <g transform="translate(430,300)">
+  <g class="kbob" transform="translate(430,300)">
     <rect x="-14" y="-30" width="11" height="30" rx="5.5" fill="#8a3f23" transform="rotate(-8 -8 -15)"/>
     <rect x="3" y="-30" width="11" height="30" rx="5.5" fill="#8a3f23" transform="rotate(8 8 -15)"/>
     <path d="M-20 -64 Q0 -74 20 -64 L15 -28 H-15 Z" fill="#B5532E"/>
@@ -122,7 +136,7 @@
   </g>
 
   <!-- Kid 4: standing with a balloon (left) -->
-  <g transform="translate(190,300)">
+  <g class="kbob slow" transform="translate(190,300)">
     <rect x="-12" y="-28" width="10" height="28" rx="5" fill="#7a5a2e"/>
     <rect x="2" y="-28" width="10" height="28" rx="5" fill="#7a5a2e"/>
     <path d="M-17 -58 Q0 -66 17 -58 L13 -26 H-13 Z" fill="#D64A3F"/>
@@ -140,7 +154,7 @@
 
   <!-- little sparkles -->
   <g fill="#D9A35E">
-    <path d="M560 70 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z"/>
-    <path d="M330 110 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 Z"/>
+    <path class="ktwinkle" d="M560 70 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z"/>
+    <path class="ktwinkle slow" d="M330 110 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 Z"/>
   </g>
 </svg>

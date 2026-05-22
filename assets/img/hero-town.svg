@@ -8,6 +8,21 @@
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img"
      aria-label="An illustrated little town skyline with a play tunnel, café, grocery, hospital and a flagged tower among trees and bushes.">
+  <style>
+    .hcloud { animation: hdrift 20s ease-in-out infinite; }
+    .hcloud.c2 { animation-duration: 26s; animation-delay: -7s; }
+    .hcloud.c3 { animation-duration: 32s; animation-delay: -14s; }
+    .hsun  { transform-box: fill-box; transform-origin: center; animation: hsun 7s ease-in-out infinite; }
+    .hflag { transform-box: fill-box; transform-origin: 0% 65%; animation: hflag 2.3s ease-in-out infinite; }
+    .hkid  { animation: hbob 3.2s ease-in-out infinite; }
+    .hkid.k2 { animation-duration: 2.6s; animation-delay: -.5s; }
+    .hkid.k3 { animation-duration: 3.9s; animation-delay: -1s; }
+    @keyframes hdrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(30px); } }
+    @keyframes hsun   { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    @keyframes hflag  { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(5deg); } }
+    @keyframes hbob   { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+    @media (prefers-reduced-motion: reduce) { .hcloud,.hsun,.hflag,.hkid { animation: none; } }
+  </style>
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#eaf2ef"/>
@@ -37,13 +52,13 @@
   <rect width="1200" height="640" fill="url(#sky)"/>
 
   <!-- sun -->
-  <circle cx="1060" cy="120" r="58" fill="#f2d8a8"/>
-  <circle cx="1060" cy="120" r="40" fill="#f6e3bf"/>
+  <g class="hsun"><circle cx="1060" cy="120" r="58" fill="#f2d8a8"/>
+  <circle cx="1060" cy="120" r="40" fill="#f6e3bf"/></g>
 
   <!-- clouds -->
-  <use href="#cloud" x="230" y="120" opacity="0.95"/>
-  <use href="#cloud" x="640" y="86" opacity="0.9"/>
-  <use href="#cloud" x="940" y="180" opacity="0.85"/>
+  <use href="#cloud" x="230" y="120" opacity="0.95" class="hcloud"/>
+  <use href="#cloud" x="640" y="86" opacity="0.9" class="hcloud c2"/>
+  <use href="#cloud" x="940" y="180" opacity="0.85" class="hcloud c3"/>
 
   <!-- rolling background hills -->
   <path d="M0 470 Q 250 405 520 460 T 1200 440 V640 H0 Z" fill="#e6ecdd"/>
@@ -76,7 +91,7 @@
     <line x1="432" y1="312" x2="375" y2="256" stroke="#b07d35" stroke-width="2"/>
     <!-- flag -->
     <line x1="375" y1="236" x2="375" y2="196" stroke="#7a5a2e" stroke-width="4"/>
-    <path d="M375 200 L412 210 L375 222 Z" fill="#D64A3F"/>
+    <path class="hflag" d="M375 200 L412 210 L375 222 Z" fill="#D64A3F"/>
     <circle cx="375" cy="236" r="6" fill="#D9A35E"/>
     <!-- cup sign -->
     <g transform="translate(375,372)">
@@ -142,7 +157,7 @@
     <rect x="1010" y="380" width="110" height="140" rx="8" fill="none" stroke="#d9a35e" stroke-width="3"/>
     <polygon points="1000,380 1065,316 1130,380" fill="#c98f44"/>
     <line x1="1065" y1="316" x2="1065" y2="280" stroke="#7a5a2e" stroke-width="4"/>
-    <path d="M1065 284 L1100 294 L1065 305 Z" fill="#D64A3F"/>
+    <path class="hflag" d="M1065 284 L1100 294 L1065 305 Z" fill="#D64A3F"/>
     <circle cx="1065" cy="350" r="9" fill="#fff"/>
     <path d="M1040 520 v-40 a25 25 0 0 1 50 0 v40 Z" fill="#B5532E"/>
   </g>
@@ -156,7 +171,7 @@
 
   <!-- ===== children playing (placeholder figures, final art by illustrator) ===== -->
   <!-- kid waving near the slide -->
-  <g transform="translate(250,520)">
+  <g class="hkid" transform="translate(250,520)">
     <rect x="-11" y="-26" width="9" height="26" rx="4.5" fill="#7a5a2e"/>
     <rect x="2" y="-26" width="9" height="26" rx="4.5" fill="#7a5a2e"/>
     <path d="M-15 -54 Q0 -62 15 -54 L12 -24 H-12 Z" fill="#D64A3F"/>
@@ -168,7 +183,7 @@
     <path d="M-5 -60 q5 4 10 0" stroke="#3a2f24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
   </g>
   <!-- kid running on Main Street -->
-  <g transform="translate(620,520)">
+  <g class="hkid k2" transform="translate(620,520)">
     <rect x="-13" y="-24" width="9" height="24" rx="4.5" fill="#5d8a82" transform="rotate(-16 -8 -12)"/>
     <rect x="3" y="-24" width="9" height="24" rx="4.5" fill="#5d8a82" transform="rotate(16 8 -12)"/>
     <path d="M-15 -52 Q0 -60 15 -52 L12 -22 H-12 Z" fill="#7FA8A0"/>
@@ -180,7 +195,7 @@
     <path d="M-5 -58 q5 4 10 0" stroke="#221c16" stroke-width="1.5" fill="none" stroke-linecap="round"/>
   </g>
   <!-- toddler with a ball -->
-  <g transform="translate(470,522)">
+  <g class="hkid k3" transform="translate(470,522)">
     <rect x="-10" y="-22" width="8" height="22" rx="4" fill="#b07d35"/>
     <rect x="2" y="-22" width="8" height="22" rx="4" fill="#b07d35"/>
     <path d="M-13 -46 Q0 -53 13 -46 L10 -20 H-10 Z" fill="#9CB082"/>
