@@ -3,9 +3,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated party tower with bunting flags and balloons.">
   <ellipse cx="150" cy="194" rx="90" ry="9" fill="#7a8f63" opacity="0.12"/>
   <rect x="20" y="188" width="260" height="5" rx="2.5" fill="#9CB082" opacity="0.55"/>
-  <!-- bunting -->
-  <path d="M14 42 Q150 72 286 42" fill="none" stroke="#cdbfa6" stroke-width="2"/>
-  <path d="M42 49 l12 0 l-6 13 Z" fill="#D64A3F"/><path d="M80 55 l12 0 l-6 13 Z" fill="#9CB082"/><path d="M208 55 l12 0 l-6 13 Z" fill="#7FA8A0"/><path d="M246 49 l12 0 l-6 13 Z" fill="#E0A93F"/>
+  <!-- bunting strung corner-to-corner across the storefront, with hanging flags -->
+  <path d="M6 24 Q150 60 294 24" fill="none" stroke="#cdbfa6" stroke-width="2"/>
+  <g>
+    <path d="M28 30.5 L42 30.5 L35 44.5 Z" fill="#D64A3F"/>
+    <path d="M71 37.5 L85 37.5 L78 51.5 Z" fill="#7FA8A0"/>
+    <path d="M114 41.3 L128 41.3 L121 55.3 Z" fill="#9CB082"/>
+    <path d="M143 42 L157 42 L150 56 Z" fill="#E0A93F"/>
+    <path d="M172 41.3 L186 41.3 L179 55.3 Z" fill="#9CB082"/>
+    <path d="M215 37.5 L229 37.5 L222 51.5 Z" fill="#7FA8A0"/>
+    <path d="M258 30.5 L272 30.5 L265 44.5 Z" fill="#D64A3F"/>
+  </g>
   <!-- balloons -->
   <ellipse cx="56" cy="104" rx="16" ry="20" fill="#D64A3F"/><ellipse cx="51" cy="98" rx="4" ry="6" fill="#fff" opacity="0.4"/><path d="M56 124 q3 8 -2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>
   <ellipse cx="244" cy="108" rx="15" ry="19" fill="#7FA8A0"/><ellipse cx="239" cy="102" rx="4" ry="5" fill="#fff" opacity="0.4"/><path d="M244 127 q-3 8 2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>

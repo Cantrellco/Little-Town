@@ -1,0 +1,324 @@
+/* ============================================================
+   Our Story — page-specific styles
+   Companion to assets/css/styles.css (v4 kit).
+   Mobile-first. All motion silenced under prefers-reduced-motion.
+   ============================================================ */
+
+/* ---- Hero: warmer paper gradient + subtle texture ---- */
+.ph--story {
+  background: linear-gradient(170deg, #f4ebe0 0%, #ede4d3 40%, var(--base) 100%);
+  padding-block: clamp(3.4rem, 8vw, 5.5rem) clamp(2.6rem, 6vw, 4rem);
+}
+
+/* Hero sticker: floats above the heading, angled left */
+.story-hero-sticker {
+  margin-bottom: 1rem;
+}
+
+/* Pull the hero h1 up a touch on the script span so the font sits nicely */
+.ph--story h1 .script {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+/* ---- Founder section ---- */
+.founder-section {
+  padding-block: clamp(3rem, 7vw, var(--space-7));
+}
+
+/* Founder pull-quote: bigger, bolder, warm terracotta open-quote */
+.founder-quote {
+  margin-top: clamp(1.6rem, 4vw, 2.6rem);
+}
+.founder-quote .quote {
+  background: var(--wood-tint);
+  border: 1.5px solid rgba(140, 100, 40, 0.18);
+  border-radius: var(--r-xl);
+  padding: clamp(1.4rem, 3.5vw, 2.2rem) clamp(1.4rem, 3.5vw, 2.2rem) clamp(1.2rem, 2.5vw, 1.6rem);
+}
+.founder-quote .quote p {
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+.founder-quote .quote::before {
+  color: var(--terracotta);
+  font-size: 4.5rem;
+  top: -0.35rem;
+  left: 1.1rem;
+  opacity: 0.35;
+}
+.founder-quote .quote .who {
+  color: var(--terracotta);
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---- Ribbon strip ---- */
+.story-ribbon {
+  /* Slightly warmer/richer than the default sunrise gradient */
+  background: linear-gradient(135deg, var(--terracotta) 0%, var(--wood) 100%);
+}
+.story-ribbon .track {
+  /* Slightly slower scroll for a warm, unhurried feel */
+  animation-duration: 36s;
+}
+
+/* ---- Timeline (steps) ---- */
+.story-steps-section {
+  padding-block: clamp(3rem, 7vw, var(--space-6));
+}
+
+/* On wide screens: 4 columns */
+@media (min-width: 760px) {
+  .story-steps-section .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Step number badge: sunrise gradient matches the shared kit, but slightly larger */
+.story-steps-section .step .step-no {
+  width: 66px;
+  height: 66px;
+  font-size: 1.55rem;
+  box-shadow: 0 6px 0 rgba(90, 60, 25, 0.18), var(--shadow-sm);
+}
+
+/* Step connector line (desktop only) */
+@media (min-width: 760px) {
+  .story-steps-section .steps {
+    position: relative;
+  }
+  .story-steps-section .steps::before {
+    content: "";
+    position: absolute;
+    top: 33px; /* vertically centred on the 66px badge */
+    left: calc(12.5% + 0px); /* ~centre of first badge to centre of last */
+    right: calc(12.5%);
+    height: 2px;
+    background: linear-gradient(90deg, var(--coral) 0%, var(--sun) 50%, var(--coral) 100%);
+    border-radius: 2px;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .story-steps-section .step {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.story-steps-section .step h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--ink);
+}
+.story-steps-section .step p {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Stat strip ---- */
+.story-stats {
+  padding-block: clamp(2.2rem, 5vw, 3.5rem);
+}
+.story-stat-grid {
+  display: grid;
+  gap: clamp(1.4rem, 3vw, 2rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .story-stat-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Each stat sits on a raised white card with a soft color accent top bar */
+.story-stat-card {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(80, 60, 30, 0.05);
+  overflow: hidden;
+  text-align: center;
+  padding: 0 clamp(1.2rem, 3vw, 1.8rem) clamp(1.4rem, 3vw, 2rem);
+}
+.story-stat-card .stat-bar {
+  height: 6px;
+  margin: 0 calc(-1 * clamp(1.2rem, 3vw, 1.8rem)) clamp(1.2rem, 2vw, 1.6rem);
+  /* overridden per-card by inline style */
+}
+.story-stat-card .stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  line-height: 1;
+}
+.story-stat-card .stat .num {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  color: var(--ink);
+}
+.story-stat-card .stat .label {
+  font-size: 0.93rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Values: bolder cards with colour-top accent bars ---- */
+.story-values-section {
+  padding-block: clamp(3rem, 7vw, var(--space-7));
+}
+
+.story-value-card {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(80, 60, 30, 0.05);
+  overflow: hidden;
+  height: 100%;
+  /* tilt will be applied via .tilt class; add base transition */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+/* Coloured accent bar at top */
+.story-value-card .sv-top {
+  height: 8px;
+  display: block;
+}
+
+.story-value-card .sv-body {
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+/* Number chip inside value card: larger, bolder, matches v4 sticker feel */
+.story-value-card .sv-chip {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.45rem;
+  color: #fff;
+}
+
+.story-value-card h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.18rem;
+}
+
+.story-value-card p {
+  font-size: 0.97rem;
+  margin: 0;
+}
+
+/* Hover straightens the tilt and lifts */
+.story-value-card:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- Safety / Promise section ---- */
+.story-promise-section {
+  padding-block: clamp(3rem, 7vw, var(--space-6));
+}
+
+/* Tinted inner panel for the reassure grid */
+.story-promise-panel {
+  background: var(--teal-tint);
+  border-radius: var(--r-xl);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border: 1px solid rgba(127, 168, 160, 0.25);
+}
+
+/* Promise chips: circular, larger */
+.story-promise-chip {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1rem;
+  box-shadow: var(--shadow-sm);
+}
+.story-promise-chip img {
+  width: 40px;
+  height: 40px;
+}
+
+/* ---- Closing CTA band ---- */
+.story-cta-band {
+  padding-block: clamp(3rem, 7vw, var(--space-6));
+}
+
+.story-cta-inner {
+  background: var(--grad-meadow);
+  border-radius: var(--r-xl);
+  padding: clamp(2.4rem, 6vw, 4rem) clamp(1.6rem, 4vw, 3rem);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft blob decorations inside the CTA */
+.story-cta-inner::before {
+  content: "";
+  position: absolute;
+  width: 260px; height: 260px;
+  right: -80px; top: -90px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  pointer-events: none;
+}
+.story-cta-inner::after {
+  content: "";
+  position: absolute;
+  width: 200px; height: 200px;
+  left: -70px; bottom: -80px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
+  pointer-events: none;
+}
+.story-cta-inner > * { position: relative; z-index: 1; }
+
+.story-cta-inner h2 { color: #fff; margin-bottom: 0.5rem; }
+.story-cta-inner p { color: rgba(255, 255, 255, 0.92); max-width: 44ch; margin-inline: auto; }
+
+/* CTA button on the meadow: white fill with teal text */
+.btn--on-meadow {
+  background: #fff;
+  color: var(--teal);
+  --btn-bg: #fff;
+  --btn-fg: var(--teal);
+  font-weight: 700;
+}
+.btn--on-meadow:hover { background: #fff; color: var(--teal); }
+
+/* Ghost button variant for dark band */
+.btn--ghost-light {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+.btn--ghost-light:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #fff;
+}
+
+/* ---- Reduced motion overrides ---- */
+@media (prefers-reduced-motion: reduce) {
+  .story-ribbon .track { animation: none !important; }
+  .story-value-card,
+  .story-value-card.tilt,
+  .story-value-card.tilt:nth-child(odd),
+  .story-value-card.tilt:nth-child(even) { transform: none !important; }
+  .story-stat-card,
+  .story-value-card { transition: none !important; }
+}

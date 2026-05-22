@@ -10,8 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
 
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/home.css">
 </head>
 <body>
 
@@ -19,7 +20,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text">
           <span class="brand-name">LITTLE TOWN</span>
           <span class="brand-sub script">Playhouse</span>
@@ -35,7 +36,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span><span></span>
         </button>
@@ -59,23 +60,57 @@
   <main>
     <!-- ============ HERO (full-bleed animated background) ============ -->
     <section class="hero-v2">
-      <!-- Animated background — a wide scene for desktop and a portrait scene for phones.
-           GIFs play on every device, including iPhone in Low Power / Reduce Motion. -->
+      <!-- Static town backdrop — a wide scene for desktop and a portrait scene for phones.
+           The motion lives in the separate cloud layer below. -->
       <picture class="hero-bg">
-        <source media="(max-width: 700px)" srcset="assets/img/hero-mobile.gif">
-        <img src="assets/img/hero-anim.gif" alt="Animated illustration of the little town — children playing along Main Street past the café, grocery and clinic, with drifting clouds and fluttering flags.">
+        <source media="(max-width: 700px)" srcset="assets/img/hero-mobile.svg">
+        <img src="assets/img/hero-town.svg" alt="Illustration of the little town — a play tunnel, market, café tower and clinic among trees under a blue sky." fetchpriority="high" decoding="async">
       </picture>
       <div class="hero-scrim" aria-hidden="true"></div>
-      <div class="container hero-content">
+      <!-- Clouds: an endless left-to-right conveyor. The track holds one set of
+           clouds plus an identical copy and slides by exactly one set width, so
+           clouds keep streaming in from the left with no gap or visible reset. -->
+      <div class="hero-clouds" aria-hidden="true">
+        <div class="cloud-track">
+          <div class="cloud-set">
+            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+          </div>
+          <div class="cloud-set">
+            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+          </div>
+        </div>
+      </div>
+      <span class="deco anim-bob" style="top:12%;left:6%;width:40px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:30%;left:11%;width:30px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:20%;right:9%;width:28px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:38%;right:15%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <div class="container hero-content reveal">
+        <span class="sticker sticker--coral home-hero-sticker anim-pop">★ Members play unlimited</span>
         <span class="eyebrow">Indoor imaginative play · Ages 0–8</span>
-        <h1>A little town built for <span class="script" style="color:var(--terracotta)">big imaginations</span></h1>
+        <h1 class="home-hero-title">A little town built for <span class="hl hl--sky">big</span> <span class="script" style="color:var(--terracotta)">imaginations</span></h1>
         <p class="lead">Where little ones run the shops and grown-ups actually relax. Become a member for unlimited play in our cosy little downtown.</p>
         <div class="flex-cta center">
-          <a class="btn btn--lg btn--terracotta" href="memberships.html">Become a Member</a>
+          <a class="btn btn--lg btn--pop btn--terracotta" href="memberships.html">Become a Member</a>
           <a class="btn btn--lg btn--ghost" href="visit-us.html">Plan a Visit</a>
         </div>
       </div>
     </section>
+
+    <!-- ============ RIBBON MARQUEE (lively scrolling phrases) ============ -->
+    <div class="ribbon home-ribbon" aria-hidden="true">
+      <div class="track">
+        <span>Unlimited play <span class="ribbon-dot">·</span> Great coffee next door <span class="ribbon-dot">·</span> Birthday buyouts <span class="ribbon-dot">·</span> Rainy-day rescue <span class="ribbon-dot">·</span> Members-only mornings <span class="ribbon-dot">·</span> Ages 0–8 welcome <span class="ribbon-dot">·</span></span>
+        <span>Unlimited play <span class="ribbon-dot">·</span> Great coffee next door <span class="ribbon-dot">·</span> Birthday buyouts <span class="ribbon-dot">·</span> Rainy-day rescue <span class="ribbon-dot">·</span> Members-only mornings <span class="ribbon-dot">·</span> Ages 0–8 welcome <span class="ribbon-dot">·</span></span>
+      </div>
+    </div>
 
     <!-- ============ TRUST BAR ============ -->
     <section class="band-white">
@@ -99,13 +134,38 @@
       </div>
     </section>
 
+    <!-- ============ STAT STRIP (bold believable numbers) ============ -->
+    <section class="section--tight band-white">
+      <div class="container">
+        <div class="grid grid-3 home-stats reveal">
+          <div class="stat reveal pop">
+            <div class="num">12<span class="unit"> shops</span></div>
+            <div class="label">Little storefronts to run</div>
+          </div>
+          <div class="stat reveal pop" data-delay="1">
+            <div class="num">0–8</div>
+            <div class="label">Ages welcome &amp; sized for</div>
+          </div>
+          <div class="stat reveal pop" data-delay="2">
+            <div class="num">7<span class="unit"> days</span></div>
+            <div class="label">Open every week</div>
+          </div>
+          <div class="stat reveal pop" data-delay="3">
+            <div class="num">1</div>
+            <div class="label">Great coffee next door</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ MEMBERSHIP BAND (main offer) ============ -->
     <section class="section">
       <div class="container">
-        <div class="member-band reveal">
+        <div class="member-band home-member reveal">
+          <span class="sticker sticker--sun home-member-sticker anim-pulse">Best value</span>
           <div>
             <span class="eyebrow">Membership · the heart of Little Town</span>
-            <h2>Unlimited play, all month long</h2>
+            <h2>Unlimited play, <span class="script">all month</span> long</h2>
             <p>For about the cost of two visits a month, your little one gets the run of the whole town whenever the mood strikes — rain or shine.</p>
             <ul class="price-list" style="max-width:460px">
               <li>Unlimited open play, every day we're open</li>
@@ -114,13 +174,13 @@
               <li>Bring-a-friend passes &amp; priority party booking</li>
             </ul>
             <div class="flex-cta">
-              <a class="btn btn--lg btn--onfill" href="memberships.html">Become a Member</a>
+              <a class="btn btn--lg btn--pop btn--onfill" href="memberships.html">Become a Member</a>
               <a class="btn btn--lg btn--ghost" style="color:#fff;border-color:rgba(255,255,255,0.6)" href="memberships.html">Compare tiers</a>
             </div>
           </div>
           <div class="member-art">
-            <!-- Animated GIF: children playing inside the playhouse (plays on every device) -->
-            <img src="assets/img/kids-anim.gif" alt="Animated illustration of children playing inside the playhouse — sliding, jumping and crawling." width="760" height="321">
+            <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shots later -->
+            <img src="assets/img/photo-play-bridge.jpg" alt="A child balancing across a rope bridge inside the soft-play structure." width="1000" height="800" loading="lazy" decoding="async" style="aspect-ratio:5/4;object-fit:cover;object-position:center 30%">
           </div>
         </div>
       </div>
@@ -134,25 +194,58 @@
           <h2>Explore our mini downtown</h2>
           <p class="section-lead">Every corner of Little Town is a tiny storefront waiting to be run by little hands.</p>
         </div>
-        <div class="grid grid-3 mt-4">
-          <article class="card reveal">
-            <div class="card-art"><img src="assets/img/building-openplay.svg" alt="Illustrated open-play storefront with a slide and tunnel." width="300" height="220"></div>
+        <div class="grid grid-3 mt-4 home-explore">
+          <article class="card tilt reveal">
+            <span class="sticker sticker--sky home-card-sticker">Most loved</span>
+            <div class="card-art"><img src="assets/img/building-openplay.svg" alt="Illustrated open-play storefront with a slide and tunnel." width="300" height="220" loading="lazy" decoding="async"></div>
             <h3>Open Play</h3>
             <p>Climb, slide and pretend through the grocery, the clinic and the corner café — soft, safe and sized just for little ones.</p>
             <a class="btn btn--ghost mt-1" href="play-pricing.html">Explore play</a>
           </article>
-          <article class="card reveal" data-delay="1">
-            <div class="card-art"><img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220"></div>
+          <article class="card tilt reveal" data-delay="1">
+            <span class="sticker sticker--coral home-card-sticker">Buy-outs</span>
+            <div class="card-art"><img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220" loading="lazy" decoding="async"></div>
             <h3>Private Parties</h3>
             <p>Rent the whole town for two hours of exclusive, stress-free celebration — we set up, you simply show up.</p>
             <a class="btn btn--ghost mt-1" href="parties.html">Plan a party</a>
           </article>
-          <article class="card reveal" data-delay="2">
-            <div class="card-art"><img src="assets/img/building-cafe.svg" alt="Illustrated café building, Fusion next door." width="300" height="220"></div>
+          <article class="card tilt reveal" data-delay="2">
+            <span class="sticker sticker--sage home-card-sticker">Next door</span>
+            <div class="card-art"><img src="assets/img/building-cafe.svg" alt="Illustrated café building, Fusion next door." width="300" height="220" loading="lazy" decoding="async"></div>
             <h3>Fusion <span class="partner-tag">Next door</span></h3>
             <p>Our neighbours at Fusion pour locally roasted coffee and fresh snacks — grab a cup before, during or after play.</p>
             <a class="btn btn--ghost mt-1" href="fusion.html">See Fusion</a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW A VISIT WORKS (numbered steps) ============ -->
+    <section class="section bg-sky-tint has-blob home-steps">
+      <span class="blob" aria-hidden="true" style="width:280px;height:280px;right:-60px;top:-40px;background:var(--sun-tint)"></span>
+      <span class="blob" aria-hidden="true" style="width:220px;height:220px;left:-50px;bottom:-50px;background:var(--coral-tint)"></span>
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">Easy as one, two, three</span>
+          <h2>How a visit works</h2>
+          <p class="section-lead">No fuss, no booking gymnastics — just pop in and play.</p>
+        </div>
+        <div class="steps mt-4">
+          <div class="step reveal pop">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Pop in, socks on</h3>
+            <p>Check in at the door, grab a pair of grippy socks for everyone, and you're through the gate in a minute.</p>
+          </div>
+          <div class="step reveal pop" data-delay="1">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Run the little town</h3>
+            <p>Little ones take over the shops, the clinic and the slides while you keep an easy eye from comfy seating.</p>
+          </div>
+          <div class="step reveal pop" data-delay="2">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Coffee at Fusion</h3>
+            <p>Slip next door to Fusion for a proper coffee and a snack — members get a standing discount, too.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -167,7 +260,7 @@
         </div>
         <div class="grid grid-3 mt-4">
           <article class="card price-card reveal">
-            <div class="card-art"><img src="assets/img/price-daypass.svg" alt="Day pass ticket illustration." width="200" height="140"></div>
+            <div class="card-art"><img src="assets/img/price-daypass.svg" alt="Day pass ticket illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Day Pass</h3>
             <div class="price-tag">$18 <small>/ child</small></div>
             <ul class="price-list">
@@ -179,7 +272,7 @@
           </article>
           <article class="card price-card featured reveal" data-delay="1">
             <span class="badge">Most popular</span>
-            <div class="card-art"><img src="assets/img/price-membership.svg" alt="Membership card illustration." width="200" height="140"></div>
+            <div class="card-art"><img src="assets/img/price-membership.svg" alt="Membership card illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Membership</h3>
             <div class="price-tag">$45 <small>/ month</small></div>
             <ul class="price-list">
@@ -187,10 +280,10 @@
               <li>Perks at Fusion &amp; on parties</li>
               <li>Members-only mornings</li>
             </ul>
-            <a class="btn btn--block btn--terracotta" href="memberships.html">Become a Member</a>
+            <a class="btn btn--block btn--pop btn--terracotta" href="memberships.html">Choose Membership</a>
           </article>
           <article class="card price-card reveal" data-delay="2">
-            <div class="card-art"><img src="assets/img/price-playpack.svg" alt="Five-visit play pack illustration." width="200" height="140"></div>
+            <div class="card-art"><img src="assets/img/price-playpack.svg" alt="Five-visit play pack illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Play Pack</h3>
             <div class="price-tag">$75 <small>/ 5 visits</small></div>
             <ul class="price-list">
@@ -213,17 +306,17 @@
         </div>
         <div class="grid grid-3 mt-4">
           <div class="reassure reveal">
-            <div class="chip"><img src="assets/img/icon-safe.svg" alt="" width="38" height="38"></div>
+            <div class="chip"><img src="assets/img/icon-safe.svg" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
             <h3>Safe &amp; Clean</h3>
             <p>Sanitised throughout the day, padded play zones, and a one-way-in, one-way-out check-in.</p>
           </div>
           <div class="reassure reveal" data-delay="1">
-            <div class="chip" style="background:var(--wood-tint)"><img src="assets/img/icon-wifi.svg" alt="" width="38" height="38"></div>
+            <div class="chip" style="background:var(--wood-tint)"><img src="assets/img/icon-wifi.svg" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
             <h3>Coffee Next Door + Wi-Fi</h3>
             <p>Fusion café is steps away with locally roasted coffee, plus fast Wi-Fi and comfy seating with sightlines to the floor.</p>
           </div>
           <div class="reassure reveal" data-delay="2">
-            <div class="chip" style="background:var(--terra-tint)"><img src="assets/img/icon-baby.svg" alt="" width="38" height="38"></div>
+            <div class="chip" style="background:var(--terra-tint)"><img src="assets/img/icon-baby.svg" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
             <h3>Little Ones Welcome</h3>
             <p>A gated infant nook for crawlers and new walkers, plus changing tables and a nursing corner.</p>
           </div>
@@ -231,11 +324,36 @@
       </div>
     </section>
 
+    <!-- ============ TESTIMONIALS (happy parents) ============ -->
+    <section class="section bg-meadow on-dark home-quotes">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">Loved by little locals</span>
+          <h2>Parents are smitten too</h2>
+          <p class="section-lead">A few words from the grown-ups who keep coming back.</p>
+        </div>
+        <div class="grid grid-3 mt-4">
+          <figure class="quote reveal">
+            <p>"My two-year-old thinks she runs the grocery store. We're members now — best money we spend all month."</p>
+            <figcaption class="who">— Priya, mum of one</figcaption>
+          </figure>
+          <figure class="quote reveal" data-delay="1">
+            <p>"Rainy Saturday sorted in five minutes. The kids are worn out and I got a flat white. Magic."</p>
+            <figcaption class="who">— Marcus, dad of twins</figcaption>
+          </figure>
+          <figure class="quote reveal" data-delay="2">
+            <p>"We booked the whole town for a birthday and it was completely stress-free. They set up, we showed up."</p>
+            <figcaption class="who">— Dani, party planner-in-chief</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ OUR STORY TEASER ============ -->
-    <section class="section">
+    <section class="section band">
       <div class="container split">
         <div class="split-art reveal">
-          <img src="assets/img/founder.svg" alt="Illustration of a parent and child building a little wooden town together." width="480" height="380">
+          <img src="assets/img/founder.svg" alt="Illustration of a parent and child building a little wooden town together." width="480" height="380" loading="lazy" decoding="async">
         </div>
         <div class="reveal" data-delay="1">
           <span class="eyebrow">Our story</span>
@@ -247,6 +365,9 @@
       </div>
     </section>
 
+    <!-- Street-ground motif leads into the closing call to action -->
+    <div class="street-divider" aria-hidden="true"><img src="assets/img/street-divider.svg" alt="" width="1440" height="120" loading="lazy" decoding="async"></div>
+
     <!-- ============ NEWSLETTER ============ -->
     <section class="section">
       <div class="container">
@@ -257,7 +378,7 @@
           <form class="newsletter-form" onsubmit="return false">
             <label for="nl-email" style="position:absolute;left:-9999px">Email address</label>
             <input id="nl-email" type="email" placeholder="you@email.com" autocomplete="email">
-            <button class="btn btn--red" type="button" data-noop>Subscribe</button>
+            <button class="btn" type="button" data-noop style="background:#fff;color:var(--terracotta)">Subscribe</button>
           </form>
         </div>
       </div>
@@ -270,7 +391,7 @@
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text">
               <span class="brand-name">LITTLE TOWN</span>
               <span class="brand-sub script">Playhouse</span>
@@ -303,11 +424,11 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>© 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>

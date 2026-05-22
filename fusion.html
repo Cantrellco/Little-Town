@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/fusion.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
@@ -29,7 +30,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -47,140 +48,358 @@
   </header>
 
   <main>
-    <!-- Intro -->
-    <section class="page-hero has-deco">
-      <span class="deco anim-bob" style="top:12%;left:6%;width:40px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:20%;right:9%;width:28px"><img src="assets/img/deco-star.svg" alt=""></span>
+
+    <!-- =====================================================
+         Hero
+         ===================================================== -->
+    <section class="page-hero ph--cafe">
+      <!-- Floating cafe treats (desktop only — .deco hides on mobile) -->
+      <span class="deco anim-bob" style="top:14%;left:6%;width:52px"><img src="assets/img/m-coffee.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:22%;right:8%;width:46px"><img src="assets/img/m-cookie.svg" alt=""></span>
+      <span class="deco anim-bob" style="bottom:18%;left:14%;width:38px"><img src="assets/img/m-muffin.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:12%;right:22%;width:22px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="bottom:24%;right:18%;width:18px;animation-delay:1.2s"><img src="assets/img/deco-star.svg" alt=""></span>
+
       <div class="container">
+        <!-- Copy -->
         <div class="reveal">
-          <span class="partner-tag">☕ Right next door</span>
-          <h1 style="margin-top:1rem">Coffee &amp; treats at <span class="script" style="color:var(--terracotta)">Fusion</span></h1>
-          <p>Fusion is the independent little coffee shop right beside Little Town Playhouse. Locally roasted coffee, fresh snacks and proper treats — pop in before, during or after play.</p>
+          <span class="partner-tag">&#x2615; Right next door</span>
+          <h1 style="margin-top:1rem">
+            <span class="hl--coral">Coffee &amp; treats</span> at
+            <span class="script" style="color:var(--terracotta)">Fusion</span>
+            <span class="fusion-coffee-sticker" aria-hidden="true">&#x2615;</span>
+          </h1>
+          <p class="lead">Fusion is the independent little coffee shop right beside Little Town Playhouse &#x2014; locally roasted espresso, cold brew, a&#xE7;a&#xED; bowls, avocado toast and warm paninis. Pop in before, during or after play.</p>
+          <div class="flex-cta">
+            <a class="btn btn--lg btn--terracotta btn--pop" href="#menu">See the menu &#x2193;</a>
+            <a class="btn btn--lg btn--ghost" href="memberships.html">Members save here</a>
+          </div>
         </div>
+
+        <!-- Cafe art (inlined + animated by main.js) -->
         <div class="hero-art reveal" data-delay="1" style="max-width:300px">
-          <img src="assets/img/building-cafe.svg" alt="Illustrated café building representing Fusion next door." width="300" height="220">
+          <img src="assets/img/building-cafe.svg" alt="Illustrated cafe building representing Fusion next door." width="300" height="220" fetchpriority="high" decoding="async">
         </div>
       </div>
     </section>
 
-    <!-- Partner note -->
-    <section class="section--tight band-white">
-      <div class="container center reveal" style="max-width:760px">
-        <p class="muted" style="margin:0">
-          <strong style="color:var(--ink)">A friendly neighbour, not a concession.</strong>
-          Fusion is a separate, independently-run business next to the playhouse — so you get a genuinely great coffee shop on the doorstep, and
-          <a href="memberships.html" style="color:var(--terracotta);font-weight:600">Little Town members enjoy a standing discount</a>.
-        </p>
+    <!-- =====================================================
+         Scrolling ribbon marquee
+         ===================================================== -->
+    <div class="ribbon ribbon--coffee" aria-hidden="true">
+      <div class="track">
+        <span>Locally roasted &middot;&nbsp; Oat &amp; decaf always &middot;&nbsp; Members save 10&#x2013;15% &middot;&nbsp; Baked fresh daily &middot;&nbsp; Kid-friendly options &middot;&nbsp; Open every play day &middot;&nbsp;</span>
+        <span>Locally roasted &middot;&nbsp; Oat &amp; decaf always &middot;&nbsp; Members save 10&#x2013;15% &middot;&nbsp; Baked fresh daily &middot;&nbsp; Kid-friendly options &middot;&nbsp; Open every play day &middot;&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         Partner note — a friendly, prominent panel callout
+         ===================================================== -->
+    <section class="section--tight">
+      <div class="container">
+        <div class="panel fusion-partner-panel reveal">
+          <div class="partner-icon" aria-hidden="true">&#x1F3E1;</div>
+          <div>
+            <p style="margin:0"><strong style="color:var(--ink)">A friendly neighbour, not a concession.</strong>
+            Fusion is a completely separate, independently-run business right next to the playhouse. That means you get a genuinely great coffee shop on the doorstep &#x2014; and
+            <a href="memberships.html" style="color:var(--terracotta);font-weight:600">Little Town members enjoy a standing 10&#x2013;15% discount</a> as a thank-you for the partnership.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Menu -->
-    <section class="section">
-      <div class="container" style="max-width:820px">
+    <!-- =====================================================
+         Fun-facts pill strip
+         ===================================================== -->
+    <section class="section--tight band-white">
+      <div class="container center reveal">
+        <span class="eyebrow">Why Fusion?</span>
+        <h2 style="margin-bottom:0.2rem">Good coffee. <span class="hl">Good people.</span></h2>
+        <p class="section-lead">Everything you need to power through a morning of play.</p>
+        <div class="fusion-stats" role="list">
+          <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x2600;&#xFE0F;</span> Locally roasted beans
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F95B;</span> Oat &amp; decaf always available
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sage hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F9C1;</span> Baked fresh daily
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--coral hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F39F;&#xFE0F;</span> Members save 10&#x2013;15%
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F476;</span> Kid-friendly options
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F556;</span> Open every play day
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Menu
+         ===================================================== -->
+    <section class="section has-deco" id="menu">
+      <!-- Floating cafe doodles (desktop only — .deco hides on mobile) -->
+      <span class="deco anim-bob" style="top:7%;left:4%;width:46px"><img src="assets/img/m-coffee.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:5%;right:6%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:46%;right:3%;width:40px"><img src="assets/img/m-cookie.svg" alt=""></span>
+      <span class="deco anim-bob" style="bottom:13%;left:5%;width:38px"><img src="assets/img/m-muffin.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="bottom:22%;left:9%;width:18px;animation-delay:1s"><img src="assets/img/deco-star.svg" alt=""></span>
+
+      <div class="container" style="max-width:840px">
+
         <div class="center reveal">
           <span class="eyebrow">On the menu at Fusion</span>
-          <h2>The Fusion menu</h2>
-          <p class="section-lead">A display menu for the demo — sample items and prices in the brand style.</p>
+          <h2>The <span class="script" style="color:var(--terracotta)">Fusion</span> menu</h2>
+          <p class="section-lead">Fresh coffee and eats, served all day right next door.</p>
+        </div>
+
+        <!-- Member savings callout -->
+        <div class="menu-member-callout reveal mt-3" role="note">
+          <span class="sticker sticker--coral" aria-label="Members save">&#x1F39F;&#xFE0F; Members save 10&#x2013;15%</span>
+          <p>Show your Little Town membership at the counter and enjoy a discount on every visit.
+            <a href="memberships.html">Learn about membership &#x2192;</a>
+          </p>
         </div>
 
         <!-- Drinks -->
-        <div class="menu-group card reveal mt-4">
-          <h3><img src="assets/img/cat-drinks.svg" alt="" width="38" height="38"> Drinks</h3>
+        <div class="menu-group menu-group--drinks card reveal mt-3">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--drinks" aria-hidden="true">
+              <img src="assets/img/cat-drinks.svg" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Drinks
+            <span class="sticker sticker--sky" style="margin-left:auto;font-size:0.75rem">Locally roasted</span>
+          </h3>
           <ul class="menu-list">
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Fusion Signature Latte</div><div class="m-desc">Locally roasted espresso, silky steamed milk</div></div>
-              <div class="m-price">$4.5</div>
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Drip Coffee</div><div class="m-desc">Freshly brewed, hot or iced</div></div>
+              <div class="m-price">$4.00&#x2013;$4.50</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Drip Coffee</div><div class="m-desc">Bottomless while you play</div></div>
-              <div class="m-price">$3.0</div>
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Pour Over</div><div class="m-desc">Hand-poured, single cup</div></div>
+              <div class="m-price">$5.00</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-juice.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Little Sips Juice</div><div class="m-desc">Apple or orange, no added sugar</div></div>
-              <div class="m-price">$2.5</div>
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Espresso</div><div class="m-desc">A classic shot, pulled to order</div></div>
+              <div class="m-price">$3.00</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-juice.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Strawberry Milk</div><div class="m-desc">A little-one favourite</div></div>
-              <div class="m-price">$3.0</div>
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Americano</div><div class="m-desc">Espresso topped with hot water</div></div>
+              <div class="m-price">$4.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cortado</div><div class="m-desc">Espresso cut with warm milk</div></div>
+              <div class="m-price">$4.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cappuccino</div><div class="m-desc">Espresso, steamed milk &amp; foam</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Latte</div><div class="m-desc">Espresso with silky steamed milk</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cold Brew</div><div class="m-desc">Slow-steeped, smooth and bold</div></div>
+              <div class="m-price">$5.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-juice.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Matcha</div><div class="m-desc">Stone-ground green tea latte</div></div>
+              <div class="m-price">$5.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Chai</div><div class="m-desc">Spiced tea latte</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Tea</div><div class="m-desc">A selection of hot teas</div></div>
+              <div class="m-price">$4.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Hot Chocolate</div><div class="m-desc">Rich and creamy</div></div>
+              <div class="m-price">$4.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-coffee.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Steamer</div><div class="m-desc">Steamed milk, lightly sweetened</div></div>
+              <div class="m-price">$3.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="assets/img/m-juice.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Glass of Milk</div><div class="m-desc">Cold and simple</div></div>
+              <div class="m-price">$2.50</div>
             </li>
           </ul>
         </div>
 
-        <!-- Snacks -->
-        <div class="menu-group card reveal">
-          <h3><img src="assets/img/cat-snacks.svg" alt="" width="38" height="38"> Snacks</h3>
+        <!-- Eats -->
+        <div class="menu-group menu-group--eats card reveal">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--eats" aria-hidden="true">
+              <img src="assets/img/cat-snacks.svg" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Eats
+            <span class="sticker sticker--sage" style="margin-left:auto;font-size:0.75rem">Fresh daily</span>
+          </h3>
           <ul class="menu-list">
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-sandwich.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Fusion Toastie</div><div class="m-desc">Cheese &amp; tomato on sourdough</div></div>
-              <div class="m-price">$5.5</div>
+              <img class="m-icon" src="assets/img/m-fruit.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">A&#xE7;a&#xED; Bowl</div><div class="m-desc">Blended a&#xE7;a&#xED; topped with fruit &amp; granola</div></div>
+              <div class="m-price">$10.50</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/cat-snacks.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Warm Soft Pretzel</div><div class="m-desc">With a side of cinnamon or cheese dip</div></div>
-              <div class="m-price">$4.0</div>
+              <img class="m-icon" src="assets/img/m-sandwich.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Avocado Toast</div><div class="m-desc">Smashed avocado on toasted bread</div></div>
+              <div class="m-price">$7.50&#x2013;$9.00</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-fruit.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Fruit &amp; Cheese Cup</div><div class="m-desc">Seasonal fruit, mild cheddar, crackers</div></div>
-              <div class="m-price">$4.5</div>
+              <img class="m-icon" src="assets/img/m-sandwich.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Panini</div><div class="m-desc">Warm pressed sandwich</div></div>
+              <div class="m-price">$10.00&#x2013;$11.00</div>
             </li>
           </ul>
         </div>
 
         <!-- Treats -->
-        <div class="menu-group card reveal">
-          <h3><img src="assets/img/cat-treats.svg" alt="" width="38" height="38"> Treats</h3>
+        <div class="menu-group menu-group--treats card reveal">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--treats" aria-hidden="true">
+              <img src="assets/img/cat-treats.svg" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Treats
+            <span class="sticker" style="margin-left:auto;font-size:0.75rem">Baked fresh</span>
+          </h3>
           <ul class="menu-list">
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/cat-treats.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Town Square Cupcake</div><div class="m-desc">Vanilla sponge, soft frosting, sprinkles</div></div>
-              <div class="m-price">$3.5</div>
+              <img class="m-icon" src="assets/img/m-muffin.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Muffin</div><div class="m-desc">Rotating seasonal flavour, baked in-house</div></div>
+              <div class="m-price">$3.50</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-cookie.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Big Imagination Cookie</div><div class="m-desc">Warm chocolate-chip, baked daily</div></div>
-              <div class="m-price">$2.5</div>
+              <img class="m-icon" src="assets/img/m-cookie.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cookie</div><div class="m-desc">Chocolate chip or snickerdoodle</div></div>
+              <div class="m-price">$2.50</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="assets/img/m-muffin.svg" alt="" width="44" height="44">
-              <div><div class="m-name">Blueberry Muffin</div><div class="m-desc">Made fresh each morning</div></div>
-              <div class="m-price">$3.0</div>
+              <img class="m-icon" src="assets/img/m-muffin.svg" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Banana Bread</div><div class="m-desc">A thick slice, toasted or plain</div></div>
+              <div class="m-price">$3.00</div>
             </li>
           </ul>
         </div>
 
-        <p class="mock-note">Fusion menu shown for design preview only — items, allergens and prices set by Fusion. Allergen information available in-store.</p>
+        <div class="menu-footer-note mock-note">Fusion's menu and prices are subject to change. Allergen information available in-store &#x2014; just ask at the counter.</div>
       </div>
     </section>
 
-    <!-- Locally roasted band -->
-    <section class="section band-white">
-      <div class="container split">
-        <div class="split-art reveal">
-          <img src="assets/img/gallery-3.svg" alt="Illustrated café table with cups and a cupcake." width="220" height="180" style="width:100%;border-radius:var(--r-lg);box-shadow:var(--shadow-sm)">
+    <!-- =====================================================
+         How it works — Play to Refuel to Back to town
+         ===================================================== -->
+    <section class="section band">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">The perfect loop</span>
+          <h2>Play. <span class="hl">Refuel.</span> Repeat.</h2>
+          <p class="section-lead">Fusion and the playhouse sit side by side &#x2014; the loop practically runs itself.</p>
         </div>
-        <div class="reveal" data-delay="1">
-          <span class="eyebrow">Roasted nearby</span>
-          <h2>Coffee worth the trip</h2>
-          <p>Fusion's beans come from a small roaster just up the road, pulled fresh all day. Decaf, oat milk and little-one-friendly options are always on hand.</p>
-          <p>It's the perfect partner to a morning of play — caffeinate, refuel, and head back into the town.</p>
-          <a class="btn btn--terracotta mt-1" href="memberships.html">Members save at Fusion</a>
+        <div class="steps fusion-steps mt-4 reveal" data-delay="1">
+          <div class="step">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Jump into the town</h3>
+            <p class="muted">Kids explore the shops, stage and streets while grown-ups settle in.</p>
+          </div>
+          <div class="step">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Pop next door to Fusion</h3>
+            <p class="muted">Grab a latte, a snack, a treat &#x2014; Fusion is literally a step away.</p>
+          </div>
+          <div class="step">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Back into the adventure</h3>
+            <p class="muted">Caffeinated and re-fuelled, dive right back in. Days feel longer here.</p>
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- =====================================================
+         Happy regular quote
+         ===================================================== -->
+    <section class="section--tight band-white">
+      <div class="container center reveal">
+        <span class="eyebrow">Happy regulars</span>
+        <blockquote class="quote fusion-quote mt-3">
+          <p>&#x201C;We come for the play, but honestly the coffee keeps us coming back. The oat latte is the best in the neighbourhood &#x2014; and the muffins are gone by 10am for good reason.&#x201D;</p>
+          <footer class="who">&#x2014; Jamie T., Little Town member since 2024</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Locally roasted split band
+         ===================================================== -->
+    <section class="section has-blob" style="position:relative;overflow:hidden">
+      <div class="fusion-roasted-blob" aria-hidden="true"></div>
+      <div class="fusion-roasted-blob-2" aria-hidden="true"></div>
+      <div class="container split">
+        <div class="split-art reveal">
+          <div class="fusion-photo-wrap">
+            <!-- Placeholder photo — swap for a real Fusion cafe shot later -->
+            <img class="fusion-cafe-photo" src="assets/img/photo-cafe-table.jpg" alt="A latte and fresh croissant on a wooden cafe table at Fusion." width="1000" height="800" loading="lazy" decoding="async">
+            <span class="sticker" style="bottom:-0.7rem;right:1.2rem;position:absolute;z-index:2">&#x2615; Locally roasted</span>
+          </div>
+        </div>
+        <div class="reveal" data-delay="1">
+          <span class="eyebrow">Roasted nearby</span>
+          <h2>Coffee <span class="hl--coral">worth the trip</span></h2>
+          <p>Fusion's beans come from a small roaster just up the road, pulled fresh all day. Decaf, oat milk and little-one-friendly options are always on hand.</p>
+          <p>It's the perfect partner to a morning of play &#x2014; caffeinate, refuel, and head back into the town.</p>
+          <a class="btn btn--terracotta btn--pop mt-3" href="memberships.html">Members save at Fusion</a>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <script>
+    /* Fusion page — reduced-motion-aware: pause ribbon when user prefers less motion */
+    (function () {
+      "use strict";
+      var track = document.querySelector(".ribbon--coffee .track");
+      if (!track) return;
+      var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      function applyPref(e) { track.style.animationPlayState = e.matches ? "paused" : "running"; }
+      applyPref(mq);
+      if (mq.addEventListener) { mq.addEventListener("change", applyPref); }
+      else if (mq.addListener) { mq.addListener(applyPref); }
+    }());
+  </script>
+  <script src="assets/js/main.js"></script>
 
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
@@ -192,7 +411,7 @@
         </div>
         <div class="footer-col">
           <h4>Hours</h4>
-          <ul><li>Mon – Thu · 9am – 6pm</li><li>Fri – Sat · 9am – 8pm</li><li>Sunday · 10am – 5pm</li><li>Members' morning · Wed 8am</li></ul>
+          <ul><li>Mon &#x2013; Thu &middot; 9am &#x2013; 6pm</li><li>Fri &#x2013; Sat &middot; 9am &#x2013; 8pm</li><li>Sunday &middot; 10am &#x2013; 5pm</li><li>Members' morning &middot; Wed 8am</li></ul>
         </div>
         <div class="footer-col">
           <h4>Visit Us</h4>
@@ -200,16 +419,15 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>&copy; 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
 </body>
 </html>

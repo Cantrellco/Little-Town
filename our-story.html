@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/our-story.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
@@ -29,7 +30,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -47,92 +48,286 @@
   </header>
 
   <main>
-    <!-- Founder narrative -->
-    <section class="page-hero">
+
+    <!-- ============================================================
+         HERO — warm paper sky, sticker accent, highlighted headline
+         ============================================================ -->
+    <section class="page-hero ph--story">
       <div class="container">
         <div class="reveal">
+          <!-- Sticker floats above the heading -->
+          <div class="story-hero-sticker">
+            <span class="sticker anim-pop" aria-hidden="true">
+              <!-- small building block icon -->
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><rect x="2" y="10" width="7" height="8" rx="1.5" fill="currentColor" opacity=".9"/><rect x="11" y="6" width="7" height="12" rx="1.5" fill="currentColor" opacity=".75"/><rect x="6" y="2" width="8" height="7" rx="1.5" fill="currentColor" opacity=".55"/></svg>
+              Built by parents
+            </span>
+          </div>
           <span class="eyebrow">Our story</span>
-          <h1>It started with a box of blocks</h1>
-          <p>And a simple wish: somewhere warm and beautiful to take the kids — that grown-ups would actually love too.</p>
+          <h1>It started with a <span class="script hl hl--coral" style="color:var(--terracotta)">box of blocks</span></h1>
+          <p>And a simple wish: somewhere warm and <em>beautiful</em> to bring the kids — that grown-ups would actually love too.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop" href="visit-us.html">Plan a Visit</a>
+            <a class="btn btn--lg btn--ghost" href="memberships.html">Become a Member</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- ============================================================
+         FOUNDER NARRATIVE — split layout + bold pull-quote
+         ============================================================ -->
+    <section class="founder-section">
       <div class="container split">
-        <div class="split-art reveal">
-          <img src="assets/img/founder.svg" alt="Illustration of a parent and child building a little wooden town together." width="480" height="380">
+
+        <!-- Art side -->
+        <div class="split-art reveal from-left">
+          <!-- Placeholder photo (Unsplash, free license) — swap for your own founder/play photo later -->
+          <img src="assets/img/photo-founder-blocks.jpg"
+               alt="A parent and toddler building a colourful block tower together on the floor."
+               width="1000" height="750" loading="lazy" decoding="async"
+               style="aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:var(--r-lg);box-shadow:var(--shadow-md)">
         </div>
-        <div class="reveal" data-delay="1">
-          <h2>Built by parents, for parents</h2>
+
+        <!-- Copy side -->
+        <div class="reveal from-right" data-delay="1">
+          <span class="eyebrow">How it began</span>
+          <h2>Built by parents, <span class="hl hl--sage">for parents</span></h2>
           <p>On a grey winter afternoon, our founder Maya watched her two-year-old turn a pile of wooden blocks into a whole little town — a shop here, a café there, a tiny hospital for a poorly teddy. The living room was a disaster. The kids were in heaven.</p>
           <p>There was nowhere nearby that captured that feeling: imaginative, calm, beautifully made, and genuinely welcoming for the adults along for the ride. So she decided to build one.</p>
           <p>Little Town Playhouse is that idea, grown up just a little — a whole downtown of storefronts where children try on the roles of everyday life, and parents get a comfy seat and a proper coffee.</p>
+
+          <!-- Founder pull-quote -->
+          <div class="founder-quote reveal pop" data-delay="2">
+            <blockquote class="quote" aria-label="Founder quote">
+              <p>"If you give a child the right space, they'll build the whole world — and show you things about it you'd forgotten."</p>
+              <p class="who">— Maya, Founder of Little Town Playhouse</p>
+            </blockquote>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         RIBBON — warm scrolling marquee
+         ============================================================ -->
+    <div class="ribbon story-ribbon" aria-hidden="true">
+      <div class="track">
+        <!-- Two identical copies for seamless loop -->
+        <span>
+          <span>Built by parents</span> ✦
+          <span>Open to all families</span> ✦
+          <span>Ages 0–8 welcome</span> ✦
+          <span>Made with imagination</span> ✦
+          <span>Good coffee next door</span> ✦
+          <span>Riverbend, CA</span> ✦
+        </span>
+        <span aria-hidden="true">
+          <span>Built by parents</span> ✦
+          <span>Open to all families</span> ✦
+          <span>Ages 0–8 welcome</span> ✦
+          <span>Made with imagination</span> ✦
+          <span>Good coffee next door</span> ✦
+          <span>Riverbend, CA</span> ✦
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         TIMELINE — How Little Town grew (.steps)
+         ============================================================ -->
+    <section class="story-steps-section band-white">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">The journey</span>
+          <h2>How Little Town <span class="hl hl--sky">grew</span></h2>
+          <p class="section-lead muted">From a living-room floor to a real little downtown — one block at a time.</p>
+        </div>
+
+        <div class="steps mt-4" role="list">
+
+          <div class="step reveal" data-delay="0" role="listitem">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>A box of blocks</h3>
+            <p>Maya's toddler builds an imaginary town on the living-room floor. The idea is born.</p>
+          </div>
+
+          <div class="step reveal" data-delay="1" role="listitem">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>A big idea</h3>
+            <p>Months of sketching storefronts, researching play science, and talking to dozens of local families.</p>
+          </div>
+
+          <div class="step reveal" data-delay="2" role="listitem">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Building the town</h3>
+            <p>Local craftspeople shape every counter and signpost by hand. Every corner gets a name.</p>
+          </div>
+
+          <div class="step reveal" data-delay="3" role="listitem">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Opening day</h3>
+            <p>The doors open on a sunny Saturday. The first child walks straight to the wooden bakery and opens for business.</p>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Vision & values -->
-    <section class="section band">
+    <!-- ============================================================
+         SOFT STAT STRIP — gentle, believable, no hard numbers
+         ============================================================ -->
+    <section class="story-stats band">
+      <div class="container">
+        <div class="story-stat-grid">
+
+          <div class="story-stat-card reveal">
+            <div class="stat-bar" style="background:var(--grad-sunrise)"></div>
+            <span class="stat-icon" aria-hidden="true">
+              <!-- heart icon -->
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </span>
+            <div class="stat">
+              <div class="num">Built by<br><span style="font-size:0.7em;font-weight:700;color:var(--terracotta)">parents</span></div>
+              <div class="label">for families like yours</div>
+            </div>
+          </div>
+
+          <div class="story-stat-card reveal" data-delay="1">
+            <div class="stat-bar" style="background:var(--grad-meadow)"></div>
+            <span class="stat-icon" aria-hidden="true">
+              <!-- star icon -->
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <div class="stat">
+              <div class="num">Made with<br><span style="font-size:0.7em;font-weight:700;color:var(--sage)">care</span></div>
+              <div class="label">every detail handcrafted</div>
+            </div>
+          </div>
+
+          <div class="story-stat-card reveal" data-delay="2">
+            <div class="stat-bar" style="background:var(--grad-sky)"></div>
+            <span class="stat-icon" aria-hidden="true">
+              <!-- kids icon -->
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/></svg>
+            </span>
+            <div class="stat">
+              <div class="num">Ages<br><span style="font-size:0.7em;font-weight:700;color:var(--sky)">0–8</span></div>
+              <div class="label">every little one welcome</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         VISION & VALUES — bolder cards with tilt + accent tops
+         ============================================================ -->
+    <section class="story-values-section">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">What we believe</span>
-          <h2>Our vision &amp; values</h2>
-          <p class="section-lead">Three simple ideas guide everything in town.</p>
+          <h2>Our vision &amp; <span class="hl hl--coral">values</span></h2>
+          <p class="section-lead muted">Three simple ideas guide everything in town.</p>
         </div>
+
         <div class="values mt-4">
-          <div class="value-card reveal">
-            <div class="chip"><span style="font-family:var(--font-head);font-weight:800;color:var(--terracotta);font-size:1.3rem">1</span></div>
-            <h3>Play is real work</h3>
-            <p>Pretend shopping, caring and serving build empathy, language and confidence. We design every corner to spark it.</p>
+
+          <!-- Value 1: Play is real work (terracotta) -->
+          <div class="story-value-card tilt reveal" data-delay="0" aria-label="Value 1: Play is real work">
+            <span class="sv-top" style="background:var(--grad-candy)" aria-hidden="true"></span>
+            <div class="sv-body">
+              <div class="sv-chip" style="background:var(--grad-candy)" aria-hidden="true">1</div>
+              <h3>Play is real work</h3>
+              <p>Pretend shopping, caring and serving build empathy, language and confidence. We design every corner to spark it.</p>
+            </div>
           </div>
-          <div class="value-card reveal" data-delay="1">
-            <div class="chip" style="background:var(--sage-tint)"><span style="font-family:var(--font-head);font-weight:800;color:var(--sage);font-size:1.3rem">2</span></div>
-            <h3>Made with care</h3>
-            <p>Warm materials, rounded edges and a soft palette — a space that feels handmade, not plastic and loud.</p>
+
+          <!-- Value 2: Made with care (sage) -->
+          <div class="story-value-card tilt reveal" data-delay="1" aria-label="Value 2: Made with care">
+            <span class="sv-top" style="background:var(--grad-meadow)" aria-hidden="true"></span>
+            <div class="sv-body">
+              <div class="sv-chip" style="background:var(--grad-meadow)" aria-hidden="true">2</div>
+              <h3>Made with care</h3>
+              <p>Warm materials, rounded edges and a soft palette — a space that feels handmade, not plastic and loud.</p>
+            </div>
           </div>
-          <div class="value-card reveal" data-delay="2">
-            <div class="chip" style="background:var(--teal-tint)"><span style="font-family:var(--font-head);font-weight:800;color:var(--teal);font-size:1.3rem">3</span></div>
-            <h3>Grown-ups matter too</h3>
-            <p>Good coffee, comfy seating and clear sightlines. A visit should recharge the whole family.</p>
+
+          <!-- Value 3: Grown-ups matter too (sky) -->
+          <div class="story-value-card tilt reveal" data-delay="2" aria-label="Value 3: Grown-ups matter too">
+            <span class="sv-top" style="background:var(--grad-sky); border-top: 4px solid var(--sky)" aria-hidden="true"></span>
+            <div class="sv-body">
+              <div class="sv-chip" style="background:linear-gradient(135deg,var(--sky) 0%,var(--teal) 100%)" aria-hidden="true">3</div>
+              <h3>Grown-ups matter too</h3>
+              <p>Good coffee, comfy seating and clear sightlines. A visit should recharge the whole family.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SAFETY PROMISE — reassurance strip in a tinted panel
+         ============================================================ -->
+    <section class="story-promise-section band">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">Our promise to parents</span>
+          <h2>Safe, supervised, <span class="hl hl--sage">spotless</span></h2>
+        </div>
+
+        <div class="story-promise-panel mt-4 reveal pop">
+          <div class="grid grid-3">
+
+            <div class="reassure reveal">
+              <div class="story-promise-chip" style="background:var(--terra-tint)">
+                <img src="assets/img/icon-safe.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </div>
+              <h3>Safety first</h3>
+              <p>Padded play zones, secure single-point check-in, and equipment inspected daily by our team.</p>
+            </div>
+
+            <div class="reassure reveal" data-delay="1">
+              <div class="story-promise-chip" style="background:var(--sage-tint)">
+                <img src="assets/img/icon-baby.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </div>
+              <h3>Caring supervision</h3>
+              <p>Friendly, trained play hosts on the floor at all times — and a grown-up always stays with each child.</p>
+            </div>
+
+            <div class="reassure reveal" data-delay="2">
+              <div class="story-promise-chip" style="background:var(--wood-tint)">
+                <img src="assets/img/icon-wifi.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </div>
+              <h3>Always clean</h3>
+              <p>High-touch surfaces sanitised throughout the day, with a full deep-clean every night.</p>
+            </div>
+
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Safety / supervision / cleanliness reassurance -->
-    <section class="section">
+    <!-- ============================================================
+         CLOSING CTA — .bg-meadow / .on-dark band
+         ============================================================ -->
+    <section class="story-cta-band">
       <div class="container">
-        <div class="center reveal">
-          <span class="eyebrow">Our promise to parents</span>
-          <h2>Safe, supervised, spotless</h2>
-        </div>
-        <div class="grid grid-3 mt-4">
-          <div class="reassure reveal">
-            <div class="chip"><img src="assets/img/icon-safe.svg" alt="" width="38" height="38"></div>
-            <h3>Safety first</h3>
-            <p>Padded play zones, secure single-point check-in, and equipment inspected daily by our team.</p>
-          </div>
-          <div class="reassure reveal" data-delay="1">
-            <div class="chip" style="background:var(--sage-tint)"><img src="assets/img/icon-baby.svg" alt="" width="38" height="38"></div>
-            <h3>Caring supervision</h3>
-            <p>Friendly, trained play hosts on the floor at all times — and a grown-up always stays with each child.</p>
-          </div>
-          <div class="reassure reveal" data-delay="2">
-            <div class="chip" style="background:var(--wood-tint)"><img src="assets/img/icon-wifi.svg" alt="" width="38" height="38"></div>
-            <h3>Always clean</h3>
-            <p>High-touch surfaces sanitised throughout the day, with a full deep-clean every night.</p>
-          </div>
-        </div>
-        <div class="newsletter reveal mt-4" style="background:linear-gradient(135deg,var(--teal) 0%,var(--sage) 100%)">
-          <h2 style="margin-bottom:.4rem">Come see it for yourself</h2>
-          <p>We'd love to show you around the little town.</p>
-          <div class="flex-cta center">
-            <a class="btn btn--lg" style="background:#fff;color:var(--teal)" href="visit-us.html">Plan a Visit</a>
+        <div class="story-cta-inner on-dark reveal">
+          <span class="eyebrow" style="color:rgba(255,255,255,0.85)">Come see us</span>
+          <h2>Come see it for yourself</h2>
+          <p>We'd love to show you around the little town — every storefront, every detail, every cosy corner.</p>
+          <div class="flex-cta center mt-3">
+            <a class="btn btn--lg btn--on-meadow btn--pop" href="visit-us.html">Plan a Visit</a>
+            <a class="btn btn--lg btn--ghost-light" href="memberships.html">Become a Member</a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -140,7 +335,7 @@
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
@@ -160,16 +355,43 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>© 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>
   </footer>
 
+  <!-- Our Story page — reduced-motion-aware micro-interactions (IIFE, no globals) -->
+  <script>
+  (function () {
+    'use strict';
+    // Respect prefers-reduced-motion: skip animation work entirely if user prefers
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    // Stagger .step elements so the timeline feels sequential on reveal
+    var steps = document.querySelectorAll('.story-steps-section .step');
+    steps.forEach(function (el, i) {
+      el.setAttribute('data-delay', String(i));
+    });
+
+    // Add hover-jelly to stat cards for a bit of extra bounce
+    var statCards = document.querySelectorAll('.story-stat-card');
+    statCards.forEach(function (card) {
+      card.classList.add('hover-jelly');
+    });
+
+    // Add hover-jelly to the promise chips
+    var chips = document.querySelectorAll('.story-promise-chip');
+    chips.forEach(function (chip) {
+      chip.classList.add('hover-jelly');
+    });
+  }());
+  </script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

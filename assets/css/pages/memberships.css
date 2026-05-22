@@ -1,0 +1,321 @@
+/* ============================================================
+   Memberships page — page-specific flourishes only.
+   Builds entirely on the v4 shared kit in styles.css.
+   ============================================================ */
+
+/* ---- Hero boost ---- */
+.page-hero.ph--member {
+  /* Brighter, more saturated gradient than the default sage */
+  background: linear-gradient(180deg, #c8e6c4 0%, #d8ebd5 38%, var(--base) 100%);
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.4rem, 5vw, 4rem);
+}
+
+/* Hero sticker sits above the art, angled for playfulness */
+.mem-hero-sticker {
+  display: inline-flex;
+  margin-bottom: 1rem;
+}
+
+/* Pill row on member hero — more saturated */
+.ph--member .pill {
+  background: rgba(255,255,255,0.88);
+  border-color: rgba(156,176,130,0.35);
+  font-weight: 600;
+}
+
+/* Hero art: bigger and centred on mobile, right-side on desktop */
+.mem-hero-art {
+  max-width: 320px;
+  margin: 2rem auto 0;
+}
+@media (min-width: 880px) {
+  .mem-hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+    text-align: left;
+  }
+  .mem-hero-inner .flex-cta { justify-content: flex-start; }
+  .mem-hero-inner .pill-row  { justify-content: flex-start; }
+  .mem-hero-art { margin: 0 auto; }
+}
+
+/* ---- Value ribbon ---- */
+.mem-ribbon {
+  background: var(--grad-sunrise);
+  color: #fff;
+}
+
+/* Override .panel's white background so bg-meadow actually shows */
+.panel.bg-meadow {
+  background: var(--grad-meadow);
+}
+
+/* ---- "Pays for itself" value strip ---- */
+.value-strip {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .value-strip { grid-template-columns: repeat(3, 1fr); }
+}
+
+.value-strip .stat .num { color: var(--coral); }
+
+/* Vertical divider between stats on desktop */
+@media (min-width: 640px) {
+  .value-strip .stat + .stat {
+    border-left: 2px dashed rgba(255,255,255,0.3);
+    padding-left: 1.2rem;
+  }
+}
+
+/* ---- Plan toggle (Monthly / Annual tabs) ---- */
+.plan-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.4rem;
+}
+
+.plan-toggle {
+  display: inline-flex;
+  background: rgba(0,0,0,0.06);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  gap: 2px;
+}
+
+.plan-toggle button {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.5rem;
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+.plan-toggle button[aria-selected="true"] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.plan-toggle button[aria-selected="true"].toggle-annual {
+  background: var(--grad-meadow);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Annual badge on toggle button */
+.toggle-annual-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--sun);
+  color: #5a3d12;
+  border-radius: var(--r-pill);
+  padding: 0.12rem 0.5rem;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+/* Plan groups — shown/hidden by JS; no-JS: both shown */
+.plan-group {
+  /* Always visible; JS hides with data-hidden */
+}
+.plan-group[data-hidden="true"] {
+  display: none;
+}
+
+/* Spacing between monthly & annual groups when both are visible (no-JS) */
+.plan-group + .plan-group { margin-top: 3rem; }
+
+/* ---- Group headers ---- */
+.plan-group-header {
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+
+.plan-group-header h3 {
+  font-size: clamp(1.3rem, 2.8vw, 1.7rem);
+  margin-bottom: 0.3rem;
+}
+
+/* Subtle coloured pill behind the group label */
+.group-pill {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  border-radius: var(--r-pill);
+  margin-bottom: 0.7rem;
+}
+
+.group-pill--monthly {
+  background: var(--sky-tint);
+  color: #08323d;
+}
+
+.group-pill--annual {
+  background: var(--grad-meadow);
+  color: #fff;
+}
+
+/* ---- Price card upgrades ---- */
+.mem-price-card {
+  /* stacks cleanly; min-height keeps short cards even with the featured one */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Featured "most popular" card gets a meadow-gradient header strip */
+.price-card.featured {
+  border-color: var(--teal);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: visible; /* allow sticker to hang outside */
+}
+
+.price-card.featured .mem-card-header {
+  /* Pull it flush to card edges, then re-add the padding */
+  margin: calc(-1 * clamp(1.3rem, 2.5vw, 1.9rem));
+  margin-bottom: 1rem;
+  padding: 1.1rem clamp(1.3rem, 2.5vw, 1.9rem);
+  background: var(--grad-meadow);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+
+.price-card.featured .mem-card-header h4 {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+/* Default (non-featured) header — no visual treatment, just structural spacing */
+.mem-card-header {
+  /* No negative margins for non-featured; the card padding handles spacing. */
+  margin-bottom: 0.5rem;
+}
+.mem-card-header h4 { margin-bottom: 0; }
+
+/* Featured card price colour */
+.price-card.featured .price-tag { color: var(--teal); }
+
+/* Savings sticker on annual cards */
+.savings-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.32rem 0.75rem;
+  border-radius: var(--r-pill);
+  background: var(--sun);
+  color: #5a3d12;
+  box-shadow: var(--shadow-sm);
+  transform: rotate(-2.5deg);
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+/* "Most popular" sticker: hangs off the top-right of the featured card */
+.most-popular-sticker {
+  position: absolute;
+  top: -0.9rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: var(--r-pill);
+  background: var(--sun);
+  color: #5a3d12;
+  box-shadow: var(--shadow-sm);
+  transform: rotate(2.5deg);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* ---- How it works steps ---- */
+.steps-section .step-no {
+  /* override to use meadow gradient to feel on-brand for memberships */
+  background: var(--grad-meadow);
+}
+
+/* ---- Parent quote card ---- */
+.mem-quote {
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+/* ---- Perks section ---- */
+.perks-chip-teal   { background: var(--teal-tint);  }
+.perks-chip-wood   { background: var(--wood-tint);  }
+.perks-chip-coral  { background: var(--coral-tint); }
+
+/* ---- Day-pass crosslink panel ---- */
+.daypass-panel {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: clamp(1.6rem, 4vw, 2.8rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.4rem;
+  justify-content: space-between;
+  border: 1px solid rgba(80,60,30,0.07);
+}
+
+.daypass-panel-copy { flex: 1 1 18rem; }
+.daypass-panel-cta  { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+
+/* ---- Annual separator (between plan groups on no-JS view) ---- */
+.plan-sep {
+  text-align: center;
+  margin-block: 1.5rem;
+}
+.plan-sep-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--ink-soft);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.plan-sep-line::before,
+.plan-sep-line::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: rgba(80,60,30,0.12);
+  border-radius: 2px;
+}
+
+/* ---- Extra button colour (sky blue — used on monthly plan cards) ---- */
+.btn--sky { --btn-bg: var(--sky); --btn-fg: #08323d; }
+
+/* ---- Misc helpers ---- */
+.mem-section-intro { max-width: 50ch; margin-inline: auto; }
+
+/* Ensure price cards grid never overflows on narrow screens */
+@media (max-width: 500px) {
+  .grid.grid-3 { grid-template-columns: 1fr; }
+}

@@ -39,12 +39,17 @@
     <path d="M650 47 l14 1 l-7 15 Z" fill="#9CB082"/><path d="M740 40 l14 1 l-7 15 Z" fill="#D9A35E"/>
   </g>
 
-  <!-- play tunnel -->
+  <!-- play tunnel (ribbed crawl tube on the floor) -->
   <g>
-    <ellipse cx="120" cy="320" rx="80" ry="12" fill="#7a8f63" opacity="0.12"/>
-    <ellipse cx="120" cy="280" rx="68" ry="44" fill="#9cc6bf"/>
-    <ellipse cx="120" cy="280" rx="50" ry="32" fill="#7FA8A0"/>
-    <ellipse cx="120" cy="280" rx="31" ry="20" fill="#3f6a63"/>
+    <ellipse cx="124" cy="322" rx="86" ry="12" fill="#7a8f63" opacity="0.12"/>
+    <rect x="44" y="252" width="156" height="70" rx="35" fill="#9CB082"/>
+    <g fill="#7FA8A0">
+      <ellipse cx="126" cy="287" rx="7" ry="35"/>
+      <ellipse cx="160" cy="287" rx="7" ry="35"/>
+      <ellipse cx="188" cy="287" rx="5.5" ry="30"/>
+    </g>
+    <ellipse cx="80" cy="287" rx="22" ry="33" fill="#cfeae6"/>
+    <ellipse cx="80" cy="287" rx="12" ry="20" fill="#5d8a82"/>
   </g>
 
   <!-- soft climbing blocks -->
@@ -53,13 +58,20 @@
   <rect x="250" y="252" width="60" height="60" rx="14" fill="none" stroke="#c0892f" stroke-width="2"/>
   <rect x="296" y="276" width="46" height="36" rx="11" fill="#9CB082"/><rect x="296" y="276" width="46" height="36" rx="11" fill="none" stroke="#86a06b" stroke-width="2"/>
 
-  <!-- slide -->
+  <!-- slide: open chute with a raised back rail, support leg and top platform -->
   <g>
     <ellipse cx="710" cy="318" rx="110" ry="12" fill="#7a8f63" opacity="0.12"/>
+    <!-- support leg with rungs -->
     <rect x="788" y="148" width="18" height="152" rx="9" fill="#c98f44"/><rect x="788" y="148" width="6" height="152" rx="3" fill="#a06d2c" opacity="0.5"/>
+    <g stroke="#a06d2c" stroke-width="5" stroke-linecap="round" opacity="0.7"><line x1="788" y1="206" x2="806" y2="206"/><line x1="788" y1="240" x2="806" y2="240"/><line x1="788" y1="274" x2="806" y2="274"/></g>
+    <!-- sliding bed -->
     <path d="M797 166 Q700 166 660 300" fill="none" stroke="#9cc6bf" stroke-width="36" stroke-linecap="round"/>
-    <path d="M797 166 Q700 166 660 300" fill="none" stroke="#7FA8A0" stroke-width="14" stroke-linecap="round"/>
-    <rect x="758" y="148" width="52" height="14" rx="7" fill="#D9A35E"/>
+    <!-- run-out lip at the bottom -->
+    <path d="M660 300 Q650 286 626 288" fill="none" stroke="#9cc6bf" stroke-width="36" stroke-linecap="round"/>
+    <!-- raised back rail (offset to the top edge so it reads as an open slide, not a pipe) -->
+    <path d="M795 150 Q694 150 648 294" fill="none" stroke="#7FA8A0" stroke-width="9" stroke-linecap="round"/>
+    <!-- top platform -->
+    <rect x="756" y="148" width="56" height="14" rx="7" fill="#D9A35E"/>
   </g>
 
   <!-- potted plant -->

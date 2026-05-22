@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/play-pricing.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
@@ -29,7 +30,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -47,138 +48,309 @@
   </header>
 
   <main>
-    <!-- Page hero -->
-    <section class="page-hero">
+
+    <!-- ===================== PAGE HERO ===================== -->
+    <section class="page-hero ph--play">
+      <!-- Open-town sky with drifting clouds -->
+      <div class="hero-clouds" aria-hidden="true">
+        <div class="cloud-track">
+          <div class="cloud-set">
+            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+          </div>
+          <div class="cloud-set">
+            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="" width="120" height="60">
+          </div>
+        </div>
+      </div>
       <div class="container">
         <div class="reveal">
-          <span class="eyebrow">Open Play</span>
-          <h1>A whole little town to explore</h1>
-          <p>Wander Main Street and step inside each storefront — a grocery to stock, a clinic to run, a café to serve. Soft, safe and endlessly re-imaginable.</p>
+          <span class="eyebrow">Open Play · Ages 0–8</span>
+          <h1>A whole little town to <span class="script" style="color:var(--terracotta)">explore</span></h1>
+          <p>Wander Main Street and step inside each storefront — a grocery to stock, a clinic to run, a café to serve. Soft, safe and <span class="hl hl--sky">endlessly re-imaginable</span>.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="memberships.html">Become a Member</a>
+            <a class="btn btn--lg btn--ghost" href="#pricing">See pricing</a>
+          </div>
         </div>
-        <div class="hero-art reveal" data-delay="1" style="max-width:820px">
-          <img src="assets/img/playstreet.svg" alt="A little main street of imaginative-play shops: grocery, café tower and hospital." width="960" height="340">
+
+        <!-- Stat pill strip -->
+        <div class="stat-strip reveal" data-delay="1" aria-label="Quick facts">
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true">👶</span> Ages 0–8</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🧦</span> Socks required</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🎟️</span> 1 free grown-up per child</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🔄</span> Re-entry all day</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true">👶</span> Under-1s play free</span>
+        </div>
+
+        <!-- Playstreet art with sticker badge -->
+        <div class="ph--play hero-sticker-wrap reveal" data-delay="2" style="max-width:820px;margin:1.8rem auto 0">
+          <img src="assets/img/playstreet.svg" alt="A little main street of imaginative-play shops: grocery, café tower and clinic." width="960" height="340" fetchpriority="high" decoding="async">
+          <span class="hero-sticker-badge" aria-hidden="true">Open every day ✓</span>
         </div>
       </div>
     </section>
 
-    <!-- Storefront play areas -->
+    <!-- ===================== MARQUEE RIBBON ===================== -->
+    <div class="play-ribbon" aria-hidden="true" role="presentation">
+      <div class="track">
+        <span>
+          🛒 The Grocery &nbsp;·&nbsp;
+          ☕ The Corner Café &nbsp;·&nbsp;
+          🩺 The Little Clinic &nbsp;·&nbsp;
+          🧦 Grippy socks on &nbsp;·&nbsp;
+          🎉 Play all day &nbsp;·&nbsp;
+          🔄 Re-entry anytime &nbsp;·&nbsp;
+          👶 Ages 0–8 &nbsp;·&nbsp;
+          💛 Big smiles guaranteed &nbsp;·&nbsp;
+        </span>
+        <span aria-hidden="true">
+          🛒 The Grocery &nbsp;·&nbsp;
+          ☕ The Corner Café &nbsp;·&nbsp;
+          🩺 The Little Clinic &nbsp;·&nbsp;
+          🧦 Grippy socks on &nbsp;·&nbsp;
+          🎉 Play all day &nbsp;·&nbsp;
+          🔄 Re-entry anytime &nbsp;·&nbsp;
+          👶 Ages 0–8 &nbsp;·&nbsp;
+          💛 Big smiles guaranteed &nbsp;·&nbsp;
+        </span>
+      </div>
+    </div>
+
+    <!-- ===================== STOREFRONTS — MAIN STREET ===================== -->
     <section class="section">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The storefronts</span>
-          <h2>Three shops, endless stories</h2>
+          <h2>Three shops, <span class="hl hl--coral">endless stories</span></h2>
+          <p class="section-lead">Each storefront is its own little world — walk up, step in and let the story unfold.</p>
         </div>
-        <div class="grid grid-3 mt-4">
-          <article class="card reveal">
-            <div class="card-art"><img src="assets/img/building-openplay.svg" alt="Illustrated grocery storefront." width="300" height="220"></div>
-            <h3>The Grocery</h3>
-            <p>Fill a basket, ring up the register and bag the groceries. Pretend produce, play money and a real-feel checkout for budding shopkeepers.</p>
+
+        <div class="storefront-grid">
+
+          <!-- Grocery -->
+          <article class="card storefront-card storefront-card--grocery reveal" aria-label="The Grocery play area">
+            <div class="storefront-cap" aria-hidden="true"></div>
+            <div class="storefront-art">
+              <img src="assets/img/building-openplay.svg" alt="Illustrated grocery storefront with awning and produce displays." width="300" height="220" loading="lazy" decoding="async">
+              <span class="storefront-sticker" aria-hidden="true">🛒 Shop!</span>
+            </div>
+            <div class="storefront-body">
+              <h3>The Grocery</h3>
+              <p>Fill a basket, ring up the register and bag the groceries. Pretend produce, play money and a real-feel checkout for budding shopkeepers.</p>
+            </div>
           </article>
-          <article class="card reveal" data-delay="1">
-            <div class="card-art"><img src="assets/img/building-cafe.svg" alt="Illustrated café tower." width="300" height="220"></div>
-            <h3>The Corner Café</h3>
-            <p>Take orders, froth the (pretend) milk and deliver treats to tiny tables. A favourite for little baristas and their willing customers.</p>
+
+          <!-- Corner Café -->
+          <article class="card storefront-card storefront-card--cafe reveal" data-delay="1" aria-label="The Corner Café play area">
+            <div class="storefront-cap" aria-hidden="true"></div>
+            <div class="storefront-art">
+              <img src="assets/img/building-cafe.svg" alt="Illustrated café tower with coffee cups and pastry details." width="300" height="220" loading="lazy" decoding="async">
+              <span class="storefront-sticker" aria-hidden="true">☕ Serve!</span>
+            </div>
+            <div class="storefront-body">
+              <h3>The Corner Café</h3>
+              <p>Take orders, froth the (pretend) milk and deliver treats to tiny tables. A favourite for little baristas and their very willing customers.</p>
+            </div>
           </article>
-          <article class="card reveal" data-delay="2">
-            <div class="card-art"><img src="assets/img/building-parties.svg" alt="Illustrated clinic tower." width="300" height="220"></div>
-            <h3>The Little Clinic</h3>
-            <p>Bandage a teddy, check a heartbeat and write a get-well note. Gentle role-play that helps little ones feel brave and kind.</p>
+
+          <!-- Little Clinic -->
+          <article class="card storefront-card storefront-card--clinic reveal" data-delay="2" aria-label="The Little Clinic play area">
+            <div class="storefront-cap" aria-hidden="true"></div>
+            <div class="storefront-art">
+              <img src="assets/img/building-parties.svg" alt="Illustrated clinic tower with a red cross and caring details." width="300" height="220" loading="lazy" decoding="async">
+              <span class="storefront-sticker" aria-hidden="true">🩺 Heal!</span>
+            </div>
+            <div class="storefront-body">
+              <h3>The Little Clinic</h3>
+              <p>Bandage a teddy, check a heartbeat and write a get-well note. Gentle role-play that helps little ones feel brave and kind.</p>
+            </div>
           </article>
+
         </div>
       </div>
     </section>
 
-    <!-- Kids in action showcase -->
-    <section class="section band-white has-deco">
-      <span class="deco anim-bob" style="top:10%;right:7%;width:40px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="bottom:14%;left:6%;width:28px"><img src="assets/img/deco-star.svg" alt=""></span>
+    <!-- ===================== HOW OPEN PLAY WORKS ===================== -->
+    <section class="how-section band-white">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">How it works</span>
+          <h2>Three steps to <span class="hl">play day</span></h2>
+        </div>
+        <div class="steps-grid" role="list">
+
+          <div class="play-step reveal" role="listitem">
+            <div class="play-step-no" aria-hidden="true"></div>
+            <span class="play-step-emoji" aria-hidden="true">🚪</span>
+            <h3>Pop in any time</h3>
+            <p>No reservation needed — just show up during open hours, check in at the front desk and get your grippy socks on.</p>
+          </div>
+
+          <div class="play-step reveal" data-delay="1" role="listitem">
+            <div class="play-step-no" aria-hidden="true"></div>
+            <span class="play-step-emoji" aria-hidden="true">🧦</span>
+            <h3>Socks on, off you go</h3>
+            <p>Grippy socks are required for everyone on the play floor — kids and grown-ups alike. We sell them at the desk if you forget.</p>
+          </div>
+
+          <div class="play-step reveal" data-delay="2" role="listitem">
+            <div class="play-step-no" aria-hidden="true"></div>
+            <span class="play-step-emoji" aria-hidden="true">🎉</span>
+            <h3>Play all day — and back!</h3>
+            <p>Your Day Pass covers the whole day with unlimited re-entry. Step out for lunch, come back for more — the town will be waiting.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== KIDS IN ACTION SHOWCASE ===================== -->
+    <section class="section">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">A typical afternoon</span>
-          <h2>Big smiles, all over town</h2>
-          <p class="section-lead">Climbing, sliding, serving and exploring — here's the kind of play that fills the place.</p>
+          <h2>Big smiles, <span class="hl hl--sky">all over town</span></h2>
+          <p class="section-lead">Climbing, sliding, serving and exploring — this is the kind of play that fills the place every single day.</p>
         </div>
-        <div class="reveal mt-4" style="max-width:900px;margin-inline:auto">
-          <!-- Children playing inside the playhouse (placeholder illustration) -->
-          <img src="assets/img/kids-play.svg" alt="Children playing inside the playhouse — sliding, jumping and crawling among soft play shapes." width="900" height="380" style="border-radius:var(--r-lg);box-shadow:var(--shadow-md)">
+
+        <div class="showcase-frame reveal" data-delay="1">
+          <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shot later -->
+          <img src="assets/img/photo-bigsmiles.jpg" alt="A smiling child playing on the rope bridge inside the playhouse." width="980" height="440" loading="lazy" decoding="async" style="aspect-ratio:980/440;object-fit:cover;object-position:center 40%">
+          <span class="showcase-badge" aria-hidden="true">💛 Big smiles, all day</span>
         </div>
       </div>
     </section>
 
-    <div class="street-divider" aria-hidden="true"><img src="assets/img/street-divider.svg" alt="" width="1440" height="120"></div>
+    <!-- ===================== STREET DIVIDER ===================== -->
+    <div class="street-divider" aria-hidden="true">
+      <img src="assets/img/street-divider.svg" alt="" width="1440" height="120" loading="lazy" decoding="async">
+    </div>
 
-    <!-- Pricing: Day Pass + Play Pack -->
-    <section class="section band">
+    <!-- ===================== PRICING ===================== -->
+    <section class="pricing-section band" id="pricing">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Open-play pricing</span>
-          <h2>Pay as you play</h2>
-          <p class="section-lead">One paid child includes one free grown-up. Socks required for everyone on the play floor.</p>
+          <h2>Pay as you <span class="hl">play</span></h2>
+          <p class="section-lead">One paid child brings one free grown-up. Grippy socks required for everyone on the floor — we sell them at the desk.</p>
         </div>
-        <div class="grid grid-2 mt-4" style="max-width:760px;margin-inline:auto">
-          <article class="card price-card reveal">
-            <div class="card-art"><img src="assets/img/price-daypass.svg" alt="Day pass ticket." width="200" height="140"></div>
+
+        <div class="price-cards-wrap">
+
+          <!-- Day Pass -->
+          <article class="pp-price-card reveal" aria-label="Day Pass pricing">
+            <div class="pp-card-art">
+              <img src="assets/img/price-daypass.svg" alt="Day pass ticket illustration." width="200" height="140" loading="lazy" decoding="async">
+            </div>
             <h3>Day Pass</h3>
-            <div class="price-tag">$18 <small>/ child</small></div>
-            <ul class="price-list">
+            <div class="pp-price-tag">$18 <small>/ child</small></div>
+            <ul class="pp-price-list">
               <li>All-day open play with re-entry</li>
               <li>One free grown-up per child</li>
               <li>Infants under 1 play free</li>
-              <li>Extra siblings $14 each</li>
+              <li>Extra siblings just $14 each</li>
             </ul>
-            <button class="btn btn--block btn--terracotta" type="button" data-noop>Buy Day Pass</button>
+            <button class="btn btn--block btn--terracotta btn--pop" type="button" data-noop aria-label="Buy a Day Pass (demo button)">Buy Day Pass</button>
           </article>
-          <article class="card price-card featured reveal" data-delay="1">
-            <span class="badge">Best value</span>
-            <div class="card-art"><img src="assets/img/price-playpack.svg" alt="Five-visit play pack." width="200" height="140"></div>
+
+          <!-- Play Pack (featured) -->
+          <article class="pp-price-card featured reveal" data-delay="1" aria-label="Play Pack pricing — best value">
+            <span class="pp-sticker" aria-label="Best value">⭐ Best value</span>
+            <div class="pp-card-art" style="background:var(--sun-tint)">
+              <img src="assets/img/price-playpack.svg" alt="Five-visit play pack illustration." width="200" height="140" loading="lazy" decoding="async">
+            </div>
             <h3>Play Pack</h3>
-            <div class="price-tag">$75 <small>/ 5 visits</small></div>
-            <ul class="price-list">
+            <div class="pp-price-tag">$75 <small>/ 5 visits</small></div>
+            <ul class="pp-price-list">
               <li>Five all-day passes</li>
               <li>Save over 15% vs. day passes</li>
               <li>Shareable between siblings</li>
               <li>Never expires</li>
             </ul>
-            <button class="btn btn--block btn--terracotta" type="button" data-noop>Buy Play Pack</button>
+            <button class="btn btn--block btn--sun btn--pop" type="button" data-noop aria-label="Buy a Play Pack (demo button)">Buy Play Pack</button>
           </article>
+
         </div>
 
-        <!-- Become a Member cross-link -->
-        <div class="newsletter reveal mt-4" style="background:linear-gradient(135deg,var(--wood) 0%,var(--terracotta) 100%)">
-          <h2 style="margin-bottom:.4rem">Play more than twice a month?</h2>
-          <p>A membership pays for itself fast — unlimited play, café discounts and members-only mornings.</p>
-          <div class="flex-cta center">
-            <a class="btn btn--lg" style="background:#fff;color:var(--terracotta)" href="memberships.html">Become a Member</a>
+        <!-- Member cross-link band -->
+        <div class="member-xlink bg-candy on-dark reveal" style="margin-top:clamp(2rem,4vw,3rem)">
+          <div class="member-xlink-inner">
+            <span class="eyebrow" style="color:rgba(255,255,255,0.85)">Unlimited play awaits</span>
+            <h2 style="margin-bottom:.5rem">Play more than twice&nbsp;a&nbsp;month?</h2>
+            <p style="color:rgba(255,255,255,0.9);max-width:42ch;margin-inline:auto">A membership pays for itself fast — unlimited play, café discounts and exclusive members-only mornings.</p>
+            <div class="flex-cta center" style="margin-top:1.4rem">
+              <a class="btn btn--lg btn--pop hover-jelly" style="background:#fff;color:var(--terracotta)" href="memberships.html">Become a Member</a>
+            </div>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Rules / age policy strip -->
+    <!-- ===================== RULES & AGE POLICY ===================== -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div class="policy reveal">
-            <h3>Ages &amp; supervision</h3>
+        <div class="center reveal">
+          <span class="eyebrow">Good to know</span>
+          <h2>Keep it <span class="hl hl--sage">safe &amp; happy</span></h2>
+          <p class="section-lead">A few simple guidelines so every child (and grown-up) has a brilliant time.</p>
+        </div>
+
+        <div class="policy-row">
+
+          <!-- Ages & supervision -->
+          <div class="pp-policy reveal">
+            <div class="pp-policy-header">
+              <div class="pp-policy-icon" aria-hidden="true">
+                <!-- Baby icon inline -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="7" r="4"/>
+                  <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+                  <circle cx="18" cy="5" r="1.5" fill="var(--terracotta)" stroke="none"/>
+                </svg>
+              </div>
+              <h3>Ages &amp; supervision</h3>
+            </div>
             <ul>
               <li>Designed for ages 0–8; the infant nook is gated for under-2s.</li>
               <li>A grown-up (16+) must stay on-site with each child at all times.</li>
-              <li>One free adult per paid child; additional adults always free.</li>
+              <li>One free adult per paid child; additional adults are always free.</li>
               <li>Children must be signed in and out by their grown-up.</li>
             </ul>
           </div>
-          <div class="policy reveal" data-delay="1" style="background:var(--teal-tint);border-color:rgba(127,168,160,0.45)">
-            <h3 style="color:var(--teal)">Play-floor rules</h3>
+
+          <!-- Play-floor rules -->
+          <div class="pp-policy pp-policy--teal reveal" data-delay="1">
+            <div class="pp-policy-header">
+              <div class="pp-policy-icon" aria-hidden="true">
+                <!-- Sock / rules icon inline -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M9 3h6v9l4 4a3 3 0 0 1-4.24 4.24L10 15.5V3z"/>
+                  <path d="M9 3H7a2 2 0 0 0-2 2v.5"/>
+                </svg>
+              </div>
+              <h3>Play-floor rules</h3>
+            </div>
             <ul>
               <li>Grippy socks required for all children and adults on the floor.</li>
-              <li>No outside food or drink — our café has you covered.</li>
+              <li>No outside food or drink — our café next door has you covered.</li>
               <li>Please keep little ones home if they're feeling unwell.</li>
-              <li>Gentle hands and kind voices — we share the town.</li>
+              <li>Gentle hands and kind voices — we all share the town.</li>
             </ul>
           </div>
+
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -186,7 +358,7 @@
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
@@ -206,16 +378,45 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>© 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>
   </footer>
 
+  <!-- Play & Pricing: page-specific interactions. IIFE-wrapped, reduced-motion-aware. -->
+  <script>
+  (function () {
+    "use strict";
+    // Respect reduced-motion: skip all animation-class additions
+    var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Stagger storefront cards with a tiny pop-in on first load
+    if (!prefersReduced) {
+      var cards = document.querySelectorAll(".storefront-card");
+      cards.forEach(function (card, i) {
+        card.style.transitionDelay = (i * 0.07) + "s";
+      });
+    }
+
+    // Play-step number badges: inject aria-label so screen readers announce "Step 1", etc.
+    var stepNos = document.querySelectorAll(".play-step-no");
+    stepNos.forEach(function (el, i) {
+      el.setAttribute("aria-label", "Step " + (i + 1));
+    });
+
+    // Ribbon: pause on reduced-motion (belt-and-suspenders — CSS already handles it,
+    // but some older browsers only honour the JS side)
+    if (prefersReduced) {
+      var ribbonTrack = document.querySelector(".play-ribbon .track");
+      if (ribbonTrack) ribbonTrack.style.animationPlayState = "paused";
+    }
+  }());
+  </script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

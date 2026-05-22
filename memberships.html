@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/memberships.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
@@ -29,7 +30,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -47,93 +48,363 @@
   </header>
 
   <main>
-    <!-- Value-prop intro -->
-    <section class="page-hero">
+
+    <!-- ============================================================
+         PAGE HERO — brighter sage sky + sticker + art
+         ============================================================ -->
+    <section class="page-hero ph--member">
       <div class="container">
-        <div class="reveal">
-          <span class="eyebrow">Memberships</span>
-          <h1>Little Town, anytime you like</h1>
-          <p>For families who visit often, membership turns a rainy Tuesday into the easiest plan of the week — unlimited play, a warm welcome, and perks all over town.</p>
-        </div>
-        <div class="hero-art reveal" data-delay="1" style="max-width:240px">
-          <img src="assets/img/price-membership.svg" alt="Illustrated membership card." width="200" height="140">
+        <div class="mem-hero-inner">
+
+          <!-- Copy column -->
+          <div class="reveal">
+            <div class="mem-hero-sticker">
+              <span class="sticker anim-pop">&#10024; Members play unlimited</span>
+            </div>
+            <span class="eyebrow">Memberships</span>
+            <h1>Little Town, <span class="script" style="color:var(--terracotta)">anytime</span> you like</h1>
+            <p>For families who visit often, a membership turns a rainy Tuesday into the easiest plan of the week — <span class="hl--sage">unlimited play</span>, a warm welcome, and perks all over town.</p>
+            <div class="pill-row">
+              <span class="pill">Unlimited play</span>
+              <span class="pill">Perks at Fusion</span>
+              <span class="pill">Members-only mornings</span>
+              <span class="pill">Bring-a-friend passes</span>
+            </div>
+            <div class="flex-cta center">
+              <a class="btn btn--lg btn--pop btn--teal" href="#tiers">Choose your plan</a>
+              <a class="btn btn--lg btn--ghost" href="play-pricing.html">Try a Day Pass</a>
+            </div>
+          </div>
+
+          <!-- Art column -->
+          <div class="mem-hero-art reveal" data-delay="1">
+            <img src="assets/img/price-membership.svg" alt="Illustrated Little Town membership card." width="320" height="220" fetchpriority="high" decoding="async" class="anim-bob">
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Comparison: Monthly vs Annual -->
-    <section class="section">
+    <!-- ============================================================
+         MARQUEE RIBBON — scrolling value proof
+         ============================================================ -->
+    <div class="ribbon" role="marquee" aria-label="Member benefits">
+      <div class="track" aria-hidden="true">
+        <span>
+          Unlimited play every day
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Café perks at Fusion
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Members-only mornings
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Bring-a-friend passes
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Priority party booking
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Welcome gift
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+        </span>
+        <!-- duplicate for seamless loop -->
+        <span aria-hidden="true">
+          Unlimited play every day
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Café perks at Fusion
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Members-only mornings
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Bring-a-friend passes
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Priority party booking
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+          Welcome gift
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         VALUE STRIP — "pays for itself" stats
+         ============================================================ -->
+    <section class="section band-white reveal">
+      <div class="container">
+        <div class="panel bg-meadow on-dark">
+          <div class="center" style="margin-bottom:1.8rem">
+            <span class="eyebrow" style="color:rgba(255,255,255,0.85)">The maths are simple</span>
+            <h2>Membership pays for itself</h2>
+            <p class="section-lead" style="color:rgba(255,255,255,0.92)">A Day Pass is $18/child. Two visits a week and your membership costs less than going pay-as-you-go.</p>
+          </div>
+          <div class="value-strip">
+            <div class="stat">
+              <div class="num">$18 <span class="unit">/ visit</span></div>
+              <div class="label" style="color:rgba(255,255,255,0.85)">Day Pass rate</div>
+            </div>
+            <div class="stat">
+              <div class="num">~3 <span class="unit">visits</span></div>
+              <div class="label" style="color:rgba(255,255,255,0.85)">and it's already paid off</div>
+            </div>
+            <div class="stat">
+              <div class="num">$90+ <span class="unit">/ yr</span></div>
+              <div class="label" style="color:rgba(255,255,255,0.85)">saved on Annual</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TIERS — Monthly / Annual cards with toggle
+         ============================================================ -->
+    <section class="section" id="tiers">
       <div class="container">
         <div class="center reveal">
-          <span class="eyebrow">Choose your tier</span>
-          <h2>Monthly or Annual</h2>
-          <p class="section-lead">Both cover one child — add siblings for just $25 each. Cancel a monthly plan anytime.</p>
+          <span class="eyebrow">Choose your plan</span>
+          <h2>Become a member &amp; <span class="hl">save</span></h2>
+          <p class="section-lead mem-section-intro">Unlimited play and perks all over town, priced to fit your family. Pick monthly for flexibility, or go annual and get two months free.</p>
         </div>
-        <div class="compare mt-4">
-          <article class="card price-card reveal">
-            <h3>Monthly</h3>
-            <div class="price-tag">$45 <small>/ month</small></div>
-            <p class="muted" style="margin-top:-.3rem">Flexible, month-to-month</p>
-            <ul class="price-list">
-              <li>Unlimited open play</li>
-              <li>10% off at Fusion next door</li>
-              <li>10% off private parties</li>
-              <li>Members-only Wednesday mornings</li>
-              <li>Bring-a-friend pass each month</li>
-              <li>Cancel anytime</li>
-            </ul>
-            <button class="btn btn--block btn--terracotta" type="button" data-noop>Join Monthly</button>
-          </article>
-          <article class="card price-card featured reveal" data-delay="1">
-            <span class="badge">Save $90 / year</span>
-            <h3>Annual</h3>
-            <div class="price-tag">$450 <small>/ year</small></div>
-            <p class="muted" style="margin-top:-.3rem">Two months free vs. monthly</p>
-            <ul class="price-list">
-              <li>Everything in Monthly, plus:</li>
-              <li>Two months free</li>
-              <li>15% off at Fusion next door</li>
-              <li>Four guest passes to share</li>
-              <li>Priority party booking</li>
-              <li>A little welcome gift</li>
-            </ul>
-            <button class="btn btn--block btn--terracotta" type="button" data-noop>Join Annual</button>
-          </article>
+
+        <!-- Monthly/Annual toggle (JS-enhanced; no-JS shows both groups) -->
+        <div class="plan-toggle-wrap reveal" style="margin-top:2rem">
+          <div class="plan-toggle" role="tablist" aria-label="Billing period">
+            <button role="tab" id="tab-monthly" aria-selected="true" aria-controls="group-monthly" class="toggle-monthly">Monthly</button>
+            <button role="tab" id="tab-annual"  aria-selected="false" aria-controls="group-annual"  class="toggle-annual">Annual <span class="toggle-annual-badge">Save up to $190</span></button>
+          </div>
+        </div>
+
+        <!-- ---- MONTHLY GROUP ---- -->
+        <div class="plan-group" id="group-monthly" role="tabpanel" aria-labelledby="tab-monthly">
+          <div class="plan-group-header reveal">
+            <span class="group-pill group-pill--monthly">Monthly — cancel anytime</span>
+            <h3>Pay month to month</h3>
+            <p class="muted">Best for families who visit about once a week and want the freedom to cancel anytime.</p>
+          </div>
+
+          <div class="grid grid-3">
+
+            <!-- 1 Child Monthly -->
+            <article class="card price-card mem-price-card reveal">
+              <div class="mem-card-header">
+                <h4>1 Child</h4>
+              </div>
+              <div class="price-tag">$45 <small>/ month</small></div>
+              <ul class="price-list">
+                <li>Unlimited open play, every day</li>
+                <li>10% off at Fusion café next door</li>
+                <li>10% off private parties</li>
+                <li>Members-only Wednesday mornings</li>
+                <li>Bring-a-friend pass each month</li>
+                <li>Cancel anytime</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--sky" type="button" data-noop>Join Monthly</button>
+            </article>
+
+            <!-- 2 Children Monthly — MOST POPULAR -->
+            <article class="card price-card mem-price-card featured reveal" data-delay="1">
+              <span class="most-popular-sticker">&#11088; Most popular</span>
+              <div class="mem-card-header">
+                <h4>2 Children</h4>
+              </div>
+              <div class="price-tag">$70 <small>/ month</small></div>
+              <ul class="price-list">
+                <li>Unlimited open play, every day</li>
+                <li>10% off at Fusion café next door</li>
+                <li>10% off private parties</li>
+                <li>Members-only Wednesday mornings</li>
+                <li>Bring-a-friend pass each month</li>
+                <li>Cancel anytime</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--teal" type="button" data-noop>Join Monthly</button>
+            </article>
+
+            <!-- 3+ Children Monthly -->
+            <article class="card price-card mem-price-card reveal" data-delay="2">
+              <div class="mem-card-header">
+                <h4>3+ Children</h4>
+              </div>
+              <div class="price-tag">$95 <small>/ month</small></div>
+              <ul class="price-list">
+                <li>Unlimited open play, every day</li>
+                <li>10% off at Fusion café next door</li>
+                <li>10% off private parties</li>
+                <li>Members-only Wednesday mornings</li>
+                <li>Bring-a-friend pass each month</li>
+                <li>Cancel anytime</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--sky" type="button" data-noop>Join Monthly</button>
+            </article>
+
+          </div>
+        </div><!-- /monthly group -->
+
+        <!-- Separator shown only when both groups are visible (no-JS) -->
+        <div class="plan-sep" aria-hidden="true">
+          <span class="plan-sep-line">or go annual &amp; save more</span>
+        </div>
+
+        <!-- ---- ANNUAL GROUP ---- -->
+        <div class="plan-group" id="group-annual" role="tabpanel" aria-labelledby="tab-annual">
+          <div class="plan-group-header reveal">
+            <span class="group-pill group-pill--annual">Annual — two months free</span>
+            <h3>Commit &amp; save big</h3>
+            <p class="muted">Best for families who visit more than once a week. Pay once, play all year, save up to $190.</p>
+          </div>
+
+          <div class="grid grid-3">
+
+            <!-- 1 Child Annual -->
+            <article class="card price-card mem-price-card reveal">
+              <span class="savings-sticker">&#127381; Save $90 / yr</span>
+              <h4>1 Child</h4>
+              <div class="price-tag">$450 <small>/ year</small></div>
+              <ul class="price-list">
+                <li>Everything in Monthly</li>
+                <li>Two months free</li>
+                <li>15% off at Fusion café next door</li>
+                <li>Four guest passes to share</li>
+                <li>Priority party booking</li>
+                <li>A little welcome gift</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--coral" type="button" data-noop>Join Annual</button>
+            </article>
+
+            <!-- 2 Children Annual — MOST POPULAR + FEATURED -->
+            <article class="card price-card mem-price-card featured reveal" data-delay="1">
+              <span class="most-popular-sticker">&#11088; Most popular</span>
+              <span class="savings-sticker">&#127381; Save $140 / yr</span>
+              <div class="mem-card-header">
+                <h4>2 Children</h4>
+              </div>
+              <div class="price-tag">$700 <small>/ year</small></div>
+              <ul class="price-list">
+                <li>Everything in Monthly</li>
+                <li>Two months free</li>
+                <li>15% off at Fusion café next door</li>
+                <li>Four guest passes to share</li>
+                <li>Priority party booking</li>
+                <li>A little welcome gift</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--teal" type="button" data-noop>Join Annual</button>
+            </article>
+
+            <!-- 3+ Children Annual -->
+            <article class="card price-card mem-price-card reveal" data-delay="2">
+              <span class="savings-sticker">&#127381; Save $190 / yr</span>
+              <h4>3+ Children</h4>
+              <div class="price-tag">$950 <small>/ year</small></div>
+              <ul class="price-list">
+                <li>Everything in Monthly</li>
+                <li>Two months free</li>
+                <li>15% off at Fusion café next door</li>
+                <li>Four guest passes to share</li>
+                <li>Priority party booking</li>
+                <li>A little welcome gift</li>
+              </ul>
+              <button class="btn btn--pop btn--block btn--coral" type="button" data-noop>Join Annual</button>
+            </article>
+
+          </div>
+        </div><!-- /annual group -->
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STREET DIVIDER
+         ============================================================ -->
+    <div class="street-divider" aria-hidden="true">
+      <img src="assets/img/street-divider.svg" alt="" width="1440" height="120">
+    </div>
+
+    <!-- ============================================================
+         HOW IT WORKS — numbered steps
+         ============================================================ -->
+    <section class="section band steps-section">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">Getting started</span>
+          <h2>How membership <span class="hl--sky">works</span></h2>
+          <p class="section-lead">Three easy steps and your family is in — no complicated forms, no long waits.</p>
+        </div>
+        <div class="steps mt-4">
+          <div class="step reveal">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Pick your plan</h3>
+            <p>Choose monthly for flexibility or annual for the best value. Switch or cancel at any time — no fuss.</p>
+          </div>
+          <div class="step reveal" data-delay="1">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Get your member card</h3>
+            <p>We'll post out your Little Town member card within 2–3 days. One tap and you're waved right in.</p>
+          </div>
+          <div class="step reveal" data-delay="2">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Play unlimited &amp; enjoy perks</h3>
+            <p>Show your card at the door, grab a coffee at Fusion with your discount, and come as often as you like.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <div class="street-divider" aria-hidden="true"><img src="assets/img/street-divider.svg" alt="" width="1440" height="120"></div>
+    <!-- ============================================================
+         PARENT QUOTE
+         ============================================================ -->
+    <section class="section band-white">
+      <div class="container">
+        <div class="mem-quote reveal pop">
+          <div class="quote">
+            <p>"We come two or three times a week — the kids would live here if they could. The membership basically pays for one week and the rest of the year is free. It's a no-brainer."</p>
+            <p class="who">— Sarah M., member since 2024 &nbsp;&#127968;</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Member perks reassurance strip -->
+    <!-- ============================================================
+         PERKS STRIP — why members love it
+         ============================================================ -->
     <section class="section band">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Why members love it</span>
-          <h2>Perks all over town</h2>
+          <h2>Perks <span class="hl--coral">all over</span> town</h2>
         </div>
         <div class="grid grid-3 mt-4">
           <div class="reassure reveal">
-            <div class="chip"><img src="assets/img/icon-safe.svg" alt="" width="38" height="38"></div>
+            <div class="chip perks-chip-teal hover-jelly">
+              <img src="assets/img/icon-safe.svg" alt="" width="38" height="38" loading="lazy" decoding="async">
+            </div>
             <h3>Quieter mornings</h3>
             <p>Members-only Wednesday mornings mean calmer play and shorter queues for the little ones.</p>
           </div>
           <div class="reassure reveal" data-delay="1">
-            <div class="chip" style="background:var(--wood-tint)"><img src="assets/img/icon-wifi.svg" alt="" width="38" height="38"></div>
+            <div class="chip perks-chip-wood hover-jelly">
+              <img src="assets/img/icon-wifi.svg" alt="" width="38" height="38" loading="lazy" decoding="async">
+            </div>
             <h3>Fusion perks</h3>
-            <p>Members save on every coffee and snack at Fusion, our partner café next door.</p>
+            <p>Members save on every coffee and snack at Fusion, our partner café right next door.</p>
           </div>
           <div class="reassure reveal" data-delay="2">
-            <div class="chip" style="background:var(--terra-tint)"><img src="assets/img/icon-baby.svg" alt="" width="38" height="38"></div>
+            <div class="chip perks-chip-coral hover-jelly">
+              <img src="assets/img/icon-baby.svg" alt="" width="38" height="38" loading="lazy" decoding="async">
+            </div>
             <h3>Bring a friend</h3>
             <p>Guest passes let you share Little Town with cousins, classmates and play-date pals.</p>
           </div>
         </div>
-        <div class="center reveal" style="margin-top:2.4rem">
-          <p class="muted">Not sure yet? Try a <a href="play-pricing.html" style="color:var(--terracotta);font-weight:600">Day Pass or Play Pack</a> first.</p>
+
+        <!-- Cross-link to Day Pass / Play Pack -->
+        <div class="daypass-panel reveal mt-4">
+          <div class="daypass-panel-copy">
+            <h3 style="margin-bottom:0.3rem">Not ready to commit yet?</h3>
+            <p class="muted mb-0">Try a Day Pass ($18/child) or a Play Pack for occasional visits — no strings attached.</p>
+          </div>
+          <div class="daypass-panel-cta">
+            <a class="btn btn--ghost" href="play-pricing.html">See Day Passes &amp; Play Packs</a>
+          </div>
         </div>
+
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -141,7 +412,7 @@
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
@@ -161,16 +432,75 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>© 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>
   </footer>
 
+  <!-- Page-specific IIFE: Monthly/Annual toggle.
+       Degrades gracefully — with JS disabled both plan groups remain visible
+       and the separator text between them stays readable. -->
+  <script>
+  (function () {
+    'use strict';
+
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var tabMonthly  = document.getElementById('tab-monthly');
+    var tabAnnual   = document.getElementById('tab-annual');
+    var grpMonthly  = document.getElementById('group-monthly');
+    var grpAnnual   = document.getElementById('group-annual');
+    var sep         = document.querySelector('.plan-sep');
+
+    if (!tabMonthly || !tabAnnual || !grpMonthly || !grpAnnual) return;
+
+    /* Hide the static separator — the toggle handles navigation */
+    if (sep) sep.style.display = 'none';
+
+    function showGroup(show, hide, tabOn, tabOff) {
+      tabOn.setAttribute('aria-selected', 'true');
+      tabOff.setAttribute('aria-selected', 'false');
+
+      hide.setAttribute('data-hidden', 'true');
+      show.removeAttribute('data-hidden');
+
+      /* Scroll gently to the tiers section heading */
+      var tiers = document.getElementById('tiers');
+      if (tiers && !prefersReduced) {
+        tiers.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    tabMonthly.addEventListener('click', function () {
+      showGroup(grpMonthly, grpAnnual, tabMonthly, tabAnnual);
+    });
+
+    tabAnnual.addEventListener('click', function () {
+      showGroup(grpAnnual, grpMonthly, tabAnnual, tabMonthly);
+    });
+
+    /* Keyboard: left/right arrow to switch tabs */
+    [tabMonthly, tabAnnual].forEach(function (btn) {
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          var next = (btn === tabMonthly) ? tabAnnual : tabMonthly;
+          next.focus();
+          next.click();
+        }
+      });
+    });
+
+    /* Default to Monthly on load */
+    showGroup(grpMonthly, grpAnnual, tabMonthly, tabAnnual);
+
+  }());
+  </script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

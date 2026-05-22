@@ -74,6 +74,14 @@ img, svg { display: block; max-width: 100%; height: auto; }
 
 a { color: inherit; text-decoration: none; }
 
+/* Visible keyboard focus (mouse/touch users are unaffected via :focus-visible) */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+/* On the dark footer, switch to a light outline so it stays visible */
+.site-footer :where(a, button):focus-visible { outline-color: var(--wood); }
+
 h1, h2, h3, h4 {
   font-family: var(--font-head);
   font-weight: 700;
@@ -403,7 +411,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 
 /* ---------- Newsletter ---------- */
 .newsletter {
-  background: linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
+  background: linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
   border-radius: var(--r-xl);
   padding: clamp(2rem, 5vw, 3.5rem);
   color: #fff;
@@ -489,10 +497,18 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   padding: 0.85rem 0; border-bottom: 1px dashed rgba(80,60,30,0.16);
 }
 .menu-row:last-child { border-bottom: none; }
-.menu-row .m-icon { width: 44px; height: 44px; }
-.menu-row .m-name { font-family: var(--font-head); font-weight: 600; color: var(--ink); }
+.menu-row .m-icon { width: 44px; height: 44px; transition: transform 0.2s ease; }
+.menu-row .m-name { font-family: var(--font-head); font-weight: 600; color: var(--ink); transition: color 0.2s ease; }
 .menu-row .m-desc { font-size: 0.9rem; color: var(--ink-soft); }
-.menu-row .m-price { font-family: var(--font-head); font-weight: 700; color: var(--terracotta); white-space: nowrap; }
+/* Prices read as little tags, and pop on row hover */
+.menu-row .m-price {
+  font-family: var(--font-head); font-weight: 700; color: var(--terracotta); white-space: nowrap;
+  background: var(--terra-tint); padding: 0.22rem 0.65rem; border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.menu-row:hover .m-name { color: var(--terracotta); }
+.menu-row:hover .m-icon { animation: wiggle 0.5s ease; }
+.menu-row:hover .m-price { background: var(--terracotta); color: #fff; }
 
 /* ---------- Booking widget mockup (Parties) ---------- */
 .booking {
@@ -608,16 +624,61 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .map-light { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
 .map-light svg, .map-light img { width: 100%; height: auto; display: block; }
 
-/* ---------- Page hero (interior pages) ---------- */
+/* ---------- Page hero (interior pages) — echoes the home sky + clouds ---------- */
 .page-hero {
-  background:
-    radial-gradient(900px 320px at 80% -20%, var(--wood-tint), transparent 60%),
-    var(--base);
-  padding-block: clamp(2.4rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2.5rem);
+  background: linear-gradient(180deg, #c5e2ec 0%, #d6eaef 33%, var(--base) 100%);
+  padding-block: clamp(2.6rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.4rem);
   text-align: center;
 }
 .page-hero p { max-width: 56ch; margin-inline: auto; }
-.page-hero .hero-art { max-width: 640px; margin: 1.5rem auto 0; }
+.page-hero .hero-art { max-width: 640px; margin: 1.6rem auto 0; }
+/* Soft white halo keeps the copy crisp over the sky + drifting clouds (matches home) */
+.page-hero .eyebrow,
+.page-hero h1,
+.page-hero > .container p { text-shadow: 0 1px 1px rgba(255,255,255,0.55), 0 2px 14px rgba(255,255,255,0.65); }
+.page-hero .flex-cta { justify-content: center; }
+/* Keep the secondary CTA legible over the busy sky */
+.page-hero .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
+.page-hero .btn--ghost:hover { background: #fff; border-color: var(--terracotta); color: var(--terracotta); }
+/* Clouds drift a touch smaller and softer here than on the tall home hero */
+.page-hero .hero-cloud.c1 { width: 120px; opacity: 0.90; }
+.page-hero .hero-cloud.c2 { width: 90px;  opacity: 0.82; }
+.page-hero .hero-cloud.c3 { width: 72px;  opacity: 0.80; }
+.page-hero .hero-cloud.c4 { width: 150px; opacity: 0.85; }
+.page-hero .hero-cloud.c5 { width: 60px;  opacity: 0.75; }
+@media (max-width: 700px) {
+  .page-hero .hero-cloud.c1 { width: 92px; }
+  .page-hero .hero-cloud.c4 { width: 110px; }
+}
+
+/* ---------- Per-page hero personalities ----------
+   Each interior hero shares the page-hero skeleton (centred copy, halo, CTAs)
+   but gets a background, motif and accent matched to that page's purpose. */
+
+/* Play & Pricing keeps the open-town sky + drifting clouds (the base look). */
+
+/* Parties — a festive blush with confetti & balloons */
+.page-hero.ph--party { background: linear-gradient(180deg, #f8dee0 0%, #fbe7d6 46%, var(--base) 100%); }
+.ph--party .confetti i:nth-child(1) { background: var(--terracotta); transform: rotate(-16deg); }
+.ph--party .confetti i:nth-child(2) { background: var(--wood);       transform: rotate(10deg); }
+.ph--party .confetti i:nth-child(3) { background: var(--teal);       transform: rotate(-8deg); }
+.ph--party .confetti i:nth-child(4) { background: var(--red);        transform: rotate(22deg); }
+.ph--party .confetti i:nth-child(5) { background: var(--sage);       transform: rotate(-12deg); }
+
+/* Memberships — calm, natural sage echoing the home membership band */
+.page-hero.ph--member { background: linear-gradient(180deg, #e6ecdd 0%, #e0e9d8 48%, var(--base) 100%); }
+
+/* Fusion — warm coffee cream with floating café treats */
+.page-hero.ph--cafe { background: linear-gradient(180deg, #f3e3cb 0%, #f7ecd9 46%, var(--base) 100%); }
+
+/* Our Story — quiet, warm paper; restrained and a touch more editorial */
+.page-hero.ph--story {
+  background: linear-gradient(180deg, #efe7d8 0%, #f4eee2 52%, var(--base) 100%);
+  padding-block: clamp(3rem, 7vw, 5rem) clamp(2.4rem, 5vw, 3.6rem);
+}
+
+/* Visit Us — cooler daylight teal, a wayfinding mood */
+.page-hero.ph--visit { background: linear-gradient(180deg, #d6e6e6 0%, #e4eef0 46%, var(--base) 100%); }
 
 /* ---------- Pills / tags ---------- */
 .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
@@ -659,15 +720,11 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 
 .deco { position: absolute; pointer-events: none; z-index: 1; }
 .deco img { width: 100%; height: auto; display: block; }
-/* On small screens, hide section/page-hero floaters (they overlap headings),
-   but keep a few in the home hero, repositioned over the illustration. */
+/* Floaters are a subtle desktop-only flourish; hidden on small screens where
+   they'd crowd the centered hero headings. (The drifting clouds stay on every
+   hero, mobile included — they're the shared motion across the site.) */
 @media (max-width: 880px) {
   .deco { display: none; }
-  .hero .deco { display: block; opacity: 0.85; }
-  .hero > .deco:nth-of-type(1) { top: auto !important; bottom: 20% !important; right: 3% !important; left: auto !important; width: 76px !important; } /* cloud */
-  .hero > .deco:nth-of-type(2) { top: auto !important; bottom: 8% !important; left: 5% !important; right: auto !important; width: 34px !important; }  /* balloon */
-  .hero > .deco:nth-of-type(3) { top: auto !important; bottom: 14% !important; right: 9% !important; left: auto !important; width: 20px !important; } /* star */
-  .hero > .deco:nth-of-type(4) { display: none !important; }
 }
 
 @keyframes bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
@@ -740,22 +797,65 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(180deg,
-    rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.18) 28%, rgba(255,255,255,0) 52%);
+    rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.30) 30%, rgba(255,255,255,0.08) 52%, rgba(255,255,255,0) 72%);
 }
 .hero-v2 .hero-content { position: relative; z-index: 2; padding-top: clamp(1.8rem, 5vw, 3rem); padding-bottom: 2rem; }
+/* Soft white halo keeps the dark copy crisp over the busy town + drifting clouds */
+.hero-v2 .eyebrow,
+.hero-v2 h1,
+.hero-v2 .lead { text-shadow: 0 1px 1px rgba(255,255,255,0.6), 0 2px 16px rgba(255,255,255,0.7); }
 .hero-v2 .lead { margin-inline: auto; max-width: 44ch; font-size: clamp(1.05rem, 2vw, 1.28rem); }
 .hero-v2 .flex-cta { justify-content: center; }
 /* keep the secondary CTA legible over the busy town background */
 .hero-v2 .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
 .hero-v2 .btn--ghost:hover { background: #fff; border-color: var(--terracotta); color: var(--terracotta); }
 
-/* Trust bar */
+/* Rolling clouds — an endless left-to-right conveyor. The track is two hero
+   widths wide and holds two identical cloud sets; it slides right by exactly
+   one set width and loops. Because the copy lands precisely where the original
+   was, there is no seam — clouds keep streaming in from the left forever.
+   The layer sits above the scrim but below the headline (z-index 2). */
+.hero-clouds { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.cloud-track {
+  position: absolute; inset: 0; width: 200%; display: flex;
+  will-change: transform;
+  animation: cloudRoll 60s linear infinite;
+}
+.cloud-set { position: relative; flex: 0 0 50%; width: 50%; height: 100%; }
+.hero-cloud { position: absolute; height: auto; }
+/* Spread across the sky at varied heights, sizes and opacities so the steady
+   stream still reads as natural rather than a repeating strip. */
+.hero-cloud.c1 { left:  4%; top: 13%; width: 170px; opacity: 0.97; }
+.hero-cloud.c2 { left: 23%; top: 24%; width: 120px; opacity: 0.90; }
+.hero-cloud.c3 { left: 41%; top:  8%; width:  96px; opacity: 0.85; }
+.hero-cloud.c4 { left: 60%; top: 31%; width: 210px; opacity: 0.93; }
+.hero-cloud.c5 { left: 82%; top: 18%; width:  76px; opacity: 0.80; }
+@keyframes cloudRoll {
+  from { transform: translateX(-50%); }  /* showing the second (duplicate) set */
+  to   { transform: translateX(0); }     /* slid right by one set — seamless wrap */
+}
+@media (max-width: 700px) {
+  .hero-cloud.c1 { width: 120px; }
+  .hero-cloud.c2 { width: 90px; }
+  .hero-cloud.c3 { width: 74px; }
+  .hero-cloud.c4 { width: 140px; }
+  .hero-cloud.c5 { width: 60px; }
+}
+
+/* Trust bar — a contained "proof" strip with dividers between claims */
 .trust-bar {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem 2.2rem;
-  padding: 1.1rem clamp(1.1rem, 4vw, 2.5rem);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem 1.8rem;
+  padding: 1rem clamp(1.1rem, 4vw, 2rem);
+  background: var(--base);
+  border: 1px solid rgba(80,60,30,0.07);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
 }
 .trust { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-head); font-weight: 500; font-size: 0.94rem; color: var(--ink); }
 .trust svg { width: 22px; height: 22px; flex: none; }
+@media (min-width: 760px) {
+  .trust + .trust { border-left: 1px solid rgba(80,60,30,0.14); padding-left: 1.8rem; }
+}
 
 /* Membership band (main offer) */
 .member-band {
@@ -842,4 +942,157 @@ a.btn--terracotta[href="memberships.html"]::after {
   .gallery figure:active { transform: translateY(-4px) rotate(-1.2deg); }
   .reassure:active .chip, .value-card:active .chip { transform: rotate(-6deg) scale(1.08); }
   .price-card:active { transform: translateY(-4px) scale(1.012); }
+}
+
+/* ============================================================
+   v4 — Brighter, bolder, livelier shared kit
+   Additive layer the page revamps draw from. Builds on the tokens
+   and components above; nothing here overrides core behaviour, so
+   existing markup keeps working unchanged.
+   ============================================================ */
+:root {
+  /* Brighter accents that still harmonise with the warm earthy base */
+  --sun:        #F4B740;  /* sunny yellow      */
+  --sky:        #4FB0D0;  /* brighter sky blue */
+  --coral:      #F2754B;  /* warm coral, between terracotta & red */
+  --sun-tint:   #fdeec6;
+  --sky-tint:   #d4edf5;
+  --coral-tint: #fbe0d4;
+
+  /* Ready-made playful gradients */
+  --grad-sunrise: linear-gradient(135deg, var(--sun) 0%, var(--coral) 100%);
+  --grad-meadow:  linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
+  --grad-candy:   linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
+  --grad-sky:     linear-gradient(180deg, var(--sky-tint) 0%, var(--base) 100%);
+}
+
+/* ---- Gradient / tint background helpers ---- */
+.bg-sunrise, .bg-meadow, .bg-candy { color: #fff; }
+.bg-sunrise { background: var(--grad-sunrise); }
+.bg-meadow  { background: var(--grad-meadow); }
+.bg-candy   { background: var(--grad-candy); }
+.bg-sky     { background: var(--grad-sky); }
+.bg-sun-tint   { background: var(--sun-tint); }
+.bg-sky-tint   { background: var(--sky-tint); }
+.bg-coral-tint { background: var(--coral-tint); }
+/* On a coloured/gradient band, force white headings + copy */
+.on-dark, .on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4, .on-dark p { color: #fff; }
+.on-dark .eyebrow { color: rgba(255,255,255,0.9); }
+.on-dark .section-lead { color: rgba(255,255,255,0.92); }
+
+/* ---- Marker highlight behind inline text (hand-drawn feel) ---- */
+.hl {
+  background-image: linear-gradient(120deg, var(--sun-tint), var(--sun-tint));
+  background-repeat: no-repeat; background-size: 100% 38%; background-position: 0 86%;
+  padding: 0 0.08em; border-radius: 2px;
+}
+.hl--sky   { background-image: linear-gradient(120deg, var(--sky-tint), var(--sky-tint)); }
+.hl--coral { background-image: linear-gradient(120deg, var(--coral-tint), var(--coral-tint)); }
+.hl--sage  { background-image: linear-gradient(120deg, var(--sage-tint), var(--sage-tint)); }
+
+/* ---- Sticker: a rotated, shadowed label that feels stuck on ---- */
+.sticker {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-head); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.02em;
+  padding: 0.45rem 0.9rem; border-radius: var(--r-pill);
+  background: var(--sun); color: #5a3d12; box-shadow: var(--shadow-sm);
+  transform: rotate(-3deg);
+}
+.sticker--coral { background: var(--coral); color: #fff; }
+.sticker--sky   { background: var(--sky);   color: #08323d; }
+.sticker--sage  { background: var(--sage);  color: #243016; }
+
+/* ---- Chunky "pop" button: playful 3D press (opt-in on top of .btn) ---- */
+.btn--pop { box-shadow: 0 5px 0 rgba(90,60,25,0.22), var(--shadow-sm); }
+.btn--pop:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(90,60,25,0.22), var(--shadow-md); }
+.btn--pop:active { transform: translateY(3px);  box-shadow: 0 2px 0 rgba(90,60,25,0.22); }
+.btn--sun   { --btn-bg: var(--sun);   --btn-fg: #5a3d12; }
+.btn--coral { --btn-bg: var(--coral); }
+
+/* ---- Panel: content floating on a soft white card for depth ---- */
+.panel {
+  background: var(--white); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md); padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgba(80,60,30,0.06);
+}
+
+/* ---- Wonky cards: a gentle alternating tilt that straightens on hover ---- */
+.tilt { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+.tilt:nth-child(odd)  { transform: rotate(-1.2deg); }
+.tilt:nth-child(even) { transform: rotate(1.2deg); }
+.tilt:hover { transform: rotate(0deg) translateY(-6px) scale(1.02); }
+
+/* ---- Big stat ---- */
+.stat { text-align: center; }
+.stat .num {
+  font-family: var(--font-head); font-weight: 800; line-height: 1;
+  font-size: clamp(2.4rem, 6vw, 3.6rem); color: var(--terracotta);
+}
+.stat .num .unit { font-size: 0.5em; }
+.stat .label { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.95rem; }
+
+/* ---- Numbered steps with auto-counting badges ---- */
+.steps { display: grid; gap: clamp(1.1rem, 2.5vw, 2rem); grid-template-columns: 1fr; counter-reset: step; }
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step { text-align: center; }
+.step .step-no {
+  counter-increment: step; width: 60px; height: 60px; margin: 0 auto 0.8rem;
+  border-radius: 50%; display: grid; place-items: center;
+  background: var(--grad-sunrise); color: #fff;
+  font-family: var(--font-head); font-weight: 800; font-size: 1.4rem; box-shadow: var(--shadow-sm);
+}
+.step .step-no::before { content: counter(step); }
+
+/* ---- Decorative soft blob behind a section ---- */
+.has-blob { position: relative; }
+.has-blob > * { position: relative; z-index: 1; }
+.blob {
+  position: absolute; z-index: 0; pointer-events: none; filter: blur(2px); opacity: 0.5;
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+}
+
+/* ---- Quote / testimonial card ---- */
+.quote {
+  background: var(--white); border-radius: var(--r-lg); box-shadow: var(--shadow-sm);
+  padding: clamp(1.3rem, 3vw, 2rem); border: 1px solid rgba(80,60,30,0.05); position: relative;
+}
+.quote p { font-size: 1.05rem; color: var(--ink); }
+.quote .who { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
+.quote::before {
+  content: "\201C"; position: absolute; top: -0.2rem; left: 1rem;
+  font-family: var(--font-script); color: var(--coral); font-size: 3.4rem; line-height: 1; opacity: 0.5;
+}
+
+/* ---- Marquee ribbon: a lively scrolling strip of little phrases.
+       Markup: <div class="ribbon"><div class="track"> ...two identical
+       copies of the phrase list... </div></div> (two copies = seamless). ---- */
+.ribbon { background: var(--grad-sunrise); color: #fff; overflow: hidden; }
+.ribbon .track { display: flex; align-items: center; gap: 2.5rem; width: max-content; padding: 0.75rem 1.25rem; animation: ribbonScroll 28s linear infinite; }
+.ribbon .track span { font-family: var(--font-head); font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; display: inline-flex; align-items: center; gap: 2.5rem; }
+@keyframes ribbonScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ribbon:hover .track { animation-play-state: paused; }
+
+/* ---- New motion primitives ---- */
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(10px); } 60% { transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
+@keyframes jelly { 0%,100% { transform: scale(1,1); } 30% { transform: scale(1.08,0.92); } 50% { transform: scale(0.94,1.06); } 70% { transform: scale(1.03,0.97); } }
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes pulseSoft { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.anim-pop        { animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+.anim-spin-slow  { animation: spinSlow 22s linear infinite; }
+.anim-pulse      { animation: pulseSoft 3.5s ease-in-out infinite; }
+.hover-jelly:hover { animation: jelly 0.6s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-pop, .anim-spin-slow, .anim-pulse, .hover-jelly:hover { animation: none !important; }
+  .ribbon .track { animation: none !important; }
+  .tilt, .tilt:nth-child(odd), .tilt:nth-child(even) { transform: none !important; }
+}
+
+/* ---- No-JS fallback: scroll reveal relies on IntersectionObserver, so when
+   scripting is unavailable, show all reveal content instead of leaving it
+   stuck at opacity:0. (Browsers without `scripting` support run the JS path.) ---- */
+@media (scripting: none) {
+  .reveal, .reveal.from-left, .reveal.from-right, .reveal.pop {
+    opacity: 1 !important; transform: none !important;
+  }
 }

@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/pages/parties.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-        <img src="assets/img/logo.svg" alt="" width="40" height="40">
+        <img src="assets/img/logo.png" alt="" width="83" height="40">
         <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
@@ -29,7 +30,7 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn--red btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+        <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -47,105 +48,260 @@
   </header>
 
   <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-copy reveal">
-          <span class="eyebrow">Private parties</span>
-          <h1>Rent the whole town for <span class="script" style="color:var(--terracotta)">2 hours</span></h1>
-          <p class="lead">An exclusive buyout means the whole little downtown is yours — no strangers, no sharing, no clean-up. Just your crew and the run of the place.</p>
-          <div class="flex-cta">
-            <button class="btn btn--lg btn--terracotta" type="button" data-noop>Check Availability</button>
-            <a class="btn btn--lg btn--ghost" href="#booking">See booking</a>
+
+    <!-- =====================================================
+         HERO — festive blush sky with bunting, balloon decos,
+         a bold sticker, and a pop CTA
+         ===================================================== -->
+    <section class="page-hero ph--party">
+
+      <!-- Floating balloons + stars (desktop flourish, hidden <880px via .deco) -->
+      <span class="deco anim-bob"       style="top:14%;left:6%;width:52px" ><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-bob slow"  style="top:22%;right:7%;width:42px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-bob"       style="top:52%;left:3%;width:34px" ><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-twinkle"   style="top:11%;right:22%;width:26px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle"   style="top:40%;right:14%;width:18px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle"   style="bottom:18%;left:15%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
+
+      <div class="container">
+        <div class="reveal">
+
+          <!-- CSS bunting row (inline SVG, purely decorative) -->
+          <div class="bunting-row" aria-hidden="true">
+            <svg viewBox="0 0 480 42" xmlns="http://www.w3.org/2000/svg" role="presentation">
+              <!-- String -->
+              <path d="M0 8 Q60 28 120 8 Q180 28 240 8 Q300 28 360 8 Q420 28 480 8"
+                    fill="none" stroke="#c8b8a2" stroke-width="1.5" opacity="0.7"/>
+              <!-- Bunting flags alternating brand colours -->
+              <polygon points="30,8 50,8 40,26"  fill="#F4B740" opacity="0.9"/>
+              <polygon points="70,16 90,16 80,34" fill="#F2754B" opacity="0.9"/>
+              <polygon points="110,8 130,8 120,26" fill="#4FB0D0" opacity="0.9"/>
+              <polygon points="150,16 170,16 160,34" fill="#9CB082" opacity="0.9"/>
+              <polygon points="190,8 210,8 200,26"  fill="#D9A35E" opacity="0.9"/>
+              <polygon points="230,16 250,16 240,34" fill="#B5532E" opacity="0.9"/>
+              <polygon points="270,8 290,8 280,26"  fill="#F4B740" opacity="0.9"/>
+              <polygon points="310,16 330,16 320,34" fill="#F2754B" opacity="0.9"/>
+              <polygon points="350,8 370,8 360,26"  fill="#4FB0D0" opacity="0.9"/>
+              <polygon points="390,16 410,16 400,34" fill="#9CB082" opacity="0.9"/>
+              <polygon points="430,8 450,8 440,26"  fill="#D9A35E" opacity="0.9"/>
+            </svg>
           </div>
+
+          <!-- Sticker: pops before the heading -->
+          <div class="ph--party hero-sticker">
+            <span class="sticker sticker--coral anim-pop">🎉 Birthdays &amp; milestones</span>
+          </div>
+
+          <!-- Confetti dots -->
+          <span class="confetti mt-2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+
+          <span class="eyebrow">Private party buyout</span>
+          <h1>The whole town — <span class="script" style="color:var(--red)">just for you</span></h1>
+          <p class="lead" style="max-width:38ch">An exclusive buyout means every storefront is yours. No strangers, no sharing, <span class="hl hl--coral">zero&nbsp;clean-up</span>. Just your crew and the run of the whole place.</p>
+
+          <div class="flex-cta center mt-3">
+            <button class="btn btn--lg btn--coral btn--pop hover-jelly" type="button" data-noop>Check Availability</button>
+            <a class="btn btn--lg btn--ghost" href="#booking">See booking mockup</a>
+          </div>
+
         </div>
-        <div class="hero-art reveal" data-delay="1">
-          <img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220">
+
+        <!-- Party building illustration (auto-inlined + animated by main.js) -->
+        <div class="hero-art reveal" data-delay="1" style="max-width:300px">
+          <img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220" fetchpriority="high" decoding="async">
         </div>
       </div>
     </section>
 
-    <!-- Buyout explainer -->
+
+    <!-- =====================================================
+         MARQUEE RIBBON — festive scrolling strip
+         ===================================================== -->
+    <div class="ribbon parties-ribbon" aria-hidden="true">
+      <div class="track">
+        <!-- Two identical phrase copies for a seamless loop -->
+        <span>Confetti&nbsp;·&nbsp;Cake&nbsp;·&nbsp;Two hours&nbsp;·&nbsp;The whole town&nbsp;·&nbsp;Zero clean-up&nbsp;·&nbsp;Party hosts included&nbsp;·&nbsp;Exclusive use&nbsp;·&nbsp;Up to 40 guests&nbsp;·</span>
+        <span>Confetti&nbsp;·&nbsp;Cake&nbsp;·&nbsp;Two hours&nbsp;·&nbsp;The whole town&nbsp;·&nbsp;Zero clean-up&nbsp;·&nbsp;Party hosts included&nbsp;·&nbsp;Exclusive use&nbsp;·&nbsp;Up to 40 guests&nbsp;·</span>
+      </div>
+    </div>
+
+
+    <!-- =====================================================
+         BUYOUT STATS ROW — big bold numbers
+         ===================================================== -->
     <section class="section band-white">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The exclusive buyout</span>
-          <h2>The whole place, all to yourselves</h2>
-          <p class="section-lead">One simple package: private use of the entire venue for a two-hour celebration.</p>
-        </div>
-        <div class="grid grid-3 mt-4">
-          <div class="reassure reveal">
-            <div class="chip"><span style="font-family:var(--font-head);font-weight:800;color:var(--teal)">2h</span></div>
-            <h3>Two-hour slot</h3>
-            <p>A relaxed two hours of private play, plus setup and tidy handled by our team.</p>
-          </div>
-          <div class="reassure reveal" data-delay="1">
-            <div class="chip" style="background:var(--wood-tint)"><span style="font-family:var(--font-head);font-weight:800;color:var(--wood)">40</span></div>
-            <h3>Up to 40 guests</h3>
-            <p>Room for around 25 children and their grown-ups — the whole town is yours.</p>
-          </div>
-          <div class="reassure reveal" data-delay="2">
-            <div class="chip" style="background:var(--terra-tint)"><span style="font-family:var(--font-head);font-weight:800;color:var(--terracotta)">★</span></div>
-            <h3>Exclusive use</h3>
-            <p>No public admission during your slot — every storefront, just for your party.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Booking widget mockup -->
-    <section class="section" id="booking">
-      <div class="container split">
-        <div class="reveal">
-          <span class="eyebrow">Booking</span>
-          <h2>Find your perfect slot</h2>
-          <p>Pick a date and time and we'll take care of the rest — decorations, café platters and a dedicated party host included with every buyout.</p>
-          <ul class="price-list" style="max-width:420px">
-            <li>Weekday buyout from $350</li>
-            <li>Weekend buyout from $450</li>
-            <li>Themed decoration packages available</li>
-            <li>Café party platters for grown-ups</li>
-          </ul>
-          <p class="mock-note" style="text-align:left">This booking tool is a visual mockup for the design demo — it doesn't take real reservations.</p>
+          <h2>The whole place, <span class="hl">all to yourselves</span></h2>
+          <p class="section-lead">One simple package — private use of the entire venue for a two-hour celebration. We handle everything else.</p>
         </div>
 
-        <!-- Visual-only calendar/time-slot UI -->
-        <div class="booking reveal" data-delay="1" aria-label="Booking mockup (non-functional)">
-          <div class="booking-head">
-            <span class="month">May 2026</span>
-            <div class="booking-nav">
-              <button type="button" data-noop aria-label="Previous month">‹</button>
-              <button type="button" data-noop aria-label="Next month">›</button>
+        <div class="parties-stats mt-4">
+          <!-- Stat 1: 2 hours -->
+          <div class="stat-card reveal">
+            <div class="stat">
+              <span class="num">2<span class="unit">h</span></span>
+              <span class="label">Private play time</span>
+              <span class="sublabel">Setup &amp; tidy-up by our team</span>
             </div>
           </div>
-          <div class="cal">
-            <span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span><span class="dow">S</span>
-            <span class="day muted">28</span><span class="day muted">29</span><span class="day muted">30</span>
-            <span class="day">1</span><span class="day">2</span><span class="day avail">3</span><span class="day avail">4</span>
-            <span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day avail">10</span><span class="day avail selected">11</span>
-            <span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day avail">17</span><span class="day avail">18</span>
-            <span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day avail">24</span><span class="day avail">25</span>
-            <span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day avail">31</span><span class="day muted">1</span>
+          <!-- Stat 2: 40 guests -->
+          <div class="stat-card reveal" data-delay="1">
+            <div class="stat">
+              <span class="num">40</span>
+              <span class="label">Guests welcome</span>
+              <span class="sublabel">~25 kids + grown-ups included</span>
+            </div>
           </div>
-          <p style="font-family:var(--font-head);font-weight:600;font-size:.9rem;margin:1.2rem 0 0">Available times · Sun 11 May</p>
-          <div class="slots">
-            <button class="slot" type="button" data-noop>9:30 AM</button>
-            <button class="slot active" type="button" data-noop>12:00 PM</button>
-            <button class="slot" type="button" data-noop>2:30 PM</button>
-            <button class="slot" type="button" data-noop>5:00 PM</button>
+          <!-- Stat 3: exclusive use -->
+          <div class="stat-card reveal" data-delay="2">
+            <div class="stat">
+              <span class="num">1<span class="unit">🏙</span></span>
+              <span class="label">Whole town, yours</span>
+              <span class="sublabel">No public admission during your slot</span>
+            </div>
           </div>
-          <button class="btn btn--block btn--terracotta mt-3" type="button" data-noop>Request This Slot</button>
-          <p class="mock-note">No payment is taken — this is a design preview only.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         HOW BOOKING WORKS — 3-step numbered steps
+         ===================================================== -->
+    <section class="section parties-steps-section">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">So simple</span>
+          <h2>How booking works</h2>
+          <p class="section-lead">Three easy steps from "let's celebrate" to "happy birthday!"</p>
+        </div>
+
+        <div class="steps parties-steps mt-4">
+          <div class="step reveal">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>Pick your date</h3>
+            <p>Use the booking mockup below to choose a day and time slot that works for your crew.</p>
+          </div>
+          <div class="step reveal" data-delay="1">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>We decorate &amp; set up</h3>
+            <p>Our party hosts arrive early. Tables, bunting, a dessert display, café drinks — all sorted before you walk in.</p>
+          </div>
+          <div class="step reveal" data-delay="2">
+            <div class="step-no" aria-hidden="true"></div>
+            <h3>You just show up &amp; celebrate</h3>
+            <p>Bring your cake, bring your people. Every storefront is yours. We'll tidy everything after.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         BOOKING WIDGET MOCKUP — inside a festive panel frame
+         ===================================================== -->
+    <section class="section" id="booking">
+      <div class="container">
+
+        <div class="booking-panel-wrap reveal">
+          <div class="split" style="align-items:start">
+
+            <!-- Left: copy + pricing -->
+            <div>
+              <span class="eyebrow">Book your party</span>
+              <p class="booking-heading">Find your perfect slot</p>
+              <p>Pick a date and time and we'll take care of the rest — decorations, café platters and a dedicated party host included with every buyout.</p>
+
+              <!-- Quick-look price pills -->
+              <div class="price-pill-row">
+                <span class="price-pill">Mon–Fri&nbsp;<strong>from&nbsp;$350</strong></span>
+                <span class="price-pill">Sat–Sun&nbsp;<strong>from&nbsp;$450</strong></span>
+              </div>
+
+              <ul class="price-list mt-2" style="max-width:400px">
+                <li>Themed decoration packages available</li>
+                <li>Café party platters for grown-ups</li>
+                <li>Dedicated party host for the full slot</li>
+                <li>Members save 10% on all buyouts</li>
+              </ul>
+
+              <p class="mock-note" style="text-align:left;margin-top:1rem">This booking tool is a visual mockup for the design demo — it doesn't take real reservations.</p>
+
+              <a class="btn btn--ghost mt-3" href="memberships.html">Explore Memberships</a>
+            </div>
+
+            <!-- Right: visual-only calendar/time-slot widget
+                 CRITICAL: keep .booking, .cal, .day/.day.muted/.day.avail/.day.selected,
+                 .slots, .slot, .slot.active, [data-noop] exactly as-is for main.js. -->
+            <div class="booking reveal" data-delay="1" aria-label="Booking date and time selector — design mockup, non-functional">
+              <div class="booking-head">
+                <span class="month">May 2026</span>
+                <div class="booking-nav">
+                  <button type="button" data-noop aria-label="Previous month">‹</button>
+                  <button type="button" data-noop aria-label="Next month">›</button>
+                </div>
+              </div>
+              <div class="cal" role="grid" aria-label="May 2026 calendar">
+                <span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span><span class="dow">S</span>
+                <span class="day muted" aria-hidden="true">28</span><span class="day muted" aria-hidden="true">29</span><span class="day muted" aria-hidden="true">30</span>
+                <span class="day">1</span><span class="day">2</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 3 May, available">3</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 4 May, available">4</span>
+                <span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 10 May, available">10</span><span class="day avail selected" tabindex="0" role="button" aria-label="Sunday 11 May, selected" aria-pressed="true">11</span>
+                <span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 17 May, available">17</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 18 May, available">18</span>
+                <span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 24 May, available">24</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 25 May, available">25</span>
+                <span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 31 May, available">31</span><span class="day muted" aria-hidden="true">1</span>
+              </div>
+              <p style="font-family:var(--font-head);font-weight:600;font-size:.9rem;margin:1.2rem 0 0">Available times · Sun 11 May</p>
+              <div class="slots" role="group" aria-label="Available time slots">
+                <button class="slot" type="button" data-noop aria-pressed="false">9:30 AM</button>
+                <button class="slot active" type="button" data-noop aria-pressed="true">12:00 PM</button>
+                <button class="slot" type="button" data-noop aria-pressed="false">2:30 PM</button>
+                <button class="slot" type="button" data-noop aria-pressed="false">5:00 PM</button>
+              </div>
+              <button class="btn btn--block btn--coral btn--pop mt-3" type="button" data-noop>Request This Slot</button>
+              <p class="mock-note">No payment is taken — this is a design preview only.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         PARENT QUOTE — social proof
+         ===================================================== -->
+    <section class="section--tight band-white">
+      <div class="container">
+        <div class="party-quote reveal">
+          <p>"Best birthday ever. We literally just showed up — the place looked incredible, the kids went wild, and we actually got to enjoy ourselves. Zero stress."</p>
+          <p class="who">— Priya M., mum of a very happy 5-year-old</p>
         </div>
       </div>
     </section>
 
-    <!-- Deposit + cancellation -->
+
+    <!-- =====================================================
+         DEPOSIT + CANCELLATION — friendlier card design
+         ===================================================== -->
     <section class="section band">
       <div class="container">
-        <div class="grid grid-2">
-          <div class="policy reveal">
-            <h3>Deposit</h3>
+        <div class="center reveal">
+          <span class="eyebrow">Good to know</span>
+          <h2>Deposit &amp; cancellation</h2>
+          <p class="section-lead">We keep it simple and stress-free, because parties should be fun — not stressful.</p>
+        </div>
+        <div class="policy-cards mt-4">
+
+          <div class="policy-card policy-card--deposit reveal">
+            <h3>
+              <span class="policy-icon" aria-hidden="true">💛</span>
+              Deposit
+            </h3>
             <ul>
               <li>A $100 deposit secures your date and slot.</li>
               <li>The deposit is credited toward your final balance.</li>
@@ -153,8 +309,12 @@
               <li>Final headcount confirmed 72 hours ahead.</li>
             </ul>
           </div>
-          <div class="policy reveal" data-delay="1" style="background:var(--teal-tint);border-color:rgba(127,168,160,0.45)">
-            <h3 style="color:var(--teal)">Cancellation</h3>
+
+          <div class="policy-card policy-card--cancel reveal" data-delay="1">
+            <h3>
+              <span class="policy-icon" aria-hidden="true">🌿</span>
+              Cancellation
+            </h3>
             <ul>
               <li>Cancel 14+ days ahead for a full deposit refund.</li>
               <li>Within 14 days, the deposit transfers to a new date.</li>
@@ -162,54 +322,151 @@
               <li>We'll always work with you for weather or illness.</li>
             </ul>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Gallery -->
+
+    <!-- =====================================================
+         PARTY GALLERY — tilted tiles with stickers
+         ===================================================== -->
     <section class="section">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Party gallery</span>
-          <h2>A few celebrations</h2>
-          <p class="section-lead">Illustrated previews — final galleries would feature real party photography.</p>
+          <h2>A little taste of the <span class="hl hl--sky">celebrations</span></h2>
+          <p class="section-lead">Sample photos for now — your final gallery would showcase real party photography from inside Little Town.</p>
         </div>
-        <div class="gallery mt-4">
-          <figure class="reveal"><img src="assets/img/gallery-1.svg" alt="Illustrated birthday cake with balloons." width="220" height="180"></figure>
-          <figure class="reveal" data-delay="1"><img src="assets/img/gallery-2.svg" alt="Illustrated slide and play tunnel." width="220" height="180"></figure>
-          <figure class="reveal" data-delay="2"><img src="assets/img/gallery-3.svg" alt="Illustrated café party table." width="220" height="180"></figure>
-          <figure class="reveal" data-delay="3"><img src="assets/img/gallery-4.svg" alt="Illustrated decorated town shops." width="220" height="180"></figure>
+
+        <div class="parties-gallery mt-4">
+
+          <div class="gal-item reveal">
+            <span class="sticker gal-sticker sticker--coral">Birthdays!</span>
+            <figure>
+              <!-- Placeholder photo (Unsplash, free license) — swap for your own party photos later -->
+              <img src="assets/img/photo-play-bridge.jpg" alt="A child crossing the rope bridge during play." width="400" height="400" loading="lazy" decoding="async"
+                   style="aspect-ratio:1/1;object-fit:cover">
+            </figure>
+          </div>
+
+          <div class="gal-item reveal" data-delay="1">
+            <span class="sticker gal-sticker">Most loved</span>
+            <figure>
+              <img src="assets/img/photo-play-slide.jpg" alt="Bright slides tumbling down into a ball pit." width="400" height="400" loading="lazy" decoding="async"
+                   style="aspect-ratio:1/1;object-fit:cover">
+            </figure>
+          </div>
+
+          <div class="gal-item reveal" data-delay="2">
+            <span class="sticker gal-sticker sticker--sky">Themes!</span>
+            <figure>
+              <img src="assets/img/photo-play-blocks.jpg" alt="A toddler building with giant soft foam blocks." width="400" height="400" loading="lazy" decoding="async"
+                   style="aspect-ratio:1/1;object-fit:cover">
+            </figure>
+          </div>
+
+          <div class="gal-item reveal" data-delay="3">
+            <span class="sticker gal-sticker sticker--sage">So fun!</span>
+            <figure>
+              <img src="assets/img/photo-play-climb.jpg" alt="A child climbing the colourful indoor climbing wall." width="400" height="400" loading="lazy" decoding="async"
+                   style="aspect-ratio:1/1;object-fit:cover">
+            </figure>
+          </div>
+
+        </div>
+
+        <p class="mock-note mt-4">Placeholder photos — swap for your own party photography before launch.</p>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         FAQ ACCORDION — friendly voice, all selectors kept
+         ===================================================== -->
+    <section class="section parties-faq-section">
+      <div class="container">
+        <div class="center reveal">
+          <span class="eyebrow">You might be wondering…</span>
+          <h2>Party FAQ</h2>
+          <p class="section-lead">Quick answers to the questions we hear most from parents planning a celebration.</p>
+        </div>
+
+        <!-- .accordion + .acc-item + .acc-trigger + .acc-panel MUST stay intact for main.js -->
+        <div class="accordion mt-4">
+
+          <div class="acc-item reveal" aria-expanded="true">
+            <button class="acc-trigger" aria-expanded="true">
+              Can we bring our own cake and decorations?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>Absolutely — your cake is always welcome. We provide table settings and a styled dessert display, and you're free to add a few personal touches. Our team handles the rest of the setup and all of the tidy-up.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item reveal" aria-expanded="false">
+            <button class="acc-trigger" aria-expanded="false">
+              Is food included for the grown-ups?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>Coffee and tea are included with every buyout. Add a Fusion café platter package for pastries, sandwiches and snacks so the adults are well looked after too.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item reveal" aria-expanded="false">
+            <button class="acc-trigger" aria-expanded="false">
+              How early can we arrive to set up?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>Your two-hour slot includes private access, and our hosts have the space beautifully decorated before you arrive. You're welcome to come 15 minutes early to add personal items and greet your guests as they arrive.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item reveal" aria-expanded="false">
+            <button class="acc-trigger" aria-expanded="false">
+              Do adults and siblings count toward the 40-guest capacity?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>Our buyout comfortably hosts around 40 guests total, including grown-ups and siblings. If you're expecting a bigger crowd, just ask — we're happy to help you plan the best setup for your family.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item reveal" aria-expanded="false">
+            <button class="acc-trigger" aria-expanded="false">
+              Are themed parties available?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>Yes! We offer a range of add-on decoration packages — from jungle safari to underwater adventure. Ask us about current themes when you enquire, or let us know if your little one has a favourite and we'll do our best.</p>
+            </div></div>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- FAQ accordion -->
-    <section class="section band-white">
+
+    <!-- =====================================================
+         FINAL CTA BAND — warm, bold, action-oriented
+         ===================================================== -->
+    <section class="section">
       <div class="container">
-        <div class="center reveal">
-          <span class="eyebrow">Good to know</span>
-          <h2>Party FAQ</h2>
-        </div>
-        <div class="accordion mt-4">
-          <div class="acc-item reveal" aria-expanded="true">
-            <button class="acc-trigger" aria-expanded="true">Can we bring our own cake and decorations?<span class="acc-icon">+</span></button>
-            <div class="acc-panel"><div><p>Absolutely — your cake is always welcome. We provide table settings and a styled dessert table, and you're free to add a few personal touches. Our team handles the rest of the setup and tidy-up.</p></div></div>
-          </div>
-          <div class="acc-item reveal" aria-expanded="false">
-            <button class="acc-trigger" aria-expanded="false">Is food included for the grown-ups?<span class="acc-icon">+</span></button>
-            <div class="acc-panel"><div><p>Coffee and tea are included with every buyout. Add a café platter package for pastries, sandwiches and snacks so the adults are looked after too.</p></div></div>
-          </div>
-          <div class="acc-item reveal" aria-expanded="false">
-            <button class="acc-trigger" aria-expanded="false">How early can we arrive to set up?<span class="acc-icon">+</span></button>
-            <div class="acc-panel"><div><p>Your two-hour slot includes private access, and our hosts have the room decorated before you arrive. You're welcome to come 15 minutes early to add personal items and greet guests.</p></div></div>
-          </div>
-          <div class="acc-item reveal" aria-expanded="false">
-            <button class="acc-trigger" aria-expanded="false">Do adults and siblings count toward capacity?<span class="acc-icon">+</span></button>
-            <div class="acc-panel"><div><p>Our buyout comfortably hosts around 40 guests total, including grown-ups and siblings. If you're expecting a bigger crowd, just ask — we'll help you plan.</p></div></div>
+        <div class="parties-cta-band reveal">
+          <span class="sticker anim-pulse" style="margin-bottom:1rem;display:inline-flex">🎂 Ready to celebrate?</span>
+          <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-top:0.4rem">Let's plan something <span class="script">magical</span></h2>
+          <p style="max-width:44ch;margin-inline:auto;opacity:0.92">Check availability, ask a question or dive straight into the booking mockup. We'd love to help make it the best party ever.</p>
+          <div class="flex-cta center mt-4" style="position:relative;z-index:1">
+            <button class="btn btn--lg btn--sun btn--pop hover-jelly" type="button" data-noop>Check Availability</button>
+            <a class="btn btn--lg btn--ghost" href="#booking">Back to booking</a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -217,7 +474,7 @@
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
-            <img src="assets/img/logo.svg" alt="" width="40" height="40">
+            <img src="assets/img/logo.png" alt="" width="83" height="40">
             <span class="brand-text"><span class="brand-name">LITTLE TOWN</span><span class="brand-sub script">Playhouse</span></span>
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
@@ -237,16 +494,30 @@
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Little Town Playhouse · A design prototype</span>
+        <span>© 2026 Little Town Playhouse</span>
         <span>Made with imagination in Riverbend</span>
       </div>
     </div>
   </footer>
 
+  <!-- Parties page: reduced-motion-aware micro interaction for the ribbon -->
+  <script>
+  (function () {
+    "use strict";
+    // Pause the ribbon marquee if the user prefers reduced motion
+    // (the CSS @media rule stops the animation, but this also removes it
+    // from the accessibility tree as a moving element)
+    var mq = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq && mq.matches) {
+      var tracks = document.querySelectorAll(".ribbon .track");
+      tracks.forEach(function (t) { t.style.animationPlayState = "paused"; });
+    }
+  }());
+  </script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

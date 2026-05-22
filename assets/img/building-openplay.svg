@@ -3,13 +3,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated market storefront with a striped awning and a play tunnel.">
   <ellipse cx="150" cy="194" rx="120" ry="9" fill="#7a8f63" opacity="0.12"/>
   <rect x="20" y="188" width="260" height="5" rx="2.5" fill="#9CB082" opacity="0.55"/>
-  <!-- tunnel -->
+  <!-- play tunnel: a constant-width ribbed crawl tube on the ground, running into the shop -->
   <g>
-    <ellipse cx="92" cy="150" rx="16" ry="20" fill="#9cc6bf"/>
-    <ellipse cx="74" cy="160" rx="19" ry="23" fill="#b4d7d0"/>
-    <ellipse cx="52" cy="172" rx="22" ry="26" fill="#9cc6bf"/>
-    <ellipse cx="52" cy="172" rx="15" ry="18" fill="#7FA8A0"/>
-    <ellipse cx="52" cy="172" rx="8" ry="11" fill="#3f6a63"/>
+    <ellipse cx="74" cy="191" rx="56" ry="7" fill="#7a8f63" opacity="0.14"/>
+    <!-- tube body (even diameter so it reads as a tunnel, not a horn) -->
+    <rect x="28" y="140" width="94" height="49" rx="24.5" fill="#9CB082"/>
+    <!-- accordion segment ribs -->
+    <g fill="#7FA8A0">
+      <ellipse cx="76"  cy="164.5" rx="5.5" ry="24.5"/>
+      <ellipse cx="98"  cy="164.5" rx="5.5" ry="24.5"/>
+      <ellipse cx="118" cy="164.5" rx="4"   ry="22"/>
+    </g>
+    <!-- near mouth: pale ring reads as daylight through the tube -->
+    <ellipse cx="52" cy="164.5" rx="15" ry="23" fill="#cfeae6"/>
+    <ellipse cx="52" cy="164.5" rx="8"  ry="14" fill="#5d8a82"/>
   </g>
   <!-- market -->
   <g>
@@ -30,7 +37,11 @@
       <g><circle cx="128" cy="122" r="9.5" fill="#9CB082"/><circle cx="147" cy="122" r="9.5" fill="#fff"/><circle cx="166" cy="122" r="9.5" fill="#9CB082"/><circle cx="185" cy="122" r="9.5" fill="#fff"/><circle cx="204" cy="122" r="9.5" fill="#9CB082"/><circle cx="223" cy="122" r="9.5" fill="#fff"/><circle cx="242" cy="122" r="9.5" fill="#9CB082"/><circle cx="261" cy="122" r="9.5" fill="#fff"/></g>
       <rect x="118" y="100" width="150" height="5" rx="2.5" fill="#8aa070"/>
     </g>
-    <path d="M142 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/><circle cx="178" cy="160" r="2.6" fill="#e7c389"/>
-    <path d="M204 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/><circle cx="212" cy="160" r="2.6" fill="#e7c389"/>
+    <path d="M142 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/>
+    <path d="M142 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="none" stroke="#48392b" stroke-width="2.5"/>
+    <circle cx="178" cy="171" r="3" fill="#e7c389"/>
+    <path d="M204 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/>
+    <path d="M204 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="none" stroke="#48392b" stroke-width="2.5"/>
+    <circle cx="240" cy="171" r="3" fill="#e7c389"/>
   </g>
 </svg>
