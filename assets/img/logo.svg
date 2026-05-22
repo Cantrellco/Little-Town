@@ -1,28 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Little Town Playhouse logo emblem (polished). Placeholder; final art by illustrator. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Little Town Playhouse">
-  <ellipse cx="50" cy="85" rx="42" ry="5" fill="#7a8f63" opacity="0.14"/>
-  <rect x="8" y="80" width="84" height="5" rx="2.5" fill="#e3d8c2"/>
-  <!-- left teal house -->
-  <rect x="11" y="50" width="26" height="30" rx="4" fill="#d6e6e2"/>
-  <rect x="29" y="50" width="8" height="30" rx="4" fill="#bcd5cf" opacity="0.6"/>
-  <rect x="11" y="50" width="26" height="30" rx="4" fill="none" stroke="#7FA8A0" stroke-width="2"/>
-  <polygon points="7,50 24,35 41,50" fill="#7FA8A0"/><polygon points="24,35 41,50 30,50" fill="#6b948c"/>
-  <path d="M19 80 v-12 a5 5 0 0 1 10 0 v12 Z" fill="#B5532E"/>
-  <!-- center wood tower + flag -->
-  <rect x="40" y="40" width="24" height="40" rx="4" fill="#e7c389"/>
-  <rect x="57" y="40" width="7" height="40" rx="3.5" fill="#d3a45f" opacity="0.55"/>
-  <rect x="40" y="40" width="24" height="40" rx="4" fill="none" stroke="#cf9a4f" stroke-width="2"/>
-  <polygon points="36,40 52,24 68,40" fill="#c98f44"/><polygon points="52,24 68,40 58,40" fill="#b9803a"/>
-  <line x1="52" y1="24" x2="52" y2="12" stroke="#7a5a2e" stroke-width="2.5"/>
-  <path d="M52 14 L64 18 L52 22 Z" fill="#D64A3F"/>
-  <circle cx="52" cy="55" r="5.5" fill="#fbf3e6"/>
-  <path d="M47 66 v-9 a5 5 0 0 1 10 0 v9 Z" fill="#B5532E"/>
-  <!-- right sage house with cross -->
-  <rect x="66" y="52" width="25" height="28" rx="4" fill="#dfe7d2"/>
-  <rect x="84" y="52" width="7" height="28" rx="3.5" fill="#cbd7b9" opacity="0.6"/>
-  <rect x="66" y="52" width="25" height="28" rx="4" fill="none" stroke="#9CB082" stroke-width="2"/>
-  <polygon points="62,52 78,40 94,52" fill="#9CB082"/><polygon points="78,40 94,52 84,52" fill="#86a06b"/>
-  <circle cx="78" cy="62" r="6" fill="#fff"/>
-  <g transform="translate(78,62)" fill="#D64A3F"><rect x="-1.6" y="-4" width="3.2" height="8" rx="1"/><rect x="-4" y="-1.6" width="8" height="3.2" rx="1"/></g>
+<!-- Little Town Playhouse — logo mark (matches brand logo). Placeholder; final art by illustrator. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 178 100" role="img" aria-label="Little Town Playhouse">
+  <rect x="14" y="86" width="150" height="3.4" rx="1.7" fill="#9CB082" opacity="0.55"/>
+
+  <!-- play tunnel -->
+  <g>
+    <ellipse cx="34" cy="62" rx="9" ry="11" fill="#9cc6bf"/>
+    <ellipse cx="24" cy="68" rx="11" ry="13" fill="#b4d7d0"/>
+    <ellipse cx="13" cy="76" rx="12" ry="15" fill="#9cc6bf"/>
+    <ellipse cx="13" cy="76" rx="8" ry="10" fill="#7FA8A0"/>
+    <ellipse cx="13" cy="76" rx="4.5" ry="6" fill="#3f6a63"/>
+  </g>
+
+  <!-- market -->
+  <g>
+    <rect x="44" y="52" width="46" height="34" rx="3" fill="#e7c389"/>
+    <rect x="78" y="52" width="12" height="34" rx="3" fill="#d3a45f" opacity="0.4"/>
+    <rect x="44" y="52" width="46" height="34" rx="3" fill="none" stroke="#cf9a4f" stroke-width="1.6"/>
+    <polygon points="40,53 67,33 94,53" fill="#cf9a4f"/><polygon points="67,33 94,53 80,53" fill="#b9803a"/>
+    <rect x="38" y="51" width="58" height="4" rx="2" fill="#b07d35"/>
+    <circle cx="67" cy="46" r="4.4" fill="#fbf3e6" stroke="#b9803a" stroke-width="1.4"/>
+    <line x1="67" y1="33" x2="67" y2="22" stroke="#7a5a2e" stroke-width="2"/>
+    <circle cx="67" cy="33" r="3" fill="#E0A93F"/>
+    <path d="M67 23 L84 28 L67 34 Z" fill="#D64A3F"/>
+    <g><rect x="44" y="55" width="46" height="7" fill="#fff"/><g fill="#9CB082"><rect x="44" y="55" width="6" height="7"/><rect x="56" y="55" width="6" height="7"/><rect x="68" y="55" width="6" height="7"/><rect x="80" y="55" width="6" height="7"/></g><g><circle cx="48" cy="62" r="4" fill="#9CB082"/><circle cx="56" cy="62" r="4" fill="#fff"/><circle cx="64" cy="62" r="4" fill="#9CB082"/><circle cx="72" cy="62" r="4" fill="#fff"/><circle cx="80" cy="62" r="4" fill="#9CB082"/><circle cx="88" cy="62" r="4" fill="#fff"/></g></g>
+    <path d="M52 86 v-12 a7 7 0 0 1 14 0 v12 Z" fill="#5b4a3a"/>
+    <path d="M70 86 v-12 a7 7 0 0 1 14 0 v12 Z" fill="#5b4a3a"/>
+  </g>
+
+  <!-- café tower -->
+  <g>
+    <rect x="96" y="44" width="34" height="42" rx="3" fill="#f2e0a4"/>
+    <rect x="118" y="44" width="12" height="42" rx="3" fill="#e6d088" opacity="0.5"/>
+    <rect x="96" y="44" width="34" height="42" rx="3" fill="none" stroke="#e2c97e" stroke-width="1.6"/>
+    <polygon points="92,45 113,26 134,45" fill="#cf9a4f"/><polygon points="113,26 134,45 120,45" fill="#b9803a"/>
+    <rect x="90" y="43" width="46" height="4" rx="2" fill="#b07d35"/>
+    <line x1="113" y1="26" x2="113" y2="15" stroke="#7a5a2e" stroke-width="2"/>
+    <circle cx="113" cy="26" r="3" fill="#E0A93F"/>
+    <path d="M113 16 L130 21 L113 27 Z" fill="#D64A3F"/>
+    <g transform="translate(113,60)"><path d="M-7 -5 H5 V1 a6 6 0 0 1 -12 0 Z" fill="#fff"/><path d="M5 -2 a4 4 0 0 1 0 7" fill="none" stroke="#fff" stroke-width="1.8"/></g>
+    <path d="M104 86 v-12 a9 9 0 0 1 18 0 v12 Z" fill="#B5532E"/>
+  </g>
+
+  <!-- clinic -->
+  <g>
+    <rect x="132" y="54" width="34" height="32" rx="3" fill="#b7c79c"/>
+    <rect x="154" y="54" width="12" height="32" rx="3" fill="#a7b98a" opacity="0.5"/>
+    <rect x="132" y="54" width="34" height="32" rx="3" fill="none" stroke="#9fb286" stroke-width="1.6"/>
+    <polygon points="128,55 149,38 170,55" fill="#c4d2ab"/><polygon points="149,38 170,55 156,55" fill="#aebd92"/>
+    <rect x="126" y="53" width="46" height="4" rx="2" fill="#9fb286"/>
+    <g transform="translate(149,49)" fill="#fff"><rect x="-1.8" y="-5" width="3.6" height="10" rx="1"/><rect x="-5" y="-1.8" width="10" height="3.6" rx="1"/></g>
+    <rect x="132" y="60" width="34" height="4" fill="#fff" opacity="0.9"/>
+    <path d="M141 86 v-12 a8 8 0 0 1 16 0 v12 Z" fill="#3f7a52"/>
+  </g>
 </svg>
