@@ -5,7 +5,7 @@
   headline. Flat colors (clean GIF), SMIL animation. Placeholder; final art
   by illustrator.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1000" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -300 760 1300" role="img"
      aria-label="An illustrated little town for phones — a café tower, grocery and clinic with children, trees, drifting clouds and fluttering flags.">
   <defs>
     <g id="mtree">
@@ -23,15 +23,15 @@
     </g>
   </defs>
 
-  <rect width="760" height="1000" fill="#e8f1ec"/>
+  <rect x="0" y="-300" width="760" height="1300" fill="#e8f1ec"/>
 
   <!-- sun -->
-  <circle cx="640" cy="150" r="66" fill="#f6e3bf" opacity="0.5"><animate attributeName="r" values="66;72;66" dur="7s" repeatCount="indefinite"/></circle>
-  <circle cx="640" cy="150" r="44" fill="#f4dcae"><animate attributeName="r" values="44;47;44" dur="7s" repeatCount="indefinite"/></circle>
+  <circle cx="630" cy="-150" r="66" fill="#f6e3bf" opacity="0.5"><animate attributeName="r" values="66;72;66" dur="7s" repeatCount="indefinite"/></circle>
+  <circle cx="630" cy="-150" r="44" fill="#f4dcae"><animate attributeName="r" values="44;47;44" dur="7s" repeatCount="indefinite"/></circle>
 
   <!-- clouds -->
-  <use href="#mcloud" x="150" y="210"><animateTransform attributeName="transform" type="translate" values="0 0;36 0;0 0" dur="22s" repeatCount="indefinite" additive="sum"/></use>
-  <use href="#mcloud" x="540" y="320" opacity="0.9"><animateTransform attributeName="transform" type="translate" values="0 0;28 0;0 0" dur="28s" repeatCount="indefinite" additive="sum"/></use>
+  <use href="#mcloud" x="170" y="-110"><animateTransform attributeName="transform" type="translate" values="0 0;36 0;0 0" dur="22s" repeatCount="indefinite" additive="sum"/></use>
+  <use href="#mcloud" x="540" y="20" opacity="0.9"><animateTransform attributeName="transform" type="translate" values="0 0;28 0;0 0" dur="28s" repeatCount="indefinite" additive="sum"/></use>
 
   <!-- hills -->
   <path d="M0 632 Q200 580 400 624 T760 612 V1000 H0 Z" fill="#e3ecd6"/>
