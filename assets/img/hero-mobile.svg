@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hero scene composed for PHONE (portrait). Same little-town idea as the
+  desktop scene, arranged for a tall narrow screen with generous sky for the
+  headline. Flat colors (clean GIF), SMIL animation. Placeholder; final art
+  by illustrator.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1000" role="img"
+     aria-label="An illustrated little town for phones — a café tower, grocery and clinic with children, trees, drifting clouds and fluttering flags.">
+  <defs>
+    <g id="mtree">
+      <ellipse cx="0" cy="74" rx="38" ry="8" fill="#7a8f63" opacity="0.16"/>
+      <rect x="-7" y="36" width="14" height="40" rx="7" fill="#a9763e"/><rect x="-7" y="36" width="4" height="40" rx="2" fill="#8a5e30" opacity="0.5"/>
+      <circle cx="0" cy="18" r="34" fill="#9CB082"/><circle cx="-20" cy="34" r="22" fill="#8aa070"/><circle cx="20" cy="34" r="22" fill="#a7bb8e"/><circle cx="-8" cy="10" r="16" fill="#aec291"/>
+    </g>
+    <g id="mbush">
+      <ellipse cx="0" cy="18" rx="36" ry="6" fill="#7a8f63" opacity="0.16"/>
+      <circle cx="-14" cy="2" r="14" fill="#a7bb8e"/><circle cx="0" cy="-6" r="17" fill="#9CB082"/><circle cx="14" cy="2" r="14" fill="#8aa070"/><rect x="-30" y="2" width="60" height="16" fill="#9CB082"/>
+    </g>
+    <g id="mcloud">
+      <circle cx="0" cy="0" r="22" fill="#fff"/><circle cx="26" cy="6" r="18" fill="#fff"/><circle cx="-24" cy="7" r="16" fill="#fff"/><rect x="-40" y="2" width="84" height="20" rx="10" fill="#fff"/>
+      <ellipse cx="-2" cy="18" rx="42" ry="6" fill="#dfeae6" opacity="0.7"/>
+    </g>
+  </defs>
+
+  <rect width="760" height="1000" fill="#e8f1ec"/>
+
+  <!-- sun -->
+  <circle cx="640" cy="150" r="66" fill="#f6e3bf" opacity="0.5"><animate attributeName="r" values="66;72;66" dur="7s" repeatCount="indefinite"/></circle>
+  <circle cx="640" cy="150" r="44" fill="#f4dcae"><animate attributeName="r" values="44;47;44" dur="7s" repeatCount="indefinite"/></circle>
+
+  <!-- clouds -->
+  <use href="#mcloud" x="150" y="210"><animateTransform attributeName="transform" type="translate" values="0 0;36 0;0 0" dur="22s" repeatCount="indefinite" additive="sum"/></use>
+  <use href="#mcloud" x="540" y="320" opacity="0.9"><animateTransform attributeName="transform" type="translate" values="0 0;28 0;0 0" dur="28s" repeatCount="indefinite" additive="sum"/></use>
+
+  <!-- hills -->
+  <path d="M0 632 Q200 580 400 624 T760 612 V1000 H0 Z" fill="#e3ecd6"/>
+  <path d="M0 686 Q220 642 460 678 T760 668 V1000 H0 Z" fill="#d6e2c8"/>
+
+  <!-- ground -->
+  <rect x="0" y="780" width="760" height="220" fill="#efe7d8"/>
+  <path d="M0 816 H760" stroke="#e3d8c2" stroke-width="3" stroke-dasharray="16 14"/>
+  <rect x="0" y="780" width="760" height="6" fill="#e3d8c2"/>
+
+  <!-- slide / tunnel (far left) -->
+  <g>
+    <ellipse cx="78" cy="782" rx="70" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <ellipse cx="70" cy="752" rx="44" ry="28" fill="#7FA8A0"/><ellipse cx="70" cy="752" rx="31" ry="19" fill="#5d8a82"/><ellipse cx="70" cy="752" rx="17" ry="11" fill="#3f6a63"/>
+    <path d="M120 700 Q170 656 170 780" fill="none" stroke="#9cc6bf" stroke-width="22" stroke-linecap="round"/>
+    <path d="M120 700 Q170 656 170 780" fill="none" stroke="#7FA8A0" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+  <!-- Grocery (left) -->
+  <g>
+    <ellipse cx="200" cy="782" rx="110" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="110" y="600" width="180" height="180" rx="9" fill="#dfe7d2"/>
+    <rect x="262" y="600" width="28" height="180" rx="9" fill="#cbd7b9" opacity="0.6"/>
+    <rect x="110" y="600" width="180" height="180" rx="9" fill="none" stroke="#9CB082" stroke-width="3"/>
+    <rect x="98" y="584" width="204" height="20" rx="7" fill="#9CB082"/><rect x="98" y="584" width="204" height="8" rx="4" fill="#8aa070"/>
+    <path d="M110 630 H290 L277 656 H123 Z" fill="#fff"/>
+    <path d="M123 630 H149 L143 656 H117 Z" fill="#9CB082"/><path d="M181 630 H207 L201 656 H175 Z" fill="#9CB082"/><path d="M239 630 H265 L259 656 H233 Z" fill="#9CB082"/>
+    <rect x="126" y="672" width="34" height="46" rx="6" fill="#fff"/><rect x="129" y="675" width="28" height="40" rx="4" fill="#eef4f2"/>
+    <rect x="240" y="672" width="34" height="46" rx="6" fill="#fff"/><rect x="243" y="675" width="28" height="40" rx="4" fill="#eef4f2"/>
+    <path d="M172 780 v-40 a28 28 0 0 1 56 0 v40 Z" fill="#B5532E"/><path d="M172 780 v-40 a28 28 0 0 1 56 0 v40 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+    <circle cx="216" cy="756" r="3.6" fill="#f1ddd3"/>
+  </g>
+
+  <use href="#mtree" x="310" y="708"/>
+
+  <!-- Café tower (centre, tall) -->
+  <g>
+    <ellipse cx="412" cy="782" rx="100" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="332" y="500" width="160" height="280" rx="10" fill="#e7c389"/>
+    <rect x="460" y="500" width="32" height="280" rx="10" fill="#d3a45f" opacity="0.55"/>
+    <rect x="332" y="500" width="160" height="280" rx="10" fill="none" stroke="#cf9a4f" stroke-width="3"/>
+    <polygon points="320,502 412,418 504,502" fill="#c98f44"/><polygon points="412,418 504,502 458,502" fill="#b9803a"/>
+    <rect x="316" y="498" width="192" height="9" rx="4" fill="#b07d35"/>
+    <line x1="412" y1="418" x2="412" y2="378" stroke="#7a5a2e" stroke-width="4"/>
+    <path d="M412 382 L452 393 L412 405 Z" fill="#D64A3F"><animateTransform attributeName="transform" type="rotate" values="-6 412 393;9 412 393;-6 412 393" dur="2.3s" repeatCount="indefinite"/></path>
+    <circle cx="412" cy="418" r="6" fill="#D9A35E"/>
+    <circle cx="412" cy="566" r="34" fill="#fbf3e6"/>
+    <g transform="translate(412,568)"><path d="M-20 -10 H16 V4 a16 16 0 0 1 -32 0 Z" fill="#7FA8A0"/><path d="M16 -5 a11 11 0 0 1 0 16" fill="none" stroke="#7FA8A0" stroke-width="5"/><path d="M-7 -22 q-5 5 0 10 M5 -22 q-5 5 0 10" stroke="#c98f44" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>
+    <rect x="346" y="636" width="34" height="38" rx="6" fill="#fff"/><rect x="349" y="639" width="28" height="32" rx="4" fill="#dcebe8"/>
+    <rect x="444" y="636" width="34" height="38" rx="6" fill="#fff"/><rect x="447" y="639" width="28" height="32" rx="4" fill="#dcebe8"/>
+    <path d="M378 780 v-50 a34 34 0 0 1 68 0 v50 Z" fill="#B5532E"/><path d="M378 780 v-50 a34 34 0 0 1 68 0 v50 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+    <line x1="412" y1="700" x2="412" y2="780" stroke="#9a4526" stroke-width="2" opacity="0.6"/>
+    <circle cx="430" cy="744" r="4" fill="#f1ddd3"/>
+  </g>
+
+  <use href="#mbush" x="318" y="770"/>
+
+  <!-- Clinic (right) -->
+  <g>
+    <ellipse cx="586" cy="782" rx="110" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="496" y="592" width="180" height="188" rx="9" fill="#d6e6e2"/>
+    <rect x="648" y="592" width="28" height="188" rx="9" fill="#bcd5cf" opacity="0.6"/>
+    <rect x="496" y="592" width="180" height="188" rx="9" fill="none" stroke="#7FA8A0" stroke-width="3"/>
+    <polygon points="484,594 586,524 688,594" fill="#7FA8A0"/><polygon points="586,524 688,594 626,594" fill="#6b948c"/>
+    <rect x="480" y="590" width="212" height="9" rx="4" fill="#6b948c"/>
+    <circle cx="586" cy="640" r="24" fill="#fff"/>
+    <g transform="translate(586,640)" fill="#D64A3F"><rect x="-5.5" y="-14" width="11" height="28" rx="2.5"/><rect x="-14" y="-5.5" width="28" height="11" rx="2.5"/></g>
+    <rect x="512" y="688" width="32" height="34" rx="6" fill="#fff"/><rect x="515" y="691" width="26" height="28" rx="4" fill="#eef4f2"/>
+    <rect x="628" y="688" width="32" height="34" rx="6" fill="#fff"/><rect x="631" y="691" width="26" height="28" rx="4" fill="#eef4f2"/>
+    <path d="M556 780 v-42 a30 30 0 0 1 60 0 v42 Z" fill="#3f7a52"/><path d="M556 780 v-42 a30 30 0 0 1 60 0 v42 Z" fill="none" stroke="#356845" stroke-width="3"/>
+    <circle cx="602" cy="756" r="4" fill="#dfeae3"/>
+  </g>
+
+  <use href="#mtree" x="712" y="704"/>
+  <use href="#mbush" x="690" y="772"/>
+
+  <!-- kids -->
+  <!-- waving kid (front of grocery) -->
+  <g transform="translate(238,780)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -13;0 0" dur="3.2s" repeatCount="indefinite" additive="sum"/>
+    <ellipse cx="0" cy="2" rx="24" ry="6" fill="#7a8f63" opacity="0.15"/>
+    <ellipse cx="-9" cy="-2" rx="8" ry="4.5" fill="#5b4632"/><ellipse cx="9" cy="-2" rx="8" ry="4.5" fill="#5b4632"/>
+    <rect x="-12" y="-28" width="10" height="28" rx="5" fill="#e0b07a"/><rect x="2" y="-28" width="10" height="28" rx="5" fill="#e0b07a"/>
+    <path d="M-17 -58 Q0 -64 17 -58 L14 -24 Q0 -20 -14 -24 Z" fill="#D64A3F"/>
+    <path d="M-31 -56 q-7 8 -4 19" stroke="#D64A3F" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M24 -62 q9 -6 13 -17" stroke="#D64A3F" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cx="-35" cy="-36" r="5.5" fill="#f0c9a8"/><circle cx="38" cy="-80" r="5.5" fill="#f0c9a8"/>
+    <circle cx="0" cy="-72" r="16" fill="#f0c9a8"/>
+    <path d="M-16 -74 a16 16 0 0 1 32 0 q-16 -13 -32 0Z" fill="#5b4632"/>
+    <circle cx="-5" cy="-71" r="2" fill="#3a2f24"/><circle cx="5" cy="-71" r="2" fill="#3a2f24"/>
+    <circle cx="-9.5" cy="-66" r="2.6" fill="#eaa98e" opacity="0.6"/><circle cx="9.5" cy="-66" r="2.6" fill="#eaa98e" opacity="0.6"/>
+    <path d="M-5 -65 q5 4 10 0" stroke="#3a2f24" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- toddler with a ball (front centre) -->
+  <g transform="translate(330,784)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -9;0 0" dur="3.9s" repeatCount="indefinite" additive="sum"/>
+    <ellipse cx="0" cy="2" rx="18" ry="5" fill="#7a8f63" opacity="0.15"/>
+    <ellipse cx="-7" cy="-1" rx="6" ry="3.5" fill="#8a6a36"/><ellipse cx="7" cy="-1" rx="6" ry="3.5" fill="#8a6a36"/>
+    <rect x="-9" y="-21" width="8" height="21" rx="4" fill="#e0b07a"/><rect x="1" y="-21" width="8" height="21" rx="4" fill="#e0b07a"/>
+    <path d="M-13 -45 Q0 -51 13 -45 L11 -18 Q0 -15 -11 -18 Z" fill="#9CB082"/>
+    <path d="M-22 -42 q-6 6 -5 14" stroke="#9CB082" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M16 -42 q7 4 9 12" stroke="#9CB082" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="-26" cy="-26" r="4.5" fill="#f0c9a8"/>
+    <circle cx="0" cy="-58" r="13" fill="#f0c9a8"/>
+    <path d="M-13 -60 a13 13 0 0 1 26 0 q-13 -11 -26 0Z" fill="#c98f44"/>
+    <circle cx="-4.5" cy="-57" r="1.7" fill="#3a2f24"/><circle cx="4.5" cy="-57" r="1.7" fill="#3a2f24"/>
+    <circle cx="-8" cy="-53" r="2.1" fill="#eaa98e" opacity="0.6"/><circle cx="8" cy="-53" r="2.1" fill="#eaa98e" opacity="0.6"/>
+    <path d="M-4 -52 q4 3 8 0" stroke="#3a2f24" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <circle cx="28" cy="-8" r="11" fill="#D64A3F"/><circle cx="28" cy="-8" r="11" fill="none" stroke="#b8392f" stroke-width="1.5"/>
+    <path d="M17 -8 h22 M28 -19 v22" stroke="#fff" stroke-width="2"/>
+  </g>
+  <!-- running kid (front of clinic) -->
+  <g transform="translate(560,780)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -12;0 0" dur="2.7s" repeatCount="indefinite" additive="sum"/>
+    <ellipse cx="0" cy="2" rx="22" ry="6" fill="#7a8f63" opacity="0.15"/>
+    <ellipse cx="-11" cy="-1" rx="7" ry="4" fill="#3f6a63"/><ellipse cx="10" cy="-2" rx="7" ry="4" fill="#3f6a63"/>
+    <rect x="-13" y="-24" width="9" height="24" rx="4.5" fill="#e0b07a" transform="rotate(-14 -8 -12)"/><rect x="4" y="-24" width="9" height="24" rx="4.5" fill="#e0b07a" transform="rotate(14 8 -12)"/>
+    <path d="M-16 -52 Q0 -58 16 -52 L13 -20 Q0 -16 -13 -20 Z" fill="#7FA8A0"/>
+    <path d="M-28 -50 q-8 6 -10 16" stroke="#7FA8A0" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M22 -54 q9 -5 14 -14" stroke="#7FA8A0" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <circle cx="-37" cy="-32" r="5" fill="#d9a36f"/><circle cx="37" cy="-66" r="5" fill="#d9a36f"/>
+    <circle cx="0" cy="-65" r="15" fill="#d9a36f"/>
+    <path d="M-15 -67 a15 15 0 0 1 30 0 q-15 -13 -30 0Z" fill="#2f2a24"/>
+    <circle cx="-5" cy="-64" r="1.9" fill="#221c16"/><circle cx="5" cy="-64" r="1.9" fill="#221c16"/>
+    <circle cx="-9" cy="-59" r="2.4" fill="#c9856a" opacity="0.55"/><circle cx="9" cy="-59" r="2.4" fill="#c9856a" opacity="0.55"/>
+    <path d="M-5 -58 q5 4 10 0" stroke="#221c16" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

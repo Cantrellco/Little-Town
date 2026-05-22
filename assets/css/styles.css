@@ -732,10 +732,8 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   min-height: clamp(500px, 72vh, 680px);
   background: #e8f1ec;
 }
-.hero-bg {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: center bottom; z-index: 0;
-}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(180deg,

@@ -59,8 +59,12 @@
   <main>
     <!-- ============ HERO (full-bleed animated background) ============ -->
     <section class="hero-v2">
-      <!-- Animated GIF background: plays on every device, including iPhone in Low Power / Reduce Motion. -->
-      <img class="hero-bg" src="assets/img/hero-anim.gif" alt="Animated illustration of the little town — children playing on a slide and along Main Street past the café, grocery and clinic, with drifting clouds and fluttering flags." width="880" height="469">
+      <!-- Animated background — a wide scene for desktop and a portrait scene for phones.
+           GIFs play on every device, including iPhone in Low Power / Reduce Motion. -->
+      <picture class="hero-bg">
+        <source media="(max-width: 700px)" srcset="assets/img/hero-mobile.gif">
+        <img src="assets/img/hero-anim.gif" alt="Animated illustration of the little town — children playing along Main Street past the café, grocery and clinic, with drifting clouds and fluttering flags.">
+      </picture>
       <div class="hero-scrim" aria-hidden="true"></div>
       <div class="container hero-content">
         <span class="eyebrow">Indoor imaginative play · Ages 0–8</span>
