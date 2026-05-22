@@ -116,7 +116,12 @@
         if (cls) svg.setAttribute("class", cls);
         if (st) svg.setAttribute("style", st);
         if (alt) { svg.setAttribute("role", "img"); svg.setAttribute("aria-label", alt); }
-        if (img.parentNode) img.replaceWith(svg);
+        if (img.parentNode) {
+          img.replaceWith(svg);
+          // WebKit/iOS sometimes won't start SMIL on a freshly inserted SVG —
+          // nudging the timeline kicks the animations into life.
+          try { if (svg.setCurrentTime) svg.setCurrentTime(0); } catch (e) {}
+        }
       })
       .catch(function () { /* keep the static <img> fallback */ });
   });
