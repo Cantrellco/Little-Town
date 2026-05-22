@@ -52,7 +52,38 @@
     <!-- ============================================================
          HERO — warm paper sky, sticker accent, highlighted headline
          ============================================================ -->
-    <section class="page-hero ph--story">
+    <section class="page-hero ph--story has-bunting">
+      <!-- Kiddy bunting banner across the very top -->
+      <div class="hero-bunting" aria-hidden="true"></div>
+      <!-- Signature motif: a little stack of toy blocks, echoing the "box of
+           blocks" headline, with crafty floaters around it (desktop only). -->
+      <span class="deco anim-bob" style="top:17%;left:5%;width:56px" aria-hidden="true">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5"  y="33" width="24" height="22" rx="4" fill="#F8D98F"/>
+          <rect x="31" y="33" width="24" height="22" rx="4" fill="#AEDCEA"/>
+          <rect x="18" y="9"  width="24" height="22" rx="4" fill="#F4AE92"/>
+        </svg>
+      </span>
+      <!-- a crayon, because every good story starts with one -->
+      <span class="deco anim-sway" style="top:30%;left:12%;width:14px" aria-hidden="true">
+        <svg viewBox="0 0 14 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="9" width="8" height="27" rx="2" fill="#AEDCEA"/>
+          <path d="M3 9 L7 0 L11 9 Z" fill="#F4AE92"/>
+          <rect x="3" y="30" width="8" height="3" fill="#fff" opacity="0.5"/>
+        </svg>
+      </span>
+      <span class="deco anim-twinkle" style="top:18%;right:7%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:30%;right:11%;width:22px" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="28" height="28" rx="5" fill="#EC9A90"/>
+        </svg>
+      </span>
+      <span class="deco anim-bob slow" style="bottom:16%;right:24%;width:28px" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="28" height="28" rx="5" fill="#BFD6A8"/>
+        </svg>
+      </span>
+      <span class="deco anim-twinkle" style="bottom:22%;left:13%;width:16px"><img src="assets/img/deco-star.svg" alt=""></span>
       <div class="container">
         <div class="reveal">
           <!-- Sticker floats above the heading -->
@@ -64,7 +95,7 @@
             </span>
           </div>
           <span class="eyebrow">Our story</span>
-          <h1>It started with a <span class="script hl hl--coral" style="color:var(--terracotta)">box of blocks</span></h1>
+          <h1>It started with a <span class="script hl hl--coral" style="color:var(--accent)">box of blocks</span></h1>
           <p>And a simple wish: somewhere warm and <em>beautiful</em> to bring the kids — that grown-ups would actually love too.</p>
           <div class="flex-cta center">
             <a class="btn btn--lg btn--terracotta btn--pop" href="visit-us.html">Plan a Visit</a>
@@ -110,34 +141,9 @@
     </section>
 
     <!-- ============================================================
-         RIBBON — warm scrolling marquee
-         ============================================================ -->
-    <div class="ribbon story-ribbon" aria-hidden="true">
-      <div class="track">
-        <!-- Two identical copies for seamless loop -->
-        <span>
-          <span>Built by parents</span> ✦
-          <span>Open to all families</span> ✦
-          <span>Ages 0–8 welcome</span> ✦
-          <span>Made with imagination</span> ✦
-          <span>Good coffee next door</span> ✦
-          <span>Riverbend, CA</span> ✦
-        </span>
-        <span aria-hidden="true">
-          <span>Built by parents</span> ✦
-          <span>Open to all families</span> ✦
-          <span>Ages 0–8 welcome</span> ✦
-          <span>Made with imagination</span> ✦
-          <span>Good coffee next door</span> ✦
-          <span>Riverbend, CA</span> ✦
-        </span>
-      </div>
-    </div>
-
-    <!-- ============================================================
          TIMELINE — How Little Town grew (.steps)
          ============================================================ -->
-    <section class="story-steps-section band-white">
+    <section class="story-steps-section band-white flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The journey</span>
@@ -178,7 +184,7 @@
     <!-- ============================================================
          SOFT STAT STRIP — gentle, believable, no hard numbers
          ============================================================ -->
-    <section class="story-stats band">
+    <section class="story-stats band flow-top">
       <div class="container">
         <div class="story-stat-grid">
 
@@ -186,10 +192,10 @@
             <div class="stat-bar" style="background:var(--grad-sunrise)"></div>
             <span class="stat-icon" aria-hidden="true">
               <!-- heart icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </span>
             <div class="stat">
-              <div class="num">Built by<br><span style="font-size:0.7em;font-weight:700;color:var(--terracotta)">parents</span></div>
+              <div class="num">Built by<br><span style="font-size:0.7em;font-weight:700;color:var(--accent)">parents</span></div>
               <div class="label">for families like yours</div>
             </div>
           </div>
@@ -198,10 +204,10 @@
             <div class="stat-bar" style="background:var(--grad-meadow)"></div>
             <span class="stat-icon" aria-hidden="true">
               <!-- star icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </span>
             <div class="stat">
-              <div class="num">Made with<br><span style="font-size:0.7em;font-weight:700;color:var(--sage)">care</span></div>
+              <div class="num">Made with<br><span style="font-size:0.7em;font-weight:700;color:var(--accent-sage)">care</span></div>
               <div class="label">every detail handcrafted</div>
             </div>
           </div>
@@ -210,10 +216,10 @@
             <div class="stat-bar" style="background:var(--grad-sky)"></div>
             <span class="stat-icon" aria-hidden="true">
               <!-- kids icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/></svg>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/></svg>
             </span>
             <div class="stat">
-              <div class="num">Ages<br><span style="font-size:0.7em;font-weight:700;color:var(--sky)">0–8</span></div>
+              <div class="num">Ages<br><span style="font-size:0.7em;font-weight:700;color:var(--accent-sky)">0–8</span></div>
               <div class="label">every little one welcome</div>
             </div>
           </div>
@@ -225,7 +231,7 @@
     <!-- ============================================================
          VISION & VALUES — bolder cards with tilt + accent tops
          ============================================================ -->
-    <section class="story-values-section">
+    <section class="story-values-section flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">What we believe</span>
@@ -272,7 +278,7 @@
     <!-- ============================================================
          SAFETY PROMISE — reassurance strip in a tinted panel
          ============================================================ -->
-    <section class="story-promise-section band">
+    <section class="story-promise-section band flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Our promise to parents</span>
@@ -314,10 +320,10 @@
     <!-- ============================================================
          CLOSING CTA — .bg-meadow / .on-dark band
          ============================================================ -->
-    <section class="story-cta-band">
+    <section class="story-cta-band flow-top">
       <div class="container">
         <div class="story-cta-inner on-dark reveal">
-          <span class="eyebrow" style="color:rgba(255,255,255,0.85)">Come see us</span>
+          <span class="eyebrow" style="color:var(--accent)">Come see us</span>
           <h2>Come see it for yourself</h2>
           <p>We'd love to show you around the little town — every storefront, every detail, every cosy corner.</p>
           <div class="flex-cta center mt-3">

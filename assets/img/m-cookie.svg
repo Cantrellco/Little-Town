@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" role="img" aria-label="">
-  <circle cx="22" cy="22" r="22" fill="#f3e3cb"/>
-  <circle cx="22" cy="22" r="13" fill="#D9A35E"/>
-  <circle cx="18" cy="18" r="2" fill="#7a5a2e"/>
-  <circle cx="27" cy="20" r="2" fill="#7a5a2e"/>
-  <circle cx="20" cy="27" r="2" fill="#7a5a2e"/>
-  <circle cx="27" cy="27" r="1.6" fill="#7a5a2e"/>
+  <circle cx="22" cy="22" r="22" fill="#fbefdd"/>
+  <circle cx="22" cy="22" r="13" fill="#d5ad7a"/>
+  <circle cx="18" cy="18" r="2" fill="#77603f"/>
+  <circle cx="27" cy="20" r="2" fill="#77603f"/>
+  <circle cx="20" cy="27" r="2" fill="#77603f"/>
+  <circle cx="27" cy="27" r="1.6" fill="#77603f"/>
 </svg>

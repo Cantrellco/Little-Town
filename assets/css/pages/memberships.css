@@ -3,11 +3,14 @@
    Builds entirely on the v4 shared kit in styles.css.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (meadow mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--sage) 0%, var(--teal) 55%, var(--sky) 100%); }
+
 /* ---- Hero boost ---- */
 .page-hero.ph--member {
   /* Brighter, more saturated gradient than the default sage */
   background: linear-gradient(180deg, #c8e6c4 0%, #d8ebd5 38%, var(--base) 100%);
-  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.4rem, 5vw, 4rem);
+  padding-block: clamp(2.2rem, 5vw, 3.6rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
 /* Hero sticker sits above the art, angled for playfulness */
@@ -27,7 +30,18 @@
 .mem-hero-art {
   max-width: 320px;
   margin: 2rem auto 0;
+  position: relative;
 }
+/* Soft sage glow behind the membership card — gives the art depth, like the
+   loved fusion/parties heroes, while keeping the calm membership mood. */
+.mem-hero-glow {
+  position: absolute;
+  inset: -14% -10%;
+  z-index: 0;
+  background: radial-gradient(closest-side, rgba(156,176,130,0.45), rgba(156,176,130,0) 72%);
+  pointer-events: none;
+}
+.mem-hero-art img { position: relative; z-index: 1; }
 @media (min-width: 880px) {
   .mem-hero-inner {
     display: grid;
@@ -39,12 +53,6 @@
   .mem-hero-inner .flex-cta { justify-content: flex-start; }
   .mem-hero-inner .pill-row  { justify-content: flex-start; }
   .mem-hero-art { margin: 0 auto; }
-}
-
-/* ---- Value ribbon ---- */
-.mem-ribbon {
-  background: var(--grad-sunrise);
-  color: #fff;
 }
 
 /* Override .panel's white background so bg-meadow actually shows */
@@ -62,12 +70,12 @@
   .value-strip { grid-template-columns: repeat(3, 1fr); }
 }
 
-.value-strip .stat .num { color: var(--coral); }
+.value-strip .stat .num { color: var(--accent); }
 
 /* Vertical divider between stats on desktop */
 @media (min-width: 640px) {
   .value-strip .stat + .stat {
-    border-left: 2px dashed rgba(255,255,255,0.3);
+    border-left: 2px dashed rgba(58,49,40,0.22);
     padding-left: 1.2rem;
   }
 }
@@ -110,7 +118,7 @@
 
 .plan-toggle button[aria-selected="true"].toggle-annual {
   background: var(--grad-meadow);
-  color: #fff;
+  color: var(--ink);
   box-shadow: var(--shadow-sm);
 }
 
@@ -170,7 +178,7 @@
 
 .group-pill--annual {
   background: var(--grad-meadow);
-  color: #fff;
+  color: var(--ink);
 }
 
 /* ---- Price card upgrades ---- */
@@ -198,7 +206,7 @@
 }
 
 .price-card.featured .mem-card-header h4 {
-  color: #fff;
+  color: var(--ink);
   margin-bottom: 0;
 }
 
@@ -210,7 +218,7 @@
 .mem-card-header h4 { margin-bottom: 0; }
 
 /* Featured card price colour */
-.price-card.featured .price-tag { color: var(--teal); }
+.price-card.featured .price-tag { color: var(--accent-teal); }
 
 /* Savings sticker on annual cards */
 .savings-sticker {

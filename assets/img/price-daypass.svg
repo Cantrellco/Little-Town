@@ -2,11 +2,11 @@
 <!-- Day Pass — single ticket illustration -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="Day pass ticket">
   <g transform="rotate(-6 100 70)">
-    <rect x="38" y="44" width="124" height="56" rx="10" fill="#7FA8A0"/>
-    <circle cx="100" cy="44" r="7" fill="#F7F3EC"/>
-    <circle cx="100" cy="100" r="7" fill="#F7F3EC"/>
-    <line x1="100" y1="54" x2="100" y2="90" stroke="#F7F3EC" stroke-width="3" stroke-dasharray="4 5"/>
-    <text x="69" y="76" font-family="Poppins, sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">DAY</text>
-    <text x="131" y="76" font-family="Poppins, sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">PASS</text>
+    <rect x="38" y="44" width="124" height="56" rx="10" fill="#8fada8"/>
+    <circle cx="100" cy="44" r="7" fill="#fffffa"/>
+    <circle cx="100" cy="100" r="7" fill="#fffffa"/>
+    <line x1="100" y1="54" x2="100" y2="90" stroke="#fffffa" stroke-width="3" stroke-dasharray="4 5"/>
+    <text x="69" y="76" font-family="Poppins, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">DAY</text>
+    <text x="131" y="76" font-family="Poppins, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">PASS</text>
   </g>
 </svg>

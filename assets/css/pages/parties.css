@@ -4,6 +4,9 @@
    RULE: Only parties-specific overrides live here.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (festive mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 38%, var(--red) 68%, var(--sky) 100%); }
+
 /* ---------- Hero: festive blush + confetti layer ---------- */
 
 /* Bigger, bolder eyebrow confetti dots on the parties hero */
@@ -40,12 +43,6 @@
   display: block;
   margin-inline: auto;
   opacity: 0.82;
-}
-
-/* ---------- Marquee ribbon ---------- */
-.parties-ribbon {
-  /* Candy-pink gradient instead of sunrise for a birthday feel */
-  background: linear-gradient(135deg, var(--red) 0%, var(--coral) 60%, var(--sun) 100%);
 }
 
 /* ---------- Stat row ---------- */
@@ -93,9 +90,9 @@
   font-size: clamp(2.8rem, 7vw, 4.2rem);
   display: block;
 }
-.parties-stats .stat-card:nth-child(1) .stat .num { color: var(--sky); }
-.parties-stats .stat-card:nth-child(2) .stat .num { color: var(--sun); }
-.parties-stats .stat-card:nth-child(3) .stat .num { color: var(--coral); }
+.parties-stats .stat-card:nth-child(1) .stat .num { color: var(--accent-sky); }
+.parties-stats .stat-card:nth-child(2) .stat .num { color: var(--accent-sun); }
+.parties-stats .stat-card:nth-child(3) .stat .num { color: var(--accent-coral); }
 
 .parties-stats .stat .label {
   font-size: 1rem;
@@ -113,6 +110,10 @@
 /* ---------- How Booking Works (steps) ---------- */
 .parties-steps-section {
   background: linear-gradient(160deg, var(--sun-tint) 0%, var(--coral-tint) 50%, var(--sky-tint) 100%);
+}
+/* Flowing divider: rise into the section above using this same gradient */
+.parties-steps-section.flow-top {
+  --surface: linear-gradient(160deg, var(--sun-tint) 0%, var(--coral-tint) 50%, var(--sky-tint) 100%);
 }
 
 /* Step number badges: use the sunrise gradient from the v4 kit */
@@ -201,7 +202,7 @@
   color: var(--ink);
   box-shadow: var(--shadow-sm);
 }
-.price-pill strong { color: var(--terracotta); }
+.price-pill strong { color: var(--accent); }
 
 /* ---------- Policy strips — friendlier cards ---------- */
 .policy-cards {
@@ -339,7 +340,7 @@
   position: absolute;
   top: -0.4rem; left: 1.2rem;
   font-family: var(--font-script);
-  color: var(--coral);
+  color: var(--accent-coral);
   font-size: 4rem;
   line-height: 1;
   opacity: 0.45;
@@ -368,7 +369,7 @@
 }
 
 /* Add a fun emoji to the first open accordion */
-.acc-item[aria-expanded="true"] .acc-trigger { color: var(--terracotta); }
+.acc-item[aria-expanded="true"] .acc-trigger { color: var(--accent); }
 
 /* ---------- Final CTA band ---------- */
 .parties-cta-band {
@@ -396,19 +397,19 @@
   border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
 }
 .parties-cta-band h2,
-.parties-cta-band p { color: #fff; }
+.parties-cta-band p { color: var(--ink); }
 .parties-cta-band .btn--sun {
   box-shadow: 0 5px 0 rgba(90,60,25,0.25), var(--shadow-md);
 }
 .parties-cta-band .btn--ghost {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.5);
-  color: #fff;
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(58,49,40,0.22);
+  color: var(--ink);
 }
 .parties-cta-band .btn--ghost:hover {
-  background: rgba(255,255,255,0.28);
-  border-color: #fff;
-  color: #fff;
+  background: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---------- Reduced motion overrides (parties-specific) ---------- */

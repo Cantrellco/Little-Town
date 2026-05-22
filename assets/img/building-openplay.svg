@@ -5,50 +5,50 @@
      out of the left side down to a round mouth on the ground. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated market storefront with a teal scalloped awning and a play slide.">
   <!-- ground -->
-  <ellipse cx="162" cy="194" rx="120" ry="9" fill="#7a8f63" opacity="0.12"/>
-  <rect x="22" y="188" width="256" height="5" rx="2.5" fill="#9CB082" opacity="0.5"/>
+  <ellipse cx="162" cy="194" rx="120" ry="9" fill="#849473" opacity="0.12"/>
+  <rect x="22" y="188" width="256" height="5" rx="2.5" fill="#a8b695" opacity="0.5"/>
 
   <!-- teal play slide: curls out of the market's left side to a round mouth -->
   <g>
-    <ellipse cx="58" cy="186" rx="46" ry="7" fill="#7a8f63" opacity="0.12"/>
-    <path d="M150 150 C 130 170, 94 180, 62 184" fill="none" stroke="#a9d6cd" stroke-width="34" stroke-linecap="round"/>
-    <path d="M148 142 C 132 158, 100 168, 72 174" fill="none" stroke="#c2e2db" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
-    <g stroke="#7fb8af" stroke-width="3" opacity="0.4" stroke-linecap="round">
+    <ellipse cx="58" cy="186" rx="46" ry="7" fill="#849473" opacity="0.12"/>
+    <path d="M150 150 C 130 170, 94 180, 62 184" fill="none" stroke="#bcddd7" stroke-width="34" stroke-linecap="round"/>
+    <path d="M148 142 C 132 158, 100 168, 72 174" fill="none" stroke="#d3ebe6" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
+    <g stroke="#93bdb7" stroke-width="3" opacity="0.4" stroke-linecap="round">
       <line x1="126" y1="160" x2="134" y2="176"/>
       <line x1="102" y1="170" x2="112" y2="184"/>
     </g>
-    <ellipse cx="56" cy="170" rx="22" ry="23" fill="#a9d6cd"/>
-    <ellipse cx="56" cy="170" rx="22" ry="23" fill="none" stroke="#8fc4bb" stroke-width="3"/>
-    <ellipse cx="56" cy="170" rx="14" ry="15" fill="#7fa8a0"/>
-    <ellipse cx="56" cy="170" rx="7"  ry="9"  fill="#3f6a63"/>
+    <ellipse cx="56" cy="170" rx="22" ry="23" fill="#bcddd7"/>
+    <ellipse cx="56" cy="170" rx="22" ry="23" fill="none" stroke="#a3cac3" stroke-width="3"/>
+    <ellipse cx="56" cy="170" rx="14" ry="15" fill="#8fada8"/>
+    <ellipse cx="56" cy="170" rx="7"  ry="9"  fill="#4d6c67"/>
   </g>
 
   <!-- market -->
   <g>
-    <rect x="120" y="98" width="150" height="90" rx="6" fill="#d9a96a"/>
-    <g stroke="#c8964f" stroke-width="1.6" opacity="0.5"><line x1="156" y1="140" x2="156" y2="188"/><line x1="186" y1="140" x2="186" y2="188"/><line x1="216" y1="140" x2="216" y2="188"/><line x1="246" y1="140" x2="246" y2="188"/></g>
-    <rect x="246" y="98" width="24" height="90" rx="6" fill="#c8964f" opacity="0.4"/>
-    <rect x="120" y="98" width="150" height="90" rx="6" fill="none" stroke="#c8964f" stroke-width="3"/>
+    <rect x="120" y="98" width="150" height="90" rx="6" fill="#d7b385"/>
+    <g stroke="#c49f6b" stroke-width="1.6" opacity="0.5"><line x1="156" y1="140" x2="156" y2="188"/><line x1="186" y1="140" x2="186" y2="188"/><line x1="216" y1="140" x2="216" y2="188"/><line x1="246" y1="140" x2="246" y2="188"/></g>
+    <rect x="246" y="98" width="24" height="90" rx="6" fill="#c49f6b" opacity="0.4"/>
+    <rect x="120" y="98" width="150" height="90" rx="6" fill="none" stroke="#c49f6b" stroke-width="3"/>
     <!-- wood-plank roof (two-tone) -->
-    <polygon points="108,100 195,40 282,100" fill="#cda063"/>
-    <polygon points="195,40 282,100 238,100" fill="#b5823f"/>
-    <g stroke="#9c6c30" stroke-width="1.6" opacity="0.45"><line x1="138" y1="88" x2="252" y2="88"/><line x1="156" y1="74" x2="234" y2="74"/></g>
-    <rect x="104" y="96" width="182" height="9" rx="4" fill="#b07d35"/>
+    <polygon points="108,100 195,40 282,100" fill="#cbaa7d"/>
+    <polygon points="195,40 282,100 238,100" fill="#b08a59"/>
+    <g stroke="#977347" stroke-width="1.6" opacity="0.45"><line x1="138" y1="88" x2="252" y2="88"/><line x1="156" y1="74" x2="234" y2="74"/></g>
+    <rect x="104" y="96" width="182" height="9" rx="4" fill="#ab8550"/>
     <!-- round gable window -->
-    <circle cx="195" cy="70" r="12" fill="#fbf3e6" stroke="#b5823f" stroke-width="2.4"/>
+    <circle cx="195" cy="70" r="12" fill="#fffff6" stroke="#b08a59" stroke-width="2.4"/>
     <!-- flag with gold ball -->
-    <line x1="195" y1="40" x2="195" y2="18" stroke="#7a5a2e" stroke-width="3"/>
-    <circle cx="195" cy="40" r="5" fill="#e6b54a"/>
-    <path d="M195 21 L227 30 L195 40 Z" fill="#de5347"/>
+    <line x1="195" y1="40" x2="195" y2="18" stroke="#77603f" stroke-width="3"/>
+    <circle cx="195" cy="40" r="5" fill="#e3bf70"/>
+    <path d="M195 21 L227 30 L195 40 Z" fill="#eda89c"/>
     <!-- solid teal scalloped awning -->
-    <rect x="116" y="106" width="158" height="7" rx="3.5" fill="#8fc4bb"/>
-    <rect x="120" y="111" width="150" height="18" fill="#a9d6cd"/>
-    <g stroke="#8fc4bb" stroke-width="1.8" opacity="0.5"><line x1="152" y1="111" x2="152" y2="129"/><line x1="184" y1="111" x2="184" y2="129"/><line x1="216" y1="111" x2="216" y2="129"/><line x1="248" y1="111" x2="248" y2="129"/></g>
-    <g fill="#a9d6cd"><circle cx="130" cy="129" r="10"/><circle cx="152" cy="129" r="10"/><circle cx="174" cy="129" r="10"/><circle cx="196" cy="129" r="10"/><circle cx="218" cy="129" r="10"/><circle cx="240" cy="129" r="10"/><circle cx="262" cy="129" r="10"/></g>
+    <rect x="116" y="106" width="158" height="7" rx="3.5" fill="#a3cac3"/>
+    <rect x="120" y="111" width="150" height="18" fill="#bcddd7"/>
+    <g stroke="#a3cac3" stroke-width="1.8" opacity="0.5"><line x1="152" y1="111" x2="152" y2="129"/><line x1="184" y1="111" x2="184" y2="129"/><line x1="216" y1="111" x2="216" y2="129"/><line x1="248" y1="111" x2="248" y2="129"/></g>
+    <g fill="#bcddd7"><circle cx="130" cy="129" r="10"/><circle cx="152" cy="129" r="10"/><circle cx="174" cy="129" r="10"/><circle cx="196" cy="129" r="10"/><circle cx="218" cy="129" r="10"/><circle cx="240" cy="129" r="10"/><circle cx="262" cy="129" r="10"/></g>
     <!-- cream arched door -->
-    <path d="M150 188 v-40 a24 24 0 0 1 48 0 v40 Z" fill="#fbf3e6" stroke="#b5823f" stroke-width="3"/>
+    <path d="M150 188 v-40 a24 24 0 0 1 48 0 v40 Z" fill="#fffff6" stroke="#b08a59" stroke-width="3"/>
     <!-- little face window -->
-    <path d="M214 176 v-8 a15 15 0 0 1 30 0 v8 Z" fill="#fbf3e6" stroke="#b5823f" stroke-width="2.4"/>
-    <g fill="#7a5a2e"><circle cx="225" cy="166" r="3.4"/><circle cx="237" cy="166" r="3.4"/></g>
+    <path d="M214 176 v-8 a15 15 0 0 1 30 0 v8 Z" fill="#fffff6" stroke="#b08a59" stroke-width="2.4"/>
+    <g fill="#77603f"><circle cx="225" cy="166" r="3.4"/><circle cx="237" cy="166" r="3.4"/></g>
   </g>
 </svg>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Subtle town-skyline divider motif (decorative, brand-tinted) -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" role="presentation" aria-hidden="true">
-  <path d="M0 92 Q360 60 720 88 T1440 80 V120 H0 Z" fill="#e6ecdd"/>
-  <g fill="#dbe5cf">
+  <path d="M0 92 Q360 60 720 88 T1440 80 V120 H0 Z" fill="#f3f7ec"/>
+  <g fill="#e8efdf">
     <g transform="translate(120,0)"><rect x="0" y="64" width="40" height="36" rx="4"/><polygon points="-6,64 20,40 46,64"/></g>
     <g transform="translate(360,0)"><rect x="0" y="56" width="34" height="44" rx="4"/><polygon points="-5,56 17,34 39,56"/></g>
     <g transform="translate(640,0)"><rect x="0" y="60" width="46" height="40" rx="4"/><polygon points="-6,60 23,36 52,60"/></g>
     <g transform="translate(960,0)"><rect x="0" y="58" width="36" height="42" rx="4"/><polygon points="-5,58 18,36 41,58"/></g>
     <g transform="translate(1220,0)"><rect x="0" y="64" width="42" height="36" rx="4"/><polygon points="-6,64 21,42 48,64"/></g>
   </g>
-  <g fill="#cdddbb">
+  <g fill="#dae6cd">
     <circle cx="240" cy="92" r="20"/><circle cx="520" cy="96" r="16"/>
     <circle cx="820" cy="94" r="22"/><circle cx="1120" cy="96" r="18"/>
   </g>

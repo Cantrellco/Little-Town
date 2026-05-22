@@ -4,6 +4,9 @@
    Mobile-first. All motion silenced under prefers-reduced-motion.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (playful mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--coral) 0%, var(--sky) 40%, var(--sage) 70%, var(--sun) 100%); }
+
 /* ---------- Hero hero accent: sticker on the art ---------- */
 .ph--play .hero-sticker-wrap {
   position: relative;
@@ -130,7 +133,7 @@
   pointer-events: none;
 }
 .storefront-card--grocery .storefront-sticker { background: var(--sage); color: #243016; transform: rotate(-4deg); }
-.storefront-card--cafe    .storefront-sticker { background: var(--coral); color: #fff; transform: rotate(3deg); }
+.storefront-card--cafe    .storefront-sticker { background: var(--coral); color: #6a2f15; transform: rotate(3deg); }
 .storefront-card--clinic  .storefront-sticker { background: var(--teal); color: #08323d; transform: rotate(-3deg); }
 
 .storefront-body {
@@ -181,7 +184,7 @@
   font-family: var(--font-head);
   font-weight: 800;
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--ink);
   box-shadow: var(--shadow-sm);
 }
 .play-step-no::before { content: counter(play-step); }
@@ -236,32 +239,6 @@
   .showcase-badge { font-size: 0.73rem; padding: 0.4rem 0.8rem; bottom: 0.7rem; right: 0.7rem; }
 }
 
-/* ---------- Ribbon / marquee strip ---------- */
-.play-ribbon {
-  background: var(--grad-sunrise);
-  color: #fff;
-  overflow: hidden;
-}
-.play-ribbon .track {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  width: max-content;
-  padding: 0.8rem 1.25rem;
-  animation: ribbonScroll 32s linear infinite;
-}
-.play-ribbon .track span {
-  font-family: var(--font-head);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  font-size: 0.92rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 2rem;
-}
-.play-ribbon:hover .track { animation-play-state: paused; }
-
 /* ---------- Pricing section ---------- */
 .pricing-section { padding-block: clamp(3rem, 7vw, var(--space-7)); }
 
@@ -311,7 +288,7 @@
   font-family: var(--font-head);
   font-weight: 800;
   font-size: clamp(2.2rem, 5vw, 2.8rem);
-  color: var(--terracotta);
+  color: var(--accent);
   margin: 0.2rem 0 0.15rem;
   line-height: 1;
 }
@@ -458,9 +435,9 @@
 .pp-policy h3 {
   margin: 0;
   font-size: 1.08rem;
-  color: var(--terracotta);
+  color: var(--accent);
 }
-.pp-policy--teal h3 { color: var(--teal); }
+.pp-policy--teal h3 { color: var(--accent-teal); }
 
 .pp-policy ul {
   list-style: none;
@@ -496,7 +473,6 @@
   .pp-price-card,
   .play-step { transform: none !important; }
 
-  .play-ribbon .track { animation: none !important; }
   .showcase-badge { transform: none !important; }
   .pp-sticker      { transform: translateX(-50%) !important; }
   .storefront-sticker { transform: none !important; }

@@ -10,18 +10,28 @@
   --base-deep:   #EFE7D8; /* slightly deeper beige for bands */
   --ink:         #333333; /* charcoal text */
   --ink-soft:    #5b5750; /* muted body text */
-  --wood:        #D9A35E; /* wood tan */
-  --sage:        #9CB082; /* sage green */
-  --teal:        #7FA8A0; /* soft teal */
-  --terracotta:  #B5532E; /* terracotta */
-  --red:         #D64A3F; /* red */
+  --wood:        #E8C99B; /* pastel butterscotch */
+  --sage:        #BFD6A8; /* pastel sage */
+  --teal:        #A7D2C9; /* pastel teal */
+  --terracotta:  #E0A184; /* pastel clay (used for fills) */
+  --red:         #EC9A90; /* pastel rose */
   --white:       #ffffff;
 
+  /* Deep accent tones — for text/icons that need contrast on a light bg.
+     The pastel fills above are too light to read as text, so anything that
+     was a saturated accent colour on text now points here instead. */
+  --accent:       #B35A37; /* deep clay (terracotta-family text) */
+  --accent-sun:   #B9800F; /* deep gold  */
+  --accent-sky:   #2F8AA6; /* deep sky   */
+  --accent-sage:  #6F8A4D; /* deep sage  */
+  --accent-coral: #D9663D; /* deep coral */
+  --accent-teal:  #3F7268; /* deep teal  */
+
   /* Tints (derived, for soft fills) */
-  --wood-tint:   #f3e3cb;
-  --sage-tint:   #e6ecdd;
-  --teal-tint:   #dce9e6;
-  --terra-tint:  #f1ddd3;
+  --wood-tint:   #f5e8d0;
+  --sage-tint:   #e9efe0;
+  --teal-tint:   #e1ede9;
+  --terra-tint:  #f6e7dd;
 
   /* Typography */
   --font-head: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -33,9 +43,9 @@
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2rem;
-  --space-5: 3rem;
-  --space-6: 4.5rem;
-  --space-7: 6.5rem;
+  --space-5: 2.5rem;
+  --space-6: 3.25rem;
+  --space-7: 4.5rem;
 
   /* Radii */
   --r-sm: 0.6rem;
@@ -111,8 +121,8 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   padding-inline: clamp(1.1rem, 4vw, 2.5rem);
 }
 
-.section { padding-block: clamp(3rem, 7vw, var(--space-7)); }
-.section--tight { padding-block: clamp(2.2rem, 5vw, var(--space-6)); }
+.section { padding-block: clamp(2.25rem, 5vw, var(--space-7)); }
+.section--tight { padding-block: clamp(1.6rem, 3.5vw, var(--space-6)); }
 .band { background: var(--base-deep); }
 .band-white { background: var(--white); }
 
@@ -123,7 +133,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.78rem;
-  color: var(--terracotta);
+  color: var(--accent);
   margin-bottom: 0.6rem;
   display: inline-block;
 }
@@ -144,7 +154,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 /* ---------- Buttons (all visual-only / non-functional) ---------- */
 .btn {
   --btn-bg: var(--terracotta);
-  --btn-fg: #fff;
+  --btn-fg: var(--ink);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -177,7 +187,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   border-color: rgba(51,51,51,0.18);
   box-shadow: none;
 }
-.btn--ghost:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
 
 .btn--lg { padding: 1.1rem 2rem; font-size: 1.05rem; }
 .btn--block { display: flex; width: 100%; justify-content: center; }
@@ -217,7 +227,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 }
 .brand-sub {
   font-family: var(--font-script);
-  color: var(--teal);
+  color: var(--accent-teal);
   font-size: 1.05rem;
   margin-top: 0.05rem;
 }
@@ -234,14 +244,14 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   position: relative;
   transition: color 0.18s ease, background 0.18s ease;
 }
-.nav a:hover { color: var(--terracotta); }
-.nav a.active { color: var(--terracotta); }
+.nav a:hover { color: var(--accent); }
+.nav a.active { color: var(--accent); }
 .nav a.active::after {
   content: "";
   position: absolute;
   left: 0.7rem; right: 0.7rem; bottom: 0.28rem;
   height: 2px; border-radius: 2px;
-  background: var(--terracotta);
+  background: var(--accent);
 }
 
 .header-cta { display: flex; align-items: center; gap: 0.6rem; }
@@ -282,7 +292,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   padding: 0.85rem clamp(1.1rem, 4vw, 2.5rem);
   border-radius: var(--r-sm);
 }
-.mobile-menu a.active { color: var(--terracotta); }
+.mobile-menu a.active { color: var(--accent); }
 .mobile-menu .btn { margin: 0.7rem clamp(1.1rem, 4vw, 2.5rem) 0; }
 
 @media (min-width: 960px) {
@@ -414,13 +424,13 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   background: linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
   border-radius: var(--r-xl);
   padding: clamp(2rem, 5vw, 3.5rem);
-  color: #fff;
+  color: var(--ink);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-.newsletter h2, .newsletter p { color: #fff; }
-.newsletter p { color: rgba(255,255,255,0.92); }
+.newsletter h2, .newsletter p { color: var(--ink); }
+.newsletter p { color: var(--ink-soft); }
 .newsletter-form {
   display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
   max-width: 30rem; margin: 1.4rem auto 0;
@@ -471,11 +481,11 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 }
 .acc-trigger .acc-icon {
   flex: none; width: 26px; height: 26px; border-radius: 50%;
-  background: var(--terra-tint); color: var(--terracotta);
+  background: var(--terra-tint); color: var(--accent);
   display: grid; place-items: center; font-size: 1.2rem; line-height: 1;
   transition: transform 0.25s ease, background 0.25s ease;
 }
-.acc-item[aria-expanded="true"] .acc-icon { transform: rotate(45deg); background: var(--terracotta); color: #fff; }
+.acc-item[aria-expanded="true"] .acc-icon { transform: rotate(45deg); background: var(--accent); color: #fff; }
 .acc-panel {
   display: grid; grid-template-rows: 0fr;
   transition: grid-template-rows 0.28s ease;
@@ -502,13 +512,13 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .menu-row .m-desc { font-size: 0.9rem; color: var(--ink-soft); }
 /* Prices read as little tags, and pop on row hover */
 .menu-row .m-price {
-  font-family: var(--font-head); font-weight: 700; color: var(--terracotta); white-space: nowrap;
+  font-family: var(--font-head); font-weight: 700; color: var(--accent); white-space: nowrap;
   background: var(--terra-tint); padding: 0.22rem 0.65rem; border-radius: 999px;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.menu-row:hover .m-name { color: var(--terracotta); }
+.menu-row:hover .m-name { color: var(--accent); }
 .menu-row:hover .m-icon { animation: wiggle 0.5s ease; }
-.menu-row:hover .m-price { background: var(--terracotta); color: #fff; }
+.menu-row:hover .m-price { background: var(--accent); color: #fff; }
 
 /* ---------- Booking widget mockup (Parties) ---------- */
 .booking {
@@ -533,14 +543,14 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 }
 .cal .day.muted { color: #c3bcae; background: transparent; }
 .cal .day.avail { background: var(--sage-tint); color: var(--ink); font-weight: 600; }
-.cal .day.selected { background: var(--terracotta); color: #fff; font-weight: 700; box-shadow: var(--shadow-sm); }
+.cal .day.selected { background: var(--accent); color: #fff; font-weight: 700; box-shadow: var(--shadow-sm); }
 .slots { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.2rem; }
 .slot {
   border: 1.5px solid rgba(51,51,51,0.14); border-radius: var(--r-pill);
   padding: 0.55rem 1rem; font-family: var(--font-head); font-weight: 500; font-size: 0.9rem;
   background: var(--white); cursor: pointer; color: var(--ink);
 }
-.slot.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+.slot.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
 .mock-note {
   font-size: 0.8rem; color: var(--ink-soft); text-align: center; margin-top: 1rem; font-style: italic;
 }
@@ -563,7 +573,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   padding: clamp(1.4rem, 3vw, 2.2rem);
   border: 1px dashed rgba(140,100,40,0.35);
 }
-.policy h3 { color: var(--terracotta); }
+.policy h3 { color: var(--accent); }
 .policy ul { margin: 0; padding-left: 1.2rem; }
 .policy li { margin-bottom: 0.5rem; color: var(--ink-soft); }
 
@@ -627,7 +637,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 /* ---------- Page hero (interior pages) — echoes the home sky + clouds ---------- */
 .page-hero {
   background: linear-gradient(180deg, #c5e2ec 0%, #d6eaef 33%, var(--base) 100%);
-  padding-block: clamp(2.6rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.4rem);
+  padding-block: clamp(2rem, 4.5vw, 3.2rem) clamp(1.5rem, 3.5vw, 2.4rem);
   text-align: center;
 }
 .page-hero p { max-width: 56ch; margin-inline: auto; }
@@ -639,7 +649,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .page-hero .flex-cta { justify-content: center; }
 /* Keep the secondary CTA legible over the busy sky */
 .page-hero .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
-.page-hero .btn--ghost:hover { background: #fff; border-color: var(--terracotta); color: var(--terracotta); }
+.page-hero .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
 /* Clouds drift a touch smaller and softer here than on the tall home hero */
 .page-hero .hero-cloud.c1 { width: 120px; opacity: 0.90; }
 .page-hero .hero-cloud.c2 { width: 90px;  opacity: 0.82; }
@@ -650,6 +660,30 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   .page-hero .hero-cloud.c1 { width: 92px; }
   .page-hero .hero-cloud.c4 { width: 110px; }
 }
+
+/* Kiddy bunting banner across the top of an interior hero — a seamless,
+   horizontally-tiling pastel pennant string. Shows on every screen size
+   (it sits at the very top edge, so it never crowds the centred copy). */
+.hero-bunting {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  z-index: 1;
+  pointer-events: none;
+  background: url("../img/bunting.svg") repeat-x top center;
+  background-size: auto 34px;
+  opacity: 0.95;
+}
+/* Gentle sway so the whole string feels alive */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-bunting { animation: buntingSway 7s ease-in-out infinite; transform-origin: top center; }
+}
+@keyframes buntingSway {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(2px); }
+}
+/* Nudge centred hero copy down a touch so it clears the bunting */
+.page-hero.has-bunting > .container { padding-top: 0.8rem; }
 
 /* ---------- Per-page hero personalities ----------
    Each interior hero shares the page-hero skeleton (centred copy, halo, CTAs)
@@ -674,7 +708,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 /* Our Story — quiet, warm paper; restrained and a touch more editorial */
 .page-hero.ph--story {
   background: linear-gradient(180deg, #efe7d8 0%, #f4eee2 52%, var(--base) 100%);
-  padding-block: clamp(3rem, 7vw, 5rem) clamp(2.4rem, 5vw, 3.6rem);
+  padding-block: clamp(2.2rem, 5vw, 3.4rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
 /* Visit Us — cooler daylight teal, a wayfinding mood */
@@ -719,7 +753,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-inner, .page-hero > .container, .newsletter > * { position: relative; z-index: 2; }
 
 .deco { position: absolute; pointer-events: none; z-index: 1; }
-.deco img { width: 100%; height: auto; display: block; }
+.deco img, .deco svg { width: 100%; height: auto; display: block; }
 /* Floaters are a subtle desktop-only flourish; hidden on small screens where
    they'd crowd the centered hero headings. (The drifting clouds stay on every
    hero, mobile included — they're the shared motion across the site.) */
@@ -761,7 +795,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 
 /* Pill / badge for "next door" partner */
 .partner-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--terra-tint);
-  color: var(--terracotta); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem;
+  color: var(--accent); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem;
   padding: 0.4rem 0.9rem; border-radius: var(--r-pill); }
 
 /* Membership spotlight card on home */
@@ -788,11 +822,16 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-v2 {
   position: relative; overflow: hidden; text-align: center;
   display: flex; justify-content: center; align-items: flex-start;
-  min-height: clamp(560px, 82vh, 760px);
+  min-height: clamp(580px, 84vh, 760px);
   background: #c5e2ec;
 }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
-.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
+/* The town backdrop is an <img> that main.js swaps for a live inline <svg>
+   (so it can animate). Both must fill the hero and anchor to the bottom:
+   the <img> uses object-fit cover; the inline <svg> relies on its own
+   preserveAspectRatio="xMidYMax slice" (set in the file) plus 100% sizing. */
+.hero-bg img,
+.hero-bg svg { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
 /* gentle bright-sky wash at the very top — keeps the blue sky visible */
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -808,7 +847,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-v2 .flex-cta { justify-content: center; }
 /* keep the secondary CTA legible over the busy town background */
 .hero-v2 .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
-.hero-v2 .btn--ghost:hover { background: #fff; border-color: var(--terracotta); color: var(--terracotta); }
+.hero-v2 .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
 
 /* Rolling clouds — an endless left-to-right conveyor. The track is two hero
    widths wide and holds two identical cloud sets; it slides right by exactly
@@ -861,15 +900,15 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .member-band {
   display: grid; gap: clamp(1.4rem, 4vw, 2.8rem); align-items: center;
   background: linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
-  color: #fff; border-radius: var(--r-xl); padding: clamp(1.6rem, 4vw, 3rem); overflow: hidden;
+  color: var(--ink); border-radius: var(--r-xl); padding: clamp(1.6rem, 4vw, 3rem); overflow: hidden;
 }
-.member-band h2, .member-band p { color: #fff; }
-.member-band .eyebrow { color: rgba(255,255,255,0.85); }
-.member-band .price-list li { color: rgba(255,255,255,0.95); }
-.member-band .price-list li::before { background: rgba(255,255,255,0.22); box-shadow: inset 0 0 0 3px #fff; }
+.member-band h2, .member-band p { color: var(--ink); }
+.member-band .eyebrow { color: var(--accent); }
+.member-band .price-list li { color: var(--ink); }
+.member-band .price-list li::before { background: rgba(58,49,40,0.10); box-shadow: inset 0 0 0 3px var(--accent-teal); }
 .member-art img { width: 100%; border-radius: var(--r-lg); box-shadow: var(--shadow-md); display: block; }
 @media (min-width: 860px) { .member-band { grid-template-columns: 1.05fr 0.95fr; } }
-.btn--onfill { background: #fff; color: var(--teal); }
+.btn--onfill { background: #fff; color: var(--accent-teal); }
 .btn--onfill:hover { background: #fff; }
 
 /* ============================================================
@@ -902,7 +941,7 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 /* Animated nav underline (desktop) */
 .nav a::after {
   content: ""; position: absolute; left: 0.7rem; right: 0.7rem; bottom: 0.28rem;
-  height: 2px; border-radius: 2px; background: var(--terracotta);
+  height: 2px; border-radius: 2px; background: var(--accent);
   transform: scaleX(0); transform-origin: left center; transition: transform 0.26s ease;
 }
 .nav a:hover::after, .nav a.active::after { transform: scaleX(1); }
@@ -915,8 +954,8 @@ a.btn--terracotta[href="memberships.html"]::after {
   animation: ctaRing 2.8s ease-out infinite;
 }
 @keyframes ctaRing {
-  0%   { box-shadow: 0 0 0 0 rgba(214, 74, 63, 0.5); }
-  70%, 100% { box-shadow: 0 0 0 13px rgba(214, 74, 63, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(236, 154, 144, 0.6); }
+  70%, 100% { box-shadow: 0 0 0 13px rgba(236, 154, 144, 0); }
 }
 
 /* Accordion answer fades/slides in */
@@ -952,12 +991,12 @@ a.btn--terracotta[href="memberships.html"]::after {
    ============================================================ */
 :root {
   /* Brighter accents that still harmonise with the warm earthy base */
-  --sun:        #F4B740;  /* sunny yellow      */
-  --sky:        #4FB0D0;  /* brighter sky blue */
-  --coral:      #F2754B;  /* warm coral, between terracotta & red */
-  --sun-tint:   #fdeec6;
-  --sky-tint:   #d4edf5;
-  --coral-tint: #fbe0d4;
+  --sun:        #F8D98F;  /* pastel sun   */
+  --sky:        #AEDCEA;  /* pastel sky   */
+  --coral:      #F4AE92;  /* pastel coral */
+  --sun-tint:   #fdf1d0;
+  --sky-tint:   #e1f2f8;
+  --coral-tint: #fce6db;
 
   /* Ready-made playful gradients */
   --grad-sunrise: linear-gradient(135deg, var(--sun) 0%, var(--coral) 100%);
@@ -967,7 +1006,7 @@ a.btn--terracotta[href="memberships.html"]::after {
 }
 
 /* ---- Gradient / tint background helpers ---- */
-.bg-sunrise, .bg-meadow, .bg-candy { color: #fff; }
+.bg-sunrise, .bg-meadow, .bg-candy { color: var(--ink); }
 .bg-sunrise { background: var(--grad-sunrise); }
 .bg-meadow  { background: var(--grad-meadow); }
 .bg-candy   { background: var(--grad-candy); }
@@ -976,9 +1015,17 @@ a.btn--terracotta[href="memberships.html"]::after {
 .bg-sky-tint   { background: var(--sky-tint); }
 .bg-coral-tint { background: var(--coral-tint); }
 /* On a coloured/gradient band, force white headings + copy */
-.on-dark, .on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4, .on-dark p { color: #fff; }
-.on-dark .eyebrow { color: rgba(255,255,255,0.9); }
-.on-dark .section-lead { color: rgba(255,255,255,0.92); }
+/* Pastel bands are light, so text on them is dark ink, not white. */
+.on-dark, .on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4, .on-dark p { color: var(--ink); }
+.on-dark .eyebrow { color: var(--accent); }
+.on-dark .section-lead { color: var(--ink-soft); }
+/* Secondary (ghost) buttons sitting on a pastel band: dark outline + ink. */
+.on-dark .btn--ghost {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(58,49,40,0.22);
+  color: var(--ink);
+}
+.on-dark .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
 
 /* ---- Marker highlight behind inline text (hand-drawn feel) ---- */
 .hl {
@@ -998,7 +1045,7 @@ a.btn--terracotta[href="memberships.html"]::after {
   background: var(--sun); color: #5a3d12; box-shadow: var(--shadow-sm);
   transform: rotate(-3deg);
 }
-.sticker--coral { background: var(--coral); color: #fff; }
+.sticker--coral { background: var(--coral); color: #6a2f15; }
 .sticker--sky   { background: var(--sky);   color: #08323d; }
 .sticker--sage  { background: var(--sage);  color: #243016; }
 
@@ -1026,7 +1073,7 @@ a.btn--terracotta[href="memberships.html"]::after {
 .stat { text-align: center; }
 .stat .num {
   font-family: var(--font-head); font-weight: 800; line-height: 1;
-  font-size: clamp(2.4rem, 6vw, 3.6rem); color: var(--terracotta);
+  font-size: clamp(2.4rem, 6vw, 3.6rem); color: var(--accent);
 }
 .stat .num .unit { font-size: 0.5em; }
 .stat .label { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.95rem; }
@@ -1038,7 +1085,7 @@ a.btn--terracotta[href="memberships.html"]::after {
 .step .step-no {
   counter-increment: step; width: 60px; height: 60px; margin: 0 auto 0.8rem;
   border-radius: 50%; display: grid; place-items: center;
-  background: var(--grad-sunrise); color: #fff;
+  background: var(--grad-sunrise); color: var(--ink);
   font-family: var(--font-head); font-weight: 800; font-size: 1.4rem; box-shadow: var(--shadow-sm);
 }
 .step .step-no::before { content: counter(step); }
@@ -1060,17 +1107,8 @@ a.btn--terracotta[href="memberships.html"]::after {
 .quote .who { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
 .quote::before {
   content: "\201C"; position: absolute; top: -0.2rem; left: 1rem;
-  font-family: var(--font-script); color: var(--coral); font-size: 3.4rem; line-height: 1; opacity: 0.5;
+  font-family: var(--font-script); color: var(--accent-coral); font-size: 3.4rem; line-height: 1; opacity: 0.5;
 }
-
-/* ---- Marquee ribbon: a lively scrolling strip of little phrases.
-       Markup: <div class="ribbon"><div class="track"> ...two identical
-       copies of the phrase list... </div></div> (two copies = seamless). ---- */
-.ribbon { background: var(--grad-sunrise); color: #fff; overflow: hidden; }
-.ribbon .track { display: flex; align-items: center; gap: 2.5rem; width: max-content; padding: 0.75rem 1.25rem; animation: ribbonScroll 28s linear infinite; }
-.ribbon .track span { font-family: var(--font-head); font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; display: inline-flex; align-items: center; gap: 2.5rem; }
-@keyframes ribbonScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.ribbon:hover .track { animation-play-state: paused; }
 
 /* ---- New motion primitives ---- */
 @keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(10px); } 60% { transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
@@ -1084,7 +1122,6 @@ a.btn--terracotta[href="memberships.html"]::after {
 
 @media (prefers-reduced-motion: reduce) {
   .anim-pop, .anim-spin-slow, .anim-pulse, .hover-jelly:hover { animation: none !important; }
-  .ribbon .track { animation: none !important; }
   .tilt, .tilt:nth-child(odd), .tilt:nth-child(even) { transform: none !important; }
 }
 
@@ -1095,4 +1132,120 @@ a.btn--terracotta[href="memberships.html"]::after {
   .reveal, .reveal.from-left, .reveal.from-right, .reveal.pop {
     opacity: 1 !important; transform: none !important;
   }
+}
+
+/* ============================================================
+   v5 — Flowing section transitions
+   Turns the flat colour line between two sections into an organic,
+   animated wave: a section's own colour rises up into the section above
+   it with a soft scalloped crest, and a second, slower layer drifts the
+   other way as a faint shadow rim for depth. The whole effect is one
+   reusable hook — add `flow-top` to a section and its surface colour is
+   read from the section's existing background class. Custom-coloured
+   bands set their own `--surface` (see the page stylesheets).
+
+   How the blend stays seamless: the wave layers are pseudo-elements that
+   sit *above* the section's top edge (negative `top`), painting over the
+   bottom padding of the previous section. Their solid lower half is the
+   exact `--surface` colour, so it meets the section's real background with
+   no seam; their transparent upper half lets the previous section show
+   through the wave troughs.
+   ============================================================ */
+:root {
+  --flow-h: clamp(34px, 5.5vw, 72px);
+  /* One full, seam-matching sine period; solid below, wave band up top.
+     Opaque fill = the mask's visible (alpha) region. */
+  --flow-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 120' preserveAspectRatio='none'%3E%3Cpath d='M0 40 C36.7 14 73.3 14 110 40 C146.7 66 183.3 66 220 40 L220 120 L0 120 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+/* Surface colour, derived from the section's existing background class */
+.flow-top              { --surface: var(--base); position: relative; }
+.flow-top.band         { --surface: var(--base-deep); }
+.flow-top.band-white   { --surface: var(--white); }
+.flow-top.bg-sky-tint  { --surface: var(--sky-tint); }
+.flow-top.bg-sun-tint  { --surface: var(--sun-tint); }
+.flow-top.bg-coral-tint{ --surface: var(--coral-tint); }
+.flow-top.bg-meadow    { --surface: var(--grad-meadow); }
+.flow-top.bg-sunrise   { --surface: var(--grad-sunrise); }
+.flow-top.bg-candy     { --surface: var(--grad-candy); }
+.flow-top.bg-sky       { --surface: var(--grad-sky); }
+
+.flow-top::before,
+.flow-top::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;                     /* full width; the mask repeats to both edges */
+  pointer-events: none;
+  -webkit-mask-image: var(--flow-mask);          mask-image: var(--flow-mask);
+  -webkit-mask-repeat: repeat-x;                 mask-repeat: repeat-x;
+  -webkit-mask-position: 0 bottom;               mask-position: 0 bottom;
+}
+/* Back layer: a TALLER, drifting pastel ribbon. Because it rises higher than
+   the front wave, its crest peeks out as a flowing band of colour above the
+   section. A multi-stop pastel gradient (themed per page via --flow-accent)
+   makes the colour shift across the width as it drifts. */
+.flow-top::before {
+  top: calc(-1 * var(--flow-h) - 18px + 1px);
+  height: calc(var(--flow-h) + 18px);
+  background: var(--flow-accent, linear-gradient(90deg, var(--sun) 0%, var(--coral) 36%, var(--sky) 68%, var(--sage) 100%));
+  opacity: 0.85;
+  -webkit-mask-size: 300px 100%;                 mask-size: 300px 100%;
+  animation: flowDriftB 17s linear infinite;
+}
+/* Front layer: the section's own colour rising up, shorter wavelength, drifts
+   right. A faint upward shadow lifts it off the pastel ribbon for depth. */
+.flow-top::after {
+  top: calc(-1 * var(--flow-h) + 1px);
+  height: var(--flow-h);
+  background: var(--surface);
+  filter: drop-shadow(0 -2px 2px rgba(74,54,28,0.10));
+  -webkit-mask-size: 230px 100%;                 mask-size: 230px 100%;
+  animation: flowDriftA 14s linear infinite;
+}
+/* Shift by exactly one tile width => seamless loop */
+@keyframes flowDriftA {
+  from { -webkit-mask-position: 0 bottom;     mask-position: 0 bottom; }
+  to   { -webkit-mask-position: 230px bottom; mask-position: 230px bottom; }
+}
+@keyframes flowDriftB {
+  from { -webkit-mask-position: 0 bottom;      mask-position: 0 bottom; }
+  to   { -webkit-mask-position: -300px bottom; mask-position: -300px bottom; }
+}
+
+/* Reduced motion: keep the wave shape, drop the drift */
+@media (prefers-reduced-motion: reduce) {
+  .flow-top::before, .flow-top::after { animation: none !important; }
+}
+
+/* ============================================================
+   v6 — Floating pastel bubbles
+   A soft field of drifting pastel circles that rises slowly behind a
+   section's content. Add `has-bubbles` to a section (works alongside
+   `flow-top`). Pure CSS: four repeating radial-gradient layers, each a
+   different size/colour/speed, animated by background-position for a
+   gentle parallax. The layer is clipped to the section box (inset:0), so
+   it never spills into the wave divider above. Tune colours per section
+   with --bub-1..4; tune density with the background-size values.
+   ============================================================ */
+.has-bubbles { position: relative; }
+.has-bubbles > * { position: relative; z-index: 1; }
+.has-bubbles::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 30% 35%, var(--bub-1, var(--sky))   0 9px,  transparent 10px),
+    radial-gradient(circle at 70% 60%, var(--bub-2, var(--coral)) 0 6px,  transparent 7px),
+    radial-gradient(circle at 45% 80%, var(--bub-3, var(--sage))  0 13px, transparent 14px),
+    radial-gradient(circle at 85% 20%, var(--bub-4, var(--sun))   0 7px,  transparent 8px);
+  background-size: 190px 190px, 130px 130px, 280px 280px, 160px 160px;
+  background-position: 0 0, 40px 0, 0 0, 25px 0;
+  opacity: var(--bub-opacity, 0.32);
+  animation: bubblesRise 34s linear infinite;
+}
+/* Each layer shifts up by exactly one of its tile heights => seamless loop */
+@keyframes bubblesRise {
+  to { background-position: 0 -190px, 40px -130px, 0 -280px, 25px -160px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .has-bubbles::before { animation: none !important; }
 }

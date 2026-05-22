@@ -3,34 +3,34 @@
      plank roof, round gable window and flag, dressed with bunting and balloons
      over a terracotta arched door. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated party tower with bunting flags and balloons.">
-  <ellipse cx="150" cy="194" rx="92" ry="9" fill="#7a8f63" opacity="0.12"/>
-  <rect x="20" y="188" width="260" height="5" rx="2.5" fill="#9CB082" opacity="0.5"/>
+  <ellipse cx="150" cy="194" rx="92" ry="9" fill="#849473" opacity="0.12"/>
+  <rect x="20" y="188" width="260" height="5" rx="2.5" fill="#a8b695" opacity="0.5"/>
   <!-- bunting strung corner-to-corner, with hanging flags -->
-  <path d="M6 24 Q150 60 294 24" fill="none" stroke="#cdbfa6" stroke-width="2"/>
+  <path d="M6 24 Q150 60 294 24" fill="none" stroke="#d3c9b7" stroke-width="2"/>
   <g>
-    <path d="M28 30.5 L42 30.5 L35 44.5 Z" fill="#de5347"/>
-    <path d="M71 37.5 L85 37.5 L78 51.5 Z" fill="#7fa8a0"/>
-    <path d="M114 41.3 L128 41.3 L121 55.3 Z" fill="#9CB082"/>
-    <path d="M143 42 L157 42 L150 56 Z" fill="#e6b54a"/>
-    <path d="M172 41.3 L186 41.3 L179 55.3 Z" fill="#9CB082"/>
-    <path d="M215 37.5 L229 37.5 L222 51.5 Z" fill="#7fa8a0"/>
-    <path d="M258 30.5 L272 30.5 L265 44.5 Z" fill="#de5347"/>
+    <path d="M28 30.5 L42 30.5 L35 44.5 Z" fill="#eda89c"/>
+    <path d="M71 37.5 L85 37.5 L78 51.5 Z" fill="#8fada8"/>
+    <path d="M114 41.3 L128 41.3 L121 55.3 Z" fill="#a8b695"/>
+    <path d="M143 42 L157 42 L150 56 Z" fill="#e3bf70"/>
+    <path d="M172 41.3 L186 41.3 L179 55.3 Z" fill="#a8b695"/>
+    <path d="M215 37.5 L229 37.5 L222 51.5 Z" fill="#8fada8"/>
+    <path d="M258 30.5 L272 30.5 L265 44.5 Z" fill="#eda89c"/>
   </g>
   <!-- balloons -->
-  <ellipse cx="56" cy="104" rx="16" ry="20" fill="#de5347"/><ellipse cx="51" cy="98" rx="4" ry="6" fill="#fff" opacity="0.4"/><path d="M56 124 q3 8 -2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>
-  <ellipse cx="244" cy="108" rx="15" ry="19" fill="#7fa8a0"/><ellipse cx="239" cy="102" rx="4" ry="5" fill="#fff" opacity="0.4"/><path d="M244 127 q-3 8 2 16" stroke="#cdbfa6" stroke-width="1.5" fill="none"/>
+  <ellipse cx="56" cy="104" rx="16" ry="20" fill="#eda89c"/><ellipse cx="51" cy="98" rx="4" ry="6" fill="#ffffff" opacity="0.4"/><path d="M56 124 q3 8 -2 16" stroke="#d3c9b7" stroke-width="1.5" fill="none"/>
+  <ellipse cx="244" cy="108" rx="15" ry="19" fill="#8fada8"/><ellipse cx="239" cy="102" rx="4" ry="5" fill="#ffffff" opacity="0.4"/><path d="M244 127 q-3 8 2 16" stroke="#d3c9b7" stroke-width="1.5" fill="none"/>
   <!-- tower -->
-  <rect x="112" y="86" width="100" height="102" rx="6" fill="#d9a96a"/>
-  <g stroke="#c8964f" stroke-width="1.6" opacity="0.5"><line x1="140" y1="86" x2="140" y2="188"/><line x1="162" y1="86" x2="162" y2="188"/><line x1="184" y1="86" x2="184" y2="188"/></g>
-  <rect x="188" y="86" width="24" height="102" rx="6" fill="#c8964f" opacity="0.4"/>
-  <rect x="112" y="86" width="100" height="102" rx="6" fill="none" stroke="#c8964f" stroke-width="3"/>
-  <polygon points="100,88 162,30 224,88" fill="#cda063"/><polygon points="162,30 224,88 188,88" fill="#b5823f"/>
-  <g stroke="#9c6c30" stroke-width="1.6" opacity="0.45"><line x1="124" y1="76" x2="200" y2="76"/><line x1="138" y1="62" x2="186" y2="62"/></g>
-  <rect x="96" y="84" width="132" height="9" rx="4" fill="#b07d35"/>
-  <circle cx="162" cy="62" r="11" fill="#fbf3e6" stroke="#b5823f" stroke-width="2.2"/>
-  <line x1="162" y1="30" x2="162" y2="10" stroke="#7a5a2e" stroke-width="3"/>
-  <circle cx="162" cy="30" r="5" fill="#e6b54a"/>
-  <path d="M162 11 L194 20 L162 30 Z" fill="#de5347"/>
-  <path d="M138 188 v-34 a24 24 0 0 1 48 0 v34 Z" fill="#b5532e"/><path d="M138 188 v-34 a24 24 0 0 1 48 0 v34 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
-  <circle cx="178" cy="164" r="3.2" fill="#f1ddd3"/>
+  <rect x="112" y="86" width="100" height="102" rx="6" fill="#d7b385"/>
+  <g stroke="#c49f6b" stroke-width="1.6" opacity="0.5"><line x1="140" y1="86" x2="140" y2="188"/><line x1="162" y1="86" x2="162" y2="188"/><line x1="184" y1="86" x2="184" y2="188"/></g>
+  <rect x="188" y="86" width="24" height="102" rx="6" fill="#c49f6b" opacity="0.4"/>
+  <rect x="112" y="86" width="100" height="102" rx="6" fill="none" stroke="#c49f6b" stroke-width="3"/>
+  <polygon points="100,88 162,30 224,88" fill="#cbaa7d"/><polygon points="162,30 224,88 188,88" fill="#b08a59"/>
+  <g stroke="#977347" stroke-width="1.6" opacity="0.45"><line x1="124" y1="76" x2="200" y2="76"/><line x1="138" y1="62" x2="186" y2="62"/></g>
+  <rect x="96" y="84" width="132" height="9" rx="4" fill="#ab8550"/>
+  <circle cx="162" cy="62" r="11" fill="#fffff6" stroke="#b08a59" stroke-width="2.2"/>
+  <line x1="162" y1="30" x2="162" y2="10" stroke="#77603f" stroke-width="3"/>
+  <circle cx="162" cy="30" r="5" fill="#e3bf70"/>
+  <path d="M162 11 L194 20 L162 30 Z" fill="#eda89c"/>
+  <path d="M138 188 v-34 a24 24 0 0 1 48 0 v34 Z" fill="#a55d42"/><path d="M138 188 v-34 a24 24 0 0 1 48 0 v34 Z" fill="none" stroke="#8c4d37" stroke-width="3"/>
+  <circle cx="178" cy="164" r="3.2" fill="#f8e9e2"/>
 </svg>

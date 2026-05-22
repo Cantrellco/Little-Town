@@ -4,6 +4,9 @@
    nothing here is needed by other pages. Mobile-first.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (this page) */
+:root { --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--sage) 50%, var(--sun) 100%); }
+
 /* ---------- Hero: bolder, brighter, a touch more playful ---------- */
 /* A warmer, sunnier sky wash behind the town so the hero reads brighter
    while keeping the same blue-sky family as the rest of the site. */
@@ -26,11 +29,6 @@
 /* Keep the marker highlight readable over the white halo on the hero. */
 .hero-v2 .home-hero-title .hl { padding-inline: 0.12em; }
 
-/* ---------- Ribbon marquee under the hero ---------- */
-/* A tad chunkier than the shared default so it lands as a bold band. */
-.home-ribbon .track { padding-block: 0.85rem; font-size: 1.02rem; }
-.home-ribbon .ribbon-dot { color: rgba(255, 255, 255, 0.65); padding-inline: 0.15em; }
-
 /* ---------- Stat strip ---------- */
 /* The shared .grid-3 caps at 3 columns; we have four believable numbers,
    so give them their own responsive track: 2-up on phones, 4-up on wide. */
@@ -39,12 +37,12 @@
   .home-stats { grid-template-columns: repeat(4, 1fr); }
 }
 .home-stats .stat .num {
-  /* cycle the brights so the row feels lively, not monotone */
-  color: var(--terracotta);
+  /* cycle the deep accents so the row feels lively, not monotone */
+  color: var(--accent);
 }
-.home-stats .stat:nth-child(2) .num { color: var(--sky); }
-.home-stats .stat:nth-child(3) .num { color: var(--sage); }
-.home-stats .stat:nth-child(4) .num { color: var(--coral); }
+.home-stats .stat:nth-child(2) .num { color: var(--accent-sky); }
+.home-stats .stat:nth-child(3) .num { color: var(--accent-sage); }
+.home-stats .stat:nth-child(4) .num { color: var(--accent-coral); }
 .home-stats .stat .num .unit { color: var(--ink-soft); font-weight: 700; }
 
 /* ---------- Membership band: room for a stuck-on sticker ---------- */

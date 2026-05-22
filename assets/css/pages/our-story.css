@@ -4,10 +4,13 @@
    Mobile-first. All motion silenced under prefers-reduced-motion.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (warm paper mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--wood) 0%, var(--coral) 50%, var(--sun) 100%); }
+
 /* ---- Hero: warmer paper gradient + subtle texture ---- */
 .ph--story {
   background: linear-gradient(170deg, #f4ebe0 0%, #ede4d3 40%, var(--base) 100%);
-  padding-block: clamp(3.4rem, 8vw, 5.5rem) clamp(2.6rem, 6vw, 4rem);
+  padding-block: clamp(2.4rem, 5.5vw, 3.6rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
 /* Hero sticker: floats above the heading, angled left */
@@ -45,28 +48,18 @@
   margin-bottom: 0.75rem;
 }
 .founder-quote .quote::before {
-  color: var(--terracotta);
+  color: var(--accent);
   font-size: 4.5rem;
   top: -0.35rem;
   left: 1.1rem;
   opacity: 0.35;
 }
 .founder-quote .quote .who {
-  color: var(--terracotta);
+  color: var(--accent);
   font-weight: 700;
   font-size: 0.88rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-/* ---- Ribbon strip ---- */
-.story-ribbon {
-  /* Slightly warmer/richer than the default sunrise gradient */
-  background: linear-gradient(135deg, var(--terracotta) 0%, var(--wood) 100%);
-}
-.story-ribbon .track {
-  /* Slightly slower scroll for a warm, unhurried feel */
-  animation-duration: 36s;
 }
 
 /* ---- Timeline (steps) ---- */
@@ -206,7 +199,7 @@
   font-family: var(--font-head);
   font-weight: 800;
   font-size: 1.45rem;
-  color: #fff;
+  color: var(--ink);
 }
 
 .story-value-card h3 {
@@ -288,33 +281,33 @@
 }
 .story-cta-inner > * { position: relative; z-index: 1; }
 
-.story-cta-inner h2 { color: #fff; margin-bottom: 0.5rem; }
-.story-cta-inner p { color: rgba(255, 255, 255, 0.92); max-width: 44ch; margin-inline: auto; }
+.story-cta-inner h2 { color: var(--ink); margin-bottom: 0.5rem; }
+.story-cta-inner p { color: var(--ink-soft); max-width: 44ch; margin-inline: auto; }
 
 /* CTA button on the meadow: white fill with teal text */
 .btn--on-meadow {
   background: #fff;
-  color: var(--teal);
+  color: var(--accent-teal);
   --btn-bg: #fff;
-  --btn-fg: var(--teal);
+  --btn-fg: var(--accent-teal);
   font-weight: 700;
 }
-.btn--on-meadow:hover { background: #fff; color: var(--teal); }
+.btn--on-meadow:hover { background: #fff; color: var(--accent-teal); }
 
 /* Ghost button variant for dark band */
 .btn--ghost-light {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.55);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(58, 49, 40, 0.22);
+  color: var(--ink);
 }
 .btn--ghost-light:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: #fff;
+  background: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---- Reduced motion overrides ---- */
 @media (prefers-reduced-motion: reduce) {
-  .story-ribbon .track { animation: none !important; }
   .story-value-card,
   .story-value-card.tilt,
   .story-value-card.tilt:nth-child(odd),

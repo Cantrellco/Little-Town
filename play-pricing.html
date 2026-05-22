@@ -50,7 +50,20 @@
   <main>
 
     <!-- ===================== PAGE HERO ===================== -->
-    <section class="page-hero ph--play">
+    <section class="page-hero ph--play has-bunting">
+      <!-- Kiddy bunting banner across the very top -->
+      <div class="hero-bunting" aria-hidden="true"></div>
+      <!-- Playful floaters drifting over the open-town sky (desktop only) -->
+      <span class="deco anim-bob"      style="top:15%;left:4%;width:34px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:27%;left:8%;width:24px" aria-hidden="true">
+        <svg viewBox="0 0 30 46" xmlns="http://www.w3.org/2000/svg"><ellipse cx="15" cy="15" rx="12" ry="14" fill="#AEDCEA"/><ellipse cx="11" cy="11" rx="3" ry="4.5" fill="#fff" opacity="0.5"/><path d="M15 29 l-3 4 h6 z" fill="#AEDCEA"/><path d="M15 33 q4 7 -1 12" stroke="#cdb89a" stroke-width="1.2" fill="none"/></svg>
+      </span>
+      <span class="deco anim-twinkle"  style="top:14%;right:7%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <!-- a beach ball bobbing on the right -->
+      <span class="deco anim-bob"      style="top:25%;right:5%;width:38px" aria-hidden="true">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="#fff" stroke="#cdb89a" stroke-width="1"/><path d="M20 2 A18 18 0 0 1 38 20 L20 20 Z" fill="#F4AE92"/><path d="M38 20 A18 18 0 0 1 20 38 L20 20 Z" fill="#AEDCEA"/><path d="M20 38 A18 18 0 0 1 2 20 L20 20 Z" fill="#F8D98F"/><path d="M2 20 A18 18 0 0 1 20 2 L20 20 Z" fill="#BFD6A8"/><circle cx="20" cy="20" r="3" fill="#fff"/></svg>
+      </span>
+      <span class="deco anim-twinkle"  style="top:40%;left:3%;width:16px"><img src="assets/img/deco-star.svg" alt=""></span>
       <!-- Open-town sky with drifting clouds -->
       <div class="hero-clouds" aria-hidden="true">
         <div class="cloud-track">
@@ -73,7 +86,7 @@
       <div class="container">
         <div class="reveal">
           <span class="eyebrow">Open Play · Ages 0–8</span>
-          <h1>A whole little town to <span class="script" style="color:var(--terracotta)">explore</span></h1>
+          <h1>A whole little town to <span class="script" style="color:var(--accent)">explore</span></h1>
           <p>Wander Main Street and step inside each storefront — a grocery to stock, a clinic to run, a café to serve. Soft, safe and <span class="hl hl--sky">endlessly re-imaginable</span>.</p>
           <div class="flex-cta center">
             <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="memberships.html">Become a Member</a>
@@ -97,32 +110,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ===================== MARQUEE RIBBON ===================== -->
-    <div class="play-ribbon" aria-hidden="true" role="presentation">
-      <div class="track">
-        <span>
-          🛒 The Grocery &nbsp;·&nbsp;
-          ☕ The Corner Café &nbsp;·&nbsp;
-          🩺 The Little Clinic &nbsp;·&nbsp;
-          🧦 Grippy socks on &nbsp;·&nbsp;
-          🎉 Play all day &nbsp;·&nbsp;
-          🔄 Re-entry anytime &nbsp;·&nbsp;
-          👶 Ages 0–8 &nbsp;·&nbsp;
-          💛 Big smiles guaranteed &nbsp;·&nbsp;
-        </span>
-        <span aria-hidden="true">
-          🛒 The Grocery &nbsp;·&nbsp;
-          ☕ The Corner Café &nbsp;·&nbsp;
-          🩺 The Little Clinic &nbsp;·&nbsp;
-          🧦 Grippy socks on &nbsp;·&nbsp;
-          🎉 Play all day &nbsp;·&nbsp;
-          🔄 Re-entry anytime &nbsp;·&nbsp;
-          👶 Ages 0–8 &nbsp;·&nbsp;
-          💛 Big smiles guaranteed &nbsp;·&nbsp;
-        </span>
-      </div>
-    </div>
 
     <!-- ===================== STOREFRONTS — MAIN STREET ===================== -->
     <section class="section">
@@ -179,7 +166,7 @@
     </section>
 
     <!-- ===================== HOW OPEN PLAY WORKS ===================== -->
-    <section class="how-section band-white">
+    <section class="how-section band-white flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">How it works</span>
@@ -213,7 +200,7 @@
     </section>
 
     <!-- ===================== KIDS IN ACTION SHOWCASE ===================== -->
-    <section class="section">
+    <section class="section flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">A typical afternoon</span>
@@ -283,11 +270,11 @@
         <!-- Member cross-link band -->
         <div class="member-xlink bg-candy on-dark reveal" style="margin-top:clamp(2rem,4vw,3rem)">
           <div class="member-xlink-inner">
-            <span class="eyebrow" style="color:rgba(255,255,255,0.85)">Unlimited play awaits</span>
+            <span class="eyebrow" style="color:var(--accent)">Unlimited play awaits</span>
             <h2 style="margin-bottom:.5rem">Play more than twice&nbsp;a&nbsp;month?</h2>
-            <p style="color:rgba(255,255,255,0.9);max-width:42ch;margin-inline:auto">A membership pays for itself fast — unlimited play, café discounts and exclusive members-only mornings.</p>
+            <p style="color:var(--ink-soft);max-width:42ch;margin-inline:auto">A membership pays for itself fast — unlimited play, café discounts and exclusive members-only mornings.</p>
             <div class="flex-cta center" style="margin-top:1.4rem">
-              <a class="btn btn--lg btn--pop hover-jelly" style="background:#fff;color:var(--terracotta)" href="memberships.html">Become a Member</a>
+              <a class="btn btn--lg btn--pop hover-jelly" style="background:#fff;color:var(--accent)" href="memberships.html">Become a Member</a>
             </div>
           </div>
         </div>
@@ -296,7 +283,7 @@
     </section>
 
     <!-- ===================== RULES & AGE POLICY ===================== -->
-    <section class="section">
+    <section class="section flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Good to know</span>
@@ -311,10 +298,10 @@
             <div class="pp-policy-header">
               <div class="pp-policy-icon" aria-hidden="true">
                 <!-- Baby icon inline -->
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                   <circle cx="12" cy="7" r="4"/>
                   <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
-                  <circle cx="18" cy="5" r="1.5" fill="var(--terracotta)" stroke="none"/>
+                  <circle cx="18" cy="5" r="1.5" fill="var(--accent)" stroke="none"/>
                 </svg>
               </div>
               <h3>Ages &amp; supervision</h3>
@@ -332,7 +319,7 @@
             <div class="pp-policy-header">
               <div class="pp-policy-icon" aria-hidden="true">
                 <!-- Sock / rules icon inline -->
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                   <path d="M9 3h6v9l4 4a3 3 0 0 1-4.24 4.24L10 15.5V3z"/>
                   <path d="M9 3H7a2 2 0 0 0-2 2v.5"/>
                 </svg>
@@ -408,13 +395,6 @@
     stepNos.forEach(function (el, i) {
       el.setAttribute("aria-label", "Step " + (i + 1));
     });
-
-    // Ribbon: pause on reduced-motion (belt-and-suspenders — CSS already handles it,
-    // but some older browsers only honour the JS side)
-    if (prefersReduced) {
-      var ribbonTrack = document.querySelector(".play-ribbon .track");
-      if (ribbonTrack) ribbonTrack.style.animationPlayState = "paused";
-    }
   }());
   </script>
   <script src="assets/js/main.js"></script>

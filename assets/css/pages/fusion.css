@@ -3,6 +3,9 @@
    All core tokens, components and animations live in styles.css.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (warm café mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 55%, var(--wood) 100%); }
+
 /* ---- Hero: pull the art and copy a little closer on larger screens ---- */
 .ph--cafe .container {
   display: grid;
@@ -31,11 +34,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .fusion-coffee-sticker { animation: none; }
-}
-
-/* ---- Ribbon: override base colour to a coffee-warm tone ---- */
-.ribbon--coffee {
-  background: linear-gradient(90deg, var(--terracotta) 0%, var(--coral) 60%, var(--wood) 100%);
 }
 
 /* ---- Partner panel: warm wood-tint callout ---- */
@@ -84,9 +82,9 @@
 .fusion-stat-pill--coral { background: var(--coral-tint); border-color: rgba(242, 117, 75, 0.3);  }
 
 /* ---- Menu: coloured left-border accent on each group heading ---- */
-.menu-group--drinks h3 { color: var(--sky); border-left: 4px solid var(--sky); padding-left: 0.75rem; }
-.menu-group--eats   h3 { color: var(--sage); border-left: 4px solid var(--sage); padding-left: 0.75rem; }
-.menu-group--treats h3 { color: var(--coral); border-left: 4px solid var(--coral); padding-left: 0.75rem; }
+.menu-group--drinks h3 { color: var(--accent-sky); border-left: 4px solid var(--accent-sky); padding-left: 0.75rem; }
+.menu-group--eats   h3 { color: var(--accent-sage); border-left: 4px solid var(--accent-sage); padding-left: 0.75rem; }
+.menu-group--treats h3 { color: var(--accent-coral); border-left: 4px solid var(--accent-coral); padding-left: 0.75rem; }
 
 /* ---- Menu row hover: a subtle warm lift ---- */
 .menu-row {
@@ -119,7 +117,7 @@
 }
 .menu-member-callout .sticker { flex: none; }
 .menu-member-callout p { margin: 0; font-size: 0.95rem; }
-.menu-member-callout a { color: var(--terracotta); font-weight: 600; }
+.menu-member-callout a { color: var(--accent); font-weight: 600; }
 .menu-member-callout a:hover { text-decoration: underline; }
 
 /* ---- Steps: override step-no gradient for a coffee warm palette ---- */
@@ -135,7 +133,7 @@
   max-width: 640px;
   margin-inline: auto;
 }
-.fusion-quote::before { color: var(--terracotta); opacity: 0.6; }
+.fusion-quote::before { color: var(--accent); opacity: 0.6; }
 
 /* ---- "Locally roasted" split band: add a warm glow blob ---- */
 .fusion-roasted-blob {

@@ -52,7 +52,21 @@
     <!-- ============================================================
          PAGE HERO — brighter sage sky + sticker + art
          ============================================================ -->
-    <section class="page-hero ph--member">
+    <section class="page-hero ph--member has-bunting">
+      <!-- Kiddy bunting banner across the very top -->
+      <div class="hero-bunting" aria-hidden="true"></div>
+      <!-- Sparkle + balloon floaters echo the "unlimited / special" mood (desktop only) -->
+      <span class="deco anim-twinkle" style="top:18%;left:5%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:30%;left:4%;width:24px" aria-hidden="true">
+        <svg viewBox="0 0 30 46" xmlns="http://www.w3.org/2000/svg"><ellipse cx="15" cy="15" rx="12" ry="14" fill="#BFD6A8"/><ellipse cx="11" cy="11" rx="3" ry="4.5" fill="#fff" opacity="0.5"/><path d="M15 29 l-3 4 h6 z" fill="#BFD6A8"/><path d="M15 33 q4 7 -1 12" stroke="#cdb89a" stroke-width="1.2" fill="none"/></svg>
+      </span>
+      <span class="deco anim-bob"     style="top:13%;right:10%;width:34px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <!-- a little heart for the membership love -->
+      <span class="deco anim-bob slow" style="top:30%;right:5%;width:26px" aria-hidden="true">
+        <svg viewBox="0 0 32 30" xmlns="http://www.w3.org/2000/svg"><path d="M16 27 C6 19 2 12 6 8 c3-3 7-1 10 3 c3-4 7-6 10-3 c4 4 0 11 -10 19 Z" fill="#EC9A90"/></svg>
+      </span>
+      <span class="deco anim-twinkle" style="bottom:18%;right:32%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="bottom:24%;left:9%;width:16px"><img src="assets/img/deco-star.svg" alt=""></span>
       <div class="container">
         <div class="mem-hero-inner">
 
@@ -62,7 +76,7 @@
               <span class="sticker anim-pop">&#10024; Members play unlimited</span>
             </div>
             <span class="eyebrow">Memberships</span>
-            <h1>Little Town, <span class="script" style="color:var(--terracotta)">anytime</span> you like</h1>
+            <h1>Little Town, <span class="script" style="color:var(--accent)">anytime</span> you like</h1>
             <p>For families who visit often, a membership turns a rainy Tuesday into the easiest plan of the week — <span class="hl--sage">unlimited play</span>, a warm welcome, and perks all over town.</p>
             <div class="pill-row">
               <span class="pill">Unlimited play</span>
@@ -78,6 +92,7 @@
 
           <!-- Art column -->
           <div class="mem-hero-art reveal" data-delay="1">
+            <span class="mem-hero-glow" aria-hidden="true"></span>
             <img src="assets/img/price-membership.svg" alt="Illustrated Little Town membership card." width="320" height="220" fetchpriority="high" decoding="async" class="anim-bob">
           </div>
 
@@ -86,65 +101,28 @@
     </section>
 
     <!-- ============================================================
-         MARQUEE RIBBON — scrolling value proof
-         ============================================================ -->
-    <div class="ribbon" role="marquee" aria-label="Member benefits">
-      <div class="track" aria-hidden="true">
-        <span>
-          Unlimited play every day
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Café perks at Fusion
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Members-only mornings
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Bring-a-friend passes
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Priority party booking
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Welcome gift
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-        </span>
-        <!-- duplicate for seamless loop -->
-        <span aria-hidden="true">
-          Unlimited play every day
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Café perks at Fusion
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Members-only mornings
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Bring-a-friend passes
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Priority party booking
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-          Welcome gift
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--sun)" aria-hidden="true"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6"/></svg>
-        </span>
-      </div>
-    </div>
-
-    <!-- ============================================================
          VALUE STRIP — "pays for itself" stats
          ============================================================ -->
-    <section class="section band-white reveal">
+    <section class="section band-white reveal flow-top">
       <div class="container">
         <div class="panel bg-meadow on-dark">
           <div class="center" style="margin-bottom:1.8rem">
-            <span class="eyebrow" style="color:rgba(255,255,255,0.85)">The maths are simple</span>
+            <span class="eyebrow" style="color:var(--accent)">The maths are simple</span>
             <h2>Membership pays for itself</h2>
-            <p class="section-lead" style="color:rgba(255,255,255,0.92)">A Day Pass is $18/child. Two visits a week and your membership costs less than going pay-as-you-go.</p>
+            <p class="section-lead" style="color:var(--ink)">A Day Pass is $18/child. Two visits a week and your membership costs less than going pay-as-you-go.</p>
           </div>
           <div class="value-strip">
             <div class="stat">
               <div class="num">$18 <span class="unit">/ visit</span></div>
-              <div class="label" style="color:rgba(255,255,255,0.85)">Day Pass rate</div>
+              <div class="label" style="color:var(--ink)">Day Pass rate</div>
             </div>
             <div class="stat">
               <div class="num">~3 <span class="unit">visits</span></div>
-              <div class="label" style="color:rgba(255,255,255,0.85)">and it's already paid off</div>
+              <div class="label" style="color:var(--ink)">and it's already paid off</div>
             </div>
             <div class="stat">
               <div class="num">$90+ <span class="unit">/ yr</span></div>
-              <div class="label" style="color:rgba(255,255,255,0.85)">saved on Annual</div>
+              <div class="label" style="color:var(--ink)">saved on Annual</div>
             </div>
           </div>
         </div>
@@ -154,7 +132,7 @@
     <!-- ============================================================
          TIERS — Monthly / Annual cards with toggle
          ============================================================ -->
-    <section class="section" id="tiers">
+    <section class="section flow-top" id="tiers">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Choose your plan</span>
@@ -347,7 +325,7 @@
     <!-- ============================================================
          PARENT QUOTE
          ============================================================ -->
-    <section class="section band-white">
+    <section class="section band-white flow-top">
       <div class="container">
         <div class="mem-quote reveal pop">
           <div class="quote">
@@ -361,7 +339,7 @@
     <!-- ============================================================
          PERKS STRIP — why members love it
          ============================================================ -->
-    <section class="section band">
+    <section class="section band flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Why members love it</span>

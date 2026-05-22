@@ -53,12 +53,9 @@
          Hero
          ===================================================== -->
     <section class="page-hero ph--cafe">
-      <!-- Floating cafe treats (desktop only — .deco hides on mobile) -->
+      <!-- A coffee + star floater keeps the café mood without crowding the hero -->
       <span class="deco anim-bob" style="top:14%;left:6%;width:52px"><img src="assets/img/m-coffee.svg" alt=""></span>
-      <span class="deco anim-bob slow" style="top:22%;right:8%;width:46px"><img src="assets/img/m-cookie.svg" alt=""></span>
-      <span class="deco anim-bob" style="bottom:18%;left:14%;width:38px"><img src="assets/img/m-muffin.svg" alt=""></span>
       <span class="deco anim-twinkle" style="top:12%;right:22%;width:22px"><img src="assets/img/deco-star.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="bottom:24%;right:18%;width:18px;animation-delay:1.2s"><img src="assets/img/deco-star.svg" alt=""></span>
 
       <div class="container">
         <!-- Copy -->
@@ -66,7 +63,7 @@
           <span class="partner-tag">&#x2615; Right next door</span>
           <h1 style="margin-top:1rem">
             <span class="hl--coral">Coffee &amp; treats</span> at
-            <span class="script" style="color:var(--terracotta)">Fusion</span>
+            <span class="script" style="color:var(--accent)">Fusion</span>
             <span class="fusion-coffee-sticker" aria-hidden="true">&#x2615;</span>
           </h1>
           <p class="lead">Fusion is the independent little coffee shop right beside Little Town Playhouse &#x2014; locally roasted espresso, cold brew, a&#xE7;a&#xED; bowls, avocado toast and warm paninis. Pop in before, during or after play.</p>
@@ -84,16 +81,6 @@
     </section>
 
     <!-- =====================================================
-         Scrolling ribbon marquee
-         ===================================================== -->
-    <div class="ribbon ribbon--coffee" aria-hidden="true">
-      <div class="track">
-        <span>Locally roasted &middot;&nbsp; Oat &amp; decaf always &middot;&nbsp; Members save 10&#x2013;15% &middot;&nbsp; Baked fresh daily &middot;&nbsp; Kid-friendly options &middot;&nbsp; Open every play day &middot;&nbsp;</span>
-        <span>Locally roasted &middot;&nbsp; Oat &amp; decaf always &middot;&nbsp; Members save 10&#x2013;15% &middot;&nbsp; Baked fresh daily &middot;&nbsp; Kid-friendly options &middot;&nbsp; Open every play day &middot;&nbsp;</span>
-      </div>
-    </div>
-
-    <!-- =====================================================
          Partner note — a friendly, prominent panel callout
          ===================================================== -->
     <section class="section--tight">
@@ -103,7 +90,7 @@
           <div>
             <p style="margin:0"><strong style="color:var(--ink)">A friendly neighbour, not a concession.</strong>
             Fusion is a completely separate, independently-run business right next to the playhouse. That means you get a genuinely great coffee shop on the doorstep &#x2014; and
-            <a href="memberships.html" style="color:var(--terracotta);font-weight:600">Little Town members enjoy a standing 10&#x2013;15% discount</a> as a thank-you for the partnership.</p>
+            <a href="memberships.html" style="color:var(--accent);font-weight:600">Little Town members enjoy a standing 10&#x2013;15% discount</a> as a thank-you for the partnership.</p>
           </div>
         </div>
       </div>
@@ -112,7 +99,7 @@
     <!-- =====================================================
          Fun-facts pill strip
          ===================================================== -->
-    <section class="section--tight band-white">
+    <section class="section--tight band-white flow-top">
       <div class="container center reveal">
         <span class="eyebrow">Why Fusion?</span>
         <h2 style="margin-bottom:0.2rem">Good coffee. <span class="hl">Good people.</span></h2>
@@ -143,19 +130,12 @@
     <!-- =====================================================
          Menu
          ===================================================== -->
-    <section class="section has-deco" id="menu">
-      <!-- Floating cafe doodles (desktop only — .deco hides on mobile) -->
-      <span class="deco anim-bob" style="top:7%;left:4%;width:46px"><img src="assets/img/m-coffee.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:5%;right:6%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
-      <span class="deco anim-bob slow" style="top:46%;right:3%;width:40px"><img src="assets/img/m-cookie.svg" alt=""></span>
-      <span class="deco anim-bob" style="bottom:13%;left:5%;width:38px"><img src="assets/img/m-muffin.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="bottom:22%;left:9%;width:18px;animation-delay:1s"><img src="assets/img/deco-star.svg" alt=""></span>
-
+    <section class="section flow-top" id="menu">
       <div class="container" style="max-width:840px">
 
         <div class="center reveal">
           <span class="eyebrow">On the menu at Fusion</span>
-          <h2>The <span class="script" style="color:var(--terracotta)">Fusion</span> menu</h2>
+          <h2>The <span class="script" style="color:var(--accent)">Fusion</span> menu</h2>
           <p class="section-lead">Fresh coffee and eats, served all day right next door.</p>
         </div>
 
@@ -313,7 +293,7 @@
     <!-- =====================================================
          How it works — Play to Refuel to Back to town
          ===================================================== -->
-    <section class="section band">
+    <section class="section band flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The perfect loop</span>
@@ -343,7 +323,7 @@
     <!-- =====================================================
          Happy regular quote
          ===================================================== -->
-    <section class="section--tight band-white">
+    <section class="section--tight band-white flow-top">
       <div class="container center reveal">
         <span class="eyebrow">Happy regulars</span>
         <blockquote class="quote fusion-quote mt-3">
@@ -379,19 +359,6 @@
 
   </main>
 
-  <script>
-    /* Fusion page — reduced-motion-aware: pause ribbon when user prefers less motion */
-    (function () {
-      "use strict";
-      var track = document.querySelector(".ribbon--coffee .track");
-      if (!track) return;
-      var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-      function applyPref(e) { track.style.animationPlayState = e.matches ? "paused" : "running"; }
-      applyPref(mq);
-      if (mq.addEventListener) { mq.addEventListener("change", applyPref); }
-      else if (mq.addListener) { mq.addListener(applyPref); }
-    }());
-  </script>
   <script src="assets/js/main.js"></script>
 
   <footer class="site-footer">

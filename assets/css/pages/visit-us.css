@@ -3,10 +3,13 @@
    Builds entirely on the v4 shared kit in styles.css.
    ============================================================ */
 
+/* Pastel ribbon colour for the flowing section dividers (daylight mix) */
+:root { --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--teal) 50%, var(--sage) 100%); }
+
 /* ---- Hero: cooler daylight teal + sticker cluster ---- */
 .page-hero.ph--visit {
   background: linear-gradient(180deg, #b8dce6 0%, #d2e9ef 38%, var(--base) 100%);
-  padding-block: clamp(3rem, 7vw, 5rem) clamp(2.4rem, 5vw, 3.8rem);
+  padding-block: clamp(2.2rem, 5vw, 3.4rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
 /* Hero pill row — semi-opaque white so they read over the gradient */
@@ -40,7 +43,7 @@
   gap: 0.6rem;
 }
 .hours-card-header h3 {
-  color: #fff;
+  color: var(--ink);
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
@@ -79,11 +82,11 @@
   border-bottom-color: transparent;
 }
 .hours-row.is-today .hours-day {
-  color: var(--terracotta);
+  color: var(--accent);
   font-weight: 700;
 }
 .hours-row.is-today .hours-time {
-  color: var(--terracotta);
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -160,7 +163,7 @@
 }
 .contact-detail-icon svg {
   width: 18px; height: 18px;
-  color: var(--teal);
+  color: var(--accent-teal);
 }
 .contact-detail-copy strong {
   display: block;
@@ -174,7 +177,7 @@
 .contact-detail-copy a,
 .contact-detail-copy span {
   font-size: 0.97rem;
-  color: var(--terracotta);
+  color: var(--accent);
   font-weight: 600;
 }
 .contact-detail-copy span { color: var(--ink-soft); font-weight: 400; }
@@ -202,35 +205,13 @@
   justify-content: flex-start;
 }
 
-/* ---- Quick-facts ribbon (between hours section + contact) ---- */
-.facts-ribbon {
-  background: var(--grad-meadow);
-  overflow: hidden;
-  position: relative;
-}
-.facts-ribbon .track {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  width: max-content;
-  padding: 0.85rem 1.25rem;
-  animation: ribbonScroll 26s linear infinite;
-}
-.facts-ribbon .track span {
-  font-family: var(--font-head);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  gap: 2.5rem;
-}
-.facts-ribbon:hover .track { animation-play-state: paused; }
-
 /* ---- Plan your visit steps section ---- */
 .visit-steps-section {
   background: linear-gradient(160deg, var(--sky-tint) 0%, var(--teal-tint) 55%, var(--sage-tint) 100%);
+}
+/* Flowing divider: rise into the section above using this same gradient */
+.visit-steps-section.flow-top {
+  --surface: linear-gradient(160deg, var(--sky-tint) 0%, var(--teal-tint) 55%, var(--sage-tint) 100%);
 }
 
 .visit-steps .step-no {
@@ -322,7 +303,7 @@
 
 /* Accent colour on open accordion question */
 .acc-item[aria-expanded="true"] .acc-trigger {
-  color: var(--terracotta);
+  color: var(--accent);
 }
 
 /* ---- CTA closing band ---- */
@@ -353,25 +334,24 @@
   pointer-events: none;
 }
 .visit-cta-band h2,
-.visit-cta-band p { color: #fff; position: relative; z-index: 1; }
+.visit-cta-band p { color: var(--ink); position: relative; z-index: 1; }
 .visit-cta-band .flex-cta { position: relative; z-index: 1; }
 .visit-cta-band .btn--sun {
   box-shadow: 0 5px 0 rgba(90,60,25,0.25), var(--shadow-md);
 }
 .visit-cta-band .btn--ghost {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.5);
-  color: #fff;
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(58,49,40,0.22);
+  color: var(--ink);
 }
 .visit-cta-band .btn--ghost:hover {
-  background: rgba(255,255,255,0.28);
-  border-color: #fff;
-  color: #fff;
+  background: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .facts-ribbon .track { animation: none !important; }
   .visit-steps .step-no { box-shadow: var(--shadow-sm) !important; }
   .visit-cta-band::before,
   .visit-cta-band::after { display: none; }

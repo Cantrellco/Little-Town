@@ -3,45 +3,45 @@
      roof, round gable window, a paned shopfront window with a white cup on the
      sill, a terracotta arched door and a little tree. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated cafe building with a paned window, a cup on the sill and a tree.">
-  <ellipse cx="150" cy="196" rx="94" ry="9" fill="#7a8f63" opacity="0.12"/>
-  <rect x="40" y="190" width="220" height="5" rx="2.5" fill="#9CB082" opacity="0.5"/>
+  <ellipse cx="150" cy="196" rx="94" ry="9" fill="#849473" opacity="0.12"/>
+  <rect x="40" y="190" width="220" height="5" rx="2.5" fill="#a8b695" opacity="0.5"/>
   <!-- body -->
-  <rect x="104" y="74" width="120" height="116" rx="6" fill="#f1d588"/>
-  <g stroke="#e6c66e" stroke-width="1.6" opacity="0.5"><line x1="134" y1="128" x2="134" y2="190"/><line x1="164" y1="128" x2="164" y2="190"/><line x1="194" y1="128" x2="194" y2="190"/></g>
-  <rect x="200" y="74" width="24" height="116" rx="6" fill="#e6c66e" opacity="0.5"/>
-  <rect x="104" y="74" width="120" height="116" rx="6" fill="none" stroke="#e6c66e" stroke-width="3"/>
+  <rect x="104" y="74" width="120" height="116" rx="6" fill="#f4e0a7"/>
+  <g stroke="#e8d08f" stroke-width="1.6" opacity="0.5"><line x1="134" y1="128" x2="134" y2="190"/><line x1="164" y1="128" x2="164" y2="190"/><line x1="194" y1="128" x2="194" y2="190"/></g>
+  <rect x="200" y="74" width="24" height="116" rx="6" fill="#e8d08f" opacity="0.5"/>
+  <rect x="104" y="74" width="120" height="116" rx="6" fill="none" stroke="#e8d08f" stroke-width="3"/>
   <!-- plank roof (two-tone) -->
-  <polygon points="92,76 164,18 236,76" fill="#cda063"/><polygon points="164,18 236,76 200,76" fill="#b5823f"/>
-  <g stroke="#9c6c30" stroke-width="1.6" opacity="0.45"><line x1="116" y1="64" x2="212" y2="64"/><line x1="132" y1="50" x2="196" y2="50"/></g>
-  <rect x="88" y="72" width="152" height="9" rx="4" fill="#b07d35"/>
+  <polygon points="92,76 164,18 236,76" fill="#cbaa7d"/><polygon points="164,18 236,76 200,76" fill="#b08a59"/>
+  <g stroke="#977347" stroke-width="1.6" opacity="0.45"><line x1="116" y1="64" x2="212" y2="64"/><line x1="132" y1="50" x2="196" y2="50"/></g>
+  <rect x="88" y="72" width="152" height="9" rx="4" fill="#ab8550"/>
   <!-- flag -->
-  <line x1="164" y1="18" x2="164" y2="-2" stroke="#7a5a2e" stroke-width="3"/>
-  <circle cx="164" cy="18" r="5" fill="#e6b54a"/>
-  <path d="M164 1 L196 10 L164 20 Z" fill="#de5347"/>
+  <line x1="164" y1="18" x2="164" y2="-2" stroke="#77603f" stroke-width="3"/>
+  <circle cx="164" cy="18" r="5" fill="#e3bf70"/>
+  <path d="M164 1 L196 10 L164 20 Z" fill="#eda89c"/>
   <!-- round gable window -->
-  <circle cx="164" cy="50" r="9.5" fill="#fbf3e6" stroke="#b5823f" stroke-width="2.2"/>
+  <circle cx="164" cy="50" r="9.5" fill="#fffff6" stroke="#b08a59" stroke-width="2.2"/>
   <!-- shopfront window with panes -->
-  <rect x="126" y="86" width="76" height="34" rx="6" fill="#fff"/>
-  <rect x="131" y="91" width="66" height="24" rx="3" fill="#e6efe9"/>
-  <g stroke="#fff" stroke-width="3"><line x1="164" y1="91" x2="164" y2="115"/><line x1="131" y1="103" x2="197" y2="103"/></g>
-  <rect x="122" y="120" width="84" height="5" rx="2.5" fill="#e6c66e"/>
+  <rect x="126" y="86" width="76" height="34" rx="6" fill="#ffffff"/>
+  <rect x="131" y="91" width="66" height="24" rx="3" fill="#f4faf6"/>
+  <g stroke="#ffffff" stroke-width="3"><line x1="164" y1="91" x2="164" y2="115"/><line x1="131" y1="103" x2="197" y2="103"/></g>
+  <rect x="122" y="120" width="84" height="5" rx="2.5" fill="#e8d08f"/>
   <!-- white cup steaming on the sill -->
   <g transform="translate(164,120)">
-    <path d="M-6 -23 q-3 4 0 8 q3 4 0 8" fill="none" stroke="#cbb48a" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M6 -23 q-3 4 0 8 q3 4 0 8" fill="none" stroke="#cbb48a" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M-11 -9 H11 L9 1 a11 4 0 0 1 -20 0 Z" fill="#fff"/>
-    <path d="M11 -6 a7 7 0 0 1 0 12" fill="none" stroke="#fff" stroke-width="3.4"/>
-    <ellipse cx="-1" cy="1" rx="14" ry="2.6" fill="#fff"/>
+    <path d="M-6 -23 q-3 4 0 8 q3 4 0 8" fill="none" stroke="#cebe9f" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M6 -23 q-3 4 0 8 q3 4 0 8" fill="none" stroke="#cebe9f" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M-11 -9 H11 L9 1 a11 4 0 0 1 -20 0 Z" fill="#ffffff"/>
+    <path d="M11 -6 a7 7 0 0 1 0 12" fill="none" stroke="#ffffff" stroke-width="3.4"/>
+    <ellipse cx="-1" cy="1" rx="14" ry="2.6" fill="#ffffff"/>
   </g>
   <!-- arched terracotta door -->
-  <path d="M138 190 v-34 a26 26 0 0 1 52 0 v34 Z" fill="#b5532e"/>
-  <path d="M138 190 v-34 a26 26 0 0 1 52 0 v34 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
-  <circle cx="180" cy="170" r="3.2" fill="#f1ddd3"/>
+  <path d="M138 190 v-34 a26 26 0 0 1 52 0 v34 Z" fill="#a55d42"/>
+  <path d="M138 190 v-34 a26 26 0 0 1 52 0 v34 Z" fill="none" stroke="#8c4d37" stroke-width="3"/>
+  <circle cx="180" cy="170" r="3.2" fill="#f8e9e2"/>
   <!-- tree -->
   <g>
-    <ellipse cx="256" cy="190" rx="22" ry="6" fill="#7a8f63" opacity="0.14"/>
-    <rect x="252" y="152" width="9" height="38" rx="4" fill="#a9763e"/>
-    <ellipse cx="256" cy="138" rx="22" ry="30" fill="#9CB082"/>
-    <ellipse cx="252" cy="128" rx="14" ry="20" fill="#b7ce9d"/>
+    <ellipse cx="256" cy="190" rx="22" ry="6" fill="#849473" opacity="0.14"/>
+    <rect x="252" y="152" width="9" height="38" rx="4" fill="#a47e55"/>
+    <ellipse cx="256" cy="138" rx="22" ry="30" fill="#a8b695"/>
+    <ellipse cx="252" cy="128" rx="14" ry="20" fill="#c5d6b2"/>
   </g>
 </svg>
