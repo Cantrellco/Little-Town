@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Open-play storefront (polished). Placeholder; final art by illustrator. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated open-play storefront with a striped awning, slide and tunnel.">
-  <ellipse cx="150" cy="194" rx="120" ry="11" fill="#7a8f63" opacity="0.12"/>
-  <rect x="0" y="186" width="300" height="6" rx="3" fill="#e3d8c2"/>
-  <!-- tunnel + slide -->
-  <ellipse cx="48" cy="160" rx="34" ry="22" fill="#7FA8A0"/>
-  <ellipse cx="48" cy="160" rx="23" ry="15" fill="#5d8a82"/>
-  <ellipse cx="48" cy="160" rx="12" ry="8" fill="#3f6a63"/>
-  <path d="M64 138 Q120 96 120 186" fill="none" stroke="#9cc6bf" stroke-width="18" stroke-linecap="round"/>
-  <path d="M64 138 Q120 96 120 186" fill="none" stroke="#7FA8A0" stroke-width="7" stroke-linecap="round"/>
-  <!-- storefront -->
-  <rect x="120" y="92" width="152" height="96" rx="8" fill="#dfe7d2"/>
-  <rect x="244" y="92" width="28" height="96" rx="8" fill="#cbd7b9" opacity="0.6"/>
-  <rect x="120" y="92" width="152" height="96" rx="8" fill="none" stroke="#9CB082" stroke-width="3"/>
-  <rect x="112" y="78" width="168" height="18" rx="7" fill="#9CB082"/><rect x="112" y="78" width="168" height="7" rx="3.5" fill="#8aa070"/>
-  <!-- awning -->
-  <path d="M120 110 H272 L260 132 H132 Z" fill="#fff"/>
-  <path d="M132 110 H154 L146 132 H124 Z" fill="#9CB082"/>
-  <path d="M178 110 H200 L192 132 H170 Z" fill="#9CB082"/>
-  <path d="M224 110 H246 L238 132 H216 Z" fill="#9CB082"/>
-  <path d="M120 110 H272 L269 116 H123 Z" fill="#000" opacity="0.06"/>
-  <!-- windows -->
-  <rect x="132" y="142" width="30" height="42" rx="5" fill="#fff"/><rect x="135" y="145" width="24" height="36" rx="3" fill="#eef4f2"/>
-  <rect x="230" y="142" width="30" height="42" rx="5" fill="#fff"/><rect x="233" y="145" width="24" height="36" rx="3" fill="#eef4f2"/>
-  <!-- door -->
-  <path d="M170 188 v-36 a26 26 0 0 1 52 0 v36 Z" fill="#B5532E"/>
-  <path d="M170 188 v-36 a26 26 0 0 1 52 0 v36 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
-  <circle cx="212" cy="168" r="3.4" fill="#f1ddd3"/>
-  <!-- bush -->
-  <ellipse cx="100" cy="186" rx="24" ry="6" fill="#7a8f63" opacity="0.12"/>
-  <circle cx="92" cy="174" r="14" fill="#9CB082"/><circle cx="108" cy="178" r="11" fill="#8aa070"/>
+<!-- Open-play market + tunnel (logo style). Placeholder; final art by illustrator. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated market storefront with a striped awning and a play tunnel.">
+  <ellipse cx="150" cy="194" rx="120" ry="9" fill="#7a8f63" opacity="0.12"/>
+  <rect x="20" y="188" width="260" height="5" rx="2.5" fill="#9CB082" opacity="0.55"/>
+  <!-- tunnel -->
+  <g>
+    <ellipse cx="92" cy="150" rx="16" ry="20" fill="#9cc6bf"/>
+    <ellipse cx="74" cy="160" rx="19" ry="23" fill="#b4d7d0"/>
+    <ellipse cx="52" cy="172" rx="22" ry="26" fill="#9cc6bf"/>
+    <ellipse cx="52" cy="172" rx="15" ry="18" fill="#7FA8A0"/>
+    <ellipse cx="52" cy="172" rx="8" ry="11" fill="#3f6a63"/>
+  </g>
+  <!-- market -->
+  <g>
+    <rect x="118" y="96" width="150" height="92" rx="6" fill="#e7c389"/>
+    <g stroke="#cf9a4f" stroke-width="1.4" opacity="0.7"><line x1="146" y1="96" x2="146" y2="188"/><line x1="174" y1="96" x2="174" y2="188"/><line x1="202" y1="96" x2="202" y2="188"/><line x1="230" y1="96" x2="230" y2="188"/></g>
+    <rect x="244" y="96" width="24" height="92" rx="6" fill="#d3a45f" opacity="0.4"/>
+    <rect x="118" y="96" width="150" height="92" rx="6" fill="none" stroke="#cf9a4f" stroke-width="3"/>
+    <polygon points="108,98 193,40 278,98" fill="#cf9a4f"/><polygon points="193,40 278,98 236,98" fill="#b9803a"/>
+    <g stroke="#b07d35" stroke-width="1.5" opacity="0.6"><line x1="134" y1="88" x2="193" y2="52"/><line x1="252" y1="88" x2="193" y2="52"/></g>
+    <rect x="104" y="94" width="178" height="8" rx="4" fill="#b07d35"/>
+    <circle cx="193" cy="70" r="11" fill="#fbf3e6" stroke="#b9803a" stroke-width="2.2"/>
+    <line x1="193" y1="40" x2="193" y2="18" stroke="#7a5a2e" stroke-width="3"/>
+    <circle cx="193" cy="40" r="5" fill="#E0A93F"/>
+    <path d="M193 21 L223 30 L193 40 Z" fill="#D64A3F"/>
+    <g>
+      <rect x="118" y="104" width="150" height="18" fill="#fff"/>
+      <g fill="#9CB082"><rect x="118" y="104" width="17" height="18"/><rect x="152" y="104" width="17" height="18"/><rect x="186" y="104" width="17" height="18"/><rect x="220" y="104" width="17" height="18"/><rect x="254" y="104" width="14" height="18"/></g>
+      <g><circle cx="128" cy="122" r="9.5" fill="#9CB082"/><circle cx="147" cy="122" r="9.5" fill="#fff"/><circle cx="166" cy="122" r="9.5" fill="#9CB082"/><circle cx="185" cy="122" r="9.5" fill="#fff"/><circle cx="204" cy="122" r="9.5" fill="#9CB082"/><circle cx="223" cy="122" r="9.5" fill="#fff"/><circle cx="242" cy="122" r="9.5" fill="#9CB082"/><circle cx="261" cy="122" r="9.5" fill="#fff"/></g>
+      <rect x="118" y="100" width="150" height="5" rx="2.5" fill="#8aa070"/>
+    </g>
+    <path d="M142 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/><circle cx="178" cy="160" r="2.6" fill="#e7c389"/>
+    <path d="M204 188 v-34 a22 22 0 0 1 44 0 v34 Z" fill="#5b4a3a"/><circle cx="212" cy="160" r="2.6" fill="#e7c389"/>
+  </g>
 </svg>

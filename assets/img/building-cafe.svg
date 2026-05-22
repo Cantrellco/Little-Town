@@ -1,39 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Café / Fusion building (polished). Placeholder; final art by illustrator. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated café tower with a cup sign and a flag.">
-  <ellipse cx="150" cy="196" rx="96" ry="11" fill="#7a8f63" opacity="0.12"/>
-  <rect x="0" y="188" width="300" height="6" rx="3" fill="#e3d8c2"/>
-  <!-- body -->
-  <rect x="104" y="72" width="124" height="116" rx="9" fill="#e7c389"/>
-  <rect x="200" y="72" width="28" height="116" rx="9" fill="#d3a45f" opacity="0.55"/>
-  <rect x="104" y="72" width="124" height="116" rx="9" fill="none" stroke="#cf9a4f" stroke-width="3"/>
-  <!-- roof -->
-  <polygon points="94,74 166,16 238,74" fill="#c98f44"/>
-  <polygon points="166,16 238,74 200,74" fill="#b9803a"/>
-  <rect x="90" y="70" width="152" height="9" rx="4" fill="#b07d35"/>
-  <!-- flag -->
-  <line x1="166" y1="16" x2="166" y2="-2" stroke="#7a5a2e" stroke-width="3"/>
-  <path d="M166 2 L196 11 L166 20 Z" fill="#D64A3F"><animateTransform attributeName="transform" type="rotate" values="-6 166 11;9 166 11;-6 166 11" dur="2.3s" repeatCount="indefinite"/></path>
-  <circle cx="166" cy="16" r="5" fill="#D9A35E"/>
-  <!-- cup badge -->
-  <circle cx="166" cy="112" r="28" fill="#fbf3e6"/>
-  <g transform="translate(166,114)">
-    <path d="M-17 -9 H13 V3 a14 14 0 0 1 -28 0 Z" fill="#7FA8A0"/>
-    <path d="M13 -4 a9 9 0 0 1 0 14" fill="none" stroke="#7FA8A0" stroke-width="4.5"/>
-    <path d="M-6 -19 q-4 4 0 9 M5 -19 q-4 4 0 9" stroke="#c98f44" stroke-width="3" fill="none" stroke-linecap="round"/>
-  </g>
-  <!-- windows -->
-  <rect x="116" y="120" width="28" height="32" rx="5" fill="#fff"/><rect x="119" y="123" width="22" height="26" rx="3" fill="#dcebe8"/>
-  <line x1="130" y1="123" x2="130" y2="149" stroke="#fff" stroke-width="2.2"/><line x1="119" y1="136" x2="141" y2="136" stroke="#fff" stroke-width="2.2"/>
-  <rect x="188" y="120" width="28" height="32" rx="5" fill="#fff"/><rect x="191" y="123" width="22" height="26" rx="3" fill="#dcebe8"/>
-  <line x1="202" y1="123" x2="202" y2="149" stroke="#fff" stroke-width="2.2"/><line x1="191" y1="136" x2="213" y2="136" stroke="#fff" stroke-width="2.2"/>
-  <!-- door -->
-  <path d="M140 188 v-40 a26 26 0 0 1 52 0 v40 Z" fill="#B5532E"/>
-  <path d="M140 188 v-40 a26 26 0 0 1 52 0 v40 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
-  <line x1="166" y1="124" x2="166" y2="188" stroke="#9a4526" stroke-width="2" opacity="0.6"/>
-  <circle cx="182" cy="164" r="3.4" fill="#f1ddd3"/>
-  <!-- tree -->
-  <ellipse cx="256" cy="190" rx="26" ry="6" fill="#7a8f63" opacity="0.12"/>
-  <rect x="252" y="150" width="9" height="40" rx="4" fill="#a9763e"/>
-  <circle cx="256" cy="142" r="26" fill="#9CB082"/><circle cx="244" cy="154" r="16" fill="#8aa070"/><circle cx="266" cy="152" r="15" fill="#a7bb8e"/>
+<!-- Café tower (logo style). Placeholder; final art by illustrator. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated café tower with a cup and a flag.">
+  <ellipse cx="150" cy="196" rx="92" ry="9" fill="#7a8f63" opacity="0.12"/>
+  <rect x="40" y="190" width="220" height="5" rx="2.5" fill="#9CB082" opacity="0.55"/>
+  <rect x="104" y="74" width="120" height="116" rx="6" fill="#f2e0a4"/>
+  <rect x="200" y="74" width="24" height="116" rx="6" fill="#e6d088" opacity="0.5"/>
+  <rect x="104" y="74" width="120" height="116" rx="6" fill="none" stroke="#e2c97e" stroke-width="3"/>
+  <polygon points="92,76 164,18 236,76" fill="#cf9a4f"/><polygon points="164,18 236,76 200,76" fill="#b9803a"/>
+  <g stroke="#b07d35" stroke-width="1.6" opacity="0.6"><line x1="120" y1="64" x2="164" y2="34"/><line x1="208" y1="64" x2="164" y2="34"/></g>
+  <rect x="88" y="72" width="152" height="9" rx="4" fill="#b07d35"/>
+  <line x1="164" y1="18" x2="164" y2="-2" stroke="#7a5a2e" stroke-width="3"/>
+  <circle cx="164" cy="18" r="5" fill="#E0A93F"/>
+  <path d="M164 1 L196 10 L164 20 Z" fill="#D64A3F"/>
+  <g transform="translate(164,116)"><path d="M-19 -12 H15 V3 a17 17 0 0 1 -34 0 Z" fill="#fff"/><path d="M15 -6 a11 11 0 0 1 0 18" fill="none" stroke="#fff" stroke-width="5"/><path d="M-6 -25 q-4 5 0 10 M5 -25 q-4 5 0 10" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/></g>
+  <path d="M136 190 v-38 a28 28 0 0 1 56 0 v38 Z" fill="#B5532E"/><path d="M136 190 v-38 a28 28 0 0 1 56 0 v38 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+  <circle cx="180" cy="166" r="3.2" fill="#f1ddd3"/>
+  <g><ellipse cx="256" cy="190" rx="22" ry="6" fill="#7a8f63" opacity="0.14"/><rect x="252" y="152" width="9" height="38" rx="4" fill="#a9763e"/><ellipse cx="256" cy="138" rx="22" ry="30" fill="#9CB082"/><ellipse cx="256" cy="128" rx="15" ry="20" fill="#a7bb8e"/></g>
 </svg>
