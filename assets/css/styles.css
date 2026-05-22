@@ -729,8 +729,8 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-v2 {
   position: relative; overflow: hidden; text-align: center;
   display: flex; justify-content: center; align-items: flex-start;
-  min-height: clamp(520px, 78vh, 720px);
-  background: #e7f1ee;
+  min-height: clamp(500px, 72vh, 680px);
+  background: #e8f1ec;
 }
 .hero-bg {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -739,8 +739,8 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(180deg,
-    rgba(247,243,236,0.95) 0%, rgba(247,243,236,0.78) 38%,
-    rgba(247,243,236,0.3) 62%, rgba(247,243,236,0) 100%);
+    rgba(247,243,236,0.86) 0%, rgba(247,243,236,0.58) 42%,
+    rgba(247,243,236,0.22) 72%, rgba(247,243,236,0.06) 100%);
 }
 .hero-v2 .hero-content { position: relative; z-index: 2; padding-top: clamp(2.2rem, 7vw, 4.2rem); padding-bottom: 2rem; }
 .hero-v2 .lead { margin-inline: auto; max-width: 44ch; font-size: clamp(1.05rem, 2vw, 1.28rem); }

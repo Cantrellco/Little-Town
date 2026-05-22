@@ -37,11 +37,11 @@
     </g>
   </defs>
 
-  <rect width="1200" height="640" fill="url(#sky)"/>
+  <rect width="1200" height="640" fill="#e8f1ec"/>
 
-  <!-- sun with soft glow -->
-  <circle cx="1060" cy="118" r="74" fill="#f6e3bf" opacity="0.45"><animate attributeName="r" values="74;80;74" dur="7s" repeatCount="indefinite"/></circle>
-  <circle cx="1060" cy="118" r="50" fill="url(#sun)"><animate attributeName="r" values="50;53;50" dur="7s" repeatCount="indefinite"/></circle>
+  <!-- sun with soft glow (flat fills keep the GIF clean / band-free) -->
+  <circle cx="1060" cy="118" r="74" fill="#f6e3bf" opacity="0.5"><animate attributeName="r" values="74;80;74" dur="7s" repeatCount="indefinite"/></circle>
+  <circle cx="1060" cy="118" r="50" fill="#f4dcae"><animate attributeName="r" values="50;53;50" dur="7s" repeatCount="indefinite"/></circle>
 
   <!-- clouds -->
   <use href="#cloud" x="250" y="120" opacity="0.96"><animateTransform attributeName="transform" type="translate" values="0 0;46 0;0 0" dur="20s" repeatCount="indefinite" additive="sum"/></use>
