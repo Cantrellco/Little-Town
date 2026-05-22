@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Party gallery placeholder 3 — café party table -->
+<!-- Party gallery: café party table (polished) -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" role="img" aria-label="Illustrated café party table with cups and treats.">
   <rect width="220" height="180" fill="#f3e8d6"/>
-  <path d="M30 120 H190 V128 H30 Z" fill="#D9A35E"/>
-  <rect x="44" y="128" width="8" height="34" fill="#c98f44"/>
-  <rect x="168" y="128" width="8" height="34" fill="#c98f44"/>
-  <!-- cups -->
-  <g>
-    <path d="M60 96 H82 V112 a11 11 0 0 1 -22 0 Z" fill="#7FA8A0"/>
-    <path d="M120 100 H138 V114 a9 9 0 0 1 -18 0 Z" fill="#B5532E"/>
-  </g>
-  <!-- cupcake -->
-  <path d="M150 104 q9 -12 18 0 Z" fill="#D64A3F"/>
-  <path d="M152 104 h14 l-2 14 h-10 Z" fill="#e7c389"/>
   <!-- bunting -->
-  <path d="M20 40 Q110 64 200 40" fill="none" stroke="#cdbfa6" stroke-width="2"/>
-  <path d="M60 48 l10 0 l-5 11 Z" fill="#9CB082"/>
-  <path d="M140 48 l10 0 l-5 11 Z" fill="#D64A3F"/>
+  <path d="M20 38 Q110 60 200 38" fill="none" stroke="#cdbfa6" stroke-width="2"/>
+  <path d="M58 44 l11 1 l-5 12 Z" fill="#9CB082"/><path d="M104 49 l11 1 l-5 12 Z" fill="#D64A3F"/><path d="M150 44 l11 1 l-5 12 Z" fill="#7FA8A0"/>
+  <!-- table -->
+  <ellipse cx="110" cy="166" rx="92" ry="8" fill="#7a8f63" opacity="0.12"/>
+  <rect x="30" y="120" width="160" height="10" rx="5" fill="#D9A35E"/>
+  <rect x="30" y="120" width="160" height="4" rx="2" fill="#c98f44"/>
+  <rect x="44" y="130" width="9" height="36" rx="3" fill="#c98f44"/><rect x="167" y="130" width="9" height="36" rx="3" fill="#c98f44"/>
+  <!-- cups -->
+  <path d="M58 96 H82 V112 a12 12 0 0 1 -24 0 Z" fill="#7FA8A0"/><path d="M82 99 a7 7 0 0 1 0 12" fill="none" stroke="#7FA8A0" stroke-width="3"/>
+  <path d="M118 100 H138 V114 a10 10 0 0 1 -20 0 Z" fill="#B5532E"/>
+  <!-- cupcake -->
+  <path d="M150 104 q9 -13 18 0 Z" fill="#D64A3F"/>
+  <path d="M152 104 h14 l-2 16 h-10 Z" fill="#e7c389"/>
+  <circle cx="159" cy="99" r="2" fill="#fff"/>
 </svg>

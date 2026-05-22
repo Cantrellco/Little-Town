@@ -1,58 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Main-street row of imaginative-play storefronts. Placeholder, final art by illustrator. -->
+<!-- Main-street row of imaginative-play shops (polished). Placeholder; final art by illustrator. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img"
-     aria-label="A little main street of imaginative-play shops: grocery, café tower and hospital, with trees and bushes.">
+     aria-label="A little main street of imaginative-play shops: grocery, café tower and clinic, with trees, bushes and children.">
   <defs>
-    <g id="ptree"><rect x="-6" y="34" width="12" height="40" rx="6" fill="#a9763e"/><circle cx="0" cy="18" r="34" fill="#9CB082"/><circle cx="-18" cy="34" r="24" fill="#8aa070"/><circle cx="18" cy="34" r="24" fill="#a7bb8e"/></g>
-    <g id="pbush"><circle cx="-14" cy="0" r="14" fill="#a7bb8e"/><circle cx="0" cy="-5" r="17" fill="#9CB082"/><circle cx="14" cy="0" r="14" fill="#8aa070"/><rect x="-30" y="0" width="60" height="18" fill="#9CB082"/></g>
+    <g id="ptree">
+      <ellipse cx="0" cy="76" rx="40" ry="8" fill="#7a8f63" opacity="0.16"/>
+      <rect x="-6" y="36" width="12" height="42" rx="6" fill="#a9763e"/><rect x="-6" y="36" width="4" height="42" rx="2" fill="#8a5e30" opacity="0.5"/>
+      <circle cx="0" cy="18" r="34" fill="#9CB082"/><circle cx="-20" cy="34" r="22" fill="#8aa070"/><circle cx="20" cy="34" r="22" fill="#a7bb8e"/><circle cx="-8" cy="10" r="16" fill="#aec291"/>
+    </g>
+    <g id="pbush">
+      <ellipse cx="0" cy="18" rx="38" ry="6" fill="#7a8f63" opacity="0.16"/>
+      <circle cx="-14" cy="2" r="14" fill="#a7bb8e"/><circle cx="0" cy="-6" r="17" fill="#9CB082"/><circle cx="14" cy="2" r="14" fill="#8aa070"/><rect x="-30" y="2" width="60" height="16" fill="#9CB082"/>
+    </g>
   </defs>
+
   <!-- ground -->
   <rect x="0" y="300" width="960" height="40" fill="#efe7d8"/>
+  <path d="M0 320 H960" stroke="#e3d8c2" stroke-width="3" stroke-dasharray="14 12"/>
   <rect x="0" y="300" width="960" height="6" fill="#e3d8c2"/>
 
-  <!-- Grocery (awning) -->
+  <!-- Grocery -->
   <g>
-    <rect x="60" y="170" width="190" height="130" rx="8" fill="#dfe7d2" stroke="#9CB082" stroke-width="3"/>
-    <rect x="48" y="154" width="214" height="20" rx="6" fill="#9CB082"/>
+    <ellipse cx="155" cy="302" rx="120" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="60" y="170" width="190" height="130" rx="9" fill="#dfe7d2"/>
+    <rect x="222" y="170" width="28" height="130" rx="9" fill="#cbd7b9" opacity="0.6"/>
+    <rect x="60" y="170" width="190" height="130" rx="9" fill="none" stroke="#9CB082" stroke-width="3"/>
+    <rect x="48" y="154" width="214" height="20" rx="7" fill="#9CB082"/><rect x="48" y="154" width="214" height="8" rx="4" fill="#8aa070"/>
     <path d="M60 200 H250 L236 226 H74 Z" fill="#fff"/>
-    <path d="M74 200 H100 L94 226 H68 Z" fill="#9CB082"/>
-    <path d="M134 200 H160 L154 226 H128 Z" fill="#9CB082"/>
-    <path d="M194 200 H220 L214 226 H188 Z" fill="#9CB082"/>
-    <path d="M122 300 v-40 a28 28 0 0 1 56 0 v40 Z" fill="#B5532E"/>
-    <rect x="78" y="244" width="32" height="44" rx="5" fill="#eef4f2"/>
-    <rect x="200" y="244" width="32" height="44" rx="5" fill="#eef4f2"/>
+    <path d="M74 200 H100 L94 226 H68 Z" fill="#9CB082"/><path d="M134 200 H160 L154 226 H128 Z" fill="#9CB082"/><path d="M194 200 H220 L214 226 H188 Z" fill="#9CB082"/>
+    <rect x="78" y="244" width="34" height="46" rx="6" fill="#fff"/><rect x="81" y="247" width="28" height="40" rx="4" fill="#eef4f2"/>
+    <rect x="198" y="244" width="34" height="46" rx="6" fill="#fff"/><rect x="201" y="247" width="28" height="40" rx="4" fill="#eef4f2"/>
+    <path d="M122 300 v-40 a28 28 0 0 1 56 0 v40 Z" fill="#B5532E"/><path d="M122 300 v-40 a28 28 0 0 1 56 0 v40 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+    <circle cx="166" cy="276" r="3.6" fill="#f1ddd3"/>
   </g>
 
-  <use href="#ptree" x="290" y="226"/>
+  <use href="#ptree" x="294" y="228"/>
 
   <!-- Café tower -->
   <g>
-    <rect x="340" y="150" width="150" height="150" rx="8" fill="#e7c389" stroke="#D9A35E" stroke-width="3"/>
-    <polygon points="330,150 415,84 500,150" fill="#c98f44"/>
+    <ellipse cx="415" cy="302" rx="96" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="340" y="150" width="150" height="150" rx="9" fill="#e7c389"/>
+    <rect x="462" y="150" width="28" height="150" rx="9" fill="#d3a45f" opacity="0.55"/>
+    <rect x="340" y="150" width="150" height="150" rx="9" fill="none" stroke="#cf9a4f" stroke-width="3"/>
+    <polygon points="330,152 415,84 500,152" fill="#c98f44"/><polygon points="415,84 500,152 458,152" fill="#b9803a"/>
+    <rect x="326" y="148" width="178" height="9" rx="4" fill="#b07d35"/>
     <line x1="415" y1="84" x2="415" y2="56" stroke="#7a5a2e" stroke-width="4"/>
-    <path d="M415 60 L450 70 L415 80 Z" fill="#D64A3F"><animateTransform attributeName="transform" type="rotate" values="-6 415 70;9 415 70;-6 415 70" dur="2.4s" repeatCount="indefinite"/></path>
-    <g transform="translate(415,196)">
-      <path d="M-22 -10 H18 V6 a16 16 0 0 1 -32 0 Z" fill="#fff"/>
-      <path d="M18 -4 a11 11 0 0 1 0 16" fill="none" stroke="#fff" stroke-width="5"/>
-    </g>
-    <path d="M388 300 v-40 a27 27 0 0 1 54 0 v40 Z" fill="#B5532E"/>
-    <rect x="352" y="240" width="24" height="24" rx="5" fill="#eef4f2"/>
-    <rect x="454" y="240" width="24" height="24" rx="5" fill="#eef4f2"/>
+    <path d="M415 60 L452 70 L415 80 Z" fill="#D64A3F"><animateTransform attributeName="transform" type="rotate" values="-6 415 70;9 415 70;-6 415 70" dur="2.4s" repeatCount="indefinite"/></path>
+    <circle cx="415" cy="84" r="6" fill="#D9A35E"/>
+    <circle cx="415" cy="196" r="30" fill="#fbf3e6"/>
+    <g transform="translate(415,198)"><path d="M-18 -10 H14 V3 a15 15 0 0 1 -30 0 Z" fill="#7FA8A0"/><path d="M14 -5 a10 10 0 0 1 0 15" fill="none" stroke="#7FA8A0" stroke-width="4.5"/><path d="M-6 -20 q-4 4 0 9 M5 -20 q-4 4 0 9" stroke="#c98f44" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+    <path d="M388 300 v-40 a27 27 0 0 1 54 0 v40 Z" fill="#B5532E"/><path d="M388 300 v-40 a27 27 0 0 1 54 0 v40 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+    <circle cx="430" cy="276" r="3.6" fill="#f1ddd3"/>
   </g>
 
-  <use href="#pbush" x="520" y="288"/>
+  <use href="#pbush" x="522" y="288"/>
 
-  <!-- Hospital -->
+  <!-- Clinic -->
   <g>
-    <rect x="560" y="160" width="180" height="140" rx="8" fill="#d6e6e2" stroke="#7FA8A0" stroke-width="3"/>
-    <polygon points="548,160 650,98 752,160" fill="#7FA8A0"/>
-    <g transform="translate(650,140)" fill="#fff"><rect x="-7" y="-20" width="14" height="40" rx="3"/><rect x="-20" y="-7" width="40" height="14" rx="3"/></g>
-    <path d="M620 300 v-42 a28 28 0 0 1 56 0 v42 Z" fill="#3f7a52"/>
-    <rect x="576" y="232" width="30" height="30" rx="6" fill="#eef4f2"/>
-    <rect x="694" y="232" width="30" height="30" rx="6" fill="#eef4f2"/>
+    <ellipse cx="650" cy="302" rx="110" ry="11" fill="#7a8f63" opacity="0.12"/>
+    <rect x="560" y="160" width="180" height="140" rx="9" fill="#d6e6e2"/>
+    <rect x="710" y="160" width="30" height="140" rx="9" fill="#bcd5cf" opacity="0.6"/>
+    <rect x="560" y="160" width="180" height="140" rx="9" fill="none" stroke="#7FA8A0" stroke-width="3"/>
+    <polygon points="548,162 650,100 752,162" fill="#7FA8A0"/><polygon points="650,100 752,162 690,162" fill="#6b948c"/>
+    <rect x="544" y="158" width="212" height="9" rx="4" fill="#6b948c"/>
+    <circle cx="650" cy="142" r="22" fill="#fff"/>
+    <g transform="translate(650,142)" fill="#D64A3F"><rect x="-5" y="-13" width="10" height="26" rx="2.5"/><rect x="-13" y="-5" width="26" height="10" rx="2.5"/></g>
+    <rect x="576" y="232" width="32" height="32" rx="6" fill="#fff"/><rect x="579" y="235" width="26" height="26" rx="4" fill="#eef4f2"/>
+    <rect x="692" y="232" width="32" height="32" rx="6" fill="#fff"/><rect x="695" y="235" width="26" height="26" rx="4" fill="#eef4f2"/>
+    <path d="M620 300 v-42 a30 30 0 0 1 60 0 v42 Z" fill="#3f7a52"/><path d="M620 300 v-42 a30 30 0 0 1 60 0 v42 Z" fill="none" stroke="#356845" stroke-width="3"/>
+    <circle cx="666" cy="276" r="3.6" fill="#dfeae3"/>
   </g>
 
-  <use href="#ptree" x="800" y="220"/>
+  <use href="#ptree" x="800" y="222"/>
   <use href="#pbush" x="880" y="290"/>
   <use href="#pbush" x="40" y="294"/>
+
+  <!-- a child running between shops -->
+  <g transform="translate(300,300)">
+    <ellipse cx="0" cy="2" rx="20" ry="5" fill="#7a8f63" opacity="0.15"/>
+    <ellipse cx="-10" cy="-1" rx="6" ry="3.5" fill="#3f6a63"/><ellipse cx="9" cy="-2" rx="6" ry="3.5" fill="#3f6a63"/>
+    <rect x="-12" y="-22" width="8" height="22" rx="4" fill="#e0b07a" transform="rotate(-12 -8 -11)"/><rect x="4" y="-22" width="8" height="22" rx="4" fill="#e0b07a" transform="rotate(12 8 -11)"/>
+    <path d="M-15 -48 Q0 -54 15 -48 L12 -18 Q0 -14 -12 -18 Z" fill="#7FA8A0"/>
+    <path d="M-26 -46 q-7 6 -9 14" stroke="#7FA8A0" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M20 -50 q8 -4 12 -12" stroke="#7FA8A0" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="0" cy="-60" r="14" fill="#d9a36f"/>
+    <path d="M-14 -62 a14 14 0 0 1 28 0 q-14 -12 -28 0Z" fill="#2f2a24"/>
+    <circle cx="-4.5" cy="-59" r="1.8" fill="#221c16"/><circle cx="4.5" cy="-59" r="1.8" fill="#221c16"/>
+    <circle cx="-8" cy="-54" r="2.2" fill="#c9856a" opacity="0.55"/><circle cx="8" cy="-54" r="2.2" fill="#c9856a" opacity="0.55"/>
+    <path d="M-4.5 -53 q4.5 3 9 0" stroke="#221c16" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
 </svg>
