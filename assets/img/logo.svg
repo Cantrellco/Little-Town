@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Little Town Playhouse logo emblem — placeholder in final brand style -->
+<!-- Little Town Playhouse logo emblem (polished). Placeholder; final art by illustrator. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Little Town Playhouse">
-  <!-- ground -->
-  <rect x="6" y="80" width="88" height="6" rx="3" fill="#e3d8c2"/>
+  <ellipse cx="50" cy="85" rx="42" ry="5" fill="#7a8f63" opacity="0.14"/>
+  <rect x="8" y="80" width="84" height="5" rx="2.5" fill="#e3d8c2"/>
   <!-- left teal house -->
-  <rect x="10" y="50" width="26" height="32" rx="3" fill="#d6e6e2" stroke="#7FA8A0" stroke-width="2"/>
-  <polygon points="7,50 23,36 39,50" fill="#7FA8A0"/>
-  <rect x="19" y="64" width="8" height="18" rx="3" fill="#B5532E"/>
+  <rect x="11" y="50" width="26" height="30" rx="4" fill="#d6e6e2"/>
+  <rect x="29" y="50" width="8" height="30" rx="4" fill="#bcd5cf" opacity="0.6"/>
+  <rect x="11" y="50" width="26" height="30" rx="4" fill="none" stroke="#7FA8A0" stroke-width="2"/>
+  <polygon points="7,50 24,35 41,50" fill="#7FA8A0"/><polygon points="24,35 41,50 30,50" fill="#6b948c"/>
+  <path d="M19 80 v-12 a5 5 0 0 1 10 0 v12 Z" fill="#B5532E"/>
   <!-- center wood tower + flag -->
-  <rect x="40" y="40" width="24" height="42" rx="3" fill="#e7c389" stroke="#D9A35E" stroke-width="2"/>
-  <polygon points="36,40 52,24 68,40" fill="#c98f44"/>
+  <rect x="40" y="40" width="24" height="40" rx="4" fill="#e7c389"/>
+  <rect x="57" y="40" width="7" height="40" rx="3.5" fill="#d3a45f" opacity="0.55"/>
+  <rect x="40" y="40" width="24" height="40" rx="4" fill="none" stroke="#cf9a4f" stroke-width="2"/>
+  <polygon points="36,40 52,24 68,40" fill="#c98f44"/><polygon points="52,24 68,40 58,40" fill="#b9803a"/>
   <line x1="52" y1="24" x2="52" y2="12" stroke="#7a5a2e" stroke-width="2.5"/>
   <path d="M52 14 L64 18 L52 22 Z" fill="#D64A3F"/>
-  <circle cx="52" cy="55" r="5" fill="#fff"/>
-  <rect x="47" y="66" width="10" height="16" rx="3" fill="#B5532E"/>
+  <circle cx="52" cy="55" r="5.5" fill="#fbf3e6"/>
+  <path d="M47 66 v-9 a5 5 0 0 1 10 0 v9 Z" fill="#B5532E"/>
   <!-- right sage house with cross -->
-  <rect x="66" y="52" width="24" height="30" rx="3" fill="#dfe7d2" stroke="#9CB082" stroke-width="2"/>
-  <polygon points="63,52 78,40 93,52" fill="#9CB082"/>
-  <g transform="translate(78,64)" fill="#3f7a52">
-    <rect x="-2.5" y="-7" width="5" height="14" rx="1.5"/>
-    <rect x="-7" y="-2.5" width="14" height="5" rx="1.5"/>
-  </g>
+  <rect x="66" y="52" width="25" height="28" rx="4" fill="#dfe7d2"/>
+  <rect x="84" y="52" width="7" height="28" rx="3.5" fill="#cbd7b9" opacity="0.6"/>
+  <rect x="66" y="52" width="25" height="28" rx="4" fill="none" stroke="#9CB082" stroke-width="2"/>
+  <polygon points="62,52 78,40 94,52" fill="#9CB082"/><polygon points="78,40 94,52 84,52" fill="#86a06b"/>
+  <circle cx="78" cy="62" r="6" fill="#fff"/>
+  <g transform="translate(78,62)" fill="#D64A3F"><rect x="-1.6" y="-4" width="3.2" height="8" rx="1"/><rect x="-4" y="-1.6" width="8" height="3.2" rx="1"/></g>
 </svg>

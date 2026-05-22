@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Open Play storefront — placeholder illustration, final art by brand illustrator -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated open-play storefront with a slide and tunnel.">
+<!-- Open-play storefront (polished). Placeholder; final art by illustrator. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustrated open-play storefront with a striped awning, slide and tunnel.">
+  <ellipse cx="150" cy="194" rx="120" ry="11" fill="#7a8f63" opacity="0.12"/>
   <rect x="0" y="186" width="300" height="6" rx="3" fill="#e3d8c2"/>
-  <!-- tunnel/slide -->
+  <!-- tunnel + slide -->
   <ellipse cx="48" cy="160" rx="34" ry="22" fill="#7FA8A0"/>
-  <ellipse cx="48" cy="160" rx="22" ry="14" fill="#5d8a82"/>
-  <ellipse cx="48" cy="160" rx="11" ry="7" fill="#3f6a63"/>
-  <path d="M64 140 Q120 96 120 188" fill="none" stroke="#9cc6bf" stroke-width="16" stroke-linecap="round"/>
+  <ellipse cx="48" cy="160" rx="23" ry="15" fill="#5d8a82"/>
+  <ellipse cx="48" cy="160" rx="12" ry="8" fill="#3f6a63"/>
+  <path d="M64 138 Q120 96 120 186" fill="none" stroke="#9cc6bf" stroke-width="18" stroke-linecap="round"/>
+  <path d="M64 138 Q120 96 120 186" fill="none" stroke="#7FA8A0" stroke-width="7" stroke-linecap="round"/>
   <!-- storefront -->
-  <rect x="120" y="92" width="150" height="96" rx="6" fill="#dfe7d2" stroke="#9CB082" stroke-width="3"/>
-  <rect x="112" y="78" width="166" height="18" rx="6" fill="#9CB082"/>
+  <rect x="120" y="92" width="152" height="96" rx="8" fill="#dfe7d2"/>
+  <rect x="244" y="92" width="28" height="96" rx="8" fill="#cbd7b9" opacity="0.6"/>
+  <rect x="120" y="92" width="152" height="96" rx="8" fill="none" stroke="#9CB082" stroke-width="3"/>
+  <rect x="112" y="78" width="168" height="18" rx="7" fill="#9CB082"/><rect x="112" y="78" width="168" height="7" rx="3.5" fill="#8aa070"/>
   <!-- awning -->
-  <path d="M120 110 H270 L260 130 H130 Z" fill="#fff"/>
-  <path d="M130 110 H152 L146 130 H124 Z" fill="#9CB082"/>
-  <path d="M174 110 H196 L190 130 H168 Z" fill="#9CB082"/>
-  <path d="M218 110 H240 L234 130 H212 Z" fill="#9CB082"/>
-  <!-- door + windows -->
-  <path d="M168 188 v-34 a26 26 0 0 1 52 0 v34 Z" fill="#B5532E"/>
-  <circle cx="210" cy="166" r="3" fill="#f1ddd3"/>
-  <rect x="132" y="140" width="26" height="40" rx="5" fill="#eef4f2"/>
-  <rect x="232" y="140" width="26" height="40" rx="5" fill="#eef4f2"/>
+  <path d="M120 110 H272 L260 132 H132 Z" fill="#fff"/>
+  <path d="M132 110 H154 L146 132 H124 Z" fill="#9CB082"/>
+  <path d="M178 110 H200 L192 132 H170 Z" fill="#9CB082"/>
+  <path d="M224 110 H246 L238 132 H216 Z" fill="#9CB082"/>
+  <path d="M120 110 H272 L269 116 H123 Z" fill="#000" opacity="0.06"/>
+  <!-- windows -->
+  <rect x="132" y="142" width="30" height="42" rx="5" fill="#fff"/><rect x="135" y="145" width="24" height="36" rx="3" fill="#eef4f2"/>
+  <rect x="230" y="142" width="30" height="42" rx="5" fill="#fff"/><rect x="233" y="145" width="24" height="36" rx="3" fill="#eef4f2"/>
+  <!-- door -->
+  <path d="M170 188 v-36 a26 26 0 0 1 52 0 v36 Z" fill="#B5532E"/>
+  <path d="M170 188 v-36 a26 26 0 0 1 52 0 v36 Z" fill="none" stroke="#9a4526" stroke-width="3"/>
+  <circle cx="212" cy="168" r="3.4" fill="#f1ddd3"/>
   <!-- bush -->
-  <circle cx="96" cy="180" r="14" fill="#9CB082"/>
-  <circle cx="110" cy="184" r="11" fill="#8aa070"/>
+  <ellipse cx="100" cy="186" rx="24" ry="6" fill="#7a8f63" opacity="0.12"/>
+  <circle cx="92" cy="174" r="14" fill="#9CB082"/><circle cx="108" cy="178" r="11" fill="#8aa070"/>
 </svg>
