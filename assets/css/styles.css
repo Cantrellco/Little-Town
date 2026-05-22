@@ -724,6 +724,48 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .flex-cta.center { justify-content: center; }
 
 /* ============================================================
+   Home v3 — fresh homepage layout
+   ============================================================ */
+.hero-v2 {
+  position: relative; text-align: center; overflow: hidden;
+  background:
+    radial-gradient(900px 380px at 50% -12%, var(--teal-tint), transparent 60%),
+    linear-gradient(180deg, #fbf8f2 0%, var(--base) 100%);
+  padding-top: clamp(2.2rem, 6vw, 3.6rem);
+}
+.hero-v2 .lead { margin-inline: auto; max-width: 44ch; font-size: clamp(1.05rem, 2vw, 1.28rem); }
+.hero-v2 .flex-cta { justify-content: center; }
+.hero-banner { margin-top: clamp(1.6rem, 4vw, 2.6rem); padding-inline: clamp(1.1rem, 4vw, 2.5rem); }
+.hero-banner img {
+  width: 100%; max-width: 960px; margin-inline: auto;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  box-shadow: 0 -2px 0 rgba(0,0,0,0) , 0 18px 36px rgba(80,60,30,0.12);
+}
+
+/* Trust bar */
+.trust-bar {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem 2.2rem;
+  padding: 1.1rem clamp(1.1rem, 4vw, 2.5rem);
+}
+.trust { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-head); font-weight: 500; font-size: 0.94rem; color: var(--ink); }
+.trust svg { width: 22px; height: 22px; flex: none; }
+
+/* Membership band (main offer) */
+.member-band {
+  display: grid; gap: clamp(1.4rem, 4vw, 2.8rem); align-items: center;
+  background: linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
+  color: #fff; border-radius: var(--r-xl); padding: clamp(1.6rem, 4vw, 3rem); overflow: hidden;
+}
+.member-band h2, .member-band p { color: #fff; }
+.member-band .eyebrow { color: rgba(255,255,255,0.85); }
+.member-band .price-list li { color: rgba(255,255,255,0.95); }
+.member-band .price-list li::before { background: rgba(255,255,255,0.22); box-shadow: inset 0 0 0 3px #fff; }
+.member-art img { width: 100%; border-radius: var(--r-lg); box-shadow: var(--shadow-md); display: block; }
+@media (min-width: 860px) { .member-band { grid-template-columns: 1.05fr 0.95fr; } }
+.btn--onfill { background: #fff; color: var(--teal); }
+.btn--onfill:hover { background: #fff; }
+
+/* ============================================================
    Playful motion v3 — refined liveliness across all pages
    ============================================================ */
 
