@@ -280,8 +280,12 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   .nav-toggle { display: none; }
   .mobile-menu { display: none; }
 }
-@media (max-width: 480px) {
-  .header-cta .btn span.cta-full { display: none; }
+/* Responsive header CTA: full label on desktop, compact "Join" on small screens */
+.cta-short { display: none; }
+@media (max-width: 600px) {
+  .header-cta .btn--cta { padding: 0.5rem 0.95rem; font-size: 0.88rem; }
+  .header-cta .btn--cta .cta-full { display: none; }
+  .header-cta .btn--cta .cta-short { display: inline; }
 }
 
 /* ---------- Hero ---------- */
