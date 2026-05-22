@@ -153,4 +153,44 @@
   <use href="#bush" x="430" y="528"/>
   <use href="#bush" x="980" y="526"/>
   <use href="#bush" x="40" y="540" />
+
+  <!-- ===== children playing (placeholder figures, final art by illustrator) ===== -->
+  <!-- kid waving near the slide -->
+  <g transform="translate(250,520)">
+    <rect x="-11" y="-26" width="9" height="26" rx="4.5" fill="#7a5a2e"/>
+    <rect x="2" y="-26" width="9" height="26" rx="4.5" fill="#7a5a2e"/>
+    <path d="M-15 -54 Q0 -62 15 -54 L12 -24 H-12 Z" fill="#D64A3F"/>
+    <rect x="-29" y="-54" width="12" height="24" rx="6" fill="#D64A3F" transform="rotate(-20 -23 -42)"/>
+    <rect x="17" y="-62" width="12" height="26" rx="6" fill="#D64A3F" transform="rotate(30 23 -49)"/>
+    <circle cx="0" cy="-66" r="14" fill="#f0c9a8"/>
+    <path d="M-14 -68 a14 14 0 0 1 28 0 q-14 -11 -28 0Z" fill="#5b4632"/>
+    <circle cx="-5" cy="-66" r="1.7" fill="#3a2f24"/><circle cx="5" cy="-66" r="1.7" fill="#3a2f24"/>
+    <path d="M-5 -60 q5 4 10 0" stroke="#3a2f24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- kid running on Main Street -->
+  <g transform="translate(620,520)">
+    <rect x="-13" y="-24" width="9" height="24" rx="4.5" fill="#5d8a82" transform="rotate(-16 -8 -12)"/>
+    <rect x="3" y="-24" width="9" height="24" rx="4.5" fill="#5d8a82" transform="rotate(16 8 -12)"/>
+    <path d="M-15 -52 Q0 -60 15 -52 L12 -22 H-12 Z" fill="#7FA8A0"/>
+    <rect x="-30" y="-50" width="12" height="24" rx="6" fill="#7FA8A0" transform="rotate(-40 -24 -38)"/>
+    <rect x="18" y="-54" width="12" height="24" rx="6" fill="#7FA8A0" transform="rotate(35 24 -42)"/>
+    <circle cx="0" cy="-64" r="14" fill="#d9a36f"/>
+    <path d="M-14 -66 a14 14 0 0 1 28 0 q-14 -11 -28 0Z" fill="#2f2a24"/>
+    <circle cx="-5" cy="-64" r="1.7" fill="#221c16"/><circle cx="5" cy="-64" r="1.7" fill="#221c16"/>
+    <path d="M-5 -58 q5 4 10 0" stroke="#221c16" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- toddler with a ball -->
+  <g transform="translate(470,522)">
+    <rect x="-10" y="-22" width="8" height="22" rx="4" fill="#b07d35"/>
+    <rect x="2" y="-22" width="8" height="22" rx="4" fill="#b07d35"/>
+    <path d="M-13 -46 Q0 -53 13 -46 L10 -20 H-10 Z" fill="#9CB082"/>
+    <rect x="-25" y="-44" width="11" height="22" rx="5.5" fill="#9CB082" transform="rotate(-18 -19 -33)"/>
+    <rect x="14" y="-44" width="11" height="22" rx="5.5" fill="#9CB082" transform="rotate(18 19 -33)"/>
+    <circle cx="0" cy="-58" r="13" fill="#f0c9a8"/>
+    <path d="M-13 -60 a13 13 0 0 1 26 0 q-13 -10 -26 0Z" fill="#c98f44"/>
+    <circle cx="-4.5" cy="-58" r="1.6" fill="#3a2f24"/><circle cx="4.5" cy="-58" r="1.6" fill="#3a2f24"/>
+    <path d="M-4 -52 q4 3 8 0" stroke="#3a2f24" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <circle cx="30" cy="-8" r="11" fill="#D64A3F"/>
+    <path d="M19 -8 h22 M30 -19 v22" stroke="#fff" stroke-width="2"/>
+  </g>
 </svg>

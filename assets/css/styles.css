@@ -645,6 +645,63 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 .float { animation: floaty 6s ease-in-out infinite; }
 .float--slow { animation-duration: 9s; }
 
+/* ============================================================
+   Playful motion & decorations (v2)
+   ============================================================ */
+.hero, .page-hero, .newsletter, .has-deco { position: relative; overflow: hidden; }
+.hero-inner, .page-hero > .container, .newsletter > * { position: relative; z-index: 2; }
+
+.deco { position: absolute; pointer-events: none; z-index: 1; }
+.deco img { width: 100%; height: auto; display: block; }
+
+@keyframes bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes sway  { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes drift { 0% { transform: translateX(0); } 50% { transform: translateX(26px); } 100% { transform: translateX(0); } }
+@keyframes twinkle { 0%,100% { transform: scale(0.85); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
+@keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+
+.anim-bob     { animation: bob 6s ease-in-out infinite; }
+.anim-bob.slow{ animation-duration: 9s; }
+.anim-sway    { animation: sway 7s ease-in-out infinite; transform-origin: top center; }
+.anim-drift   { animation: drift 16s ease-in-out infinite; }
+.anim-twinkle { animation: twinkle 4.5s ease-in-out infinite; }
+
+/* Bouncier, more playful hovers */
+.btn { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background 0.2s ease; }
+.btn:hover { transform: translateY(-3px) scale(1.03); }
+.card { transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+.card:hover { transform: translateY(-7px) scale(1.015); }
+.card:hover .card-art img { animation: wiggle 0.55s ease; }
+.chip { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+.reassure:hover .chip, .value-card:hover .chip { transform: rotate(-6deg) scale(1.08); }
+.gallery figure:hover { transform: translateY(-6px) rotate(-1.2deg); }
+
+/* Soft decorative blobs behind bands */
+.newsletter::before { content: ""; position: absolute; width: 240px; height: 240px; right: -70px; top: -90px;
+  background: rgba(255,255,255,0.16); border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; }
+.newsletter::after { content: ""; position: absolute; width: 180px; height: 180px; left: -60px; bottom: -80px;
+  background: rgba(255,255,255,0.12); border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%; }
+
+/* Confetti dots accent */
+.confetti { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 0.6rem; }
+.confetti i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; transform: rotate(12deg); }
+
+/* Pill / badge for "next door" partner */
+.partner-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--terra-tint);
+  color: var(--terracotta); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem;
+  padding: 0.4rem 0.9rem; border-radius: var(--r-pill); }
+
+/* Membership spotlight card on home */
+.spotlight { display: grid; gap: clamp(1.4rem,4vw,3rem); align-items: center;
+  background: linear-gradient(135deg, var(--wood-tint) 0%, #fbf3e6 100%);
+  border-radius: var(--r-xl); padding: clamp(1.6rem,4vw,3rem); border: 1px solid rgba(140,100,40,0.14); }
+@media (min-width: 860px) { .spotlight { grid-template-columns: 1.1fr 0.9fr; } }
+.spotlight .spotlight-art img { width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover .card-art img { animation: none; }
+}
+
 /* Utility */
 .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; } .mt-4 { margin-top: 2rem; }
 .mb-0 { margin-bottom: 0; }
