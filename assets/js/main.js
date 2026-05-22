@@ -84,3 +84,40 @@
     el.addEventListener("click", function (e) { e.preventDefault(); });
   });
 })();
+
+/* ============================================================
+   Inline the animated illustrations.
+   iOS Safari does not animate SVGs referenced via <img>, so we
+   fetch the SVG and replace the <img> with a live inline <svg>
+   (inline SVG animates on every browser). If the fetch fails, the
+   original <img> stays in place as a static fallback.
+   ============================================================ */
+(function () {
+  "use strict";
+  var ANIMATED = ["hero-town", "kids-play", "building-cafe", "building-parties", "playstreet", "map-light"];
+  function isAnimated(src) {
+    src = (src || "").split("?")[0];
+    return ANIMATED.some(function (n) { return src.indexOf(n + ".svg") !== -1; });
+  }
+  if (!("fetch" in window) || !("DOMParser" in window)) return;
+
+  document.querySelectorAll('img[src*="assets/img/"]').forEach(function (img) {
+    if (!isAnimated(img.getAttribute("src"))) return;
+    fetch(img.src)
+      .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
+      .then(function (txt) {
+        var doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+        var svg = doc.querySelector("svg");
+        if (!svg || doc.querySelector("parsererror")) return;
+        var w = img.getAttribute("width"), h = img.getAttribute("height"), st = img.getAttribute("style"),
+            cls = img.getAttribute("class"), alt = img.getAttribute("alt");
+        if (w) svg.setAttribute("width", w);
+        if (h) svg.setAttribute("height", h);
+        if (cls) svg.setAttribute("class", cls);
+        if (st) svg.setAttribute("style", st);
+        if (alt) { svg.setAttribute("role", "img"); svg.setAttribute("aria-label", alt); }
+        if (img.parentNode) img.replaceWith(svg);
+      })
+      .catch(function () { /* keep the static <img> fallback */ });
+  });
+})();
