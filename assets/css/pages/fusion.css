@@ -3,8 +3,50 @@
    All core tokens, components and animations live in styles.css.
    ============================================================ */
 
-/* Pastel ribbon colour for the flowing section dividers (warm café mix) */
-:root { --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 55%, var(--wood) 100%); }
+/* Pastel ribbon colour for the flowing section dividers (warm café mix) +
+   matching warm bubble palette */
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 55%, var(--wood) 100%);
+  --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--wood); --bub-4: var(--sky);
+}
+
+/* ---- Hero: a cosy COFFEE world — a faint coffee-bean texture over a warm
+     cream gradient (no sky), with steam rising from the café. ---- */
+.page-hero.ph--cafe {
+  background:
+    url("../../img/coffee-beans.svg") center / 132px repeat,
+    linear-gradient(180deg, #f6e6cd 0%, #f9efdc 52%, var(--base) 100%);
+}
+
+/* Real-logo café tower: size by height so the tall tower isn't stretched wide */
+.ph--cafe .hero-art { display: grid; place-items: center; }
+.ph--cafe .hero-art img { width: auto; max-height: clamp(250px, 40vh, 350px); }
+
+/* Steam rising from the latte mug's foam */
+.fusion-steam {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  z-index: 2;
+  pointer-events: none;
+}
+.fusion-steam svg { width: 100%; height: auto; display: block; }
+.fusion-steam .st { opacity: 0; transform-box: fill-box; transform-origin: bottom center; }
+@media (prefers-reduced-motion: no-preference) {
+  .fusion-steam .st { animation: steamRise 4.2s ease-in-out infinite; }
+  .fusion-steam .st2 { animation-delay: 1.4s; }
+  .fusion-steam .st3 { animation-delay: 2.8s; }
+}
+@keyframes steamRise {
+  0%   { opacity: 0; transform: translateY(6px); }
+  40%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-9px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fusion-steam .st { opacity: 0.4; }
+}
 
 /* ---- Hero: pull the art and copy a little closer on larger screens ---- */
 .ph--cafe .container {

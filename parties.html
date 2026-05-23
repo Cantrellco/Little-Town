@@ -55,9 +55,32 @@
          ===================================================== -->
     <section class="page-hero ph--party">
 
-      <!-- A single balloon + star keeps the festive hint without crowding the hero -->
-      <span class="deco anim-bob"     style="top:14%;left:6%;width:48px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:18%;right:9%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <!-- Party world: confetti fills the background (CSS). Here a balloon bunch,
+           two streamer curls and a star add to the celebration (desktop only). -->
+      <span class="deco anim-bob" style="top:11%;left:5%;width:66px" aria-hidden="true">
+        <svg viewBox="0 0 72 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 40 Q26 58 35 72" stroke="#cdb89a" stroke-width="1.4"/>
+          <path d="M48 36 Q44 56 35 72" stroke="#cdb89a" stroke-width="1.4"/>
+          <path d="M35 54 Q35 64 35 72" stroke="#cdb89a" stroke-width="1.4"/>
+          <path d="M35 72 q5 9 -1 18" stroke="#cdb89a" stroke-width="1.4"/>
+          <ellipse cx="22" cy="24" rx="15" ry="18" fill="#EC9A90"/>
+          <ellipse cx="48" cy="20" rx="15" ry="18" fill="#AEDCEA"/>
+          <ellipse cx="35" cy="42" rx="14" ry="17" fill="#F8D98F"/>
+          <ellipse cx="17" cy="18" rx="4" ry="6" fill="#fff" opacity="0.45"/>
+          <ellipse cx="43" cy="14" rx="4" ry="6" fill="#fff" opacity="0.45"/>
+        </svg>
+      </span>
+      <span class="deco anim-sway" style="top:7%;left:25%;width:34px" aria-hidden="true">
+        <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4 Q34 14 20 30 Q6 44 26 56 Q42 66 30 78" stroke="#F4AE92" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="deco anim-sway" style="top:7%;right:24%;width:34px" aria-hidden="true">
+        <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M38 4 Q16 14 30 30 Q44 44 24 56 Q8 66 20 78" stroke="#AEDCEA" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="deco anim-twinkle" style="top:17%;right:8%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
 
       <div class="container">
         <div class="reveal">
@@ -102,9 +125,101 @@
 
         </div>
 
-        <!-- Party building illustration (auto-inlined + animated by main.js) -->
-        <div class="hero-art reveal" data-delay="1" style="max-width:300px">
-          <img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220" fetchpriority="high" decoding="async">
+        <!-- Birthday cake — a three-tier pastel cake with white frosting drips,
+             sprinkles and lit candles on a little stand, in the brand storybook
+             style. -->
+        <div class="hero-art reveal" data-delay="1" style="max-width:440px">
+          <svg viewBox="0 0 640 520" role="img" aria-labelledby="cakeTitle" xmlns="http://www.w3.org/2000/svg">
+            <title id="cakeTitle">A three-tier birthday cake with lit candles, in the Little Town storybook style.</title>
+
+            <!-- soft shadow + cake stand -->
+            <ellipse cx="320" cy="486" rx="156" ry="20" fill="#C9B79A" opacity="0.30"/>
+            <path d="M298 454 L342 454 L354 482 L286 482 Z" fill="#E2C79B"/>
+            <rect x="300" y="456" width="8" height="24" rx="4" fill="#F0DCBC" opacity="0.7"/>
+            <ellipse cx="320" cy="486" rx="92" ry="15" fill="#D9B98A"/>
+            <ellipse cx="320" cy="483" rx="92" ry="13" fill="#ECD3AC"/>
+            <ellipse cx="320" cy="454" rx="174" ry="24" fill="#E2C79B"/>
+            <ellipse cx="320" cy="451" rx="174" ry="22" fill="#F0DCBC"/>
+            <ellipse cx="320" cy="451" rx="118" ry="13" fill="#E6CFA6" opacity="0.55"/>
+
+            <!-- ===== Bottom tier (sky) ===== -->
+            <rect x="166" y="360" width="308" height="92" rx="18" fill="#AEDCEA"/>
+            <rect x="176" y="372" width="14" height="68" rx="7" fill="#CFEEF6" opacity="0.85"/>
+            <g aria-hidden="true">
+              <rect x="206" y="410" width="13" height="5" rx="2.5" fill="#F8D98F" transform="rotate(-24 212 412)"/>
+              <rect x="262" y="424" width="13" height="5" rx="2.5" fill="#EC9A90" transform="rotate(18 268 426)"/>
+              <rect x="350" y="416" width="13" height="5" rx="2.5" fill="#A7D2C9" transform="rotate(-12 356 418)"/>
+              <rect x="416" y="424" width="13" height="5" rx="2.5" fill="#F4AE92" transform="rotate(22 422 426)"/>
+              <circle cx="240" cy="404" r="3" fill="#ffffff"/>
+              <circle cx="398" cy="406" r="3" fill="#ffffff"/>
+            </g>
+            <rect x="158" y="346" width="324" height="28" rx="14" fill="#ffffff"/>
+            <g fill="#ffffff">
+              <rect x="189" y="362" width="18" height="30" rx="9"/>
+              <rect x="249" y="362" width="18" height="32" rx="9"/>
+              <rect x="311" y="362" width="18" height="34" rx="9"/>
+              <rect x="373" y="362" width="18" height="32" rx="9"/>
+              <rect x="433" y="362" width="18" height="30" rx="9"/>
+            </g>
+
+            <!-- ===== Middle tier (coral) ===== -->
+            <rect x="208" y="288" width="224" height="70" rx="16" fill="#F4AE92"/>
+            <rect x="218" y="298" width="12" height="50" rx="6" fill="#F8C6B0" opacity="0.8"/>
+            <g aria-hidden="true">
+              <rect x="246" y="332" width="12" height="5" rx="2.5" fill="#F8D98F" transform="rotate(20 252 334)"/>
+              <rect x="318" y="338" width="12" height="5" rx="2.5" fill="#ffffff" transform="rotate(-16 324 340)"/>
+              <rect x="386" y="330" width="12" height="5" rx="2.5" fill="#A7D2C9" transform="rotate(12 392 332)"/>
+              <circle cx="284" cy="338" r="3" fill="#ffffff"/>
+              <circle cx="356" cy="332" r="3" fill="#BFD6A8"/>
+            </g>
+            <rect x="200" y="276" width="240" height="26" rx="13" fill="#ffffff"/>
+            <g fill="#ffffff">
+              <rect x="230" y="290" width="16" height="28" rx="8"/>
+              <rect x="282" y="290" width="16" height="30" rx="8"/>
+              <rect x="342" y="290" width="16" height="30" rx="8"/>
+              <rect x="394" y="290" width="16" height="28" rx="8"/>
+            </g>
+
+            <!-- ===== Top tier (sun) ===== -->
+            <rect x="252" y="216" width="136" height="70" rx="14" fill="#F8D98F"/>
+            <rect x="262" y="226" width="12" height="50" rx="6" fill="#FDEEC2" opacity="0.8"/>
+            <g aria-hidden="true">
+              <rect x="286" y="258" width="11" height="4.5" rx="2.2" fill="#EC9A90" transform="rotate(-20 291 260)"/>
+              <rect x="344" y="262" width="11" height="4.5" rx="2.2" fill="#A7D2C9" transform="rotate(16 349 264)"/>
+              <circle cx="320" cy="266" r="3" fill="#ffffff"/>
+            </g>
+            <rect x="244" y="204" width="152" height="26" rx="13" fill="#ffffff"/>
+            <g fill="#ffffff">
+              <rect x="274" y="218" width="16" height="26" rx="8"/>
+              <rect x="312" y="218" width="16" height="26" rx="8"/>
+              <rect x="350" y="218" width="16" height="26" rx="8"/>
+            </g>
+
+            <!-- ===== Candles (lit) ===== -->
+            <g aria-hidden="true">
+              <rect x="286" y="160" width="9" height="46" rx="4" fill="#EC9A90"/>
+              <rect x="289" y="166" width="3" height="34" rx="1.5" fill="#ffffff" opacity="0.4"/>
+              <path d="M290.5 160 C 283 151 284 139 290.5 132 C 297 139 298 151 290.5 160 Z" fill="#F8D98F"/>
+              <path d="M290.5 156 C 286.5 150 287 143 290.5 138 C 294 143 294.5 150 290.5 156 Z" fill="#F4AE92"/>
+
+              <rect x="315" y="152" width="9" height="54" rx="4" fill="#AEDCEA"/>
+              <rect x="318" y="158" width="3" height="42" rx="1.5" fill="#ffffff" opacity="0.45"/>
+              <path d="M319.5 152 C 312 143 313 131 319.5 124 C 326 131 327 143 319.5 152 Z" fill="#F8D98F"/>
+              <path d="M319.5 148 C 315.5 142 316 135 319.5 130 C 323 135 323.5 142 319.5 148 Z" fill="#F4AE92"/>
+
+              <rect x="345" y="160" width="9" height="46" rx="4" fill="#BFD6A8"/>
+              <rect x="348" y="166" width="3" height="34" rx="1.5" fill="#ffffff" opacity="0.4"/>
+              <path d="M349.5 160 C 342 151 343 139 349.5 132 C 356 139 357 151 349.5 160 Z" fill="#F8D98F"/>
+              <path d="M349.5 156 C 345.5 150 346 143 349.5 138 C 353 143 353.5 150 349.5 156 Z" fill="#F4AE92"/>
+            </g>
+
+            <!-- little sparkles for fun -->
+            <g fill="#ffffff" opacity="0.7" aria-hidden="true">
+              <path d="M150 252 Q150 260 158 260 Q150 260 150 268 Q150 260 142 260 Q150 260 150 252 Z"/>
+              <path d="M492 252 Q492 260 500 260 Q492 260 492 268 Q492 260 484 260 Q492 260 492 252 Z"/>
+              <path d="M468 150 Q468 156 474 156 Q468 156 468 162 Q468 156 462 156 Q468 156 468 150 Z"/>
+            </g>
+          </svg>
         </div>
       </div>
     </section>
@@ -155,7 +270,8 @@
     <!-- =====================================================
          HOW BOOKING WORKS — 3-step numbered steps
          ===================================================== -->
-    <section class="section parties-steps-section flow-top">
+    <section class="section parties-steps-section flow-top has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">So simple</span>
@@ -439,7 +555,8 @@
          ===================================================== -->
     <section class="section">
       <div class="container">
-        <div class="parties-cta-band reveal">
+        <div class="parties-cta-band reveal anim-gradient">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <span class="sticker anim-pulse" style="margin-bottom:1rem;display:inline-flex">🎂 Ready to celebrate?</span>
           <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-top:0.4rem">Let's plan something <span class="script">magical</span></h2>
           <p style="max-width:44ch;margin-inline:auto;opacity:0.92">Check availability, ask a question or dive straight into the booking mockup. We'd love to help make it the best party ever.</p>

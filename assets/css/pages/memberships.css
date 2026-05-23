@@ -3,13 +3,20 @@
    Builds entirely on the v4 shared kit in styles.css.
    ============================================================ */
 
-/* Pastel ribbon colour for the flowing section dividers (meadow mix) */
-:root { --flow-accent: linear-gradient(90deg, var(--sage) 0%, var(--teal) 55%, var(--sky) 100%); }
+/* Pastel ribbon colour for the flowing section dividers (meadow mix) +
+   matching meadow bubble palette */
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sage) 0%, var(--teal) 55%, var(--sky) 100%);
+  --bub-1: var(--sage); --bub-2: var(--teal); --bub-3: var(--sky); --bub-4: var(--sun);
+}
 
-/* ---- Hero boost ---- */
+/* ---- Hero: a premium "members lounge" — a rich sage SPOTLIGHT (no sky),
+     with rotating light-rays behind the card. This page's identity is
+     value/belonging, so it glows rather than floats in a blue sky. ---- */
 .page-hero.ph--member {
-  /* Brighter, more saturated gradient than the default sage */
-  background: linear-gradient(180deg, #c8e6c4 0%, #d8ebd5 38%, var(--base) 100%);
+  background:
+    url("../../img/sparkle-tile.svg") center / 90px repeat,
+    radial-gradient(120% 95% at 72% 26%, #e8f2d9 0%, #cfe3b6 46%, #b1d390 100%);
   padding-block: clamp(2.2rem, 5vw, 3.6rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
@@ -32,15 +39,33 @@
   margin: 2rem auto 0;
   position: relative;
 }
-/* Soft sage glow behind the membership card — gives the art depth, like the
-   loved fusion/parties heroes, while keeping the calm membership mood. */
+/* Soft sage glow behind the membership card — gives the art depth. */
 .mem-hero-glow {
   position: absolute;
   inset: -14% -10%;
   z-index: 0;
-  background: radial-gradient(closest-side, rgba(156,176,130,0.45), rgba(156,176,130,0) 72%);
+  background: radial-gradient(closest-side, rgba(255,255,255,0.6), rgba(255,255,255,0) 72%);
   pointer-events: none;
 }
+/* Rotating light-rays behind the card — the "special offer" sunburst. */
+.mem-hero-art::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%; top: 50%;
+  width: 155%; aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(255,255,255,0.55) 0deg 5deg, rgba(255,255,255,0) 5deg 16deg);
+  -webkit-mask: radial-gradient(closest-side, #000 36%, rgba(0,0,0,0.45) 56%, transparent 76%);
+          mask: radial-gradient(closest-side, #000 36%, rgba(0,0,0,0.45) 56%, transparent 76%);
+  pointer-events: none;
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mem-hero-art::before { animation: memRays 70s linear infinite; }
+}
+@keyframes memRays { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .mem-hero-art img { position: relative; z-index: 1; }
 @media (min-width: 880px) {
   .mem-hero-inner {
@@ -58,7 +83,10 @@
 /* Override .panel's white background so bg-meadow actually shows */
 .panel.bg-meadow {
   background: var(--grad-meadow);
+  overflow: hidden;            /* contain the celebratory confetti within the rounded panel */
 }
+/* Keep the panel's copy + stats above the confetti layer */
+.panel.bg-meadow > :not(.confetti-rain) { position: relative; z-index: 1; }
 
 /* ---- "Pays for itself" value strip ---- */
 .value-strip {

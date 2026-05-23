@@ -52,57 +52,37 @@
     <!-- ============================================================
          HERO — lively sky backdrop, sticker, highlighted headline
          ============================================================ -->
-    <section class="page-hero ph--visit has-bunting">
-      <!-- Kiddy bunting banner across the very top -->
-      <div class="hero-bunting" aria-hidden="true"></div>
-      <!-- Wayfinding motifs floating over the daylight sky (desktop only). -->
-      <span class="deco anim-bob" style="top:17%;left:5%;width:34px" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" fill="#F4AE92" stroke="#C2805F" stroke-width="1.2"/>
-          <circle cx="12" cy="10" r="3" fill="#fff"/>
+    <section class="page-hero ph--visit">
+      <!-- Map / wayfinding world: a faint street grid (CSS) with dashed routes
+           leading to a big "you are here" pin. Shows on every screen size. -->
+      <div class="visit-map" aria-hidden="true">
+        <svg class="visit-route" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-40 330 C 180 330 230 150 440 150 S 770 300 1010 210"
+                fill="none" stroke="#3F7268" stroke-width="3.5" stroke-dasharray="0.5 16" stroke-linecap="round" opacity="0.42"/>
+          <path d="M150 -30 C 150 120 380 150 400 300 S 700 440 770 440"
+                fill="none" stroke="#C2805F" stroke-width="3.5" stroke-dasharray="0.5 16" stroke-linecap="round" opacity="0.32"/>
         </svg>
-      </span>
-      <!-- a little two-way signpost -->
-      <span class="deco anim-sway" style="top:30%;left:11%;width:42px" aria-hidden="true">
+      </div>
+      <!-- a two-way signpost (desktop flourish) -->
+      <span class="deco anim-sway" style="top:26%;left:7%;width:48px" aria-hidden="true">
         <svg viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="5" width="3" height="32" rx="1.5" fill="#cdb89a"/>
           <path d="M4 9 H29 l6 5 -6 5 H4 Z" fill="#AEDCEA" stroke="#fff" stroke-width="0.8"/>
           <path d="M40 21 H17 l-6 5 6 5 H40 Z" fill="#F8D98F" stroke="#fff" stroke-width="0.8"/>
         </svg>
       </span>
-      <span class="deco anim-twinkle" style="top:16%;right:7%;width:24px"><img src="assets/img/deco-star.svg" alt=""></span>
-      <span class="deco anim-bob" style="top:28%;right:6%;width:32px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <!-- a friendly little tree, like the ones around town -->
-      <span class="deco anim-bob slow" style="bottom:14%;right:23%;width:26px" aria-hidden="true">
+      <!-- a friendly little tree along the route -->
+      <span class="deco anim-bob slow" style="bottom:16%;left:17%;width:30px" aria-hidden="true">
         <svg viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="13" y="24" width="4" height="13" rx="1.5" fill="#cdb89a"/>
           <circle cx="15" cy="16" r="13" fill="#BFD6A8"/>
           <circle cx="10" cy="13" r="3" fill="#fff" opacity="0.3"/>
         </svg>
       </span>
-      <span class="deco anim-twinkle" style="bottom:20%;left:13%;width:16px"><img src="assets/img/deco-star.svg" alt=""></span>
-      <!-- Drifting clouds (same structure as other interior heroes) -->
-      <div class="hero-clouds" aria-hidden="true">
-        <div class="cloud-track">
-          <div class="cloud-set">
-            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="">
-          </div>
-          <div class="cloud-set" aria-hidden="true">
-            <img class="hero-cloud c1" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c2" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c3" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c4" src="assets/img/deco-cloud.svg" alt="">
-            <img class="hero-cloud c5" src="assets/img/deco-cloud.svg" alt="">
-          </div>
-        </div>
-      </div>
 
       <div class="container">
-        <div class="reveal">
+        <div class="visit-hero-inner">
+          <div class="reveal">
           <!-- Walk-ins sticker above the eyebrow -->
           <div class="visit-hero-sticker">
             <span class="sticker anim-pop" aria-label="Walk-ins welcome">
@@ -134,14 +114,41 @@
             <a class="btn btn--lg btn--terracotta btn--pop" href="#contact">Say hello</a>
             <a class="btn btn--lg btn--ghost" href="memberships.html">Become a Member</a>
           </div>
+          </div>
+
+          <!-- Art column: a friendly location card — a mini map with our pin on it -->
+          <div class="visit-hero-art reveal" data-delay="1">
+            <svg class="visit-loc-card" viewBox="0 0 300 240" role="img" aria-label="A map card showing the Little Town location pin at 12 Main Street." xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="288" height="222" rx="22" fill="#ffffff" stroke="#e6dfd1" stroke-width="2"/>
+              <clipPath id="visitMapClip"><rect x="20" y="24" width="260" height="158" rx="14"/></clipPath>
+              <g clip-path="url(#visitMapClip)">
+                <rect x="20" y="24" width="260" height="158" fill="#dcEEE6"/>
+                <g stroke="#c2dccf" stroke-width="7">
+                  <line x1="20" y1="72" x2="280" y2="72"/>
+                  <line x1="20" y1="132" x2="280" y2="132"/>
+                  <line x1="108" y1="24" x2="108" y2="182"/>
+                  <line x1="204" y1="24" x2="204" y2="182"/>
+                </g>
+                <path d="M30 168 C 92 168 92 100 152 100 S 244 64 274 64" fill="none" stroke="#C2805F" stroke-width="3" stroke-dasharray="0.5 12" stroke-linecap="round" opacity="0.8"/>
+              </g>
+              <g transform="translate(152,52)">
+                <ellipse cx="0" cy="56" rx="15" ry="5" fill="#3F7268" opacity="0.18"/>
+                <path d="M0 55 C -12 33 -20 23 -20 12 a 20 20 0 1 1 40 0 c 0 11 -8 21 -20 43 Z" fill="#E0A184" stroke="#C2805F" stroke-width="2.5"/>
+                <circle cx="0" cy="12" r="8.5" fill="#ffffff"/>
+              </g>
+              <rect x="66" y="196" width="168" height="28" rx="14" fill="#f3ead9"/>
+              <text x="150" y="215" text-anchor="middle" font-family="Poppins, system-ui, sans-serif" font-weight="700" font-size="13" fill="#3F7268">12 Main Street</text>
+            </svg>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
          HOURS + MAP — lively hours card, map with sticker cluster
+         flow-top: the wave divider that rises out of the hero on every page
          ============================================================ -->
-    <section class="section">
+    <section class="section flow-top">
       <div class="container split">
 
         <!-- LEFT: hours + contact details -->
@@ -219,7 +226,8 @@
 
         <!-- RIGHT: map + sticker cluster -->
         <div class="reveal" data-delay="1">
-          <div class="map-frame">
+          <div class="map-frame pop-host">
+            <span class="pop-bubble pop-bubble--coral" aria-hidden="true">📍</span>
             <!-- map-light.svg is auto-inlined + animated by main.js; keep filename -->
             <div class="map-light">
               <img src="assets/img/map-light.svg" alt="Stylized illustrated map showing Little Town Playhouse on Main Street, Riverbend." width="600" height="380" loading="lazy" decoding="async">
@@ -250,7 +258,8 @@
     <!-- ============================================================
          PLAN YOUR VISIT — 3-step numbered guide
          ============================================================ -->
-    <section class="section visit-steps-section flow-top">
+    <section class="section visit-steps-section flow-top has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Getting here</span>
@@ -404,7 +413,7 @@
          ============================================================ -->
     <section class="section flow-top">
       <div class="container">
-        <div class="visit-cta-band reveal">
+        <div class="visit-cta-band reveal anim-gradient">
           <span class="eyebrow on-dark">Ready for an adventure?</span>
           <h2>We'll see you <span class="script" style="color:var(--accent)">in town!</span></h2>
           <p style="max-width:42ch;margin-inline:auto">No booking needed for open play — just show up, put on your grippy socks, and let the fun begin.</p>

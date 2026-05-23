@@ -50,9 +50,24 @@
   <main>
 
     <!-- ===================== PAGE HERO ===================== -->
-    <section class="page-hero ph--play has-bunting">
-      <!-- Kiddy bunting banner across the very top -->
-      <div class="hero-bunting" aria-hidden="true"></div>
+    <section class="page-hero ph--play">
+      <!-- Outdoor Main Street world: a bright sky fading down to grass, a sunny
+           corner, drifting clouds and a few playful floaters. -->
+      <span class="play-sun" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#F6CE5C" stroke-width="7" stroke-linecap="round">
+            <line x1="60" y1="6"  x2="60" y2="22"/>
+            <line x1="60" y1="98" x2="60" y2="114"/>
+            <line x1="6"  y1="60" x2="22" y2="60"/>
+            <line x1="98" y1="60" x2="114" y2="60"/>
+            <line x1="20" y1="20" x2="32" y2="32"/>
+            <line x1="88" y1="88" x2="100" y2="100"/>
+            <line x1="20" y1="100" x2="32" y2="88"/>
+            <line x1="88" y1="32" x2="100" y2="20"/>
+          </g>
+          <circle cx="60" cy="60" r="30" fill="#FCE38A"/>
+        </svg>
+      </span>
       <!-- Playful floaters drifting over the open-town sky (desktop only) -->
       <span class="deco anim-bob"      style="top:15%;left:4%;width:34px"><img src="assets/img/deco-balloon.svg" alt=""></span>
       <span class="deco anim-bob slow" style="top:27%;left:8%;width:24px" aria-hidden="true">
@@ -83,6 +98,13 @@
           </div>
         </div>
       </div>
+      <!-- Soft rolling hills ground the town at the bottom of the sky -->
+      <div class="play-hills" aria-hidden="true">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 74 C 220 34 360 62 560 54 C 780 46 980 80 1200 58 L1200 160 L0 160 Z" fill="#cbe6a6"/>
+          <path d="M0 108 C 200 82 420 98 640 90 C 880 82 1040 106 1200 94 L1200 160 L0 160 Z" fill="#b8db8e"/>
+        </svg>
+      </div>
       <div class="container">
         <div class="reveal">
           <span class="eyebrow">Open Play · Ages 0–8</span>
@@ -94,25 +116,26 @@
           </div>
         </div>
 
-        <!-- Stat pill strip -->
-        <div class="stat-strip reveal" data-delay="1" aria-label="Quick facts">
+        <!-- Playstreet art with sticker badge (sits beside the copy on desktop) -->
+        <div class="ph--play hero-sticker-wrap reveal" data-delay="1" style="max-width:600px;margin:0 auto">
+          <img src="assets/img/logo.png" alt="The Little Town main street: grocery with a slide, café tower and clinic." width="875" height="422" fetchpriority="high" decoding="async">
+          <span class="hero-sticker-badge" aria-hidden="true">Open every day ✓</span>
+        </div>
+
+        <!-- Stat pill strip — spans full width beneath the copy + street -->
+        <div class="stat-strip reveal" data-delay="2" aria-label="Quick facts">
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true">👶</span> Ages 0–8</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🧦</span> Socks required</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🎟️</span> 1 free grown-up per child</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true">🔄</span> Re-entry all day</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true">👶</span> Under-1s play free</span>
         </div>
-
-        <!-- Playstreet art with sticker badge -->
-        <div class="ph--play hero-sticker-wrap reveal" data-delay="2" style="max-width:820px;margin:1.8rem auto 0">
-          <img src="assets/img/playstreet.svg" alt="A little main street of imaginative-play shops: grocery, café tower and clinic." width="960" height="340" fetchpriority="high" decoding="async">
-          <span class="hero-sticker-badge" aria-hidden="true">Open every day ✓</span>
-        </div>
       </div>
     </section>
 
     <!-- ===================== STOREFRONTS — MAIN STREET ===================== -->
-    <section class="section">
+    <!-- flow-top: the wave divider that rises out of the hero on every page -->
+    <section class="section flow-top">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The storefronts</span>
@@ -126,7 +149,7 @@
           <article class="card storefront-card storefront-card--grocery reveal" aria-label="The Grocery play area">
             <div class="storefront-cap" aria-hidden="true"></div>
             <div class="storefront-art">
-              <img src="assets/img/building-openplay.svg" alt="Illustrated grocery storefront with awning and produce displays." width="300" height="220" loading="lazy" decoding="async">
+              <img src="assets/img/logo-grocery.png" alt="The Little Town grocery storefront with its slide and tunnel." width="380" height="357" loading="lazy" decoding="async">
               <span class="storefront-sticker" aria-hidden="true">🛒 Shop!</span>
             </div>
             <div class="storefront-body">
@@ -139,7 +162,7 @@
           <article class="card storefront-card storefront-card--cafe reveal" data-delay="1" aria-label="The Corner Café play area">
             <div class="storefront-cap" aria-hidden="true"></div>
             <div class="storefront-art">
-              <img src="assets/img/building-cafe.svg" alt="Illustrated café tower with coffee cups and pastry details." width="300" height="220" loading="lazy" decoding="async">
+              <img src="assets/img/logo-cafe.png" alt="The Little Town café tower with its coffee-cup sign." width="156" height="373" loading="lazy" decoding="async">
               <span class="storefront-sticker" aria-hidden="true">☕ Serve!</span>
             </div>
             <div class="storefront-body">
@@ -152,7 +175,7 @@
           <article class="card storefront-card storefront-card--clinic reveal" data-delay="2" aria-label="The Little Clinic play area">
             <div class="storefront-cap" aria-hidden="true"></div>
             <div class="storefront-art">
-              <img src="assets/img/building-parties.svg" alt="Illustrated clinic tower with a red cross and caring details." width="300" height="220" loading="lazy" decoding="async">
+              <img src="assets/img/logo-clinic.png" alt="The Little Town clinic with its caring cross sign." width="307" height="255" loading="lazy" decoding="async">
               <span class="storefront-sticker" aria-hidden="true">🩺 Heal!</span>
             </div>
             <div class="storefront-body">
@@ -208,7 +231,8 @@
           <p class="section-lead">Climbing, sliding, serving and exploring — this is the kind of play that fills the place every single day.</p>
         </div>
 
-        <div class="showcase-frame reveal" data-delay="1">
+        <div class="showcase-frame reveal pop-host" data-delay="1">
+          <span class="pop-bubble pop-bubble--tl" aria-hidden="true">😄</span>
           <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shot later -->
           <img src="assets/img/photo-bigsmiles.jpg" alt="A smiling child playing on the rope bridge inside the playhouse." width="980" height="440" loading="lazy" decoding="async" style="aspect-ratio:980/440;object-fit:cover;object-position:center 40%">
           <span class="showcase-badge" aria-hidden="true">💛 Big smiles, all day</span>
@@ -222,7 +246,8 @@
     </div>
 
     <!-- ===================== PRICING ===================== -->
-    <section class="pricing-section band" id="pricing">
+    <section class="pricing-section band has-bubbles" id="pricing">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Open-play pricing</span>
@@ -334,6 +359,22 @@
             </ul>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CLOSING CTA — shared page ender ===================== -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band bg-sunrise on-dark anim-gradient reveal">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">🛝 Come play</span>
+          <h2>Ready for a day in <span class="script">the little town?</span></h2>
+          <p>No booking needed — pop in any day we're open, grab your grippy socks and explore every storefront.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="memberships.html">Become a Member</a>
+            <a class="btn btn--lg btn--ghost" href="visit-us.html">Plan a Visit</a>
+          </div>
         </div>
       </div>
     </section>

@@ -60,11 +60,11 @@
   <main>
     <!-- ============ HERO (full-bleed animated background) ============ -->
     <section class="hero-v2">
-      <!-- Static town backdrop — a wide scene for desktop and a portrait scene for phones.
-           The motion lives in the separate cloud layer below. -->
+      <!-- Town backdrop is the brand logo mark — the same little town from the
+           header — sitting on the sky wash. The motion lives in the separate
+           cloud layer below. -->
       <picture class="hero-bg">
-        <source media="(max-width: 700px)" srcset="assets/img/hero-mobile.svg">
-        <img src="assets/img/hero-town.svg" alt="Illustration of the little town — a play tunnel, market, café tower and clinic among trees under a blue sky." fetchpriority="high" decoding="async">
+        <img src="assets/img/logo.png" alt="The Little Town mark — a play slide tunnel, market, café tower and clinic." fetchpriority="high" decoding="async">
       </picture>
       <div class="hero-scrim" aria-hidden="true"></div>
       <!-- Clouds: an endless left-to-right conveyor. The track holds one set of
@@ -88,8 +88,21 @@
           </div>
         </div>
       </div>
-      <span class="deco anim-bob" style="top:12%;left:6%;width:40px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:20%;right:9%;width:28px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <!-- Hero scene flourishes — a sunny sky and a little parkland framing the
+           town. These are desktop-only floaters (.deco hides under 880px). -->
+      <!-- sky, left: a bobbing balloon cluster + a twinkle -->
+      <span class="deco anim-bob" style="top:12%;left:6%;width:44px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:19%;left:11.5%;width:30px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:34%;left:15%;width:26px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <!-- sky, right: a slowly turning sun, a swaying kite + a twinkle -->
+      <span class="deco anim-spin-slow" style="top:6%;right:5%;width:120px"><img src="assets/img/deco-sun.svg" alt=""></span>
+      <span class="deco anim-sway" style="top:28%;right:13%;width:80px"><img src="assets/img/deco-kite.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:14%;right:27%;width:20px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <!-- parkland on the sand, flanking the town left and right -->
+      <span class="deco" style="bottom:0;left:4%;width:120px"><img src="assets/img/deco-tree.svg" alt=""></span>
+      <span class="deco" style="bottom:1%;left:15%;width:104px"><img src="assets/img/deco-bush.svg" alt=""></span>
+      <span class="deco" style="bottom:0;right:3.5%;width:132px"><img src="assets/img/deco-tree.svg" alt=""></span>
+      <span class="deco" style="bottom:1%;right:14%;width:92px"><img src="assets/img/deco-bush.svg" alt=""></span>
       <div class="container hero-content reveal">
         <span class="eyebrow">Indoor imaginative play · Ages 0–8</span>
         <h1 class="home-hero-title">A little town built for <span class="hl hl--sky">big</span> <span class="script" style="color:var(--accent)">imaginations</span></h1>
@@ -105,12 +118,14 @@
     <section class="section flow-top">
       <div class="container">
         <div class="member-band home-member reveal">
-          <span class="sticker sticker--sun home-member-sticker anim-pulse">Best value</span>
-          <div>
+          <!-- Soft floater adds a brand touch in the band's empty top-right corner (desktop only) -->
+          <span class="hm-deco hm-deco--star anim-twinkle" aria-hidden="true"><img src="assets/img/deco-star.svg" alt="" width="34" height="34"></span>
+          <div class="home-member-copy">
+            <span class="member-flag"><span aria-hidden="true">★</span> Best value membership</span>
             <span class="eyebrow">Membership · the heart of Little Town</span>
             <h2>Unlimited play, <span class="script">all month</span> long</h2>
             <p>For about the cost of two visits a month, your little one gets the run of the whole town whenever the mood strikes — rain or shine.</p>
-            <ul class="price-list" style="max-width:460px">
+            <ul class="price-list member-perks" style="max-width:460px">
               <li>Unlimited open play, every day we're open</li>
               <li>Members-only quiet mornings</li>
               <li>Standing discount at Fusion café next door</li>
@@ -122,8 +137,12 @@
             </div>
           </div>
           <div class="member-art">
-            <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shots later -->
-            <img src="assets/img/photo-play-bridge.jpg" alt="A child balancing across a rope bridge inside the soft-play structure." width="1000" height="800" loading="lazy" decoding="async" style="aspect-ratio:5/4;object-fit:cover;object-position:center 30%">
+            <div class="member-photo pop-host">
+              <span class="pop-bubble" aria-hidden="true">💛</span>
+              <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shots later -->
+              <img src="assets/img/photo-play-bridge.jpg" alt="A child balancing across a rope bridge inside the soft-play structure." width="1000" height="800" loading="lazy" decoding="async" style="aspect-ratio:5/4;object-fit:cover;object-position:center 30%">
+            </div>
+            <p class="member-price"><small>from</small><b>$45</b><small>a&nbsp;month</small></p>
           </div>
         </div>
       </div>
@@ -138,23 +157,26 @@
           <p class="section-lead">Every corner of Little Town is a tiny storefront waiting to be run by little hands.</p>
         </div>
         <div class="grid grid-3 mt-4 home-explore">
-          <article class="card tilt reveal">
+          <article class="card tilt reveal pop-host">
             <span class="sticker sticker--sky home-card-sticker">Most loved</span>
-            <div class="card-art"><img src="assets/img/building-openplay.svg" alt="Illustrated open-play storefront with a slide and tunnel." width="300" height="220" loading="lazy" decoding="async"></div>
+            <span class="pop-bubble pop-bubble--sky" aria-hidden="true">🛝</span>
+            <div class="card-art"><img src="assets/img/logo-grocery.png" alt="The Little Town grocery storefront with its slide and tunnel." width="380" height="357" loading="lazy" decoding="async"></div>
             <h3>Open Play</h3>
             <p>Climb, slide and pretend through the grocery, the clinic and the corner café — soft, safe and sized just for little ones.</p>
             <a class="btn btn--ghost mt-1" href="play-pricing.html">Explore play</a>
           </article>
-          <article class="card tilt reveal" data-delay="1">
+          <article class="card tilt reveal pop-host" data-delay="1">
             <span class="sticker sticker--coral home-card-sticker">Buy-outs</span>
-            <div class="card-art"><img src="assets/img/building-parties.svg" alt="Illustrated party tower with bunting and balloons." width="300" height="220" loading="lazy" decoding="async"></div>
+            <span class="pop-bubble pop-bubble--coral" aria-hidden="true">🎈</span>
+            <div class="card-art"><img src="assets/img/logo.png" alt="The whole Little Town — yours for a private party buyout." width="875" height="422" loading="lazy" decoding="async"></div>
             <h3>Private Parties</h3>
             <p>Rent the whole town for two hours of exclusive, stress-free celebration — we set up, you simply show up.</p>
             <a class="btn btn--ghost mt-1" href="parties.html">Plan a party</a>
           </article>
-          <article class="card tilt reveal" data-delay="2">
+          <article class="card tilt reveal pop-host" data-delay="2">
             <span class="sticker sticker--sage home-card-sticker">Next door</span>
-            <div class="card-art"><img src="assets/img/building-cafe.svg" alt="Illustrated café building, Fusion next door." width="300" height="220" loading="lazy" decoding="async"></div>
+            <span class="pop-bubble pop-bubble--sage" aria-hidden="true">☕</span>
+            <div class="card-art"><img src="assets/img/logo-cafe.png" alt="The Little Town café tower, Fusion next door." width="156" height="373" loading="lazy" decoding="async"></div>
             <h3>Fusion <span class="partner-tag">Next door</span></h3>
             <p>Our neighbours at Fusion pour locally roasted coffee and fresh snacks — grab a cup before, during or after play.</p>
             <a class="btn btn--ghost mt-1" href="fusion.html">See Fusion</a>
@@ -164,7 +186,8 @@
     </section>
 
     <!-- ============ HOW A VISIT WORKS (numbered steps) ============ -->
-    <section class="section bg-sky-tint home-steps flow-top">
+    <section class="section bg-sky-tint home-steps flow-top has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Easy as one, two, three</span>
@@ -200,7 +223,8 @@
           <p class="section-lead">No hidden fees. Grown-ups always get in free with a paid little one — and members play unlimited.</p>
         </div>
         <div class="grid grid-3 mt-4">
-          <article class="card price-card reveal">
+          <article class="card price-card reveal pop-host">
+            <span class="pop-bubble pop-bubble--sky" aria-hidden="true">🎟️</span>
             <div class="card-art"><img src="assets/img/price-daypass.svg" alt="Day pass ticket illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Day Pass</h3>
             <div class="price-tag">$18 <small>/ child</small></div>
@@ -211,8 +235,9 @@
             </ul>
             <button class="btn btn--block btn--ghost" type="button" data-noop>Buy Day Pass</button>
           </article>
-          <article class="card price-card featured reveal" data-delay="1">
+          <article class="card price-card featured reveal pop-host" data-delay="1">
             <span class="badge">Most popular</span>
+            <span class="pop-bubble pop-bubble--tl" aria-hidden="true">⭐</span>
             <div class="card-art"><img src="assets/img/price-membership.svg" alt="Membership card illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Membership</h3>
             <div class="price-tag">$45 <small>/ month</small></div>
@@ -223,7 +248,8 @@
             </ul>
             <a class="btn btn--block btn--pop btn--terracotta" href="memberships.html">Choose Membership</a>
           </article>
-          <article class="card price-card reveal" data-delay="2">
+          <article class="card price-card reveal pop-host" data-delay="2">
+            <span class="pop-bubble pop-bubble--coral" aria-hidden="true">🎒</span>
             <div class="card-art"><img src="assets/img/price-playpack.svg" alt="Five-visit play pack illustration." width="200" height="140" loading="lazy" decoding="async"></div>
             <h3>Play Pack</h3>
             <div class="price-tag">$75 <small>/ 5 visits</small></div>
@@ -266,7 +292,8 @@
     </section>
 
     <!-- ============ TESTIMONIALS (happy parents) ============ -->
-    <section class="section bg-meadow on-dark home-quotes flow-top">
+    <section class="section bg-meadow on-dark home-quotes flow-top has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Loved by little locals</span>
@@ -294,7 +321,11 @@
     <section class="section band flow-top">
       <div class="container split">
         <div class="split-art reveal">
-          <img src="assets/img/founder.svg" alt="Illustration of a parent and child building a little wooden town together." width="480" height="380" loading="lazy" decoding="async">
+          <!-- Placeholder photo — swap for your own founder/play photo later -->
+          <img src="assets/img/photo-founder-blocks.jpg"
+               alt="A parent and toddler building a colourful block tower together on the floor."
+               width="1000" height="750" loading="lazy" decoding="async"
+               style="aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:var(--r-lg);box-shadow:var(--shadow-md)">
         </div>
         <div class="reveal" data-delay="1">
           <span class="eyebrow">Our story</span>
@@ -312,7 +343,7 @@
     <!-- ============ NEWSLETTER ============ -->
     <section class="section">
       <div class="container">
-        <div class="newsletter reveal">
+        <div class="newsletter reveal anim-gradient">
           <span class="eyebrow" style="color:var(--accent)">Stay in the loop</span>
           <h2>Little news for little town</h2>
           <p>Members' mornings, seasonal events and the odd free-play day — straight to your inbox.</p>

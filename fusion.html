@@ -53,9 +53,22 @@
          Hero
          ===================================================== -->
     <section class="page-hero ph--cafe">
-      <!-- A coffee + star floater keeps the café mood without crowding the hero -->
+      <!-- Café world: a faint coffee-bean texture fills the background (CSS).
+           Here the coffee cup, a couple of beans and a star float (desktop only). -->
       <span class="deco anim-bob" style="top:14%;left:6%;width:52px"><img src="assets/img/m-coffee.svg" alt=""></span>
+      <span class="deco anim-sway" style="top:30%;left:13%;width:26px" aria-hidden="true">
+        <svg viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="13" cy="9" rx="12" ry="7.5" fill="#A9763F"/>
+          <path d="M4 9 Q13 3 22 9 Q13 15 4 9" fill="#7A542E"/>
+        </svg>
+      </span>
       <span class="deco anim-twinkle" style="top:12%;right:22%;width:22px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-bob slow" style="top:24%;right:9%;width:22px" aria-hidden="true">
+        <svg viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="13" cy="9" rx="12" ry="7.5" fill="#A9763F"/>
+          <path d="M4 9 Q13 3 22 9 Q13 15 4 9" fill="#7A542E"/>
+        </svg>
+      </span>
 
       <div class="container">
         <!-- Copy -->
@@ -73,17 +86,55 @@
           </div>
         </div>
 
-        <!-- Cafe art (inlined + animated by main.js) -->
-        <div class="hero-art reveal" data-delay="1" style="max-width:300px">
-          <img src="assets/img/building-cafe.svg" alt="Illustrated cafe building representing Fusion next door." width="300" height="220" fetchpriority="high" decoding="async">
+        <!-- Cosy latte mug — a non-building coffee illustration, with steam
+             rising from the foam (steam span kept for its main.js/CSS animation) -->
+        <div class="hero-art reveal" data-delay="1" style="max-width:280px">
+          <span class="fusion-steam" aria-hidden="true">
+            <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none">
+                <path class="st st1" d="M18 66 q-7 -14 0 -26 q7 -12 0 -24"/>
+                <path class="st st2" d="M30 68 q-7 -14 0 -26 q7 -12 0 -24"/>
+                <path class="st st3" d="M42 66 q-7 -14 0 -26 q7 -12 0 -24"/>
+              </g>
+            </svg>
+          </span>
+          <svg viewBox="0 0 260 240" role="img" aria-labelledby="mugTitle" xmlns="http://www.w3.org/2000/svg">
+            <title id="mugTitle">A steaming latte mug on a saucer.</title>
+            <!-- saucer -->
+            <ellipse cx="130" cy="216" rx="100" ry="18" fill="#D9B98A"/>
+            <ellipse cx="130" cy="210" rx="100" ry="18" fill="#F0DCBC"/>
+            <ellipse cx="130" cy="208" rx="58"  ry="9"  fill="#E2C79B"/>
+            <!-- handle -->
+            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#E7DCC9" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+            <!-- mug body -->
+            <path d="M64 104 L196 104 L190 176 Q187 200 162 200 L98 200 Q73 200 70 176 Z" fill="#ffffff"/>
+            <path d="M80 116 Q74 158 86 192" stroke="#EEF4F6" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M180 116 Q186 156 174 190" stroke="#ECE3D4" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <!-- coffee surface: white lip + foam ring + coffee + latte-art heart -->
+            <ellipse cx="130" cy="104" rx="66" ry="16" fill="#ffffff"/>
+            <ellipse cx="130" cy="104" rx="56" ry="13" fill="#E5C49A"/>
+            <ellipse cx="130" cy="104" rx="45" ry="9"  fill="#C68A4E"/>
+            <path d="M130 99 q-7 -6 -12 0 q-4 5 12 13 q16 -8 12 -13 q-5 -6 -12 0 Z" fill="#F2E3C6"/>
+            <!-- a couple of coffee beans by the saucer -->
+            <g transform="translate(40 206) rotate(-18)">
+              <ellipse cx="0" cy="0" rx="11" ry="7" fill="#7A542E"/>
+              <path d="M-9 0 Q0 -5 9 0 Q0 5 -9 0" fill="#5e3f20"/>
+            </g>
+            <g transform="translate(222 210) rotate(14)">
+              <ellipse cx="0" cy="0" rx="10" ry="6.5" fill="#7A542E"/>
+              <path d="M-8 0 Q0 -4.5 8 0 Q0 4.5 -8 0" fill="#5e3f20"/>
+            </g>
+          </svg>
         </div>
       </div>
     </section>
 
     <!-- =====================================================
          Partner note — a friendly, prominent panel callout
+         flow-top: the wave divider that rises out of the hero on every page
          ===================================================== -->
-    <section class="section--tight">
+    <section class="section--tight flow-top">
       <div class="container">
         <div class="panel fusion-partner-panel reveal">
           <div class="partner-icon" aria-hidden="true">&#x1F3E1;</div>
@@ -293,7 +344,8 @@
     <!-- =====================================================
          How it works — Play to Refuel to Back to town
          ===================================================== -->
-    <section class="section band flow-top">
+    <section class="section band flow-top has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">The perfect loop</span>
@@ -341,7 +393,8 @@
       <div class="fusion-roasted-blob-2" aria-hidden="true"></div>
       <div class="container split">
         <div class="split-art reveal">
-          <div class="fusion-photo-wrap">
+          <div class="fusion-photo-wrap pop-host">
+            <span class="pop-bubble pop-bubble--tl" aria-hidden="true">☕</span>
             <!-- Placeholder photo — swap for a real Fusion cafe shot later -->
             <img class="fusion-cafe-photo" src="assets/img/photo-cafe-table.jpg" alt="A latte and fresh croissant on a wooden cafe table at Fusion." width="1000" height="800" loading="lazy" decoding="async">
             <span class="sticker" style="bottom:-0.7rem;right:1.2rem;position:absolute;z-index:2">&#x2615; Locally roasted</span>
@@ -353,6 +406,24 @@
           <p>Fusion's beans come from a small roaster just up the road, pulled fresh all day. Decaf, oat milk and little-one-friendly options are always on hand.</p>
           <p>It's the perfect partner to a morning of play &#x2014; caffeinate, refuel, and head back into the town.</p>
           <a class="btn btn--terracotta btn--pop mt-3" href="memberships.html">Members save at Fusion</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Closing CTA — shared page ender
+         ===================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band bg-candy on-dark anim-gradient reveal">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">&#x2615; See you next door</span>
+          <h2>Coffee's on at <span class="script">Fusion</span></h2>
+          <p>Pop in before, during or after play &#x2014; and flash your Little Town membership for a standing 10&#x2013;15% discount.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="#menu">See the menu</a>
+            <a class="btn btn--lg btn--ghost" href="memberships.html">Members save here</a>
+          </div>
         </div>
       </div>
     </section>

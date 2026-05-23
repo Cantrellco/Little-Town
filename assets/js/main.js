@@ -94,7 +94,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  var ANIMATED = ["hero-town", "kids-play", "building-cafe", "building-parties", "playstreet", "map-light"];
+  var ANIMATED = ["hero-town", "kids-play", "map-light"];
   function isAnimated(src) {
     src = (src || "").split("?")[0];
     return ANIMATED.some(function (n) { return src.indexOf(n + ".svg") !== -1; });

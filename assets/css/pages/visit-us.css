@@ -3,13 +3,52 @@
    Builds entirely on the v4 shared kit in styles.css.
    ============================================================ */
 
-/* Pastel ribbon colour for the flowing section dividers (daylight mix) */
-:root { --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--teal) 50%, var(--sage) 100%); }
+/* Pastel ribbon colour for the flowing section dividers (daylight mix) +
+   matching cool bubble palette */
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--teal) 50%, var(--sage) 100%);
+  --bub-1: var(--sky); --bub-2: var(--teal); --bub-3: var(--sage); --bub-4: var(--sun);
+}
 
-/* ---- Hero: cooler daylight teal + sticker cluster ---- */
+/* ---- Hero: a little town MAP — faint street grid, dashed routes, a big pin.
+     No sky here; this page's identity is wayfinding/directions. ---- */
 .page-hero.ph--visit {
-  background: linear-gradient(180deg, #b8dce6 0%, #d2e9ef 38%, var(--base) 100%);
+  background-color: #e8f1ea;
+  background-image:
+    linear-gradient(rgba(63,114,104,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63,114,104,0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center top;
   padding-block: clamp(2.2rem, 5vw, 3.4rem) clamp(1.8rem, 4vw, 2.6rem);
+}
+/* Dashed-route layer fills the hero behind the copy */
+.visit-map { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.visit-route { width: 100%; height: 100%; display: block; }
+
+/* Two-column hero: copy + a friendly location card (mini map with our pin) */
+.visit-hero-art {
+  position: relative;
+  max-width: 340px;
+  margin: 1.8rem auto 0;
+}
+.visit-loc-card {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 16px 28px rgba(40,80,70,0.20));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .visit-loc-card { animation: bob 7s ease-in-out infinite; }
+}
+@media (min-width: 880px) {
+  .visit-hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    text-align: left;
+  }
+  .visit-hero-art { margin: 0 auto; }
 }
 
 /* Hero pill row — semi-opaque white so they read over the gradient */

@@ -45,16 +45,105 @@
 .home-stats .stat:nth-child(4) .num { color: var(--accent-coral); }
 .home-stats .stat .num .unit { color: var(--ink-soft); font-weight: 700; }
 
-/* ---------- Membership band: room for a stuck-on sticker ---------- */
-.home-member { position: relative; }
-.home-member-sticker {
-  position: absolute;
-  top: -0.7rem;
-  right: clamp(1rem, 4vw, 2.4rem);
-  z-index: 3;
-  transform: rotate(4deg);
-  box-shadow: var(--shadow-md);
+/* ---------- Membership band: a crafted, premium offer card ----------
+   Goal: stop the offer reading as a flat pastel box. We layer a richer,
+   dimensional wash + soft glows + a faint dotted texture, frame the photo
+   like a polaroid, add a price "stamp" medallion, and turn the perk dots
+   into check badges. */
+.home-member {
+  position: relative;
+  isolation: isolate;
+  /* Deeper, more dimensional wash than the flat base gradient */
+  background:
+    radial-gradient(125% 90% at 100% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 46%),
+    radial-gradient(95% 120% at 0% 105%, rgba(63,114,104,0.22) 0%, rgba(63,114,104,0) 55%),
+    linear-gradient(135deg, var(--sage) 0%, var(--teal) 55%, #92c3b9 100%);
+  /* Crisp inner highlight ring + soft outer lift so it reads as a card */
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255,255,255,0.55),
+    inset 0 2px 0 rgba(255,255,255,0.45),
+    var(--shadow-lg);
 }
+/* Faint dot grid for tactile depth (clipped to the rounded card) */
+.home-member::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(rgba(255,255,255,0.55) 1.3px, transparent 1.5px);
+  background-size: 22px 22px;
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
+}
+.home-member-copy { position: relative; z-index: 2; }
+
+/* Inline "best value" flag — replaces the old corner sticker that the
+   band's overflow:hidden was clipping in half. */
+.member-flag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: #5a3d12; background: var(--sun);
+  padding: 0.42rem 0.95rem; border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 0.95rem;
+}
+.member-flag span { color: var(--accent-coral); font-size: 0.9rem; line-height: 1; }
+
+/* Perks: rounded teal check badges instead of plain dots */
+.home-member .member-perks li { color: var(--ink); font-weight: 500; }
+.home-member .member-perks li::before {
+  width: 22px; height: 22px; margin-top: 0.1rem; border-radius: 50%;
+  background: var(--accent-teal)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4 10-11'/%3E%3C/svg%3E")
+    center / 13px no-repeat;
+  box-shadow: 0 3px 7px rgba(63,114,104,0.4);
+}
+
+/* Photo framed like a polaroid: white mat, gentle tilt, deep soft shadow */
+.member-art { position: relative; }
+.member-photo {
+  position: relative;
+  background: #fff;
+  padding: 0.65rem;
+  border-radius: calc(var(--r-lg) + 0.35rem);
+  box-shadow: var(--shadow-lg);
+  transform: rotate(-1.6deg);
+}
+.member-photo img { box-shadow: none; }
+
+/* Price "stamp" medallion overlapping the photo's bottom-left corner */
+.member-price {
+  position: absolute; z-index: 3;
+  left: -0.4rem; bottom: -0.9rem;
+  margin: 0;
+  width: 116px; height: 116px;
+  display: grid; place-content: center; gap: 0.05rem;
+  text-align: center; line-height: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 28%, #ffffff 0%, #fdedca 64%, #f6d89a 100%);
+  box-shadow: var(--shadow-md), inset 0 0 0 3px #fff;
+  transform: rotate(-8deg);
+}
+.member-price::before {
+  content: ""; position: absolute; inset: 9px;
+  border-radius: 50%; border: 2px dashed rgba(179,90,55,0.4);
+}
+.member-price small {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent);
+}
+.member-price b {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: 2rem; color: var(--accent); margin: 0.05rem 0;
+}
+
+/* Brand floaters tucked in the band's empty corners (desktop only) */
+.hm-deco { position: absolute; z-index: 1; pointer-events: none; }
+.hm-deco img { width: 100%; height: auto; filter: drop-shadow(0 6px 9px rgba(80,60,30,0.16)); }
+.hm-deco--star { width: 36px; top: 1.5rem; right: 1.6rem; }
+@media (max-width: 859px) { .hm-deco { display: none; } }
 
 /* ---------- Explore the town: wonky cards with corner stickers ---------- */
 .home-explore .card { position: relative; overflow: visible; }
@@ -93,13 +182,15 @@
 /* Comfortable tap targets on the small-screen stat/step stacks. */
 @media (max-width: 520px) {
   .home-hero-sticker { font-size: 0.82rem; }
-  .home-member-sticker { right: 1rem; }
+  /* Slightly smaller price stamp, nudged fully onto the photo on phones */
+  .member-price { width: 100px; height: 100px; left: 0.4rem; bottom: -0.7rem; }
+  .member-price b { font-size: 1.7rem; }
 }
 
 /* ---------- Reduced motion: silence every home-only flourish ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .home-hero-sticker,
-  .home-member-sticker { animation: none !important; }
+  .home-hero-sticker { animation: none !important; }
+  .hm-deco { animation: none !important; }
   .home-explore .card:nth-child(odd) .home-card-sticker,
   .home-explore .card:nth-child(even) .home-card-sticker { transform: none !important; }
 }

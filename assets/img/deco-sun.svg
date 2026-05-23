@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A soft, friendly sun with eight rounded rays — pairs with .anim-spin-slow. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" role="presentation" aria-hidden="true">
+  <g fill="#f4cf78">
+    <g transform="rotate(0 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(45 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(90 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(135 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(180 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(225 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(270 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+    <g transform="rotate(315 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
+  </g>
+  <circle cx="65" cy="65" r="34" fill="#f7d886"/>
+  <circle cx="65" cy="65" r="34" fill="none" stroke="#fce7b0" stroke-width="5"/>
+  <circle cx="54" cy="54" r="9" fill="#fbe6a8" opacity="0.7"/>
+</svg>

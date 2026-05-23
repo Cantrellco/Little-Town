@@ -7,7 +7,57 @@
 /* Pastel ribbon colour for the flowing section dividers (playful mix) */
 :root { --flow-accent: linear-gradient(90deg, var(--coral) 0%, var(--sky) 40%, var(--sage) 70%, var(--sun) 100%); }
 
-/* ---------- Hero hero accent: sticker on the art ---------- */
+/* ---------- Hero: a bright OUTDOOR Main Street — sunny sky fading to grass,
+     with a sun in the corner. This is the only interior page that keeps the
+     sky + clouds, which sets it apart from the other three. ---------- */
+.page-hero.ph--play {
+  background: linear-gradient(180deg, #a9dff1 0%, #c6ecf4 38%, #dff1da 70%, #cfe8bc 100%);
+  /* Height + padding come from the shared .page-hero model so this hero matches
+     the other interior pages' footprint. */
+}
+/* Two-column hero: copy on the left, the wide Main Street beside it on the
+   right, with the stat-pill strip spanning the full width beneath — keeps the
+   hero the same on-screen size as the other interior pages instead of running
+   tall. Mobile keeps the centred stack. */
+.ph--play .container {
+  display: grid;
+  gap: clamp(1.4rem, 3.5vw, 2.6rem);
+  align-items: center;
+}
+@media (min-width: 880px) {
+  .ph--play .container { grid-template-columns: 1fr 1.05fr; text-align: left; }
+  .ph--play .container .flex-cta { justify-content: flex-start; }
+  .ph--play .hero-sticker-wrap { justify-self: center; }
+  .ph--play .stat-strip { grid-column: 1 / -1; }
+}
+/* Soft rolling hills along the bottom of the sky (behind the town) */
+.play-hills {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: clamp(70px, 13vw, 140px);
+  z-index: 0;
+  pointer-events: none;
+}
+.play-hills svg { width: 100%; height: 100%; display: block; }
+/* Sunny corner (shows on all screen sizes) */
+.play-sun {
+  position: absolute;
+  top: 6px; right: 18px;
+  width: 116px; height: 116px;
+  z-index: 0;
+  pointer-events: none;
+}
+.play-sun svg { width: 100%; height: 100%; display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .play-sun { animation: playSunSpin 90s linear infinite; transform-origin: center; }
+}
+@keyframes playSunSpin { to { transform: rotate(360deg); } }
+@media (max-width: 700px) {
+  .play-sun { width: 84px; height: 84px; top: 4px; right: 8px; }
+}
+
+/* ---------- Hero accent: sticker on the art ---------- */
 .ph--play .hero-sticker-wrap {
   position: relative;
   display: inline-block;

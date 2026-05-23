@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A cheerful four-panel kite with a bowed tail, in the brand pastels. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 200" role="presentation" aria-hidden="true">
+  <!-- tail string -->
+  <path d="M48 112 q16 22 0 40 q-16 18 0 38 q12 12 4 22" fill="none" stroke="#b7c2cc" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- tail bows -->
+  <g fill="#eda89c"><path d="M48 150 l11 -6 0 12 z"/><path d="M48 150 l-11 -6 0 12 z"/></g>
+  <g fill="#9ec2bb"><path d="M47 182 l11 -6 0 12 z"/><path d="M47 182 l-11 -6 0 12 z"/></g>
+  <!-- kite panels -->
+  <polygon points="48,8 48,60 10,60" fill="#bcd7e6"/>
+  <polygon points="48,8 86,60 48,60" fill="#f4d79a"/>
+  <polygon points="48,60 10,60 48,112" fill="#b9cda6"/>
+  <polygon points="48,60 86,60 48,112" fill="#eda89c"/>
+  <polygon points="48,8 86,60 48,112 10,60" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="48" y1="8" x2="48" y2="112" stroke="#ffffff" stroke-width="2.4"/>
+  <line x1="10" y1="60" x2="86" y2="60" stroke="#ffffff" stroke-width="2.4"/>
+</svg>

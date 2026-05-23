@@ -4,10 +4,41 @@
    RULE: Only parties-specific overrides live here.
    ============================================================ */
 
-/* Pastel ribbon colour for the flowing section dividers (festive mix) */
-:root { --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 38%, var(--red) 68%, var(--sky) 100%); }
+/* Pastel ribbon colour for the flowing section dividers (festive mix) +
+   matching festive bubble palette */
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 38%, var(--red) 68%, var(--sky) 100%);
+  --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--red); --bub-4: var(--sky);
+}
 
-/* ---------- Hero: festive blush + confetti layer ---------- */
+/* ---------- Hero: a BIRTHDAY PARTY world — confetti scattered across a warm
+     party-glow backdrop, with bunting, balloons and streamers. ---------- */
+.page-hero.ph--party {
+  background:
+    url("../../img/confetti.svg") center top / cover no-repeat,
+    radial-gradient(125% 95% at 50% 0%, #fde2e4 0%, #fbe7d6 52%, var(--base) 100%);
+}
+
+/* Two-column hero (copy + castle side by side) so the parties hero shares the
+   same on-screen footprint as the other interior heroes instead of stacking
+   tall. Mobile keeps the centred stack; desktop puts the castle beside the copy. */
+.ph--party .container {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.ph--party .hero-art {
+  margin-top: 0.4rem;
+  margin-bottom: clamp(2rem, 5vw, 3.4rem);
+  margin-inline: auto;
+}
+@media (min-width: 880px) {
+  .ph--party .container { grid-template-columns: 1.05fr 0.95fr; text-align: left; }
+  .ph--party .container > .reveal .flex-cta { justify-content: flex-start; }
+  .ph--party .bunting-row { justify-content: flex-start; }
+  .ph--party .confetti { justify-content: flex-start; }
+  .ph--party .hero-art { margin-top: 0; margin-bottom: 0; }
+}
 
 /* Bigger, bolder eyebrow confetti dots on the parties hero */
 .ph--party .confetti i {
@@ -396,6 +427,8 @@
   background: rgba(255,255,255,0.06);
   border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
 }
+/* Keep the copy + buttons above the confetti layer */
+.parties-cta-band > :not(.confetti-rain) { position: relative; z-index: 1; }
 .parties-cta-band h2,
 .parties-cta-band p { color: var(--ink); }
 .parties-cta-band .btn--sun {

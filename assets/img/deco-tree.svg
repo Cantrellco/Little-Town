@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rounded pastel tree, drawn in the same greens/tans as the town logo so it
+     flanks the hero scene seamlessly. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 175" role="presentation" aria-hidden="true">
+  <ellipse cx="60" cy="166" rx="36" ry="7" fill="#849473" opacity="0.16"/>
+  <rect x="53" y="84" width="14" height="82" rx="6" fill="#b08a59"/>
+  <rect x="53" y="84" width="6" height="82" rx="3" fill="#cbaa7d" opacity="0.55"/>
+  <circle cx="38" cy="74" r="30" fill="#a8b695"/>
+  <circle cx="84" cy="72" r="28" fill="#95a582"/>
+  <circle cx="60" cy="58" r="40" fill="#b0c39b"/>
+  <circle cx="60" cy="44" r="26" fill="#c5d6b2"/>
+  <circle cx="48" cy="40" r="11" fill="#d4e0c4" opacity="0.8"/>
+</svg>
