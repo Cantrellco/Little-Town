@@ -191,6 +191,7 @@ ${metaCase}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
+  {%- if page_css contains 'fusion' -%}<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">{%- endif -%}
   <link rel="icon" href="{{ 'logo.png' | asset_url }}" type="image/png">
   {{ 'styles.css' | asset_url | stylesheet_tag }}
   {%- if page_css != blank -%}{{ page_css | asset_url | stylesheet_tag }}{%- endif -%}

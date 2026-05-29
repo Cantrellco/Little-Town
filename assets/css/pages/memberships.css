@@ -10,13 +10,16 @@
   --bub-1: var(--sage); --bub-2: var(--teal); --bub-3: var(--sky); --bub-4: var(--sun);
 }
 
-/* ---- Hero: a premium "members lounge" — a rich sage SPOTLIGHT (no sky),
-     with rotating light-rays behind the card. This page's identity is
-     value/belonging, so it glows rather than floats in a blue sky. ---- */
+/* ---- Hero: a warm "VIP all-access" glow — a cream→gold→peach SPOTLIGHT
+     (no sky, no busy tile), with rotating light-rays behind the card. This
+     page's identity is value/belonging, so it glows like a members' club. ---- */
 .page-hero.ph--member {
   background:
-    url("../../img/sparkle-tile.svg") center / 90px repeat,
-    radial-gradient(120% 95% at 72% 26%, #e8f2d9 0%, #cfe3b6 46%, #b1d390 100%);
+    radial-gradient(125% 100% at 72% 24%,
+      #fff6e6 0%,
+      #fdeac2 40%,
+      #f8d98f 66%,
+      #f4ae92 100%);
   padding-block: clamp(2.2rem, 5vw, 3.6rem) clamp(1.8rem, 4vw, 2.6rem);
 }
 
@@ -28,8 +31,8 @@
 
 /* Pill row on member hero — more saturated */
 .ph--member .pill {
-  background: rgba(255,255,255,0.88);
-  border-color: rgba(156,176,130,0.35);
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(214,160,82,0.4);
   font-weight: 600;
 }
 

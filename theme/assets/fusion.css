@@ -3,19 +3,98 @@
    All core tokens, components and animations live in styles.css.
    ============================================================ */
 
-/* Pastel ribbon colour for the flowing section dividers (warm café mix) +
-   matching warm bubble palette */
+/* ===========================================================
+   DEEP CAFÉ palette — a bolder warm overhaul of the brand
+   moodboard (brick / terracotta / oak / olive / latte). Warm
+   oat surfaces replace the airy cream, sections are colour-
+   blocked, accents lean into brick + olive, and text warms to
+   a coffee-bean black. Loaded only on the Fusion page; the
+   token NAMES are reused so every existing component recolours
+   without any markup change.
+   =========================================================== */
 :root {
-  --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 55%, var(--wood) 100%);
-  --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--wood); --bub-4: var(--sky);
+  /* surfaces — warm oat/latte instead of near-white */
+  --base:      #EFE1C7;  /* oat latte (page background)        */
+  --base-deep: #E6D4B4;  /* deeper oat for bands               */
+  --white:     #FBF5EA;  /* cards: warm ivory, not stark white */
+
+  /* warmer, cohesive text tones (coffee-bean black) */
+  --ink:       #382C20;
+  --ink-soft:  #6a5a46;
+
+  /* accent fills — richer pastels */
+  --sun:        #E7BC76;  /* honey oak   (was pastel yellow) */
+  --sky:        #D78C68;  /* clay rose   (was pastel blue)   */
+  --coral:      #E09972;  /* terracotta                      */
+  --sage:       #ABBE83;  /* olive sage  (greener, richer)   */
+  --wood:       #E0BC81;  /* butterscotch                    */
+  --terracotta: #D78C68;  /* clay (deeper than the default)  */
+
+  --sun-tint:   #F1DFB9;
+  --sky-tint:   #EED2BB;  /* warm clay tint (was pale blue)  */
+  --coral-tint: #F2D6BD;
+  --sage-tint:  #DCE5C0;
+  --terra-tint: #EED6C0;
+  --wood-tint:  #EEDBB8;
+
+  /* deep accents for text / icons */
+  --accent:       #A8472A; /* brick                            */
+  --accent-sky:   #8A5A2C; /* deep oak  — Drinks heading        */
+  --accent-sun:   #94661D;
+  --accent-sage:  #586A36; /* olive     — Eats heading          */
+  --accent-coral: #BE4F2B; /* deep terracotta — Treats heading  */
+
+  /* warm gradient + dividers + bubbles */
+  --grad-candy:  linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
+  --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 45%, var(--sage) 100%);
+  --bub-1: var(--coral); --bub-2: var(--sage); --bub-3: var(--wood); --bub-4: var(--sun);
 }
 
+/* ---- Colour-blocked sections: the "Why Fusion?" band becomes a soft olive
+     block amid the warm oat, so the page reads as composed colour fields
+     rather than one flat cream. The flow divider surface matches it. ---- */
+.band-white            { background: var(--sage-tint); }
+.flow-top.band-white   { --surface: var(--sage-tint); }
+
+/* ---- The real Fusion Coffee logo (transparent cutout) ---- */
+.fusion-logo {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+  filter: drop-shadow(0 6px 12px rgba(80, 50, 25, 0.18));
+}
+/* hero: the logo IS the headline */
+.fusion-logo--hero {
+  height: auto;
+  width: clamp(230px, 34vw, 360px);
+  margin: 0.2rem 0 0.4rem;
+  filter: drop-shadow(0 12px 22px rgba(80, 50, 25, 0.20));
+}
+/* section brand-mark: centred above the menu + CTA headings */
+.fusion-logo--mark {
+  height: auto;
+  width: clamp(150px, 24vw, 210px);
+  margin: 0 auto 0.1rem;
+}
+.center .fusion-logo--mark { display: block; }
+
+/* inline brand mentions inside body copy — the site's own script, in brick */
+.fusion-word {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* warm the "Locally roasted" sticker text now that its fill is clay */
+.menu-group--drinks .sticker--sky { color: #5a2f1c; }
+
 /* ---- Hero: a cosy COFFEE world — a faint coffee-bean texture over a warm
-     cream gradient (no sky), with steam rising from the café. ---- */
+     oat→clay gradient, with steam rising from the café. ---- */
 .page-hero.ph--cafe {
   background:
     url("coffee-beans.svg") center / 132px repeat,
-    linear-gradient(180deg, #f6e6cd 0%, #f9efdc 52%, var(--base) 100%);
+    linear-gradient(180deg, #F3E3C5 0%, #EFD7BD 58%, var(--base) 100%);
 }
 
 /* Real-logo café tower: size by height so the tall tower isn't stretched wide */

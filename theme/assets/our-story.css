@@ -7,8 +7,8 @@
 /* ---- Page hero (photo gallery feel: scattered polaroids) ---- */
 .ph--story {
   background:
-    radial-gradient(120% 75% at 50% 0%, #fff 0%, transparent 60%),
-    linear-gradient(180deg, #fff4e1 0%, #f8d9b3 100%);
+    url("photo-tile.svg") center / 150px repeat,
+    linear-gradient(180deg, #fceccd 0%, #f9e3bd 52%, #f6d6ac 100%);
   padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(4.5rem, 9vw, 7rem);
   text-align: center;
   position: relative;
