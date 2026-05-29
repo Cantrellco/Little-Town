@@ -1,0 +1,8 @@
+<main class="section"><div class="container reveal">
+  <div class="center"><h1>Hello, {{ customer.first_name | default: 'friend' }}</h1></div>
+  <p class="center"><a href="/account/logout">Log out</a></p>
+  <h2>Order history</h2>
+  {%- for order in customer.orders -%}
+    <p><a href="{{ order.customer_url }}">{{ order.name }}</a> — {{ order.created_at | date: '%b %-d, %Y' }} — {{ order.total_price | money }}</p>
+  {%- else -%}<p>No orders yet.</p>{%- endfor -%}
+</div></main>

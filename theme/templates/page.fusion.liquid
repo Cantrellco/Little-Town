@@ -1,0 +1,375 @@
+<main>
+
+    <!-- =====================================================
+         Hero
+         ===================================================== -->
+    <section class="page-hero ph--cafe">
+      <!-- Café world: a faint coffee-bean texture fills the background (CSS).
+           Here the coffee cup, a couple of beans and a star float (desktop only). -->
+      <span class="deco anim-bob" style="top:14%;left:6%;width:52px"><img src="{{ 'm-coffee.svg' | asset_url }}" alt=""></span>
+      <span class="deco anim-sway" style="top:30%;left:13%;width:26px" aria-hidden="true">
+        <svg viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="13" cy="9" rx="12" ry="7.5" fill="#A9763F"/>
+          <path d="M4 9 Q13 3 22 9 Q13 15 4 9" fill="#7A542E"/>
+        </svg>
+      </span>
+      <span class="deco anim-twinkle" style="top:12%;right:22%;width:22px"><img src="{{ 'deco-star.svg' | asset_url }}" alt=""></span>
+      <span class="deco anim-bob slow" style="top:24%;right:9%;width:22px" aria-hidden="true">
+        <svg viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="13" cy="9" rx="12" ry="7.5" fill="#A9763F"/>
+          <path d="M4 9 Q13 3 22 9 Q13 15 4 9" fill="#7A542E"/>
+        </svg>
+      </span>
+
+      <div class="container">
+        <!-- Copy -->
+        <div class="reveal">
+          <span class="partner-tag">&#x2615; Our sister caf&#xE9;</span>
+          <h1 style="margin-top:1rem">
+            <span class="hl--coral">Coffee &amp; treats</span> at
+            <span class="script" style="color:var(--accent)">Fusion</span>
+            <span class="fusion-coffee-sticker" aria-hidden="true">&#x2615;</span>
+          </h1>
+          <p class="lead">Fusion is our sister caf&#xE9;, right beside the playhouse &#x2014; locally roasted espresso, cold brew, a&#xE7;a&#xED; bowls, avocado toast and warm paninis. Stop in before, during or after play.</p>
+          <div class="flex-cta">
+            <a class="btn btn--lg btn--terracotta btn--pop" href="#menu">See the menu &#x2193;</a>
+            <a class="btn btn--lg btn--ghost" href="/pages/visit-us">Find us next door</a>
+          </div>
+        </div>
+
+        <!-- Cozy latte mug — a non-building coffee illustration, with steam
+             rising from the foam (steam span kept for its main.js/CSS animation) -->
+        <div class="hero-art reveal" data-delay="1" style="max-width:280px">
+          <span class="fusion-steam" aria-hidden="true">
+            <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none">
+                <path class="st st1" d="M18 66 q-7 -14 0 -26 q7 -12 0 -24"/>
+                <path class="st st2" d="M30 68 q-7 -14 0 -26 q7 -12 0 -24"/>
+                <path class="st st3" d="M42 66 q-7 -14 0 -26 q7 -12 0 -24"/>
+              </g>
+            </svg>
+          </span>
+          <svg viewBox="0 0 260 240" role="img" aria-labelledby="mugTitle" xmlns="http://www.w3.org/2000/svg">
+            <title id="mugTitle">A steaming latte mug on a saucer.</title>
+            <!-- saucer -->
+            <ellipse cx="130" cy="216" rx="100" ry="18" fill="#D9B98A"/>
+            <ellipse cx="130" cy="210" rx="100" ry="18" fill="#F0DCBC"/>
+            <ellipse cx="130" cy="208" rx="58"  ry="9"  fill="#E2C79B"/>
+            <!-- handle -->
+            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#E7DCC9" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+            <!-- mug body -->
+            <path d="M64 104 L196 104 L190 176 Q187 200 162 200 L98 200 Q73 200 70 176 Z" fill="#ffffff"/>
+            <path d="M80 116 Q74 158 86 192" stroke="#EEF4F6" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M180 116 Q186 156 174 190" stroke="#ECE3D4" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <!-- coffee surface: white lip + foam ring + coffee + latte-art heart -->
+            <ellipse cx="130" cy="104" rx="66" ry="16" fill="#ffffff"/>
+            <ellipse cx="130" cy="104" rx="56" ry="13" fill="#E5C49A"/>
+            <ellipse cx="130" cy="104" rx="45" ry="9"  fill="#C68A4E"/>
+            <path d="M130 99 q-7 -6 -12 0 q-4 5 12 13 q16 -8 12 -13 q-5 -6 -12 0 Z" fill="#F2E3C6"/>
+            <!-- a couple of coffee beans by the saucer -->
+            <g transform="translate(40 206) rotate(-18)">
+              <ellipse cx="0" cy="0" rx="11" ry="7" fill="#7A542E"/>
+              <path d="M-9 0 Q0 -5 9 0 Q0 5 -9 0" fill="#5e3f20"/>
+            </g>
+            <g transform="translate(222 210) rotate(14)">
+              <ellipse cx="0" cy="0" rx="10" ry="6.5" fill="#7A542E"/>
+              <path d="M-8 0 Q0 -4.5 8 0 Q0 4.5 -8 0" fill="#5e3f20"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Partner note — a friendly, prominent panel callout
+         flow-top: the wave divider that rises out of the hero on every page
+         ===================================================== -->
+    <section class="section--tight flow-top">
+      <div class="container">
+        <div class="panel fusion-partner-panel reveal">
+          <div class="partner-icon" aria-hidden="true">&#x1F3E1;</div>
+          <div>
+            <p style="margin:0"><strong style="color:var(--ink)">Our sister caf&#xE9;, right next door.</strong>
+            Fusion is its own independent coffee shop right beside the playhouse &#x2014; the spot we love sending you to before, during or after play.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Fun-facts pill strip
+         ===================================================== -->
+    <section class="section--tight band-white flow-top">
+      <div class="container center reveal">
+        <span class="eyebrow">Why Fusion?</span>
+        <h2 style="margin-bottom:0.2rem">Good coffee. <span class="hl">Good people.</span></h2>
+        <p class="section-lead">Everything you need to power through a morning of play.</p>
+        <div class="fusion-stats" role="list">
+          <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x2600;&#xFE0F;</span> Locally roasted beans
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F95B;</span> Oat &amp; decaf always available
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sage hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F9C1;</span> Baked fresh daily
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--coral hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F4F6;</span> Free Wi-Fi for grown-ups
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F476;</span> Kid-friendly options
+          </div>
+          <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
+            <span class="pill-icon" aria-hidden="true">&#x1F556;</span> Open every play day
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Menu
+         ===================================================== -->
+    <section class="section flow-top" id="menu">
+      <div class="container" style="max-width:840px">
+
+        <div class="center reveal">
+          <span class="eyebrow">On the menu at Fusion</span>
+          <h2>The <span class="script" style="color:var(--accent)">Fusion</span> menu</h2>
+          <p class="section-lead">Fresh coffee and eats, served all day right next door.</p>
+        </div>
+
+        <!-- Signature drinks — featured trio with mock illustrations -->
+        <div class="signature-drinks reveal mt-3" aria-label="Signature drinks">
+          <figure class="signature-drink">
+            <div class="signature-art" aria-hidden="true">
+              <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
+                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#E2C79B"/>
+                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#E0CBA6" stroke-width="10" stroke-linecap="round"/>
+                <path d="M28 50 L92 50 L88 110 Q86 124 70 124 L50 124 Q34 124 32 110 Z" fill="#ffffff" stroke="#E2C79B" stroke-width="2.5"/>
+                <ellipse cx="60" cy="50" rx="32" ry="8" fill="#ffffff" stroke="#E2C79B" stroke-width="2.5"/>
+                <ellipse cx="60" cy="50" rx="26" ry="6" fill="#E5C49A"/>
+                <ellipse cx="60" cy="50" rx="20" ry="4.5" fill="#C68A4E"/>
+                <path d="M60 47 q-4 -3 -7 0 q-2 3 7 8 q9 -5 7 -8 q-3 -3 -7 0 Z" fill="#F2E3C6"/>
+              </svg>
+            </div>
+            <figcaption>
+              <strong>Signature Latte</strong>
+              <span>Double-shot espresso, silky oat or whole milk, latte-art on top.</span>
+              <em>$5.00</em>
+            </figcaption>
+          </figure>
+          <figure class="signature-drink">
+            <div class="signature-art" aria-hidden="true">
+              <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
+                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#A8C9B0"/>
+                <rect x="34" y="36" width="52" height="86" rx="8" fill="#EAF6E8"/>
+                <rect x="34" y="36" width="52" height="38" rx="8" fill="#7CB67A"/>
+                <rect x="34" y="74" width="52" height="6" fill="#fff" opacity="0.5"/>
+                <circle cx="46" cy="92" r="3" fill="#7CB67A"/>
+                <circle cx="60" cy="100" r="3" fill="#7CB67A"/>
+                <circle cx="74" cy="92" r="3" fill="#7CB67A"/>
+                <path d="M52 22 q4 8 0 14 M60 18 q4 8 0 14 M68 22 q4 8 0 14" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.85"/>
+              </svg>
+            </div>
+            <figcaption>
+              <strong>Iced Matcha</strong>
+              <span>Stone-ground ceremonial matcha, lightly sweetened, over ice.</span>
+              <em>$5.50</em>
+            </figcaption>
+          </figure>
+          <figure class="signature-drink">
+            <div class="signature-art" aria-hidden="true">
+              <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
+                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#C9A77A"/>
+                <path d="M34 36 L86 36 L82 122 Q80 130 70 130 L50 130 Q40 130 38 122 Z" fill="#F4ECD8"/>
+                <path d="M40 60 L80 60 L77 118 Q76 124 68 124 L52 124 Q44 124 43 118 Z" fill="#5B3A1E"/>
+                <ellipse cx="60" cy="60" rx="20" ry="4" fill="#3D2410"/>
+                <rect x="50" y="22" width="20" height="14" rx="3" fill="#A8E2F4"/>
+                <rect x="56" y="14" width="8" height="14" rx="2" fill="#A8E2F4"/>
+                <circle cx="48" cy="78" r="3" fill="#fff" opacity="0.5"/>
+                <circle cx="48" cy="92" r="2.5" fill="#fff" opacity="0.4"/>
+              </svg>
+            </div>
+            <figcaption>
+              <strong>Cold Brew</strong>
+              <span>Slow-steeped 18 hours for a smooth, bold cup. House favorite.</span>
+              <em>$5.50</em>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Drinks -->
+        <div class="menu-group menu-group--drinks card reveal mt-3">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--drinks" aria-hidden="true">
+              <img src="{{ 'cat-drinks.svg' | asset_url }}" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Drinks
+            <span class="sticker sticker--sky" style="margin-left:auto;font-size:0.75rem">Locally roasted</span>
+          </h3>
+          <ul class="menu-list">
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Drip Coffee</div><div class="m-desc">House blend, freshly brewed all morning &mdash; hot or over ice.</div></div>
+              <div class="m-price">$4.00&#x2013;$4.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Pour Over</div><div class="m-desc">Hand-poured single origin, brewed cup by cup.</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Espresso</div><div class="m-desc">A classic double shot, pulled to order.</div></div>
+              <div class="m-price">$3.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Americano</div><div class="m-desc">Espresso lengthened with hot water.</div></div>
+              <div class="m-price">$4.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cortado</div><div class="m-desc">Espresso cut with a splash of warm milk &mdash; small and balanced.</div></div>
+              <div class="m-price">$4.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cappuccino</div><div class="m-desc">Espresso, steamed milk &amp; a thick crown of foam.</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Latte</div><div class="m-desc">Espresso with silky steamed milk &mdash; oat, almond or whole.</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cold Brew</div><div class="m-desc">Slow-steeped 18 hours &mdash; smooth, bold, naturally sweet.</div></div>
+              <div class="m-price">$5.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Matcha</div><div class="m-desc">Stone-ground ceremonial matcha, whisked with milk of choice.</div></div>
+              <div class="m-price">$5.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Chai</div><div class="m-desc">Spiced black tea latte &mdash; warming, lightly sweet.</div></div>
+              <div class="m-price">$5.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Tea</div><div class="m-desc">Rotating selection &mdash; English breakfast, Earl Grey, herbal.</div></div>
+              <div class="m-price">$4.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Hot Chocolate</div><div class="m-desc">Belgian chocolate melted into steamed milk. Marshmallows on request.</div></div>
+              <div class="m-price">$4.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Babyccino</div><div class="m-desc">Frothed milk in a tiny cup for the smallest customers. <span class="muted">Free for kids under 4.</span></div></div>
+              <div class="m-price">$2.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Glass of Milk</div><div class="m-desc">Cold and simple &mdash; whole, oat or almond.</div></div>
+              <div class="m-price">$2.50</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Eats -->
+        <div class="menu-group menu-group--eats card reveal">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--eats" aria-hidden="true">
+              <img src="{{ 'cat-snacks.svg' | asset_url }}" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Eats
+            <span class="sticker sticker--sage" style="margin-left:auto;font-size:0.75rem">Fresh daily</span>
+          </h3>
+          <ul class="menu-list">
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-fruit.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">A&#xE7;a&#xED; Bowl</div><div class="m-desc">Thick blended a&#xE7;a&#xED; topped with banana, berries, honey &amp; house granola.</div></div>
+              <div class="m-price">$10.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-sandwich.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Avocado Toast</div><div class="m-desc">Smashed avocado on toasted sourdough &mdash; add egg, chilli or feta.</div></div>
+              <div class="m-price">$7.50&#x2013;$9.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-sandwich.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Panini</div><div class="m-desc">Warm pressed sandwich &mdash; choose ham &amp; cheese, caprese, or veggie.</div></div>
+              <div class="m-price">$10.00&#x2013;$11.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-fruit.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Fruit Cup</div><div class="m-desc">Seasonal fresh fruit, cut for tiny hands.</div></div>
+              <div class="m-price">$4.50</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Treats -->
+        <div class="menu-group menu-group--treats card reveal">
+          <h3>
+            <span class="menu-cat-chip menu-cat-chip--treats" aria-hidden="true">
+              <img src="{{ 'cat-treats.svg' | asset_url }}" alt="" width="26" height="26" loading="lazy" decoding="async">
+            </span>
+            Treats
+            <span class="sticker" style="margin-left:auto;font-size:0.75rem">Baked fresh</span>
+          </h3>
+          <ul class="menu-list">
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-muffin.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Muffin</div><div class="m-desc">Rotating seasonal flavor, baked here every morning.</div></div>
+              <div class="m-price">$3.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-cookie.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Cookie</div><div class="m-desc">Big, chewy &mdash; chocolate chip, snickerdoodle or oatmeal raisin.</div></div>
+              <div class="m-price">$2.50</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-muffin.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Banana Bread</div><div class="m-desc">A thick slice, toasted to order with butter.</div></div>
+              <div class="m-price">$3.00</div>
+            </li>
+            <li class="menu-row">
+              <img class="m-icon" src="{{ 'm-cookie.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Croissant</div><div class="m-desc">Flaky &amp; buttery &mdash; plain, almond or chocolate.</div></div>
+              <div class="m-price">$3.50&#x2013;$4.00</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-footer-note mock-note">Fusion's menu and prices are subject to change. Allergen information available in-store &#x2014; just ask at the counter.</div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         Closing CTA — shared page ender
+         ===================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band bg-candy on-dark anim-gradient reveal">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">&#x2615; See you next door</span>
+          <h2>Coffee's on at <span class="script">Fusion</span></h2>
+          <p>Come on in before, during or after play &#x2014; the coffee's always on next door.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="https://www.fusioncoffeeshop.com/s/order#most-popular" target="_blank" rel="noopener">Order now</a>
+            <a class="btn btn--lg btn--ghost" href="#menu">See the menu</a>
+            <a class="btn btn--lg btn--ghost" href="/pages/visit-us">Find us next door</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>

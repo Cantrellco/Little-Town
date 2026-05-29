@@ -1,0 +1,69 @@
+<style>
+  .pdp-field{display:block;margin:0 0 1.1rem}
+  .pdp-label{display:block;font-weight:700;margin-bottom:.45rem}
+  #pdp-variant{width:100%;max-width:380px;padding:.7rem 1rem;border:2px solid rgba(58,49,40,.18);border-radius:var(--r-md,14px);font:inherit;background:#fff}
+  .selling-plans{border:0;padding:0;margin:0 0 1.1rem}
+  .selling-plan{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border:2px solid rgba(58,49,40,.14);border-radius:var(--r-md,14px);margin-bottom:.5rem;max-width:380px;cursor:pointer}
+  .selling-plan:has(input:checked){border-color:var(--accent,#d9774e);background:var(--terra-tint,#fbeee7)}
+</style>
+{%- assign cv = product.selected_or_first_available_variant -%}
+<main class="section">
+  <div class="container">
+    <div class="split">
+      <div class="split-art reveal">
+        {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape }}" width="900" loading="eager" decoding="async" style="border-radius:var(--r-lg);box-shadow:var(--shadow-md)">
+        {%- endif -%}
+      </div>
+      <div class="reveal" data-delay="1">
+        <span class="eyebrow">Little Town</span>
+        <h1>{{ product.title }}</h1>
+        <div class="price-tag" id="pdp-price">{{ cv.price | money }}</div>
+        <div class="rte" style="margin:1rem 0">{{ product.description }}</div>
+        {%- form 'product', product, id: 'pdp-form' -%}
+          {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
+          {%- if product.variants.size > 1 -%}
+            <label class="pdp-field">
+              <span class="pdp-label">Choose your option</span>
+              <select name="id" id="pdp-variant">
+                {%- for v in product.variants -%}
+                  <option value="{{ v.id }}" data-price="{{ v.price }}"{% if v == cv %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} — {{ v.price | money }}{% unless v.available %} (sold out){% endunless %}</option>
+                {%- endfor -%}
+              </select>
+            </label>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ cv.id }}">
+          {%- endif -%}
+          {%- comment -%} Subscription plans, surfaced by Shopify Subscriptions {%- endcomment -%}
+          {%- if product.selling_plan_groups.size > 0 -%}
+            {%- assign default_plan = product.selling_plan_groups.first.selling_plans.first -%}
+            <fieldset class="pdp-field selling-plans">
+              <legend class="pdp-label">Choose your plan</legend>
+              {%- for group in product.selling_plan_groups -%}
+                {%- for plan in group.selling_plans -%}
+                  <label class="selling-plan">
+                    <input type="radio" name="selling_plan" value="{{ plan.id }}"{% if plan.id == default_plan.id %} checked{% endif %}>
+                    <span>{{ plan.name }}</span>
+                  </label>
+                {%- endfor -%}
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+          <button class="btn btn--lg btn--terracotta btn--pop" type="submit" name="add"{% unless product.available %} disabled{% endunless %}>
+            {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Add to cart{% endif %}{% else %}Sold out{% endif %}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+(function(){
+  var sel=document.getElementById('pdp-variant'),price=document.getElementById('pdp-price');
+  if(!sel||!price)return;
+  sel.addEventListener('change',function(){
+    var o=sel.options[sel.selectedIndex],c=parseInt(o.getAttribute('data-price'),10);
+    if(!isNaN(c)){price.textContent=(c/100).toLocaleString(undefined,{style:'currency',currency:'{{ cart.currency.iso_code }}'});}
+  });
+})();
+</script>

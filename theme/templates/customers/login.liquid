@@ -1,0 +1,9 @@
+<main class="section"><div class="container reveal" style="max-width:420px">
+  <div class="center"><h1>Log in</h1></div>
+  {%- form 'customer_login' -%}
+    <input type="email" name="customer[email]" placeholder="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <button class="btn btn--block btn--terracotta" type="submit">Log in</button>
+  {%- endform -%}
+  <p class="center" style="margin-top:1rem"><a href="/account/register">Create account</a></p>
+</div></main>

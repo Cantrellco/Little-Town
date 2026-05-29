@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fully fluffy cartoon cloud — soft rounded lobes all the way around (top,
+     sides and bottom), built from overlapping white puffs so every edge is
+     a gentle scallop with no hard points. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" role="presentation" aria-hidden="true">
+  <g fill="#ffffff">
+    <circle cx="60" cy="30" r="18"/>
+    <circle cx="39" cy="34" r="16"/>
+    <circle cx="81" cy="34" r="16"/>
+    <circle cx="23" cy="41" r="12"/>
+    <circle cx="97" cy="41" r="12"/>
+    <circle cx="34" cy="43" r="12"/>
+    <circle cx="86" cy="43" r="12"/>
+    <circle cx="49" cy="43" r="15"/>
+    <circle cx="71" cy="43" r="15"/>
+    <circle cx="60" cy="41" r="15"/>
+  </g>
+</svg>

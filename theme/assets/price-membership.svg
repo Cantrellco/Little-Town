@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Membership — star badge card -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="Membership card">
+  <rect x="40" y="38" width="120" height="68" rx="12" fill="#a55d42"/>
+  <rect x="40" y="38" width="120" height="22" rx="12" fill="#935032"/>
+  <g transform="translate(70,80)">
+    <path d="M0 -14 L4.2 -4.4 L14.5 -3.4 L6.8 3.6 L9 14 L0 8.5 L-9 14 L-6.8 3.6 L-14.5 -3.4 L-4.2 -4.4 Z" fill="#f7e3c0"/>
+  </g>
+  <rect x="92" y="72" width="54" height="6" rx="3" fill="#f8e9e2"/>
+  <rect x="92" y="84" width="38" height="6" rx="3" fill="#e7c5b5"/>
+</svg>

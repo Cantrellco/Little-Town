@@ -1,2 +1,11 @@
 # Screenshot / design scratch artifacts
 _shot/
+
+# Built theme artifact (regenerate with: node scripts/make-theme-zip.js)
+theme.zip
+
+# Shopify credentials — NEVER commit. Treat tokens like passwords.
+.env.shopify
+.env
+.env.*
+!.env.shopify.example

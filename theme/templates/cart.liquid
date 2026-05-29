@@ -1,0 +1,24 @@
+<main class="section">
+  <div class="container">
+    <div class="center reveal"><span class="eyebrow">Almost there</span><h1>Your cart</h1></div>
+    {%- if cart.item_count == 0 -%}
+      <p class="center" style="margin-top:1rem">Your cart is empty.</p>
+      <div class="flex-cta center" style="margin-top:1rem"><a class="btn btn--terracotta btn--lg" href="/collections/all">Browse passes</a></div>
+    {%- else -%}
+      {%- form 'cart', cart -%}
+        {%- for item in cart.items -%}
+          <div style="display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,.08)">
+            <div style="flex:1"><strong>{{ item.product.title }}</strong><br><small>{{ item.final_price | money }}</small></div>
+            <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity" style="width:64px;padding:.4rem">
+            <a href="{{ item.url_to_remove }}" aria-label="Remove">✕</a>
+          </div>
+        {%- endfor -%}
+        <p style="margin-top:1.2rem;text-align:right"><strong>Subtotal: {{ cart.total_price | money }}</strong></p>
+        <div class="flex-cta" style="justify-content:flex-end;margin-top:1rem">
+          <button class="btn btn--ghost" type="submit" name="update">Update</button>
+          <button class="btn btn--terracotta btn--lg btn--pop" type="submit" name="checkout">Checkout</button>
+        </div>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</main>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hero scene for PHONE (portrait), drawn to match the brand logo. Town sits low
+  with a big sky above for the headline. Teal play slide, tan market with a
+  solid teal scalloped awning + face-window, yellow café tower with a white cup,
+  sage clinic with a cross. Only the clouds animate (separate rolling layer).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -300 760 1300" preserveAspectRatio="xMidYMax slice" role="img"
+     aria-label="An illustrated little town for phones — a teal play slide, a market, a café tower and a clinic, with trees under a blue sky.">
+  <defs>
+    <g id="mtree">
+      <ellipse cx="0" cy="6" rx="15" ry="5" fill="#849473" opacity="0.16"/>
+      <ellipse cx="0" cy="-44" rx="15" ry="58" fill="#b0c39b"/>
+      <ellipse cx="-4" cy="-56" rx="8" ry="40" fill="#c5d6b2"/>
+    </g>
+    <g id="mbush">
+      <ellipse cx="0" cy="6" rx="30" ry="6" fill="#849473" opacity="0.16"/>
+      <circle cx="-13" cy="0" r="14" fill="#b3c2a1"/><circle cx="3" cy="-8" r="18" fill="#a8b695"/><circle cx="17" cy="0" r="13" fill="#95a582"/>
+    </g>
+  </defs>
+
+  <rect x="0" y="-300" width="760" height="1300" fill="#d6ecf3"/>
+
+  <!-- hills -->
+  <path d="M0 700 Q200 656 400 692 T760 682 V1000 H0 Z" fill="#e8f1de"/>
+  <path d="M0 736 Q230 700 470 728 T760 720 V1000 H0 Z" fill="#dce5d1"/>
+
+  <!-- ground line -->
+  <rect x="40" y="780" width="680" height="5" rx="2.5" fill="#a8b695" opacity="0.5"/>
+
+  <!-- town group scaled in around the ground so all four buildings fit on narrow phones -->
+  <g transform="translate(380,780) scale(0.82) translate(-380,-780)">
+
+  <!-- trees peeking between buildings + bushes (behind) -->
+  <use href="#mtree" x="356" y="782"/>
+  <use href="#mtree" x="527" y="782"/>
+  <use href="#mbush" x="120" y="780"/>
+  <use href="#mbush" x="745" y="780"/>
+
+  <!-- ===== Play slide tube (teal, logo style) — curls down out of the market's left side ===== -->
+  <g>
+    <ellipse cx="96" cy="784" rx="92" ry="10" fill="#849473" opacity="0.12"/>
+    <path d="M196 684 C 176 726, 128 750, 70 760" fill="none" stroke="#bcddd7" stroke-width="60" stroke-linecap="round"/>
+    <path d="M192 675 C 176 708, 136 730, 90 742" fill="none" stroke="#d3ebe6" stroke-width="13" stroke-linecap="round" opacity="0.75"/>
+    <g stroke="#93bdb7" stroke-width="4.5" opacity="0.4" stroke-linecap="round">
+      <line x1="160" y1="708" x2="174" y2="736"/>
+      <line x1="120" y1="730" x2="138" y2="754"/>
+    </g>
+    <ellipse cx="56" cy="744" rx="38" ry="40" fill="#bcddd7"/>
+    <ellipse cx="56" cy="744" rx="38" ry="40" fill="none" stroke="#a3cac3" stroke-width="4"/>
+    <ellipse cx="56" cy="744" rx="25" ry="27" fill="#8fada8"/>
+    <ellipse cx="56" cy="744" rx="13" ry="16" fill="#4d6c67"/>
+  </g>
+
+  <!-- ===== Market (tan; teal scalloped awning; gable window; flag) ===== -->
+  <g>
+    <ellipse cx="248" cy="784" rx="110" ry="9" fill="#849473" opacity="0.12"/>
+    <rect x="158" y="620" width="180" height="160" rx="6" fill="#d7b385"/>
+    <g stroke="#c49f6b" stroke-width="1.6" opacity="0.5"><line x1="196" y1="670" x2="196" y2="780"/><line x1="234" y1="670" x2="234" y2="780"/><line x1="272" y1="670" x2="272" y2="780"/><line x1="310" y1="670" x2="310" y2="780"/></g>
+    <rect x="310" y="620" width="28" height="160" rx="6" fill="#c49f6b" opacity="0.4"/>
+    <rect x="158" y="620" width="180" height="160" rx="6" fill="none" stroke="#c49f6b" stroke-width="3"/>
+    <polygon points="146,622 248,544 350,622" fill="#cbaa7d"/><polygon points="248,544 350,622 298,622" fill="#b08a59"/>
+    <g stroke="#977347" stroke-width="1.8" opacity="0.45"><line x1="178" y1="610" x2="318" y2="610"/><line x1="196" y1="594" x2="300" y2="594"/></g>
+    <rect x="142" y="618" width="212" height="9" rx="4" fill="#ab8550"/>
+    <circle cx="248" cy="592" r="13" fill="#fffff6" stroke="#b08a59" stroke-width="2.5"/>
+    <line x1="248" y1="544" x2="248" y2="510" stroke="#77603f" stroke-width="3.5"/>
+    <circle cx="248" cy="544" r="5.5" fill="#e3bf70"/>
+    <path d="M248 513 L286 523 L248 533 Z" fill="#eda89c"/>
+    <!-- solid teal scalloped awning -->
+    <rect x="154" y="622" width="188" height="8" rx="4" fill="#a3cac3"/>
+    <rect x="158" y="628" width="180" height="22" fill="#bcddd7"/>
+    <g stroke="#a3cac3" stroke-width="2" opacity="0.5"><line x1="196" y1="628" x2="196" y2="650"/><line x1="234" y1="628" x2="234" y2="650"/><line x1="272" y1="628" x2="272" y2="650"/><line x1="310" y1="628" x2="310" y2="650"/></g>
+    <g fill="#bcddd7"><circle cx="168" cy="650" r="11"/><circle cx="190" cy="650" r="11"/><circle cx="212" cy="650" r="11"/><circle cx="234" cy="650" r="11"/><circle cx="256" cy="650" r="11"/><circle cx="278" cy="650" r="11"/><circle cx="300" cy="650" r="11"/><circle cx="322" cy="650" r="11"/></g>
+    <!-- cream arched door + window with a little face -->
+    <path d="M182 780 v-50 a26 26 0 0 1 52 0 v50 Z" fill="#fffff6" stroke="#b08a59" stroke-width="3"/>
+    <path d="M266 766 v-14 a26 26 0 0 1 52 0 v14 Z" fill="#fffff6" stroke="#b08a59" stroke-width="2.6"/>
+    <g fill="#77603f"><circle cx="284" cy="748" r="4.6"/><circle cx="300" cy="748" r="4.6"/></g>
+  </g>
+
+  <!-- ===== Café tower (yellow; white cup; flag; terracotta door) ===== -->
+  <g>
+    <ellipse cx="445" cy="784" rx="88" ry="9" fill="#849473" opacity="0.12"/>
+    <rect x="375" y="540" width="140" height="240" rx="6" fill="#f4e0a7"/>
+    <rect x="487" y="540" width="28" height="240" rx="6" fill="#e8d08f" opacity="0.5"/>
+    <rect x="375" y="540" width="140" height="240" rx="6" fill="none" stroke="#e8d08f" stroke-width="3"/>
+    <polygon points="363,542 445,468 527,542" fill="#cbaa7d"/><polygon points="445,468 527,542 479,542" fill="#b08a59"/>
+    <g stroke="#977347" stroke-width="1.8" opacity="0.45"><line x1="391" y1="530" x2="499" y2="530"/><line x1="409" y1="514" x2="481" y2="514"/></g>
+    <rect x="359" y="538" width="172" height="9" rx="4" fill="#ab8550"/>
+    <line x1="445" y1="468" x2="445" y2="434" stroke="#77603f" stroke-width="3.5"/>
+    <circle cx="445" cy="468" r="5.5" fill="#e3bf70"/>
+    <path d="M445 437 L483 447 L445 457 Z" fill="#eda89c"/>
+    <!-- white coffee cup (logo style) -->
+    <g transform="translate(445,600)">
+      <path d="M-25 -15 H21 L16 4 a20 13 0 0 1 -41 0 Z" fill="#ffffff"/>
+      <path d="M21 -9 a14 14 0 0 1 0 23" fill="none" stroke="#ffffff" stroke-width="7"/>
+      <ellipse cx="-2" cy="17" rx="31" ry="6" fill="#ffffff"/>
+    </g>
+    <!-- terracotta arched door -->
+    <path d="M411 780 v-46 a34 34 0 0 1 68 0 v46 Z" fill="#a55d42"/>
+    <path d="M411 780 v-46 a34 34 0 0 1 68 0 v46 Z" fill="none" stroke="#8c4d37" stroke-width="3"/>
+  </g>
+
+  <!-- ===== Clinic (sage; cross; arched door; windows) ===== -->
+  <g>
+    <ellipse cx="635" cy="784" rx="110" ry="9" fill="#849473" opacity="0.12"/>
+    <rect x="540" y="606" width="190" height="174" rx="6" fill="#bbcca8"/>
+    <rect x="702" y="606" width="28" height="174" rx="6" fill="#a9bb96" opacity="0.5"/>
+    <rect x="540" y="606" width="190" height="174" rx="6" fill="none" stroke="#a9bb96" stroke-width="3"/>
+    <polygon points="524,608 635,548 746,608" fill="#d0dbbe"/><polygon points="635,548 746,608 690,608" fill="#b4c19f"/>
+    <rect x="520" y="604" width="230" height="9" rx="4" fill="#9fb18d"/>
+    <!-- cross -->
+    <g transform="translate(635,576)" fill="#ffffff"><rect x="-6" y="-16" width="12" height="32" rx="3"/><rect x="-16" y="-6" width="32" height="12" rx="3"/></g>
+    <!-- arched green door -->
+    <path d="M603 780 v-46 a32 32 0 0 1 64 0 v46 Z" fill="#507b5e"/>
+    <path d="M603 780 v-46 a32 32 0 0 1 64 0 v46 Z" fill="none" stroke="#43694f" stroke-width="3"/>
+    <!-- side windows -->
+    <rect x="558" y="664" width="34" height="34" rx="4" fill="#ffffff" opacity="0.85"/>
+    <rect x="680" y="664" width="34" height="34" rx="4" fill="#ffffff" opacity="0.85"/>
+  </g>
+
+  <use href="#mbush" x="360" y="782"/>
+  <use href="#mbush" x="730" y="782"/>
+  </g>
+</svg>

@@ -1,0 +1,89 @@
+<main>
+
+    <!-- ===================== PAGE HERO — polaroid scatter ===================== -->
+    <section class="page-hero ph--story">
+      <!-- Scattered polaroid thumbnails (desktop only; hidden on small screens) -->
+      <span class="deco deco-polaroid pol--tl" data-cap="Slide!" style="top:9%;left:4%">
+        <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="">
+      </span>
+      <span class="deco deco-polaroid pol--bl" data-cap="Smiles" style="top:52%;left:7%">
+        <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="">
+      </span>
+      <span class="deco deco-polaroid pol--tr" data-cap="Bridge" style="top:8%;right:5%">
+        <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="">
+      </span>
+      <span class="deco deco-polaroid pol--br" data-cap="Coffee" style="top:54%;right:8%">
+        <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="">
+      </span>
+      <!-- A tiny bit of brand sparkle, still on-theme -->
+      <span class="deco anim-bob"     style="top:14%;left:24%;width:30px"><img src="{{ 'deco-balloon.svg' | asset_url }}" alt=""></span>
+      <span class="deco anim-twinkle" style="top:22%;right:30%;width:18px"><img src="{{ 'deco-star.svg' | asset_url }}" alt=""></span>
+      <span class="deco anim-twinkle" style="top:60%;left:28%;width:14px"><img src="{{ 'deco-star.svg' | asset_url }}" alt=""></span>
+
+      <div class="container reveal">
+        <span class="eyebrow">📷 Step inside</span>
+        <h1>Snapshots from <span class="script" style="color:var(--accent)">the little town</span></h1>
+        <p class="lead">Real days, real smiles, real (very small) baristas — a peek at what an afternoon at Little Town actually looks like.</p>
+      </div>
+    </section>
+
+    <!-- ===================== GALLERY ===================== -->
+    <section class="section flow-top gallery-section">
+      <div class="container">
+        <div class="gallery-grid">
+
+          <figure class="gallery-figure reveal">
+            <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
+            <figcaption>The big slides</figcaption>
+            <span class="gallery-sticker" aria-hidden="true">🛝 Hello!</span>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="1">
+            <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="A toddler grinning inside the playhouse." decoding="async" style="object-position:center 30%">
+            <figcaption>Big smiles, all afternoon</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="2">
+            <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colorful rock wall." decoding="async" style="object-position:center 35%">
+            <figcaption>Up the climbing wall</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal">
+            <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across the rope bridge." decoding="async" style="object-position:center 30%">
+            <figcaption>Crossing the rope bridge</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="1">
+            <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." decoding="async">
+            <figcaption>Block-tower architects</figcaption>
+            <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true">🧱 Builders</span>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="2">
+            <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="A latte and croissant on a wooden table at Fusion café." decoding="async">
+            <figcaption>Snack break at Fusion</figcaption>
+          </figure>
+
+        </div>
+
+        <p class="gallery-note reveal">More snapshots coming soon — every day at Little Town looks a little different.</p>
+      </div>
+    </section>
+
+    <!-- ===================== CLOSING CTA ===================== -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band bg-sunrise on-dark anim-gradient reveal">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">📸 Come see for yourself</span>
+          <h2>Want to be in the <span class="script">next snapshot?</span></h2>
+          <p>Stop in any day we're open — your little one might just star in our gallery.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="/pages/visit-us">Plan a Visit</a>
+            <a class="btn btn--lg btn--ghost" href="/pages/memberships">Become a Member</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>

@@ -1,0 +1,1500 @@
+/* ============================================================
+   Little Town Playhouse — design system
+   Plain CSS, mobile-first. Throwaway client-demo prototype.
+   ============================================================ */
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Brand palette */
+  --base:        #F7F3EC; /* warm white / beige */
+  --base-deep:   #EFE7D8; /* slightly deeper beige for bands */
+  --ink:         #333333; /* charcoal text */
+  --ink-soft:    #5b5750; /* muted body text */
+  --wood:        #E8C99B; /* pastel butterscotch */
+  --sage:        #BFD6A8; /* pastel sage */
+  --teal:        #A7D2C9; /* pastel teal */
+  --terracotta:  #E0A184; /* pastel clay (used for fills) */
+  --red:         #EC9A90; /* pastel rose */
+  --white:       #ffffff;
+
+  /* Deep accent tones — for text/icons that need contrast on a light bg.
+     The pastel fills above are too light to read as text, so anything that
+     was a saturated accent colour on text now points here instead. */
+  --accent:       #B35A37; /* deep clay (terracotta-family text) */
+  --accent-sun:   #B9800F; /* deep gold  */
+  --accent-sky:   #2F8AA6; /* deep sky   */
+  --accent-sage:  #6F8A4D; /* deep sage  */
+  --accent-coral: #D9663D; /* deep coral */
+  --accent-teal:  #3F7268; /* deep teal  */
+
+  /* Tints (derived, for soft fills) */
+  --wood-tint:   #f5e8d0;
+  --sage-tint:   #e9efe0;
+  --teal-tint:   #e1ede9;
+  --terra-tint:  #f6e7dd;
+
+  /* Typography */
+  --font-head: "Quicksand", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Quicksand", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-script: "Fraunces", Georgia, "Times New Roman", serif;
+
+  /* Spacing scale */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 2.5rem;
+  --space-6: 3.25rem;
+  --space-7: 4.5rem;
+
+  /* Radii */
+  --r-sm: 0.6rem;
+  --r-md: 1rem;
+  --r-lg: 1.5rem;
+  --r-xl: 2rem;
+  --r-pill: 999px;
+
+  /* Shadows (soft, warm) */
+  --shadow-sm: 0 2px 8px rgba(80, 60, 30, 0.06);
+  --shadow-md: 0 10px 24px rgba(80, 60, 30, 0.10);
+  --shadow-lg: 0 22px 48px rgba(80, 60, 30, 0.14);
+
+  --maxw: 1180px;
+  --header-h: 76px;
+}
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--base);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+/* Visible keyboard focus (mouse/touch users are unaffected via :focus-visible) */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+/* On the dark footer, switch to a light outline so it stays visible */
+.site-footer :where(a, button):focus-visible { outline-color: var(--wood); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--ink);
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(2.1rem, 5.2vw, 3.6rem); }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.4rem); }
+
+p { margin: 0 0 1rem; color: var(--ink-soft); }
+
+.script {
+  font-family: var(--font-script);
+  font-style: italic; /* Fraunces is roman by default; the logo "Playhouse" is italic */
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1.1rem, 4vw, 2.5rem);
+}
+
+.section { padding-block: clamp(2.25rem, 5vw, var(--space-7)); }
+.section--tight { padding-block: clamp(1.6rem, 3.5vw, var(--space-6)); }
+.band { background: var(--base-deep); }
+.band-white { background: var(--white); }
+
+.center { text-align: center; }
+.eyebrow {
+  font-family: var(--font-head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  display: inline-block;
+}
+.section-lead {
+  max-width: 60ch;
+  margin-inline: auto;
+  font-size: 1.06rem;
+}
+
+.grid { display: grid; gap: clamp(1.1rem, 2.5vw, 2rem); }
+.grid-3 { grid-template-columns: 1fr; }
+.grid-2 { grid-template-columns: 1fr; }
+@media (min-width: 720px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Buttons (all visual-only / non-functional) ---------- */
+.btn {
+  --btn-bg: var(--terracotta);
+  --btn-fg: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1;
+  padding: 0.95rem 1.6rem;
+  border-radius: var(--r-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn:active { transform: translateY(0); }
+
+.btn--red { --btn-bg: var(--red); }
+.btn--terracotta { --btn-bg: var(--terracotta); }
+.btn--wood { --btn-bg: var(--wood); --btn-fg: #3a2a13; }
+.btn--teal { --btn-bg: var(--teal); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: rgba(51,51,51,0.18);
+  box-shadow: none;
+}
+.btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn--lg { padding: 1.1rem 2rem; font-size: 1.05rem; }
+.btn--block { display: flex; width: 100%; justify-content: center; }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 243, 236, 0.82);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid rgba(51,51,51,0.06);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+.site-header.is-stuck { box-shadow: var(--shadow-sm); background: rgba(247,243,236,0.95); }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--header-h);
+}
+
+/* Logo */
+.brand { display: flex; align-items: center; gap: 0.65rem; }
+.brand svg, .brand img { height: 40px; width: auto; flex: none; }
+.brand-name, .nav a { white-space: nowrap; }
+.brand-text { display: flex; flex-direction: column; line-height: 1; }
+.brand-name {
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.brand-sub {
+  font-family: var(--font-script);
+  color: var(--accent-teal);
+  font-size: 1.05rem;
+  margin-top: 0.05rem;
+}
+
+/* Desktop nav */
+.nav { display: none; align-items: center; gap: 0.3rem; }
+.nav a {
+  font-family: var(--font-head);
+  font-weight: 500;
+  font-size: 0.93rem;
+  color: var(--ink);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--r-pill);
+  position: relative;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.nav a:hover { color: var(--accent); }
+.nav a.active { color: var(--accent); }
+.nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem; right: 0.7rem; bottom: 0.28rem;
+  height: 2px; border-radius: 2px;
+  background: var(--accent);
+}
+
+.header-cta { display: flex; align-items: center; gap: 0.6rem; }
+
+/* Header phone — visible on desktop / wide tablets, hidden below 980px so the nav stays uncluttered */
+.header-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.header-phone svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.header-phone:hover { background: var(--sky-tint, #e8f4f9); color: var(--accent-teal, #3F7268); }
+@media (max-width: 980px) { .header-phone { display: none; } }
+
+/* Hamburger */
+.nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  border: none; background: transparent; cursor: pointer;
+  border-radius: var(--r-sm);
+}
+.nav-toggle span {
+  display: block; height: 2.5px; width: 24px; margin-inline: auto;
+  background: var(--ink); border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+  background: var(--base);
+  border-bottom: 1px solid rgba(51,51,51,0.06);
+}
+.nav-open .mobile-menu { grid-template-rows: 1fr; }
+.mobile-menu > div { overflow: hidden; }
+.mobile-menu nav { display: flex; flex-direction: column; padding: 0.4rem 0 1rem; }
+.mobile-menu a {
+  font-family: var(--font-head);
+  font-weight: 500;
+  padding: 0.85rem clamp(1.1rem, 4vw, 2.5rem);
+  border-radius: var(--r-sm);
+}
+.mobile-menu a.active { color: var(--accent); }
+.mobile-menu .btn { margin: 0.7rem clamp(1.1rem, 4vw, 2.5rem) 0; }
+
+@media (min-width: 960px) {
+  .nav { display: flex; }
+  .nav-toggle { display: none; }
+  .mobile-menu { display: none; }
+}
+/* Responsive header CTA: full label on desktop, compact "Join" on small screens */
+.cta-short { display: none; }
+@media (max-width: 600px) {
+  .header-cta .btn--cta { padding: 0.5rem 0.95rem; font-size: 0.88rem; }
+  .header-cta .btn--cta .cta-full { display: none; }
+  .header-cta .btn--cta .cta-short { display: inline; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  background:
+    radial-gradient(1200px 420px at 70% -10%, var(--teal-tint), transparent 60%),
+    linear-gradient(180deg, #fbf8f2 0%, var(--base) 100%);
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding-block: clamp(2.4rem, 6vw, 4.5rem);
+}
+.hero-copy { max-width: 36rem; }
+.hero h1 { margin-bottom: 0.6rem; }
+.hero .lead { font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 34ch; }
+.hero-art { position: relative; }
+.hero-art svg, .hero-art img { width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(80,60,30,0.10)); }
+
+@media (min-width: 880px) {
+  .hero-inner { grid-template-columns: 1fr 1.15fr; }
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: clamp(1.3rem, 2.5vw, 1.9rem);
+  border: 1px solid rgba(80,60,30,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.card h3 { margin-bottom: 0.35rem; }
+.card p:last-child { margin-bottom: 0; }
+
+.card-art {
+  border-radius: var(--r-md);
+  background: var(--base);
+  padding: 1rem;
+  margin-bottom: 1.1rem;
+  display: grid;
+  place-items: center;
+}
+.card-art svg, .card-art img { width: auto; height: auto; max-height: 170px; max-width: 100%; }
+
+/* Feature card icon chip */
+.chip {
+  width: 64px; height: 64px;
+  border-radius: var(--r-md);
+  display: grid; place-items: center;
+  margin-bottom: 1rem;
+  background: var(--teal-tint);
+}
+.chip svg, .chip img { width: 38px; height: 38px; }
+
+/* ---------- Pricing ---------- */
+.price-card { position: relative; display: flex; flex-direction: column; text-align: center; }
+.price-card .card-art { background: var(--base); }
+.price-tag {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: var(--ink);
+  margin: 0.2rem 0 0.1rem;
+}
+.price-tag small { font-size: 0.95rem; font-weight: 500; color: var(--ink-soft); }
+.price-list { list-style: none; margin: 1rem 0 1.5rem; padding: 0; text-align: left; }
+.price-list li {
+  display: flex; gap: 0.55rem; align-items: flex-start;
+  padding: 0.4rem 0; color: var(--ink-soft); font-size: 0.96rem;
+}
+.price-list li::before {
+  content: "";
+  flex: none; margin-top: 0.35rem;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--sage-tint);
+  box-shadow: inset 0 0 0 3px var(--sage);
+}
+.price-card .btn { margin-top: auto; }
+.price-card.featured {
+  border: 2px solid var(--wood);
+  box-shadow: var(--shadow-md);
+}
+.badge {
+  position: absolute;
+  top: -0.85rem; left: 50%; transform: translateX(-50%);
+  background: var(--wood); color: #3a2a13;
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.35rem 0.85rem; border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Reassurance / icon columns ---------- */
+.reassure { text-align: center; }
+.reassure .chip { margin-inline: auto; width: 72px; height: 72px; }
+.reassure h3 { margin-bottom: 0.25rem; }
+
+/* ---------- Split sections (story teaser etc.) ---------- */
+.split {
+  display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+}
+@media (min-width: 820px) {
+  .split { grid-template-columns: 1fr 1fr; }
+  .split--reverse .split-art { order: -1; }
+}
+.split-art svg, .split-art img { width: 100%; height: auto; }
+
+/* ---------- Newsletter ---------- */
+.newsletter {
+  background: linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
+  border-radius: var(--r-xl);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  color: var(--ink);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.newsletter h2, .newsletter p { color: var(--ink); }
+.newsletter p { color: var(--ink-soft); }
+.newsletter-form {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+  max-width: 30rem; margin: 1.4rem auto 0;
+}
+.newsletter-form input {
+  flex: 1 1 14rem;
+  border: none; border-radius: var(--r-pill);
+  padding: 0.95rem 1.3rem; font-size: 1rem; font-family: var(--font-body);
+  background: rgba(255,255,255,0.96); color: var(--ink);
+}
+.newsletter-form input::placeholder { color: #8a857c; }
+
+/* ---------- Forms (visual only) ---------- */
+.form-grid { display: grid; gap: 1rem; }
+@media (min-width: 640px) { .form-grid .col-2 { grid-template-columns: 1fr 1fr; display: grid; gap: 1rem; } }
+.field label {
+  display: block; font-family: var(--font-head); font-weight: 500;
+  font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--ink);
+}
+.field input, .field textarea, .field select {
+  width: 100%; font-family: var(--font-body); font-size: 1rem;
+  padding: 0.85rem 1rem; border-radius: var(--r-md);
+  border: 1.5px solid rgba(51,51,51,0.14); background: var(--white); color: var(--ink);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none; border-color: var(--teal);
+  box-shadow: 0 0 0 4px var(--teal-tint);
+}
+.field textarea { min-height: 130px; resize: vertical; }
+
+/* ---------- Accordion (FAQ) ---------- */
+.accordion { max-width: 760px; margin-inline: auto; }
+.acc-item {
+  background: var(--white);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  border: 1px solid rgba(80,60,30,0.05);
+}
+.acc-trigger {
+  width: 100%; text-align: left; cursor: pointer;
+  background: transparent; border: none;
+  font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; color: var(--ink);
+  padding: 1.1rem 1.3rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.acc-trigger .acc-icon {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--terra-tint); color: var(--accent);
+  display: grid; place-items: center; font-size: 1.2rem; line-height: 1;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.acc-item[aria-expanded="true"] .acc-icon { transform: rotate(45deg); background: var(--accent); color: #fff; }
+.acc-panel {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+.acc-item[aria-expanded="true"] .acc-panel { grid-template-rows: 1fr; }
+.acc-panel > div { overflow: hidden; }
+.acc-panel p { padding: 0 1.3rem 1.2rem; margin: 0; }
+
+/* ---------- Café menu ---------- */
+.menu-group { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.menu-group h3 {
+  display: flex; align-items: center; gap: 0.7rem;
+  font-size: 1.5rem; margin-bottom: 1.1rem;
+}
+.menu-group h3 svg, .menu-group h3 img { width: 38px; height: 38px; flex: none; }
+.menu-list { list-style: none; margin: 0; padding: 0; }
+.menu-row {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 0.9rem; align-items: center;
+  padding: 0.85rem 0; border-bottom: 1px dashed rgba(80,60,30,0.16);
+}
+.menu-row:last-child { border-bottom: none; }
+.menu-row .m-icon { width: 44px; height: 44px; transition: transform 0.2s ease; }
+.menu-row .m-name { font-family: var(--font-head); font-weight: 600; color: var(--ink); transition: color 0.2s ease; }
+.menu-row .m-desc { font-size: 0.9rem; color: var(--ink-soft); }
+/* Prices read as little tags, and pop on row hover */
+.menu-row .m-price {
+  font-family: var(--font-head); font-weight: 700; color: var(--accent); white-space: nowrap;
+  background: var(--terra-tint); padding: 0.22rem 0.65rem; border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.menu-row:hover .m-name { color: var(--accent); }
+.menu-row:hover .m-icon { animation: wiggle 0.5s ease; }
+.menu-row:hover .m-price { background: var(--accent); color: #fff; }
+
+/* ---------- Booking widget mockup (Parties) ---------- */
+.booking {
+  background: var(--white); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md); padding: clamp(1.3rem, 3vw, 2rem);
+  border: 1px solid rgba(80,60,30,0.06);
+}
+.booking-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.booking-head .month { font-family: var(--font-head); font-weight: 700; font-size: 1.1rem; }
+.booking-nav { display: flex; gap: 0.4rem; }
+.booking-nav button {
+  width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid rgba(51,51,51,0.12);
+  background: var(--white); cursor: pointer; color: var(--ink); font-size: 1rem;
+}
+.cal {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.35rem; text-align: center;
+}
+.cal .dow { font-family: var(--font-head); font-weight: 600; font-size: 0.72rem; color: var(--ink-soft); padding-bottom: 0.3rem; }
+.cal .day {
+  aspect-ratio: 1; display: grid; place-items: center; border-radius: var(--r-sm);
+  font-size: 0.9rem; color: var(--ink); background: var(--base);
+}
+.cal .day.muted { color: #c3bcae; background: transparent; }
+.cal .day.avail { background: var(--sage-tint); color: var(--ink); font-weight: 600; }
+.cal .day.selected { background: var(--accent); color: #fff; font-weight: 700; box-shadow: var(--shadow-sm); }
+.slots { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.2rem; }
+.slot {
+  border: 1.5px solid rgba(51,51,51,0.14); border-radius: var(--r-pill);
+  padding: 0.55rem 1rem; font-family: var(--font-head); font-weight: 500; font-size: 0.9rem;
+  background: var(--white); cursor: pointer; color: var(--ink);
+}
+.slot.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+.mock-note {
+  font-size: 0.8rem; color: var(--ink-soft); text-align: center; margin-top: 1rem; font-style: italic;
+}
+
+/* ---------- Gallery ---------- */
+.gallery { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 720px) { .gallery { grid-template-columns: repeat(4, 1fr); } }
+.gallery figure {
+  margin: 0; border-radius: var(--r-md); overflow: hidden;
+  background: var(--white); box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gallery figure:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.gallery svg, .gallery img { width: 100%; height: auto; display: block; }
+
+/* ---------- Policy / rules strips ---------- */
+.policy {
+  background: var(--wood-tint);
+  border-radius: var(--r-lg);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  border: 1px dashed rgba(140,100,40,0.35);
+}
+.policy h3 { color: var(--accent); }
+.policy ul { margin: 0; padding-left: 1.2rem; }
+.policy li { margin-bottom: 0.5rem; color: var(--ink-soft); }
+
+/* ---------- Comparison (Memberships) ---------- */
+.compare { display: grid; gap: clamp(1.1rem, 2.5vw, 2rem); grid-template-columns: 1fr; }
+@media (min-width: 760px) { .compare { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Stat / values row ---------- */
+.values { display: grid; gap: 1.2rem; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .values { grid-template-columns: repeat(3,1fr); } }
+.value-card { background: var(--white); border-radius: var(--r-lg); padding: 1.6rem; box-shadow: var(--shadow-sm); }
+.value-card .chip { background: var(--terra-tint); }
+
+/* ---------- Street divider motif ---------- */
+.street-divider { line-height: 0; overflow: hidden; }
+.street-divider svg, .street-divider img {
+  width: 100%; height: auto;
+  transform-origin: bottom center;
+  /* gentle breathing so the little skyline feels alive, never shrinking below
+     its real height (so no gap opens above it) */
+  animation: skylineBreath 9s ease-in-out infinite;
+}
+@keyframes skylineBreath {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .street-divider svg, .street-divider img { animation: none !important; }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: #2f2a24;
+  color: #d9d3c8;
+  padding-block: clamp(2.5rem, 5vw, 4rem) 2rem;
+}
+.site-footer a { color: #d9d3c8; transition: color 0.18s ease; }
+.site-footer a:hover { color: var(--wood); }
+.footer-grid {
+  display: grid; gap: 2rem; grid-template-columns: 1fr;
+}
+@media (min-width: 720px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
+.footer-brand .brand-name { color: #fff; }
+.footer-brand .brand-sub { color: var(--teal); }
+.footer-col h4 {
+  font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: #fff; margin-bottom: 0.9rem;
+}
+.footer-col p, .footer-col a { font-size: 0.94rem; color: #c4bdb1; }
+.footer-col ul { list-style: none; margin: 0; padding: 0; }
+.footer-col li { margin-bottom: 0.5rem; }
+.map-placeholder {
+  border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.map-placeholder svg, .map-placeholder img { width: 100%; height: auto; display: block; }
+.socials { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+.socials a {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); display: grid; place-items: center;
+}
+.socials a:hover { background: var(--wood); }
+.socials svg { width: 18px; height: 18px; }
+.footer-bottom {
+  margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between;
+  font-size: 0.84rem; color: #9b948a;
+}
+
+/* ---------- Map placeholder (light, on Visit page) ---------- */
+.map-light { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+.map-light svg, .map-light img { width: 100%; height: auto; display: block; }
+
+/* ---------- Page hero (interior pages) — echoes the home sky + clouds ---------- */
+.page-hero {
+  background: linear-gradient(180deg, #c5e2ec 0%, #d6eaef 33%, var(--base) 100%);
+  /* Shared interior-hero footprint: every interior page's hero takes the same
+     slice of the screen and vertically centres its content, so the whole site
+     reads as one consistent design even though each hero is its own world.
+     (Home keeps its taller bespoke .hero-v2 anchor.) min-height is a floor —
+     content-rich heroes can grow past it and stay centred. */
+  min-height: clamp(540px, 70vh, 680px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(2.4rem, 5vw, 3.6rem);
+  text-align: center;
+}
+.page-hero p { max-width: 56ch; margin-inline: auto; }
+.page-hero .hero-art { max-width: 640px; margin: 1.6rem auto 0; }
+/* Soft white halo keeps the copy crisp over the sky + drifting clouds (matches home) */
+.page-hero .eyebrow,
+.page-hero h1,
+.page-hero > .container p { text-shadow: 0 1px 1px rgba(255,255,255,0.55), 0 2px 14px rgba(255,255,255,0.65); }
+.page-hero .flex-cta { justify-content: center; }
+/* Keep the secondary CTA legible over the busy sky */
+.page-hero .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
+.page-hero .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
+/* Clouds drift a touch smaller and softer here than on the tall home hero */
+.page-hero .hero-cloud.c1 { width: 120px; opacity: 0.90; }
+.page-hero .hero-cloud.c2 { width: 90px;  opacity: 0.82; }
+.page-hero .hero-cloud.c3 { width: 72px;  opacity: 0.80; }
+.page-hero .hero-cloud.c4 { width: 150px; opacity: 0.85; }
+.page-hero .hero-cloud.c5 { width: 60px;  opacity: 0.75; }
+@media (max-width: 700px) {
+  .page-hero .hero-cloud.c1 { width: 92px; }
+  .page-hero .hero-cloud.c4 { width: 110px; }
+}
+
+/* Kiddy bunting banner across the top of an interior hero — a seamless,
+   horizontally-tiling pastel pennant string. Shows on every screen size
+   (it sits at the very top edge, so it never crowds the centred copy). */
+.hero-bunting {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  z-index: 1;
+  pointer-events: none;
+  background: url("bunting.svg") repeat-x top center;
+  background-size: auto 34px;
+  opacity: 0.95;
+}
+/* Gentle sway so the whole string feels alive */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-bunting { animation: buntingSway 7s ease-in-out infinite; transform-origin: top center; }
+}
+@keyframes buntingSway {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(2px); }
+}
+/* Nudge centred hero copy down a touch so it clears the bunting */
+.page-hero.has-bunting > .container { padding-top: 0.8rem; }
+
+/* ---------- Per-page hero personalities ----------
+   Each interior hero shares the page-hero skeleton (centred copy, halo, CTAs)
+   but gets a background, motif and accent matched to that page's purpose. */
+
+/* Play & Pricing keeps the open-town sky + drifting clouds (the base look). */
+
+/* Parties — a festive blush with confetti & balloons */
+.page-hero.ph--party { background: linear-gradient(180deg, #f8dee0 0%, #fbe7d6 46%, var(--base) 100%); }
+.ph--party .confetti i:nth-child(1) { background: var(--terracotta); transform: rotate(-16deg); }
+.ph--party .confetti i:nth-child(2) { background: var(--wood);       transform: rotate(10deg); }
+.ph--party .confetti i:nth-child(3) { background: var(--teal);       transform: rotate(-8deg); }
+.ph--party .confetti i:nth-child(4) { background: var(--red);        transform: rotate(22deg); }
+.ph--party .confetti i:nth-child(5) { background: var(--sage);       transform: rotate(-12deg); }
+
+/* Memberships — calm, natural sage echoing the home membership band */
+.page-hero.ph--member { background: linear-gradient(180deg, #e6ecdd 0%, #e0e9d8 48%, var(--base) 100%); }
+
+/* Fusion — warm coffee cream with floating café treats */
+.page-hero.ph--cafe { background: linear-gradient(180deg, #f3e3cb 0%, #f7ecd9 46%, var(--base) 100%); }
+
+/* Our Story — quiet, warm paper; restrained and a touch more editorial.
+   (Background is themed further in our-story.css; padding/height come from the
+   shared .page-hero model so it matches the other interior heroes.) */
+.page-hero.ph--story {
+  background: linear-gradient(180deg, #efe7d8 0%, #f4eee2 52%, var(--base) 100%);
+}
+
+/* Visit Us — cooler daylight teal, a wayfinding mood */
+.page-hero.ph--visit { background: linear-gradient(180deg, #d6e6e6 0%, #e4eef0 46%, var(--base) 100%); }
+
+/* ---------- Pills / tags ---------- */
+.pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+.pill {
+  background: var(--white); border: 1px solid rgba(80,60,30,0.1);
+  border-radius: var(--r-pill); padding: 0.45rem 1rem;
+  font-family: var(--font-head); font-weight: 500; font-size: 0.85rem; color: var(--ink-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Scroll reveal animations ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reveal[data-delay="2"] { transition-delay: 0.16s; }
+.reveal[data-delay="3"] { transition-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation: none !important; }
+}
+
+/* Gentle float for hero accents */
+@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.float { animation: floaty 6s ease-in-out infinite; }
+.float--slow { animation-duration: 9s; }
+
+/* ============================================================
+   Playful motion & decorations (v2)
+   ============================================================ */
+.hero, .page-hero, .newsletter, .has-deco { position: relative; overflow: hidden; }
+.hero-inner, .page-hero > .container, .newsletter > * { position: relative; z-index: 2; }
+
+.deco { position: absolute; pointer-events: none; z-index: 1; }
+.deco img, .deco svg { width: 100%; height: auto; display: block; }
+/* Floaters are a subtle desktop-only flourish; hidden on small screens where
+   they'd crowd the centered hero headings. (The drifting clouds stay on every
+   hero, mobile included — they're the shared motion across the site.) */
+@media (max-width: 880px) {
+  .deco { display: none; }
+}
+
+@keyframes bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes sway  { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes drift { 0% { transform: translateX(0); } 50% { transform: translateX(26px); } 100% { transform: translateX(0); } }
+@keyframes twinkle { 0%,100% { transform: scale(0.85); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
+@keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+
+.anim-bob     { animation: bob 6s ease-in-out infinite; }
+.anim-bob.slow{ animation-duration: 9s; }
+.anim-sway    { animation: sway 7s ease-in-out infinite; transform-origin: top center; }
+.anim-drift   { animation: drift 16s ease-in-out infinite; }
+.anim-twinkle { animation: twinkle 4.5s ease-in-out infinite; }
+
+/* Bouncier, more playful hovers */
+.btn { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background 0.2s ease; }
+.btn:hover { transform: translateY(-3px) scale(1.03); }
+.card { transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+.card:hover { transform: translateY(-7px) scale(1.015); }
+.card:hover .card-art img { animation: wiggle 0.55s ease; }
+.chip { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+.reassure:hover .chip, .value-card:hover .chip { transform: rotate(-6deg) scale(1.08); }
+.gallery figure:hover { transform: translateY(-6px) rotate(-1.2deg); }
+
+/* Soft decorative blobs behind bands */
+.newsletter::before { content: ""; position: absolute; width: 240px; height: 240px; right: -70px; top: -90px;
+  background: rgba(255,255,255,0.16); border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; }
+.newsletter::after { content: ""; position: absolute; width: 180px; height: 180px; left: -60px; bottom: -80px;
+  background: rgba(255,255,255,0.12); border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%; }
+
+/* Confetti dots accent */
+.confetti { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 0.6rem; }
+.confetti i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; transform: rotate(12deg); }
+
+/* Pill / badge for "next door" partner */
+.partner-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--terra-tint);
+  color: var(--accent); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem;
+  padding: 0.4rem 0.9rem; border-radius: var(--r-pill); }
+
+/* Membership spotlight card on home */
+.spotlight { display: grid; gap: clamp(1.4rem,4vw,3rem); align-items: center;
+  background: linear-gradient(135deg, var(--wood-tint) 0%, #fbf3e6 100%);
+  border-radius: var(--r-xl); padding: clamp(1.6rem,4vw,3rem); border: 1px solid rgba(140,100,40,0.14); }
+@media (min-width: 860px) { .spotlight { grid-template-columns: 1.1fr 0.9fr; } }
+.spotlight .spotlight-art img { width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover .card-art img { animation: none; }
+}
+
+/* Utility */
+.mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; } .mt-4 { margin-top: 2rem; }
+.mb-0 { margin-bottom: 0; }
+.muted { color: var(--ink-soft); }
+.flex-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.4rem; }
+.flex-cta.center { justify-content: center; }
+
+/* ============================================================
+   Home v3 — fresh homepage layout
+   ============================================================ */
+.hero-v2 {
+  position: relative; overflow: hidden; text-align: center;
+  display: flex; justify-content: center; align-items: flex-start;
+  min-height: clamp(600px, 86vh, 800px);
+  background: #c5e2ec;
+}
+/* The town backdrop is the brand logo mark (transparent buildings only, no
+   sky of its own), so it sits over the .hero-v2 sky wash — a small town mark
+   resting at the bottom-centre with the sky and clouds filling the space above. */
+.hero-bg { position: absolute; inset: 0; z-index: 0; display: flex; align-items: flex-end; justify-content: center; }
+.hero-bg img { width: clamp(320px, 55vw, 800px); height: auto; display: block; }
+/* Push the home hero's adjacent wave divider down a little so it tucks under
+   the (now larger) town mark instead of rising up over its base. Scoped to the
+   hero's next sibling so every other .flow-top transition is unaffected. */
+.hero-v2 + .flow-top::before { top: calc(-1 * var(--flow-h) - 18px + 48px); }
+.hero-v2 + .flow-top::after  { top: calc(-1 * var(--flow-h) + 48px); }
+/* gentle bright-sky wash at the very top — keeps the blue sky visible */
+.hero-scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.30) 30%, rgba(255,255,255,0.08) 52%, rgba(255,255,255,0) 72%);
+}
+.hero-v2 .hero-content { position: relative; z-index: 2; padding-top: clamp(1.8rem, 5vw, 3rem); padding-bottom: 2rem; }
+/* Soft white halo keeps the dark copy crisp over the busy town + drifting clouds */
+.hero-v2 .eyebrow,
+.hero-v2 h1,
+.hero-v2 .lead { text-shadow: 0 1px 1px rgba(255,255,255,0.6), 0 2px 16px rgba(255,255,255,0.7); }
+.hero-v2 .lead { margin-inline: auto; max-width: 44ch; font-size: clamp(1.05rem, 2vw, 1.28rem); }
+.hero-v2 .flex-cta { justify-content: center; }
+/* keep the secondary CTA legible over the busy town background */
+.hero-v2 .btn--ghost { background: rgba(255,255,255,0.82); border-color: rgba(255,255,255,0.9); }
+.hero-v2 .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
+
+/* Rolling clouds — an endless left-to-right conveyor. The track is two hero
+   widths wide and holds two identical cloud sets; it slides right by exactly
+   one set width and loops. Because the copy lands precisely where the original
+   was, there is no seam — clouds keep streaming in from the left forever.
+   The layer sits above the scrim but below the headline (z-index 2). */
+.hero-clouds { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.cloud-track {
+  position: absolute; inset: 0; width: 200%; display: flex;
+  will-change: transform;
+  animation: cloudRoll 60s linear infinite;
+}
+.cloud-set { position: relative; flex: 0 0 50%; width: 50%; height: 100%; }
+.hero-cloud { position: absolute; height: auto; }
+/* Spread across the sky at varied heights, sizes and opacities so the steady
+   stream still reads as natural rather than a repeating strip. */
+.hero-cloud.c1 { left:  4%; top: 13%; width: 170px; opacity: 0.97; }
+.hero-cloud.c2 { left: 23%; top: 24%; width: 120px; opacity: 0.90; }
+.hero-cloud.c3 { left: 41%; top:  8%; width:  96px; opacity: 0.85; }
+.hero-cloud.c4 { left: 60%; top: 31%; width: 210px; opacity: 0.93; }
+.hero-cloud.c5 { left: 82%; top: 18%; width:  76px; opacity: 0.80; }
+@keyframes cloudRoll {
+  from { transform: translateX(-50%); }  /* showing the second (duplicate) set */
+  to   { transform: translateX(0); }     /* slid right by one set — seamless wrap */
+}
+@media (max-width: 700px) {
+  .hero-cloud.c1 { width: 120px; }
+  .hero-cloud.c2 { width: 90px; }
+  .hero-cloud.c3 { width: 74px; }
+  .hero-cloud.c4 { width: 140px; }
+  .hero-cloud.c5 { width: 60px; }
+}
+
+/* Trust bar — a contained "proof" strip with dividers between claims */
+.trust-bar {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem 1.8rem;
+  padding: 1rem clamp(1.1rem, 4vw, 2rem);
+  background: var(--base);
+  border: 1px solid rgba(80,60,30,0.07);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+.trust { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-head); font-weight: 500; font-size: 0.94rem; color: var(--ink); }
+.trust svg { width: 22px; height: 22px; flex: none; }
+@media (min-width: 760px) {
+  .trust + .trust { border-left: 1px solid rgba(80,60,30,0.14); padding-left: 1.8rem; }
+}
+
+/* Membership band (main offer) */
+.member-band {
+  display: grid; gap: clamp(1.4rem, 4vw, 2.8rem); align-items: center;
+  background: linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
+  color: var(--ink); border-radius: var(--r-xl); padding: clamp(1.6rem, 4vw, 3rem); overflow: hidden;
+}
+.member-band h2, .member-band p { color: var(--ink); }
+.member-band .eyebrow { color: var(--accent); }
+.member-band .price-list li { color: var(--ink); }
+.member-band .price-list li::before { background: rgba(58,49,40,0.10); box-shadow: inset 0 0 0 3px var(--accent-teal); }
+.member-art img { width: 100%; border-radius: var(--r-lg); box-shadow: var(--shadow-md); display: block; }
+@media (min-width: 860px) { .member-band { grid-template-columns: 1.05fr 0.95fr; } }
+.btn--onfill { background: #fff; color: var(--accent-teal); }
+.btn--onfill:hover { background: #fff; }
+
+/* ============================================================
+   Playful motion v3 — refined liveliness across all pages
+   ============================================================ */
+
+/* Springier scroll reveal + directional variants */
+.reveal { transform: translateY(30px) scale(0.985);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.4, 0.5, 1); }
+.reveal.is-visible { transform: none; }
+.reveal.from-left  { transform: translateX(-44px); }
+.reveal.from-right { transform: translateX(44px); }
+.reveal.pop        { transform: scale(0.9); }
+.reveal.from-left.is-visible, .reveal.from-right.is-visible, .reveal.pop.is-visible { transform: none; }
+
+/* Staggered mobile dropdown items */
+.mobile-menu nav > a {
+  opacity: 0; transform: translateX(-16px);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nav-open .mobile-menu nav > a { opacity: 1; transform: none; }
+.nav-open .mobile-menu nav > a:nth-child(1) { transition-delay: 0.06s; }
+.nav-open .mobile-menu nav > a:nth-child(2) { transition-delay: 0.11s; }
+.nav-open .mobile-menu nav > a:nth-child(3) { transition-delay: 0.16s; }
+.nav-open .mobile-menu nav > a:nth-child(4) { transition-delay: 0.21s; }
+.nav-open .mobile-menu nav > a:nth-child(5) { transition-delay: 0.26s; }
+.nav-open .mobile-menu nav > a:nth-child(6) { transition-delay: 0.31s; }
+.nav-open .mobile-menu nav > a:nth-child(7) { transition-delay: 0.36s; }
+
+/* Animated nav underline (desktop) */
+.nav a::after {
+  content: ""; position: absolute; left: 0.7rem; right: 0.7rem; bottom: 0.28rem;
+  height: 2px; border-radius: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left center; transition: transform 0.26s ease;
+}
+.nav a:hover::after, .nav a.active::after { transform: scaleX(1); }
+
+/* Subtle attention ring on the membership CTAs (transform-free, keeps hover lift) */
+a.btn--red[href="memberships.html"], a.btn--terracotta[href="memberships.html"] { position: relative; }
+a.btn--red[href="memberships.html"]::after,
+a.btn--terracotta[href="memberships.html"]::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  animation: ctaRing 2.8s ease-out infinite;
+}
+@keyframes ctaRing {
+  0%   { box-shadow: 0 0 0 0 rgba(236, 154, 144, 0.6); }
+  70%, 100% { box-shadow: 0 0 0 13px rgba(236, 154, 144, 0); }
+}
+
+/* Accordion answer fades/slides in */
+.acc-panel p { opacity: 0; transform: translateY(-6px); transition: opacity 0.3s ease 0.04s, transform 0.3s ease 0.04s; }
+.acc-item[aria-expanded="true"] .acc-panel p { opacity: 1; transform: none; }
+
+/* Gallery tiles pop on reveal a touch more */
+.gallery figure { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+
+/* Reduced-motion: keep everything visible and still */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.from-left, .reveal.from-right, .reveal.pop,
+  .mobile-menu nav > a, .acc-panel p { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .nav a::after { transition: none !important; }
+  a.btn--red[href="memberships.html"]::after, a.btn--terracotta[href="memberships.html"]::after { animation: none !important; }
+}
+
+/* Touch devices have no hover — give springy feedback on tap so it still feels alive */
+@media (hover: none) {
+  .card { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease; }
+  .card:active { transform: translateY(-4px) scale(1.012); box-shadow: var(--shadow-md); }
+  .btn:active { transform: translateY(-1px) scale(0.97); }
+  .gallery figure:active { transform: translateY(-4px) rotate(-1.2deg); }
+  .reassure:active .chip, .value-card:active .chip { transform: rotate(-6deg) scale(1.08); }
+  .price-card:active { transform: translateY(-4px) scale(1.012); }
+}
+
+/* ============================================================
+   v4 — Brighter, bolder, livelier shared kit
+   Additive layer the page revamps draw from. Builds on the tokens
+   and components above; nothing here overrides core behaviour, so
+   existing markup keeps working unchanged.
+   ============================================================ */
+:root {
+  /* Brighter accents that still harmonise with the warm earthy base */
+  --sun:        #F8D98F;  /* pastel sun   */
+  --sky:        #AEDCEA;  /* pastel sky   */
+  --coral:      #F4AE92;  /* pastel coral */
+  --sun-tint:   #fdf1d0;
+  --sky-tint:   #e1f2f8;
+  --coral-tint: #fce6db;
+
+  /* Ready-made playful gradients */
+  --grad-sunrise: linear-gradient(135deg, var(--sun) 0%, var(--coral) 100%);
+  --grad-meadow:  linear-gradient(135deg, var(--sage) 0%, var(--teal) 100%);
+  --grad-candy:   linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
+  --grad-sky:     linear-gradient(180deg, var(--sky-tint) 0%, var(--base) 100%);
+}
+
+/* ---- Gradient / tint background helpers ---- */
+.bg-sunrise, .bg-meadow, .bg-candy { color: var(--ink); }
+.bg-sunrise { background: var(--grad-sunrise); }
+.bg-meadow  { background: var(--grad-meadow); }
+.bg-candy   { background: var(--grad-candy); }
+.bg-sky     { background: var(--grad-sky); }
+.bg-sun-tint   { background: var(--sun-tint); }
+.bg-sky-tint   { background: var(--sky-tint); }
+.bg-coral-tint { background: var(--coral-tint); }
+/* On a coloured/gradient band, force white headings + copy */
+/* Pastel bands are light, so text on them is dark ink, not white. */
+.on-dark, .on-dark h1, .on-dark h2, .on-dark h3, .on-dark h4, .on-dark p { color: var(--ink); }
+.on-dark .eyebrow { color: var(--accent); }
+.on-dark .section-lead { color: var(--ink-soft); }
+/* Secondary (ghost) buttons sitting on a pastel band: dark outline + ink. */
+.on-dark .btn--ghost {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(58,49,40,0.22);
+  color: var(--ink);
+}
+.on-dark .btn--ghost:hover { background: #fff; border-color: var(--accent); color: var(--accent); }
+
+/* ---- Marker highlight behind inline text (hand-drawn feel) ---- */
+.hl {
+  background-image: linear-gradient(120deg, var(--sun-tint), var(--sun-tint));
+  background-repeat: no-repeat; background-size: 100% 38%; background-position: 0 86%;
+  padding: 0 0.08em; border-radius: 2px;
+}
+.hl--sky   { background-image: linear-gradient(120deg, var(--sky-tint), var(--sky-tint)); }
+.hl--coral { background-image: linear-gradient(120deg, var(--coral-tint), var(--coral-tint)); }
+.hl--sage  { background-image: linear-gradient(120deg, var(--sage-tint), var(--sage-tint)); }
+
+/* ---- Sticker: a rotated, shadowed label that feels stuck on ---- */
+.sticker {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-head); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.02em;
+  padding: 0.45rem 0.9rem; border-radius: var(--r-pill);
+  background: var(--sun); color: #5a3d12; box-shadow: var(--shadow-sm);
+  transform: rotate(-3deg);
+}
+.sticker--coral { background: var(--coral); color: #6a2f15; }
+.sticker--sky   { background: var(--sky);   color: #08323d; }
+.sticker--sage  { background: var(--sage);  color: #243016; }
+
+/* ---- Chunky "pop" button: playful 3D press (opt-in on top of .btn) ---- */
+.btn--pop { box-shadow: 0 5px 0 rgba(90,60,25,0.22), var(--shadow-sm); }
+.btn--pop:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(90,60,25,0.22), var(--shadow-md); }
+.btn--pop:active { transform: translateY(3px);  box-shadow: 0 2px 0 rgba(90,60,25,0.22); }
+.btn--sun   { --btn-bg: var(--sun);   --btn-fg: #5a3d12; }
+.btn--coral { --btn-bg: var(--coral); }
+
+/* ---- Panel: content floating on a soft white card for depth ---- */
+.panel {
+  background: var(--white); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md); padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgba(80,60,30,0.06);
+}
+
+/* ---- Wonky cards: a gentle alternating tilt that straightens on hover ---- */
+.tilt { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
+.tilt:nth-child(odd)  { transform: rotate(-1.2deg); }
+.tilt:nth-child(even) { transform: rotate(1.2deg); }
+.tilt:hover { transform: rotate(0deg) translateY(-6px) scale(1.02); }
+
+/* ---- Big stat ---- */
+.stat { text-align: center; }
+.stat .num {
+  font-family: var(--font-head); font-weight: 800; line-height: 1;
+  font-size: clamp(2.4rem, 6vw, 3.6rem); color: var(--accent);
+}
+.stat .num .unit { font-size: 0.5em; }
+.stat .label { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.95rem; }
+
+/* ---- Numbered steps with auto-counting badges ---- */
+.steps { display: grid; gap: clamp(1.1rem, 2.5vw, 2rem); grid-template-columns: 1fr; counter-reset: step; }
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step { text-align: center; }
+.step .step-no {
+  counter-increment: step; width: 60px; height: 60px; margin: 0 auto 0.8rem;
+  border-radius: 50%; display: grid; place-items: center;
+  background: var(--grad-sunrise); color: var(--ink);
+  font-family: var(--font-head); font-weight: 800; font-size: 1.4rem; box-shadow: var(--shadow-sm);
+}
+.step .step-no::before { content: counter(step); }
+
+/* ---- Decorative soft blob behind a section ---- */
+.has-blob { position: relative; }
+.has-blob > * { position: relative; z-index: 1; }
+.blob {
+  position: absolute; z-index: 0; pointer-events: none; filter: blur(2px); opacity: 0.5;
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+}
+
+/* ---- Quote / testimonial card ---- */
+.quote {
+  background: var(--white); border-radius: var(--r-lg); box-shadow: var(--shadow-sm);
+  padding: clamp(1.3rem, 3vw, 2rem); border: 1px solid rgba(80,60,30,0.05); position: relative;
+}
+.quote p { font-size: 1.05rem; color: var(--ink); }
+.quote .who { font-family: var(--font-head); font-weight: 600; color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
+.quote::before {
+  content: "\201C"; position: absolute; top: -0.2rem; left: 1rem;
+  font-family: var(--font-script); color: var(--accent-coral); font-size: 3.4rem; line-height: 1; opacity: 0.5;
+}
+
+/* ---- New motion primitives ---- */
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(10px); } 60% { transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
+@keyframes jelly { 0%,100% { transform: scale(1,1); } 30% { transform: scale(1.08,0.92); } 50% { transform: scale(0.94,1.06); } 70% { transform: scale(1.03,0.97); } }
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes pulseSoft { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.anim-pop        { animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+.anim-spin-slow  { animation: spinSlow 22s linear infinite; }
+.anim-pulse      { animation: pulseSoft 3.5s ease-in-out infinite; }
+.hover-jelly:hover { animation: jelly 0.6s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-pop, .anim-spin-slow, .anim-pulse, .hover-jelly:hover { animation: none !important; }
+  .tilt, .tilt:nth-child(odd), .tilt:nth-child(even) { transform: none !important; }
+}
+
+/* ---- No-JS fallback: scroll reveal relies on IntersectionObserver, so when
+   scripting is unavailable, show all reveal content instead of leaving it
+   stuck at opacity:0. (Browsers without `scripting` support run the JS path.) ---- */
+@media (scripting: none) {
+  .reveal, .reveal.from-left, .reveal.from-right, .reveal.pop {
+    opacity: 1 !important; transform: none !important;
+  }
+}
+
+/* ============================================================
+   v5 — Flowing section transitions
+   Turns the flat colour line between two sections into an organic,
+   animated wave: a section's own colour rises up into the section above
+   it with a soft scalloped crest, and a second, slower layer drifts the
+   other way as a faint shadow rim for depth. The whole effect is one
+   reusable hook — add `flow-top` to a section and its surface colour is
+   read from the section's existing background class. Custom-coloured
+   bands set their own `--surface` (see the page stylesheets).
+
+   How the blend stays seamless: the wave layers are pseudo-elements that
+   sit *above* the section's top edge (negative `top`), painting over the
+   bottom padding of the previous section. Their solid lower half is the
+   exact `--surface` colour, so it meets the section's real background with
+   no seam; their transparent upper half lets the previous section show
+   through the wave troughs.
+   ============================================================ */
+:root {
+  --flow-h: clamp(34px, 5.5vw, 72px);
+  /* One full, seam-matching sine period; solid below, wave band up top.
+     Opaque fill = the mask's visible (alpha) region. */
+  --flow-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 120' preserveAspectRatio='none'%3E%3Cpath d='M0 40 C36.7 14 73.3 14 110 40 C146.7 66 183.3 66 220 40 L220 120 L0 120 Z' fill='%23000'/%3E%3C/svg%3E");
+  /* Puffy cloud-scallop variant — rounded bumps with little valleys between,
+     for a more playful edge (used on the footer). Seam-matching at the valleys. */
+  --flow-mask-scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 120' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C13 12 67 12 80 50 C93 12 147 12 160 50 C173 12 227 12 240 50 L240 120 L0 120 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+/* Surface colour, derived from the section's existing background class */
+.flow-top              { --surface: var(--base); position: relative; }
+/* The wave is drawn just ABOVE the section, so a flow-top section must not clip
+   its top edge. `section.flow-top` (element+class) outranks a single-class page
+   override like `.home-steps{overflow:hidden}` without needing !important.
+   Decorative layers inside these sections (e.g. `.bubbles`) self-clip, so
+   nothing leaks. */
+section.flow-top { overflow: visible; }
+.flow-top.band         { --surface: var(--base-deep); }
+.flow-top.band-white   { --surface: var(--white); }
+.flow-top.bg-sky-tint  { --surface: var(--sky-tint); }
+.flow-top.bg-sun-tint  { --surface: var(--sun-tint); }
+.flow-top.bg-coral-tint{ --surface: var(--coral-tint); }
+.flow-top.bg-meadow    { --surface: var(--grad-meadow); }
+.flow-top.bg-sunrise   { --surface: var(--grad-sunrise); }
+.flow-top.bg-candy     { --surface: var(--grad-candy); }
+.flow-top.bg-sky       { --surface: var(--grad-sky); }
+
+/* The dark footer pours in with the same wave, so the page is bookended by
+   flowing edges. Its surface is the footer's own dark tone; the pastel rim
+   pops beautifully above it. (No markup needed — applied straight to the
+   shared footer.) */
+.site-footer { position: relative; --surface: #2f2a24; }
+
+.flow-top::before,
+.flow-top::after,
+.site-footer::before,
+.site-footer::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;                     /* full width; the mask repeats to both edges */
+  pointer-events: none;
+  -webkit-mask-image: var(--flow-mask);          mask-image: var(--flow-mask);
+  -webkit-mask-repeat: repeat-x;                 mask-repeat: repeat-x;
+  -webkit-mask-position: 0 bottom;               mask-position: 0 bottom;
+}
+/* Back layer: a TALLER, drifting pastel ribbon. Because it rises higher than
+   the front wave, its crest peeks out as a flowing band of colour above the
+   section. A multi-stop pastel gradient (themed per page via --flow-accent)
+   makes the colour shift across the width as it drifts. */
+.flow-top::before,
+.site-footer::before {
+  top: calc(-1 * var(--flow-h) - 18px + 1px);
+  height: calc(var(--flow-h) + 18px);
+  background: var(--flow-accent, linear-gradient(90deg, var(--sun) 0%, var(--coral) 36%, var(--sky) 68%, var(--sage) 100%));
+  opacity: 0.85;
+  -webkit-mask-size: 300px 100%;                 mask-size: 300px 100%;
+  /* drift sideways + a gentle vertical wobble so the ribbon undulates */
+  animation: flowDriftB 17s linear infinite, rimWobble 6.5s ease-in-out infinite;
+}
+/* Front layer: the section's own colour rising up, shorter wavelength, drifts
+   right. A faint upward shadow lifts it off the pastel ribbon for depth. */
+.flow-top::after,
+.site-footer::after {
+  top: calc(-1 * var(--flow-h) + 1px);
+  height: var(--flow-h);
+  background: var(--surface);
+  filter: drop-shadow(0 -2px 2px rgba(74,54,28,0.10));
+  -webkit-mask-size: 230px 100%;                 mask-size: 230px 100%;
+  animation: flowDriftA 14s linear infinite;
+}
+/* The footer wears the puffy cloud-scallop edge for a distinct, playful
+   "ground" that's a little different from the smooth section waves. */
+.site-footer::before,
+.site-footer::after {
+  -webkit-mask-image: var(--flow-mask-scallop);  mask-image: var(--flow-mask-scallop);
+}
+/* Gentle vertical undulation for the colour ribbon */
+@keyframes rimWobble {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+/* Shift by exactly one tile width => seamless loop */
+@keyframes flowDriftA {
+  from { -webkit-mask-position: 0 bottom;     mask-position: 0 bottom; }
+  to   { -webkit-mask-position: 230px bottom; mask-position: 230px bottom; }
+}
+@keyframes flowDriftB {
+  from { -webkit-mask-position: 0 bottom;      mask-position: 0 bottom; }
+  to   { -webkit-mask-position: -300px bottom; mask-position: -300px bottom; }
+}
+
+/* Reduced motion: keep the wave shape, drop the drift */
+@media (prefers-reduced-motion: reduce) {
+  .flow-top::before, .flow-top::after,
+  .site-footer::before, .site-footer::after { animation: none !important; }
+}
+
+/* ============================================================
+   v6 — Floating pastel bubbles
+   A soft field of drifting pastel circles that rises slowly behind a
+   section's content for a playful, flowy feel. Usage:
+     <section class="… has-bubbles">
+       <span class="bubbles" aria-hidden="true"></span>
+       … content …
+   A real child element (not a pseudo) is used so this composes with
+   `flow-top`, which already owns ::before and ::after. The bubble layer is
+   absolutely positioned inside the section, so it sits behind the content
+   and never reaches the wave divider above. Pure CSS: four repeating
+   radial-gradient layers, each a different size/colour/speed, animated via
+   background-position for a gentle parallax. Tune colours with --bub-1..4.
+   ============================================================ */
+.has-bubbles { position: relative; }
+.has-bubbles > *:not(.bubbles) { position: relative; z-index: 1; }
+.bubbles {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background-image:
+    radial-gradient(circle at 30% 35%, var(--bub-1, var(--sky))   0 9px,  transparent 10px),
+    radial-gradient(circle at 70% 60%, var(--bub-2, var(--coral)) 0 6px,  transparent 7px),
+    radial-gradient(circle at 45% 80%, var(--bub-3, var(--sage))  0 13px, transparent 14px),
+    radial-gradient(circle at 85% 20%, var(--bub-4, var(--sun))   0 7px,  transparent 8px);
+  background-size: 190px 190px, 130px 130px, 280px 280px, 160px 160px;
+  background-position: 0 0, 40px 0, 0 0, 25px 0;
+  opacity: var(--bub-opacity, 0.30);
+  animation: bubblesRise 34s linear infinite;
+}
+/* Each layer shifts up by exactly one of its tile heights => seamless loop */
+@keyframes bubblesRise {
+  to { background-position: 0 -190px, 40px -130px, 0 -280px, 25px -160px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bubbles { animation: none !important; }
+}
+
+/* ============================================================
+   v7 — Breathing gradient
+   Slowly pans a card/band's gradient back and forth so its colour gently
+   flows. Opt-in: add `anim-gradient` to any element with a gradient
+   background. (Enlarges background-size so there is room to pan.)
+   ============================================================ */
+.anim-gradient {
+  background-size: 220% 220% !important;
+  background-position: 50% 50%;  /* sensible centred frame when motion is reduced */
+  animation: gradPan 16s ease-in-out infinite;
+}
+@keyframes gradPan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-gradient { animation: none !important; }
+}
+
+/* ============================================================
+   v8 — Confetti rain
+   A festive decorative layer of little pastel pieces that tumble down on
+   a loop. Drop a `<div class="confetti-rain" aria-hidden="true">` with a
+   handful of `<i>` pieces inside a positioned, overflow-hidden container
+   (e.g. a CTA band), and lift the real content above it with z-index.
+   ============================================================ */
+.confetti-rain { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.confetti-rain i {
+  position: absolute; top: -12%;
+  width: 10px; height: 13px; border-radius: 2px;
+  opacity: 0.92;
+  animation: confettiFall 7s linear infinite;
+}
+@keyframes confettiFall {
+  0%   { top: -12%; transform: rotate(0deg)   translateX(0);    opacity: 0; }
+  8%   { opacity: 0.92; }
+  100% { top: 112%; transform: rotate(540deg) translateX(18px); opacity: 0.92; }
+}
+/* spread across the width with varied colour, shape, speed and phase */
+.confetti-rain i:nth-child(1)  { left: 6%;  background: var(--sun);   animation-duration: 7.5s; animation-delay: -0.2s; }
+.confetti-rain i:nth-child(2)  { left: 14%; background: var(--coral); animation-duration: 6.2s; animation-delay: -1.4s; border-radius: 50%; }
+.confetti-rain i:nth-child(3)  { left: 22%; background: var(--sky);   animation-duration: 8.1s; animation-delay: -2.6s; }
+.confetti-rain i:nth-child(4)  { left: 30%; background: var(--sage);  animation-duration: 6.8s; animation-delay: -0.9s; }
+.confetti-rain i:nth-child(5)  { left: 38%; background: var(--red);   animation-duration: 7.9s; animation-delay: -3.3s; border-radius: 50%; }
+.confetti-rain i:nth-child(6)  { left: 46%; background: var(--teal);  animation-duration: 6.5s; animation-delay: -1.9s; }
+.confetti-rain i:nth-child(7)  { left: 54%; background: var(--sun);   animation-duration: 8.4s; animation-delay: -4.1s; }
+.confetti-rain i:nth-child(8)  { left: 62%; background: var(--coral); animation-duration: 6.0s; animation-delay: -0.5s; border-radius: 50%; }
+.confetti-rain i:nth-child(9)  { left: 70%; background: var(--sky);   animation-duration: 7.7s; animation-delay: -2.2s; }
+.confetti-rain i:nth-child(10) { left: 78%; background: var(--sage);  animation-duration: 6.9s; animation-delay: -3.7s; }
+.confetti-rain i:nth-child(11) { left: 86%; background: var(--red);   animation-duration: 8.2s; animation-delay: -1.1s; border-radius: 50%; }
+.confetti-rain i:nth-child(12) { left: 92%; background: var(--wood);  animation-duration: 7.1s; animation-delay: -4.8s; }
+.confetti-rain i:nth-child(13) { left: 18%; background: var(--teal);  animation-duration: 7.3s; animation-delay: -5.5s; }
+.confetti-rain i:nth-child(14) { left: 66%; background: var(--sun);   animation-duration: 6.6s; animation-delay: -6.0s; border-radius: 50%; }
+@media (prefers-reduced-motion: reduce) {
+  .confetti-rain { display: none; }
+}
+
+/* ============================================================
+   v9 — Hover pop-up stickers
+   A little emoji badge that springs into view when you hover a card or
+   image. Usage:
+     <article class="card pop-host"> … <span class="pop-bubble" aria-hidden="true">🛝</span> </article>
+   Positioned inside a corner so it works whether the host clips overflow
+   or not. Position variants: --tl/--bl/--br. Colour variants: --sky/--coral/--sage.
+   ============================================================ */
+.pop-host { position: relative; }
+.pop-bubble {
+  position: absolute; z-index: 6;
+  top: 0.7rem; right: 0.7rem;
+  width: 2.5rem; height: 2.5rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--sun); color: #5a3d12;
+  font-size: 1.2rem; line-height: 1;
+  box-shadow: var(--shadow-md);
+  transform: scale(0) rotate(-22deg);
+  opacity: 0;
+  transition: transform 0.42s cubic-bezier(0.34, 1.85, 0.5, 1), opacity 0.2s ease;
+  pointer-events: none;
+}
+.pop-host:hover .pop-bubble,
+.pop-host:focus-within .pop-bubble {
+  transform: scale(1) rotate(-8deg);
+  opacity: 1;
+}
+/* Corner variants */
+.pop-bubble--tl { top: 0.7rem; left: 0.7rem; right: auto; }
+.pop-bubble--bl { bottom: 0.7rem; left: 0.7rem; top: auto; right: auto; }
+.pop-bubble--br { bottom: 0.7rem; right: 0.7rem; top: auto; }
+/* Colour variants */
+.pop-bubble--sky   { background: var(--sky);   color: #08323d; }
+.pop-bubble--coral { background: var(--coral); color: #6a2f15; }
+.pop-bubble--sage  { background: var(--sage);  color: #243016; }
+.pop-bubble--red   { background: var(--red);   color: #5a1f1a; }
+/* Touch devices have no hover — keep them out of the way rather than stuck on */
+@media (hover: none) { .pop-bubble { display: none; } }
+/* Reduced motion: fade in without the springy scale */
+@media (prefers-reduced-motion: reduce) {
+  .pop-bubble { transition: opacity 0.2s ease; transform: scale(1) rotate(-8deg); }
+}
+
+/* ============================================================
+   v10 — Shared closing CTA band
+   The consistent page ender used across the site so every page lands on
+   the same shape of call to action. Pair `.cta-band` with a background
+   helper (e.g. .bg-meadow) + `.anim-gradient`, and optionally drop a
+   `.confetti-rain` inside — content is lifted above it via z-index.
+   Each page picks its own gradient so the structure is shared but the
+   colour stays true to that page's world.
+   ============================================================ */
+.cta-band {
+  position: relative; overflow: hidden;
+  border-radius: var(--r-xl);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+/* Lift the real content above any decorative .confetti-rain (z-index 0) */
+.cta-band .eyebrow,
+.cta-band .sticker,
+.cta-band h2,
+.cta-band p,
+.cta-band .flex-cta { position: relative; z-index: 1; }
+.cta-band h2 { margin: 0.3rem 0 0.5rem; font-size: clamp(1.8rem, 4vw, 2.8rem); }
+.cta-band p { max-width: 46ch; margin-inline: auto; }
+.cta-band .flex-cta { margin-top: 1.6rem; }
+
+/* ---------- Inside-the-town photo glimpse (shared: home + play-pricing) ---------- */
+.pp-glimpse-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+}
+@media (max-width: 980px) { .pp-glimpse-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .pp-glimpse-grid { grid-template-columns: 1fr; } }
+.pp-glimpse-tile {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-lg, 22px);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.pp-glimpse-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.pp-glimpse-tile figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.4rem 0.9rem 0.85rem;
+  background: linear-gradient(0deg, rgba(58,49,40,0.75) 0%, rgba(58,49,40,0) 100%);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.pp-glimpse-tile:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(58,49,40,0.22); }
+@media (prefers-reduced-motion: reduce) {
+  .pp-glimpse-tile { transition: none; }
+  .pp-glimpse-tile:hover { transform: none; }
+}

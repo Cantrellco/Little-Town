@@ -259,3 +259,68 @@
   .menu-cat-chip { transition: none; }
   .menu-group:hover .menu-cat-chip { transform: none; }
 }
+
+/* ---- Signature drinks — featured trio with mock illustrations ---- */
+.signature-drinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+  margin-top: 1.6rem;
+}
+@media (max-width: 760px) { .signature-drinks { grid-template-columns: 1fr; } }
+.signature-drink {
+  margin: 0;
+  background: #fff;
+  border-radius: var(--r-lg, 22px);
+  box-shadow: var(--shadow-md);
+  padding: 1.1rem 1rem 1.2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 2px solid #f1e4ce;
+}
+.signature-drink:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(58,49,40,0.18);
+}
+.signature-art {
+  width: 120px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.signature-art svg { width: 100%; height: 100%; display: block; }
+.signature-drink figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+.signature-drink strong {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.signature-drink span {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  max-width: 30ch;
+  margin-inline: auto;
+}
+.signature-drink em {
+  font-style: normal;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--accent, #d9774e);
+  font-size: 1.05rem;
+  margin-top: 0.3rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-drink { transition: none; }
+  .signature-drink:hover { transform: none; }
+}

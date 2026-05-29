@@ -34,9 +34,9 @@
   --terra-tint:  #f6e7dd;
 
   /* Typography */
-  --font-head: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-script: "Pacifico", "Brush Script MT", cursive;
+  --font-head: "Quicksand", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Quicksand", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-script: "Fraunces", Georgia, "Times New Roman", serif;
 
   /* Spacing scale */
   --space-1: 0.5rem;
@@ -109,7 +109,8 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 
 .script {
   font-family: var(--font-script);
-  font-weight: 400;
+  font-style: italic; /* Fraunces is roman by default; the logo "Playhouse" is italic */
+  font-weight: 500;
   letter-spacing: 0;
 }
 
@@ -255,6 +256,24 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 }
 
 .header-cta { display: flex; align-items: center; gap: 0.6rem; }
+
+/* Header phone — visible on desktop / wide tablets, hidden below 980px so the nav stays uncluttered */
+.header-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.header-phone svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.header-phone:hover { background: var(--sky-tint, #e8f4f9); color: var(--accent-teal, #3F7268); }
+@media (max-width: 980px) { .header-phone { display: none; } }
 
 /* Hamburger */
 .nav-toggle {
@@ -1437,3 +1456,45 @@ section.flow-top { overflow: visible; }
 .cta-band h2 { margin: 0.3rem 0 0.5rem; font-size: clamp(1.8rem, 4vw, 2.8rem); }
 .cta-band p { max-width: 46ch; margin-inline: auto; }
 .cta-band .flex-cta { margin-top: 1.6rem; }
+
+/* ---------- Inside-the-town photo glimpse (shared: home + play-pricing) ---------- */
+.pp-glimpse-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+}
+@media (max-width: 980px) { .pp-glimpse-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .pp-glimpse-grid { grid-template-columns: 1fr; } }
+.pp-glimpse-tile {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-lg, 22px);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.pp-glimpse-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.pp-glimpse-tile figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.4rem 0.9rem 0.85rem;
+  background: linear-gradient(0deg, rgba(58,49,40,0.75) 0%, rgba(58,49,40,0) 100%);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.pp-glimpse-tile:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(58,49,40,0.22); }
+@media (prefers-reduced-motion: reduce) {
+  .pp-glimpse-tile { transition: none; }
+  .pp-glimpse-tile:hover { transform: none; }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling coffee-bean texture for the Fusion hero background. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="presentation" aria-hidden="true">
+  <g opacity="0.16">
+    <g transform="translate(30,30) rotate(25)">
+      <ellipse rx="13" ry="8" fill="#a9763f"/>
+      <path d="M-10 0 Q0 -5 10 0 Q0 5 -10 0" fill="#f6e7cf"/>
+    </g>
+    <g transform="translate(88,68) rotate(-18)">
+      <ellipse rx="13" ry="8" fill="#a9763f"/>
+      <path d="M-10 0 Q0 -5 10 0 Q0 5 -10 0" fill="#f6e7cf"/>
+    </g>
+    <g transform="translate(54,100) rotate(48)">
+      <ellipse rx="13" ry="8" fill="#a9763f"/>
+      <path d="M-10 0 Q0 -5 10 0 Q0 5 -10 0" fill="#f6e7cf"/>
+    </g>
+  </g>
+</svg>

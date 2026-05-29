@@ -1,0 +1,10 @@
+<main class="section"><div class="container reveal" style="max-width:420px">
+  <div class="center"><h1>Create account</h1></div>
+  {%- form 'create_customer' -%}
+    <input type="text" name="customer[first_name]" placeholder="First name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="text" name="customer[last_name]" placeholder="Last name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="email" name="customer[email]" placeholder="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <button class="btn btn--block btn--terracotta" type="submit">Create</button>
+  {%- endform -%}
+</div></main>

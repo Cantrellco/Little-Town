@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Seamlessly tiling bunting strip (repeat-x). Flags hang from the swag dips
+     at x=12,36,60,84,108; the string returns to y=8 at x=0 and x=120 so tiles join cleanly. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 34" width="120" height="34" role="presentation" aria-hidden="true">
+  <path d="M0 8 Q12 15 24 8 Q36 15 48 8 Q60 15 72 8 Q84 15 96 8 Q108 15 120 8"
+        fill="none" stroke="#cdb89a" stroke-width="1.6" stroke-linecap="round"/>
+  <g stroke="#ffffff" stroke-width="0.6">
+    <polygon points="3,12 21,12 12,30"   fill="#F8D98F"/>
+    <polygon points="27,12 45,12 36,30"  fill="#F4AE92"/>
+    <polygon points="51,12 69,12 60,30"  fill="#AEDCEA"/>
+    <polygon points="75,12 93,12 84,30"  fill="#BFD6A8"/>
+    <polygon points="99,12 117,12 108,30" fill="#EC9A90"/>
+  </g>
+</svg>

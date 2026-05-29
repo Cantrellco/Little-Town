@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Coffee next door and Wi-Fi">
+  <g fill="none" stroke="#d5ad7a" stroke-width="2.8" stroke-linecap="round">
+    <path d="M13 13 a14 14 0 0 1 22 0"/>
+    <path d="M17.5 17.5 a8.5 8.5 0 0 1 13 0"/>
+  </g>
+  <circle cx="24" cy="22.5" r="2.6" fill="#d5ad7a"/>
+  <path d="M11 28 H33 V36 a9 9 0 0 1 -22 0 Z" fill="#8fada8"/>
+  <path d="M11 28 H33 V31 a9 9 0 0 1 -22 0 Z" fill="#7e9c96" opacity="0.5"/>
+  <path d="M33 30 a6.5 6.5 0 0 1 0 13" fill="none" stroke="#8fada8" stroke-width="3.2"/>
+  <rect x="10" y="42.5" width="24" height="3.4" rx="1.7" fill="#6d8e88"/>
+</svg>

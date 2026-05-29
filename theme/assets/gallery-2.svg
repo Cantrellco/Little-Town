@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Party gallery: slide & tunnel (polished) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" role="img" aria-label="Illustrated children's slide and play tunnel.">
+  <rect width="220" height="180" fill="#fbfffe"/>
+  <ellipse cx="110" cy="156" rx="90" ry="9" fill="#849473" opacity="0.12"/>
+  <path d="M0 150 H220" stroke="#ebe3d3" stroke-width="3"/>
+  <!-- tunnel (ribbed crawl tube) on the left -->
+  <ellipse cx="56" cy="153" rx="46" ry="6" fill="#849473" opacity="0.12"/>
+  <rect x="16" y="112" width="86" height="40" rx="20" fill="#a8b695"/>
+  <g fill="#8fada8"><ellipse cx="60" cy="132" rx="4" ry="20"/><ellipse cx="80" cy="132" rx="4" ry="20"/><ellipse cx="95" cy="132" rx="3" ry="16"/></g>
+  <ellipse cx="37" cy="132" rx="12" ry="18" fill="#e0f4f1"/>
+  <ellipse cx="37" cy="132" rx="6.5" ry="10" fill="#6d8e88"/>
+  <!-- slide on the right: ladder, platform, open chute with a raised back rail -->
+  <g stroke="#c39861" stroke-width="6" stroke-linecap="round"><line x1="118" y1="78" x2="118" y2="150"/><line x1="136" y1="78" x2="136" y2="150"/></g>
+  <g stroke="#ab8550" stroke-width="4" stroke-linecap="round" opacity="0.8"><line x1="118" y1="96" x2="136" y2="96"/><line x1="118" y1="114" x2="136" y2="114"/><line x1="118" y1="132" x2="136" y2="132"/></g>
+  <rect x="106" y="62" width="46" height="14" rx="7" fill="#d5ad7a"/>
+  <path d="M134 76 Q198 82 198 138 Q199 150 180 150" fill="none" stroke="#aecdc8" stroke-width="22" stroke-linecap="round"/>
+  <path d="M134 66 Q189 73 189 130" fill="none" stroke="#8fada8" stroke-width="6" stroke-linecap="round"/>
+  <!-- balloon -->
+  <ellipse cx="150" cy="36" rx="11" ry="14" fill="#be574f"/><ellipse cx="147" cy="31" rx="3" ry="4" fill="#ffffff" opacity="0.4"/>
+  <path d="M150 50 q3 6 -1 12" stroke="#d3c9b7" stroke-width="1.4" fill="none"/>
+</svg>

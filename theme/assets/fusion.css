@@ -1,0 +1,326 @@
+/* ============================================================
+   Fusion page — page-specific flourishes only.
+   All core tokens, components and animations live in styles.css.
+   ============================================================ */
+
+/* Pastel ribbon colour for the flowing section dividers (warm café mix) +
+   matching warm bubble palette */
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 55%, var(--wood) 100%);
+  --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--wood); --bub-4: var(--sky);
+}
+
+/* ---- Hero: a cosy COFFEE world — a faint coffee-bean texture over a warm
+     cream gradient (no sky), with steam rising from the café. ---- */
+.page-hero.ph--cafe {
+  background:
+    url("coffee-beans.svg") center / 132px repeat,
+    linear-gradient(180deg, #f6e6cd 0%, #f9efdc 52%, var(--base) 100%);
+}
+
+/* Real-logo café tower: size by height so the tall tower isn't stretched wide */
+.ph--cafe .hero-art { display: grid; place-items: center; }
+.ph--cafe .hero-art img { width: auto; max-height: clamp(250px, 40vh, 350px); }
+
+/* Steam rising from the latte mug's foam */
+.fusion-steam {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  z-index: 2;
+  pointer-events: none;
+}
+.fusion-steam svg { width: 100%; height: auto; display: block; }
+.fusion-steam .st { opacity: 0; transform-box: fill-box; transform-origin: bottom center; }
+@media (prefers-reduced-motion: no-preference) {
+  .fusion-steam .st { animation: steamRise 4.2s ease-in-out infinite; }
+  .fusion-steam .st2 { animation-delay: 1.4s; }
+  .fusion-steam .st3 { animation-delay: 2.8s; }
+}
+@keyframes steamRise {
+  0%   { opacity: 0; transform: translateY(6px); }
+  40%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-9px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fusion-steam .st { opacity: 0.4; }
+}
+
+/* ---- Hero: pull the art and copy a little closer on larger screens ---- */
+.ph--cafe .container {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 760px) {
+  .ph--cafe .container { grid-template-columns: 1fr auto; }
+}
+
+/* Coffee cup sticker floating near the hero heading */
+.fusion-coffee-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  transform: rotate(6deg);
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  animation: bobSticker 4s ease-in-out infinite;
+}
+@keyframes bobSticker {
+  0%, 100% { transform: rotate(6deg) translateY(0); }
+  50%       { transform: rotate(6deg) translateY(-6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fusion-coffee-sticker { animation: none; }
+}
+
+/* ---- Partner panel: warm wood-tint callout ---- */
+.fusion-partner-panel {
+  background: var(--wood-tint);
+  border: 1.5px dashed rgba(140, 100, 40, 0.30);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 760px;
+  margin-inline: auto;
+}
+.fusion-partner-panel .partner-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex: none;
+  margin-top: 0.1rem;
+}
+
+/* ---- Stats / fun-facts pill strip ---- */
+.fusion-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.4rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.fusion-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.88rem;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(80, 60, 30, 0.08);
+  color: var(--ink);
+}
+.fusion-stat-pill .pill-icon { font-size: 1.1rem; line-height: 1; }
+.fusion-stat-pill--sun   { background: var(--sun-tint);   border-color: rgba(244, 183, 64, 0.3);  }
+.fusion-stat-pill--sky   { background: var(--sky-tint);   border-color: rgba(79, 176, 208, 0.3);  }
+.fusion-stat-pill--sage  { background: var(--sage-tint);  border-color: rgba(156, 176, 130, 0.3); }
+.fusion-stat-pill--coral { background: var(--coral-tint); border-color: rgba(242, 117, 75, 0.3);  }
+
+/* ---- Menu: coloured left-border accent on each group heading ---- */
+.menu-group--drinks h3 { color: var(--accent-sky); border-left: 4px solid var(--accent-sky); padding-left: 0.75rem; }
+.menu-group--eats   h3 { color: var(--accent-sage); border-left: 4px solid var(--accent-sage); padding-left: 0.75rem; }
+.menu-group--treats h3 { color: var(--accent-coral); border-left: 4px solid var(--accent-coral); padding-left: 0.75rem; }
+
+/* ---- Menu row hover: a subtle warm lift ---- */
+.menu-row {
+  border-radius: var(--r-sm);
+  padding-inline: 0.4rem;
+  transition: background 0.18s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.menu-row:hover {
+  background: var(--wood-tint);
+  transform: translateX(4px);
+}
+@media (hover: none) {
+  .menu-row:active { background: var(--wood-tint); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-row { transition: background 0.18s ease; }
+  .menu-row:hover { transform: none; }
+}
+
+/* ---- Member savings callout inside menu section ---- */
+.menu-member-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--sun-tint);
+  border: 1.5px solid rgba(244, 183, 64, 0.35);
+  border-radius: var(--r-lg);
+  padding: 0.9rem 1.3rem;
+  margin-bottom: 2rem;
+}
+.menu-member-callout .sticker { flex: none; }
+.menu-member-callout p { margin: 0; font-size: 0.95rem; }
+.menu-member-callout a { color: var(--accent); font-weight: 600; }
+.menu-member-callout a:hover { text-decoration: underline; }
+
+/* ---- Steps: override step-no gradient for a coffee warm palette ---- */
+.fusion-steps .step .step-no {
+  background: var(--grad-candy);
+}
+
+/* ---- Quote: warm tint background ---- */
+.fusion-quote {
+  background: var(--terra-tint);
+  border: none;
+  box-shadow: var(--shadow-md);
+  max-width: 640px;
+  margin-inline: auto;
+}
+.fusion-quote::before { color: var(--accent); opacity: 0.6; }
+
+/* ---- "Locally roasted" split band: add a warm glow blob ---- */
+.fusion-roasted-blob {
+  position: absolute;
+  width: 360px; height: 360px;
+  right: -80px; bottom: -100px;
+  background: var(--sun-tint);
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(2px);
+}
+.fusion-roasted-blob-2 {
+  position: absolute;
+  width: 200px; height: 200px;
+  left: -60px; top: -60px;
+  background: var(--coral-tint);
+  border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+/* ---- Cafe photo frame: a little tilt and warm border ---- */
+.fusion-cafe-photo {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  border: 4px solid var(--white);
+  display: block;
+}
+.fusion-photo-wrap {
+  position: relative;
+}
+.fusion-photo-wrap .sticker {
+  position: absolute;
+  bottom: -0.7rem;
+  right: 1.2rem;
+  z-index: 2;
+}
+
+/* ---- Drinks category top bar colour (inside header chip) ---- */
+.menu-cat-chip {
+  width: 38px; height: 38px;
+  border-radius: var(--r-md);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.menu-cat-chip--drinks { background: var(--sky-tint); }
+.menu-cat-chip--eats   { background: var(--sage-tint); }
+.menu-cat-chip--treats { background: var(--coral-tint); }
+
+/* ---- Allergen / mock note: give it a bit more breathing room ---- */
+.menu-footer-note {
+  text-align: center;
+  margin-top: 1.6rem;
+  padding: 0.7rem 1rem;
+  background: var(--base-deep);
+  border-radius: var(--r-md);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ---- Touch active state for stat pills ---- */
+@media (hover: none) {
+  .fusion-stat-pill:active { box-shadow: var(--shadow-md); transform: scale(0.97); }
+}
+
+/* ---- Menu: keep cards above the floating doodles ---- */
+#menu > .container { position: relative; z-index: 2; }
+
+/* ---- Menu: bounce the category chip when its group is hovered ---- */
+.menu-cat-chip { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.menu-group:hover .menu-cat-chip { transform: rotate(-7deg) scale(1.1); }
+@media (prefers-reduced-motion: reduce) {
+  .menu-cat-chip { transition: none; }
+  .menu-group:hover .menu-cat-chip { transform: none; }
+}
+
+/* ---- Signature drinks — featured trio with mock illustrations ---- */
+.signature-drinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+  margin-top: 1.6rem;
+}
+@media (max-width: 760px) { .signature-drinks { grid-template-columns: 1fr; } }
+.signature-drink {
+  margin: 0;
+  background: #fff;
+  border-radius: var(--r-lg, 22px);
+  box-shadow: var(--shadow-md);
+  padding: 1.1rem 1rem 1.2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 2px solid #f1e4ce;
+}
+.signature-drink:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(58,49,40,0.18);
+}
+.signature-art {
+  width: 120px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.signature-art svg { width: 100%; height: 100%; display: block; }
+.signature-drink figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+.signature-drink strong {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.signature-drink span {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  max-width: 30ch;
+  margin-inline: auto;
+}
+.signature-drink em {
+  font-style: normal;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--accent, #d9774e);
+  font-size: 1.05rem;
+  margin-top: 0.3rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-drink { transition: none; }
+  .signature-drink:hover { transform: none; }
+}

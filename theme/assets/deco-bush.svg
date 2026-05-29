@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Soft pastel bush cluster, town-logo greens. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 76" role="presentation" aria-hidden="true">
+  <ellipse cx="65" cy="70" rx="56" ry="6" fill="#849473" opacity="0.16"/>
+  <circle cx="34" cy="46" r="24" fill="#b3c2a1"/>
+  <circle cx="96" cy="48" r="22" fill="#95a582"/>
+  <circle cx="65" cy="34" r="30" fill="#a8b695"/>
+  <ellipse cx="65" cy="62" rx="60" ry="14" fill="#a8b695"/>
+  <circle cx="54" cy="30" r="9" fill="#c5d6b2" opacity="0.7"/>
+</svg>

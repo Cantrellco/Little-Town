@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Children playing inside the playhouse (polished). Placeholder; final art by illustrator.
+  Flat storybook look, soft grounding, friendly kid figures. SMIL animation.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img"
+     aria-label="Illustrated children playing inside the playhouse — sliding, jumping and crawling among soft play shapes, with a window looking onto the little town.">
+  <defs>
+    <linearGradient id="winsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebf6f3"/><stop offset="1" stop-color="#fbfffe"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfffe"/><stop offset="1" stop-color="#f7fcf9"/></linearGradient>
+    <clipPath id="winclip"><rect x="372" y="52" width="156" height="100" rx="10"/></clipPath>
+  </defs>
+
+  <!-- room -->
+  <rect width="900" height="380" fill="url(#wall)"/>
+  <rect x="0" y="300" width="900" height="80" fill="#eee1cb"/>
+  <rect x="0" y="300" width="900" height="80" fill="#e1d3b8" opacity="0.35"/>
+  <rect x="0" y="300" width="900" height="6" fill="#d7c7aa"/>
+  <ellipse cx="450" cy="332" rx="370" ry="30" fill="#e8efdf" opacity="0.6"/>
+
+  <!-- window with little-town view -->
+  <rect x="358" y="38" width="184" height="126" rx="18" fill="#ffffff"/>
+  <rect x="362" y="42" width="176" height="120" rx="16" fill="#f7fdfa"/>
+  <rect x="372" y="52" width="156" height="100" rx="10" fill="url(#winsky)"/>
+  <g clip-path="url(#winclip)">
+    <circle cx="500" cy="74" r="15" fill="#f9e8c6"/>
+    <g fill="#dae6cd">
+      <g transform="translate(398,0)"><rect x="0" y="118" width="26" height="34" rx="3"/><polygon points="-4,118 13,100 30,118"/></g>
+      <g transform="translate(444,0)"><rect x="0" y="110" width="24" height="42" rx="3"/><polygon points="-4,110 12,92 28,110"/></g>
+      <g transform="translate(486,0)"><rect x="0" y="120" width="28" height="32" rx="3"/><polygon points="-4,120 14,102 32,120"/></g>
+    </g>
+  </g>
+  <line x1="450" y1="52" x2="450" y2="152" stroke="#ffffff" stroke-width="6"/><line x1="372" y1="102" x2="528" y2="102" stroke="#ffffff" stroke-width="6"/>
+
+  <!-- bunting -->
+  <path d="M40 30 Q450 64 860 30" fill="none" stroke="#d3c9b7" stroke-width="2"/>
+  <g>
+    <path d="M150 40 l14 1 l-7 15 Z" fill="#be574f"/><path d="M240 47 l14 1 l-7 15 Z" fill="#8fada8"/>
+    <path d="M650 47 l14 1 l-7 15 Z" fill="#a8b695"/><path d="M740 40 l14 1 l-7 15 Z" fill="#d5ad7a"/>
+  </g>
+
+  <!-- play tunnel (ribbed crawl tube on the floor) -->
+  <g>
+    <ellipse cx="124" cy="322" rx="86" ry="12" fill="#849473" opacity="0.12"/>
+    <rect x="44" y="252" width="156" height="70" rx="35" fill="#a8b695"/>
+    <g fill="#8fada8">
+      <ellipse cx="126" cy="287" rx="7" ry="35"/>
+      <ellipse cx="160" cy="287" rx="7" ry="35"/>
+      <ellipse cx="188" cy="287" rx="5.5" ry="30"/>
+    </g>
+    <ellipse cx="80" cy="287" rx="22" ry="33" fill="#e0f4f1"/>
+    <ellipse cx="80" cy="287" rx="12" ry="20" fill="#6d8e88"/>
+  </g>
+
+  <!-- soft climbing blocks -->
+  <ellipse cx="290" cy="316" rx="70" ry="10" fill="#849473" opacity="0.12"/>
+  <rect x="250" y="252" width="60" height="60" rx="14" fill="#d5ad7a"/><rect x="296" y="252" width="14" height="60" rx="7" fill="#c39861" opacity="0.6"/>
+  <rect x="250" y="252" width="60" height="60" rx="14" fill="none" stroke="#ba914f" stroke-width="2"/>
+  <rect x="296" y="276" width="46" height="36" rx="11" fill="#a8b695"/><rect x="296" y="276" width="46" height="36" rx="11" fill="none" stroke="#92a57e" stroke-width="2"/>
+
+  <!-- slide: open chute with a raised back rail, support leg and top platform -->
+  <g>
+    <ellipse cx="710" cy="318" rx="110" ry="12" fill="#849473" opacity="0.12"/>
+    <!-- support leg with rungs -->
+    <rect x="788" y="148" width="18" height="152" rx="9" fill="#c39861"/><rect x="788" y="148" width="6" height="152" rx="3" fill="#9a7445" opacity="0.5"/>
+    <g stroke="#9a7445" stroke-width="5" stroke-linecap="round" opacity="0.7"><line x1="788" y1="206" x2="806" y2="206"/><line x1="788" y1="240" x2="806" y2="240"/><line x1="788" y1="274" x2="806" y2="274"/></g>
+    <!-- sliding bed -->
+    <path d="M797 166 Q700 166 660 300" fill="none" stroke="#aecdc8" stroke-width="36" stroke-linecap="round"/>
+    <!-- run-out lip at the bottom -->
+    <path d="M660 300 Q650 286 626 288" fill="none" stroke="#aecdc8" stroke-width="36" stroke-linecap="round"/>
+    <!-- raised back rail (offset to the top edge so it reads as an open slide, not a pipe) -->
+    <path d="M795 150 Q694 150 648 294" fill="none" stroke="#8fada8" stroke-width="9" stroke-linecap="round"/>
+    <!-- top platform -->
+    <rect x="756" y="148" width="56" height="14" rx="7" fill="#d5ad7a"/>
+  </g>
+
+  <!-- potted plant -->
+  <g>
+    <ellipse cx="842" cy="304" rx="34" ry="7" fill="#849473" opacity="0.14"/>
+    <path d="M832 300 q12 -54 0 -70 q24 18 14 70 Z" fill="#a8b695"><animateTransform attributeName="transform" type="rotate" values="-6 838 300;6 838 300;-6 838 300" dur="4.5s" repeatCount="indefinite"/></path>
+    <path d="M848 300 q-8 -40 4 -56 q14 22 6 56 Z" fill="#95a582"><animateTransform attributeName="transform" type="rotate" values="-5 850 300;6 850 300;-5 850 300" dur="5.2s" repeatCount="indefinite"/></path>
+    <path d="M820 300 h44 l-6 -22 h-32 Z" fill="#a55d42"/><path d="M820 300 h44 l-1.4 -5 h-41.2 Z" fill="#8c4d37"/>
+  </g>
+
+  <!-- balloons -->
+  <g>
+    <ellipse cx="600" cy="120" rx="17" ry="21" fill="#be574f"><animateTransform attributeName="transform" type="translate" values="0 0;0 -10;0 0" dur="4s" repeatCount="indefinite" additive="sum"/></ellipse>
+    <ellipse cx="595" cy="113" rx="4" ry="6" fill="#ffffff" opacity="0.4"/>
+    <path d="M600 141 q4 9 -2 18" stroke="#d3c9b7" stroke-width="1.6" fill="none"/>
+    <ellipse cx="636" cy="138" rx="14" ry="18" fill="#d5ad7a"><animateTransform attributeName="transform" type="translate" values="0 0;0 -10;0 0" dur="5s" repeatCount="indefinite" additive="sum"/></ellipse>
+    <path d="M636 156 q-3 8 2 16" stroke="#d3c9b7" stroke-width="1.6" fill="none"/>
+  </g>
+
+  <!-- Kid 1: sliding down -->
+  <g transform="translate(700,232) rotate(26)">
+    <ellipse cx="-18" cy="38" rx="6" ry="3.5" fill="#4d6c67"/><ellipse cx="6" cy="40" rx="6" ry="3.5" fill="#4d6c67"/>
+    <rect x="-16" y="8" width="11" height="30" rx="5.5" fill="#debb93"/><rect x="3" y="8" width="11" height="30" rx="5.5" fill="#debb93"/>
+    <path d="M-19 -24 Q0 -30 19 -24 L15 10 Q0 14 -15 10 Z" fill="#8fada8"/>
+    <path d="M-32 -28 q-8 8 -8 22" stroke="#8fada8" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <path d="M22 -28 q10 8 10 22" stroke="#8fada8" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <circle cx="-40" cy="-6" r="5.5" fill="#f2d5bd"/><circle cx="32" cy="-6" r="5.5" fill="#f2d5bd"/>
+    <circle cx="0" cy="-42" r="16" fill="#f2d5bd"/>
+    <path d="M-16 -44 a16 16 0 0 1 32 0 q-16 -13 -32 0Z" fill="#5a4a3c"/>
+    <circle cx="-5" cy="-41" r="2" fill="#3a322a"/><circle cx="5" cy="-41" r="2" fill="#3a322a"/>
+    <circle cx="-9" cy="-36" r="2.6" fill="#e5b5a1" opacity="0.6"/><circle cx="9" cy="-36" r="2.6" fill="#e5b5a1" opacity="0.6"/>
+    <path d="M-5 -34 q5 4 10 0" stroke="#3a322a" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Kid 2: jumping (center) -->
+  <g transform="translate(430,300)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -13;0 0" dur="3s" repeatCount="indefinite" additive="sum"/>
+    <ellipse cx="0" cy="4" rx="24" ry="6" fill="#849473" opacity="0.14"/>
+    <ellipse cx="-9" cy="2" rx="7" ry="4" fill="#7e4732"/><ellipse cx="9" cy="2" rx="7" ry="4" fill="#7e4732"/>
+    <rect x="-13" y="-28" width="10" height="30" rx="5" fill="#dcb390" transform="rotate(-8 -8 -14)"/><rect x="3" y="-28" width="10" height="30" rx="5" fill="#dcb390" transform="rotate(8 8 -14)"/>
+    <path d="M-20 -62 Q0 -70 20 -62 L16 -26 Q0 -22 -16 -26 Z" fill="#a55d42"/>
+    <path d="M-34 -76 q-10 8 -8 24" stroke="#a55d42" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M34 -76 q10 8 8 24" stroke="#a55d42" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <circle cx="-42" cy="-54" r="6" fill="#d5ae87"/><circle cx="42" cy="-54" r="6" fill="#d5ae87"/>
+    <circle cx="0" cy="-80" r="17" fill="#d5ae87"/>
+    <path d="M-17 -82 a17 17 0 0 1 34 0 q-17 -14 -34 0Z" fill="#302c28"/>
+    <circle cx="-6" cy="-79" r="2.1" fill="#221e19"/><circle cx="6" cy="-79" r="2.1" fill="#221e19"/>
+    <circle cx="-11" cy="-74" r="2.8" fill="#c2907c" opacity="0.55"/><circle cx="11" cy="-74" r="2.8" fill="#c2907c" opacity="0.55"/>
+    <path d="M-6 -72 q6 5 12 0" stroke="#221e19" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Kid 3: toddler crawling -->
+  <g transform="translate(300,320)">
+    <ellipse cx="6" cy="8" rx="34" ry="7" fill="#849473" opacity="0.14"/>
+    <ellipse cx="0" cy="-8" rx="27" ry="15" fill="#a8b695"/>
+    <ellipse cx="0" cy="-12" rx="27" ry="8" fill="#b3c2a1" opacity="0.6"/>
+    <rect x="-23" y="-15" width="11" height="20" rx="5.5" fill="#a8b695"/><rect x="13" y="-15" width="11" height="20" rx="5.5" fill="#a8b695"/>
+    <circle cx="-18" cy="6" r="5" fill="#f2d5bd"/><circle cx="18" cy="6" r="5" fill="#f2d5bd"/>
+    <circle cx="32" cy="-22" r="14" fill="#f2d5bd"/>
+    <path d="M18 -24 a14 14 0 0 1 28 0 q-14 -11 -28 0Z" fill="#c39861"/>
+    <circle cx="34" cy="-22" r="1.8" fill="#3a322a"/>
+    <circle cx="29" cy="-17" r="2.3" fill="#e5b5a1" opacity="0.6"/>
+    <path d="M30 -16 q4 3 7 0" stroke="#3a322a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Kid 4: standing with a balloon -->
+  <g transform="translate(190,300)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -13;0 0" dur="3.8s" repeatCount="indefinite" additive="sum"/>
+    <ellipse cx="0" cy="4" rx="22" ry="6" fill="#849473" opacity="0.14"/>
+    <ellipse cx="-7" cy="1" rx="7" ry="4" fill="#5a4a3c"/><ellipse cx="8" cy="1" rx="7" ry="4" fill="#5a4a3c"/>
+    <rect x="-12" y="-26" width="10" height="27" rx="5" fill="#c29471"/><rect x="2" y="-26" width="10" height="27" rx="5" fill="#c29471"/>
+    <path d="M-17 -56 Q0 -64 17 -56 L14 -24 Q0 -20 -14 -24 Z" fill="#be574f"/>
+    <path d="M-30 -54 q-8 6 -8 18" stroke="#be574f" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <path d="M22 -62 q10 -4 14 -14" stroke="#be574f" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <circle cx="-38" cy="-34" r="5.5" fill="#a37c55"/><circle cx="37" cy="-78" r="5.5" fill="#a37c55"/>
+    <circle cx="0" cy="-72" r="15" fill="#a37c55"/>
+    <path d="M-15 -74 a15 15 0 0 1 30 0 q-15 -12 -30 0Z" fill="#302c28"/>
+    <circle cx="-5" cy="-71" r="1.9" fill="#221e19"/><circle cx="5" cy="-71" r="1.9" fill="#221e19"/>
+    <circle cx="-9" cy="-66" r="2.4" fill="#835d47" opacity="0.5"/><circle cx="9" cy="-66" r="2.4" fill="#835d47" opacity="0.5"/>
+    <path d="M-5 -65 q5 4 10 0" stroke="#221e19" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M37 -86 q-2 30 -11 50" stroke="#d3c9b7" stroke-width="1.6" fill="none"/>
+    <ellipse cx="42" cy="-104" rx="16" ry="20" fill="#8fada8"/><ellipse cx="36" cy="-110" rx="4" ry="6" fill="#ffffff" opacity="0.5"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#d5ad7a">
+    <path d="M560 70 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z"><animate attributeName="opacity" values="0.5;1;0.5" dur="3.5s" repeatCount="indefinite"/></path>
+    <path d="M330 110 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 Z"><animate attributeName="opacity" values="0.5;1;0.5" dur="4.4s" repeatCount="indefinite"/></path>
+  </g>
+</svg>

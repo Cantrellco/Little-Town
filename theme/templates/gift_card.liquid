@@ -1,0 +1,5 @@
+<main class="section"><div class="container center reveal">
+    <h1>Little Town gift card</h1>
+    <div class="price-tag">{{ gift_card.balance | money }}</div>
+    <p>Gift card code: <strong>{{ gift_card.code | format_code }}</strong></p>
+</div></main>

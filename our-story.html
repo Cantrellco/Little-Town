@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Our Story — Little Town Playhouse</title>
-  <meta name="description" content="The story behind Little Town Playhouse — built by parents, for parents. Our vision, our values, and our promise on safety and cleanliness.">
+  <title>Photo Gallery — Little Town Playhouse</title>
+  <meta name="description" content="A peek inside Little Town Playhouse — a gallery of the play floor, the storefronts and the little ones who run the show.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/pages/our-story.css">
@@ -26,10 +26,11 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html" class="active">Our Story</a>
+        <a href="our-story.html" class="active">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
+        <a class="header-phone" href="tel:+15550142025" aria-label="Call Little Town Playhouse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>(555) 014-2025</a>
         <a class="btn btn--terracotta btn--cta" href="memberships.html"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
@@ -41,7 +42,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html" class="active">Our Story</a>
+        <a href="our-story.html" class="active">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
     </div></div>
@@ -49,388 +50,87 @@
 
   <main>
 
-    <!-- ============================================================
-         HERO — warm paper sky, sticker accent, highlighted headline
-         ============================================================ -->
+    <!-- ===================== PAGE HERO — polaroid scatter ===================== -->
     <section class="page-hero ph--story">
-      <!-- Scrapbook world: warm dotted paper (CSS) with toy blocks + a crayon
-           as "desk objects" and washi-tape accents (desktop flourishes). -->
-      <span class="deco story-tape story-tape--1" aria-hidden="true"></span>
-      <span class="deco story-tape story-tape--2" aria-hidden="true"></span>
-      <!-- Signature motif: a little stack of toy blocks, echoing the headline -->
-      <span class="deco anim-bob" style="top:19%;left:6%;width:56px" aria-hidden="true">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="5"  y="33" width="24" height="22" rx="4" fill="#F8D98F"/>
-          <rect x="31" y="33" width="24" height="22" rx="4" fill="#AEDCEA"/>
-          <rect x="18" y="9"  width="24" height="22" rx="4" fill="#F4AE92"/>
-        </svg>
+      <!-- Scattered polaroid thumbnails (desktop only; hidden on small screens) -->
+      <span class="deco deco-polaroid pol--tl" data-cap="Slide!" style="top:9%;left:4%">
+        <img src="assets/img/photo-play-slide.jpg" alt="">
       </span>
-      <!-- a crayon, because every good story starts with one -->
-      <span class="deco anim-sway" style="top:36%;left:13%;width:14px" aria-hidden="true">
-        <svg viewBox="0 0 14 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="9" width="8" height="27" rx="2" fill="#AEDCEA"/>
-          <path d="M3 9 L7 0 L11 9 Z" fill="#F4AE92"/>
-          <rect x="3" y="30" width="8" height="3" fill="#fff" opacity="0.5"/>
-        </svg>
+      <span class="deco deco-polaroid pol--bl" data-cap="Smiles" style="top:52%;left:7%">
+        <img src="assets/img/photo-bigsmiles.jpg" alt="">
       </span>
-      <span class="deco anim-bob slow" style="top:24%;right:9%;width:24px" aria-hidden="true">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="6" width="28" height="28" rx="5" fill="#EC9A90"/>
-        </svg>
+      <span class="deco deco-polaroid pol--tr" data-cap="Bridge" style="top:8%;right:5%">
+        <img src="assets/img/photo-play-bridge.jpg" alt="">
       </span>
-      <span class="deco anim-bob slow" style="bottom:18%;right:22%;width:28px" aria-hidden="true">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="6" width="28" height="28" rx="5" fill="#BFD6A8"/>
-        </svg>
+      <span class="deco deco-polaroid pol--br" data-cap="Coffee" style="top:54%;right:8%">
+        <img src="assets/img/photo-cafe-table.jpg" alt="">
       </span>
-      <div class="container">
-        <div class="story-hero-inner">
-          <div class="reveal">
-            <!-- Sticker floats above the heading -->
-            <div class="story-hero-sticker">
-              <span class="sticker anim-pop" aria-hidden="true">
-                <!-- small building block icon -->
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><rect x="2" y="10" width="7" height="8" rx="1.5" fill="currentColor" opacity=".9"/><rect x="11" y="6" width="7" height="12" rx="1.5" fill="currentColor" opacity=".75"/><rect x="6" y="2" width="8" height="7" rx="1.5" fill="currentColor" opacity=".55"/></svg>
-                Built by parents
-              </span>
-            </div>
-            <span class="eyebrow">Our story</span>
-            <h1>It started with a <span class="script hl hl--coral" style="color:var(--accent)">box of blocks</span></h1>
-            <svg class="story-doodle" viewBox="0 0 240 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4 9 C 50 3 92 14 132 7 S 212 3 236 9" stroke="#D9663D" stroke-width="3" stroke-linecap="round" opacity="0.65"/></svg>
-            <p>And a simple wish: somewhere warm and <em>beautiful</em> to bring the kids — that grown-ups would actually love too.</p>
-            <div class="flex-cta center">
-              <a class="btn btn--lg btn--terracotta btn--pop" href="visit-us.html">Plan a Visit</a>
-              <a class="btn btn--lg btn--ghost" href="memberships.html">Become a Member</a>
-            </div>
-          </div>
+      <!-- A tiny bit of brand sparkle, still on-theme -->
+      <span class="deco anim-bob"     style="top:14%;left:24%;width:30px"><img src="assets/img/deco-balloon.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:22%;right:30%;width:18px"><img src="assets/img/deco-star.svg" alt=""></span>
+      <span class="deco anim-twinkle" style="top:60%;left:28%;width:14px"><img src="assets/img/deco-star.svg" alt=""></span>
 
-          <!-- Art column: a tilted scrapbook polaroid — a little wooden block town
-               tumbling out of a toy box (echoes the headline "box of blocks") -->
-          <div class="story-hero-art reveal" data-delay="1">
-            <svg class="story-snap" viewBox="0 0 480 420" role="img"
-                 aria-label="A scrapbook snapshot of a little wooden block town being built out of a toy box of blocks."
-                 xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="storySky" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#eaf6fb"/>
-                  <stop offset="1" stop-color="#fdf3de"/>
-                </linearGradient>
-                <clipPath id="storyPhoto"><rect x="58" y="42" width="364" height="276" rx="12"/></clipPath>
-              </defs>
-
-              <!-- polaroid card -->
-              <g class="snap-card">
-                <rect x="40" y="24" width="400" height="372" rx="16" fill="#ffffff" stroke="rgba(120,90,40,0.10)"/>
-
-                <!-- the "photo": a little town being built -->
-                <g clip-path="url(#storyPhoto)">
-                  <rect x="58" y="42" width="364" height="276" fill="url(#storySky)"/>
-
-                  <!-- sun -->
-                  <g stroke="#F2C45B" stroke-width="4" stroke-linecap="round">
-                    <line x1="419" y1="86" x2="430" y2="86"/>
-                    <line x1="411" y1="67" x2="418" y2="60"/>
-                    <line x1="392" y1="59" x2="392" y2="48"/>
-                    <line x1="373" y1="67" x2="366" y2="60"/>
-                    <line x1="365" y1="86" x2="354" y2="86"/>
-                  </g>
-                  <circle cx="392" cy="86" r="22" fill="#F8D98F"/>
-                  <circle cx="384" cy="80" r="7" fill="#fff" opacity="0.45"/>
-
-                  <!-- clouds -->
-                  <g fill="#ffffff">
-                    <circle cx="110" cy="78" r="14"/><circle cx="128" cy="84" r="11"/><circle cx="94" cy="86" r="10"/>
-                  </g>
-
-                  <!-- ground -->
-                  <rect x="58" y="276" width="364" height="42" fill="#cfe6bd"/>
-                  <rect x="58" y="276" width="364" height="8" fill="#bcd9a6"/>
-
-                  <!-- tree -->
-                  <rect x="372" y="250" width="8" height="26" rx="3" fill="#b58a58"/>
-                  <circle cx="376" cy="244" r="18" fill="#a8b695"/><circle cx="368" cy="248" r="12" fill="#bcc9a6"/>
-
-                  <!-- green building (tall) -->
-                  <polygon points="190,224 221,200 252,224" fill="#95a582"/>
-                  <rect x="196" y="224" width="50" height="52" rx="5" fill="#BFD6A8" stroke="#9cbf86" stroke-width="2"/>
-                  <rect x="214" y="250" width="14" height="26" rx="3" fill="#7e9c96"/>
-
-                  <!-- yellow building + flag -->
-                  <polygon points="244,236 273,214 302,236" fill="#c39861"/>
-                  <rect x="250" y="236" width="46" height="40" rx="5" fill="#F8D98F" stroke="#e3bf72" stroke-width="2"/>
-                  <rect x="266" y="252" width="14" height="24" rx="3" fill="#d39a52"/>
-                  <line x1="273" y1="214" x2="273" y2="202" stroke="#7d6446" stroke-width="2.5"/>
-                  <path d="M273 203 L286 207 L273 211 Z" fill="#EC9A90"/>
-
-                  <!-- blue building (short) -->
-                  <polygon points="300,248 324,230 348,248" fill="#8fb4c2"/>
-                  <rect x="306" y="248" width="40" height="28" rx="5" fill="#AEDCEA" stroke="#8cc3d6" stroke-width="2"/>
-
-                  <!-- toy box of blocks -->
-                  <ellipse cx="116" cy="248" rx="46" ry="12" fill="#c49a64"/>
-                  <ellipse cx="116" cy="248" rx="46" ry="12" fill="none" stroke="#b07f4b" stroke-width="2"/>
-                  <path d="M70 248 v34 a8 8 0 0 0 8 8 h76 a8 8 0 0 0 8 -8 v-34" fill="#d9b485" stroke="#c19a63" stroke-width="2"/>
-                  <line x1="100" y1="252" x2="100" y2="288" stroke="#c19a63" stroke-width="2"/>
-                  <line x1="132" y1="252" x2="132" y2="288" stroke="#c19a63" stroke-width="2"/>
-                  <path d="M116 282 c-9 -7 -16 -12 -16 -19 c0 -5 4 -8 8 -8 c3 0 6 2 8 5 c2 -3 5 -5 8 -5 c4 0 8 3 8 8 c0 7 -7 12 -16 19 Z" fill="#EC9A90"/>
-
-                  <!-- block tumbling out of the box -->
-                  <g transform="rotate(14 145 226)">
-                    <rect x="131" y="212" width="28" height="28" rx="5" fill="#F4AE92" stroke="#e08e6f" stroke-width="2"/>
-                    <text x="145" y="232" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="17" fill="#fff">A</text>
-                  </g>
-                  <!-- loose block on the ground -->
-                  <g transform="rotate(-8 137 273)">
-                    <rect x="124" y="260" width="26" height="26" rx="5" fill="#AEDCEA" stroke="#8cc3d6" stroke-width="2"/>
-                    <text x="137" y="279" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="16" fill="#fff">B</text>
-                  </g>
-
-                  <!-- sparkles -->
-                  <path d="M150 148 Q150 156 158 156 Q150 156 150 164 Q150 156 142 156 Q150 156 150 148 Z" fill="#F8D98F"/>
-                  <path d="M338 122 Q338 128 344 128 Q338 128 338 134 Q338 128 332 128 Q338 128 338 122 Z" fill="#ffffff"/>
-                  <path d="M100 116 Q100 121 105 121 Q100 121 100 126 Q100 121 95 121 Q100 121 100 116 Z" fill="#ffffff"/>
-                </g>
-
-                <!-- handwritten caption -->
-                <text x="240" y="364" text-anchor="middle" font-family="Pacifico, cursive" font-size="26" fill="#8a6f4f">Day one.</text>
-              </g>
-
-              <!-- washi tape, holding the photo on the page -->
-              <rect x="44" y="14" width="78" height="22" rx="2" transform="rotate(-9 83 25)" fill="rgba(248,217,143,0.78)" stroke="rgba(255,255,255,0.5)"/>
-              <rect x="358" y="14" width="78" height="22" rx="2" transform="rotate(8 397 25)" fill="rgba(174,220,234,0.78)" stroke="rgba(255,255,255,0.5)"/>
-            </svg>
-          </div>
-        </div>
+      <div class="container reveal">
+        <span class="eyebrow">📷 Step inside</span>
+        <h1>Snapshots from <span class="script" style="color:var(--accent)">the little town</span></h1>
+        <p class="lead">Real days, real smiles, real (very small) baristas — a peek at what an afternoon at Little Town actually looks like.</p>
       </div>
     </section>
 
-    <!-- ============================================================
-         FOUNDER NARRATIVE — split layout + bold pull-quote
-         flow-top: the wave divider that rises out of the hero on every page
-         ============================================================ -->
-    <section class="founder-section flow-top">
-      <div class="container split">
+    <!-- ===================== GALLERY ===================== -->
+    <section class="section flow-top gallery-section">
+      <div class="container">
+        <div class="gallery-grid">
 
-        <!-- Art side -->
-        <div class="split-art reveal from-left pop-host">
-          <span class="pop-bubble pop-bubble--coral" aria-hidden="true">🧱</span>
-          <!-- Placeholder photo (Unsplash, free license) — swap for your own founder/play photo later -->
-          <img src="assets/img/photo-founder-blocks.jpg"
-               alt="A parent and toddler building a colourful block tower together on the floor."
-               width="1000" height="750" loading="lazy" decoding="async"
-               style="aspect-ratio:4/3;object-fit:cover;object-position:center;border-radius:var(--r-lg);box-shadow:var(--shadow-md)">
+          <figure class="gallery-figure reveal">
+            <img src="assets/img/photo-play-slide.jpg" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
+            <figcaption>The big slides</figcaption>
+            <span class="gallery-sticker" aria-hidden="true">🛝 Hello!</span>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="1">
+            <img src="assets/img/photo-bigsmiles.jpg" alt="A toddler grinning inside the playhouse." decoding="async" style="object-position:center 30%">
+            <figcaption>Big smiles, all afternoon</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="2">
+            <img src="assets/img/photo-play-climb.jpg" alt="A child climbing the colorful rock wall." decoding="async" style="object-position:center 35%">
+            <figcaption>Up the climbing wall</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal">
+            <img src="assets/img/photo-play-bridge.jpg" alt="A child balancing across the rope bridge." decoding="async" style="object-position:center 30%">
+            <figcaption>Crossing the rope bridge</figcaption>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="1">
+            <img src="assets/img/photo-play-blocks.jpg" alt="A child building inside a fort of giant foam blocks." decoding="async">
+            <figcaption>Block-tower architects</figcaption>
+            <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true">🧱 Builders</span>
+          </figure>
+
+          <figure class="gallery-figure reveal" data-delay="2">
+            <img src="assets/img/photo-cafe-table.jpg" alt="A latte and croissant on a wooden table at Fusion café." decoding="async">
+            <figcaption>Snack break at Fusion</figcaption>
+          </figure>
+
         </div>
 
-        <!-- Copy side -->
-        <div class="reveal from-right" data-delay="1">
-          <span class="eyebrow">How it began</span>
-          <h2>Built by parents, <span class="hl hl--sage">for parents</span></h2>
-          <p>On a grey winter afternoon, our founder Maya watched her two-year-old turn a pile of wooden blocks into a whole little town — a shop here, a café there, a tiny hospital for a poorly teddy. The living room was a disaster. The kids were in heaven.</p>
-          <p>There was nowhere nearby that captured that feeling: imaginative, calm, beautifully made, and genuinely welcoming for the adults along for the ride. So she decided to build one.</p>
-          <p>Little Town Playhouse is that idea, grown up just a little — a whole downtown of storefronts where children try on the roles of everyday life, and parents get a comfy seat and a proper coffee.</p>
-
-          <!-- Founder pull-quote -->
-          <div class="founder-quote reveal pop" data-delay="2">
-            <blockquote class="quote" aria-label="Founder quote">
-              <p>"If you give a child the right space, they'll build the whole world — and show you things about it you'd forgotten."</p>
-              <p class="who">— Maya, Founder of Little Town Playhouse</p>
-            </blockquote>
-          </div>
-        </div>
-
+        <p class="gallery-note reveal">More snapshots coming soon — every day at Little Town looks a little different.</p>
       </div>
     </section>
 
-    <!-- ============================================================
-         TIMELINE — How Little Town grew (.steps)
-         ============================================================ -->
-    <section class="story-steps-section band-white flow-top">
+    <!-- ===================== CLOSING CTA ===================== -->
+    <section class="section">
       <div class="container">
-        <div class="center reveal">
-          <span class="eyebrow">The journey</span>
-          <h2>How Little Town <span class="hl hl--sky">grew</span></h2>
-          <p class="section-lead muted">From a living-room floor to a real little downtown — one block at a time.</p>
-        </div>
-
-        <div class="steps mt-4" role="list">
-
-          <div class="step reveal" data-delay="0" role="listitem">
-            <div class="step-no" aria-hidden="true"></div>
-            <h3>A box of blocks</h3>
-            <p>Maya's toddler builds an imaginary town on the living-room floor. The idea is born.</p>
-          </div>
-
-          <div class="step reveal" data-delay="1" role="listitem">
-            <div class="step-no" aria-hidden="true"></div>
-            <h3>A big idea</h3>
-            <p>Months of sketching storefronts, researching play science, and talking to dozens of local families.</p>
-          </div>
-
-          <div class="step reveal" data-delay="2" role="listitem">
-            <div class="step-no" aria-hidden="true"></div>
-            <h3>Building the town</h3>
-            <p>Local craftspeople shape every counter and signpost by hand. Every corner gets a name.</p>
-          </div>
-
-          <div class="step reveal" data-delay="3" role="listitem">
-            <div class="step-no" aria-hidden="true"></div>
-            <h3>Opening day</h3>
-            <p>The doors open on a sunny Saturday. The first child walks straight to the wooden bakery and opens for business.</p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         SOFT STAT STRIP — gentle, believable, no hard numbers
-         ============================================================ -->
-    <section class="story-stats band flow-top has-bubbles">
-      <span class="bubbles" aria-hidden="true"></span>
-      <div class="container">
-        <div class="story-stat-grid">
-
-          <div class="story-stat-card reveal">
-            <div class="stat-bar" style="background:var(--grad-sunrise)"></div>
-            <span class="stat-icon" aria-hidden="true">
-              <!-- heart icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </span>
-            <div class="stat">
-              <div class="num">Built by<br><span style="font-size:0.7em;font-weight:700;color:var(--accent)">parents</span></div>
-              <div class="label">for families like yours</div>
-            </div>
-          </div>
-
-          <div class="story-stat-card reveal" data-delay="1">
-            <div class="stat-bar" style="background:var(--grad-meadow)"></div>
-            <span class="stat-icon" aria-hidden="true">
-              <!-- star icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </span>
-            <div class="stat">
-              <div class="num">Made with<br><span style="font-size:0.7em;font-weight:700;color:var(--accent-sage)">care</span></div>
-              <div class="label">every detail handcrafted</div>
-            </div>
-          </div>
-
-          <div class="story-stat-card reveal" data-delay="2">
-            <div class="stat-bar" style="background:var(--grad-sky)"></div>
-            <span class="stat-icon" aria-hidden="true">
-              <!-- kids icon -->
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/></svg>
-            </span>
-            <div class="stat">
-              <div class="num">Ages<br><span style="font-size:0.7em;font-weight:700;color:var(--accent-sky)">0–8</span></div>
-              <div class="label">every little one welcome</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         VISION & VALUES — bolder cards with tilt + accent tops
-         ============================================================ -->
-    <section class="story-values-section flow-top">
-      <div class="container">
-        <div class="center reveal">
-          <span class="eyebrow">What we believe</span>
-          <h2>Our vision &amp; <span class="hl hl--coral">values</span></h2>
-          <p class="section-lead muted">Three simple ideas guide everything in town.</p>
-        </div>
-
-        <div class="values mt-4">
-
-          <!-- Value 1: Play is real work (terracotta) -->
-          <div class="story-value-card tilt reveal" data-delay="0" aria-label="Value 1: Play is real work">
-            <span class="sv-top" style="background:var(--grad-candy)" aria-hidden="true"></span>
-            <div class="sv-body">
-              <div class="sv-chip" style="background:var(--grad-candy)" aria-hidden="true">1</div>
-              <h3>Play is real work</h3>
-              <p>Pretend shopping, caring and serving build empathy, language and confidence. We design every corner to spark it.</p>
-            </div>
-          </div>
-
-          <!-- Value 2: Made with care (sage) -->
-          <div class="story-value-card tilt reveal" data-delay="1" aria-label="Value 2: Made with care">
-            <span class="sv-top" style="background:var(--grad-meadow)" aria-hidden="true"></span>
-            <div class="sv-body">
-              <div class="sv-chip" style="background:var(--grad-meadow)" aria-hidden="true">2</div>
-              <h3>Made with care</h3>
-              <p>Warm materials, rounded edges and a soft palette — a space that feels handmade, not plastic and loud.</p>
-            </div>
-          </div>
-
-          <!-- Value 3: Grown-ups matter too (sky) -->
-          <div class="story-value-card tilt reveal" data-delay="2" aria-label="Value 3: Grown-ups matter too">
-            <span class="sv-top" style="background:var(--grad-sky); border-top: 4px solid var(--sky)" aria-hidden="true"></span>
-            <div class="sv-body">
-              <div class="sv-chip" style="background:linear-gradient(135deg,var(--sky) 0%,var(--teal) 100%)" aria-hidden="true">3</div>
-              <h3>Grown-ups matter too</h3>
-              <p>Good coffee, comfy seating and clear sightlines. A visit should recharge the whole family.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         SAFETY PROMISE — reassurance strip in a tinted panel
-         ============================================================ -->
-    <section class="story-promise-section band flow-top">
-      <div class="container">
-        <div class="center reveal">
-          <span class="eyebrow">Our promise to parents</span>
-          <h2>Safe, supervised, <span class="hl hl--sage">spotless</span></h2>
-        </div>
-
-        <div class="story-promise-panel mt-4 reveal pop">
-          <div class="grid grid-3">
-
-            <div class="reassure reveal">
-              <div class="story-promise-chip" style="background:var(--terra-tint)">
-                <img src="assets/img/icon-safe.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
-              </div>
-              <h3>Safety first</h3>
-              <p>Padded play zones, secure single-point check-in, and equipment inspected daily by our team.</p>
-            </div>
-
-            <div class="reassure reveal" data-delay="1">
-              <div class="story-promise-chip" style="background:var(--sage-tint)">
-                <img src="assets/img/icon-baby.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
-              </div>
-              <h3>Caring supervision</h3>
-              <p>Friendly, trained play hosts on the floor at all times — and a grown-up always stays with each child.</p>
-            </div>
-
-            <div class="reassure reveal" data-delay="2">
-              <div class="story-promise-chip" style="background:var(--wood-tint)">
-                <img src="assets/img/icon-wifi.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
-              </div>
-              <h3>Always clean</h3>
-              <p>High-touch surfaces sanitised throughout the day, with a full deep-clean every night.</p>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         CLOSING CTA — .bg-meadow / .on-dark band
-         ============================================================ -->
-    <section class="story-cta-band flow-top">
-      <div class="container">
-        <div class="story-cta-inner on-dark reveal anim-gradient">
-          <span class="eyebrow" style="color:var(--accent)">Come see us</span>
-          <h2>Come see it for yourself</h2>
-          <p>We'd love to show you around the little town — every storefront, every detail, every cosy corner.</p>
-          <div class="flex-cta center mt-3">
-            <a class="btn btn--lg btn--on-meadow btn--pop" href="visit-us.html">Plan a Visit</a>
-            <a class="btn btn--lg btn--ghost-light" href="memberships.html">Become a Member</a>
+        <div class="cta-band bg-sunrise on-dark anim-gradient reveal">
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">📸 Come see for yourself</span>
+          <h2>Want to be in the <span class="script">next snapshot?</span></h2>
+          <p>Stop in any day we're open — your little one might just star in our gallery.</p>
+          <div class="flex-cta center">
+            <a class="btn btn--lg btn--terracotta btn--pop hover-jelly" href="visit-us.html">Plan a Visit</a>
+            <a class="btn btn--lg btn--ghost" href="memberships.html">Become a Member</a>
           </div>
         </div>
       </div>
@@ -448,22 +148,22 @@
           </a>
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
           <div class="socials">
-            <a href="#" data-noop aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-            <a href="#" data-noop aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>
-            <a href="#" data-noop aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.1 1.5 3.6 3.5 3.9V10c-1.3 0-2.5-.4-3.5-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>
+            <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.1 1.5 3.6 3.5 3.9V10c-1.3 0-2.5-.4-3.5-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
           </div>
         </div>
         <div class="footer-col">
           <h4>Hours</h4>
-          <ul><li>Mon – Thu · 9am – 6pm</li><li>Fri – Sat · 9am – 8pm</li><li>Sunday · 10am – 5pm</li><li>Members' morning · Wed 8am</li></ul>
+          <ul><li>Mon – Thu · 9am – 6pm</li><li>Fri – Sat · 9am – 8pm</li><li>Sunday · 10am – 5pm</li></ul>
         </div>
         <div class="footer-col">
           <h4>Visit Us</h4>
-          <ul><li>12 Main Street</li><li>Riverbend, CA 90210</li><li><a href="#" data-noop>(555) 014-2025</a></li><li><a href="#" data-noop>hello@littletownplay.com</a></li></ul>
+          <ul><li>12 Main Street</li><li>Riverbend, CA 90210</li><li><a href="tel:+15550142025">(555) 014-2025</a></li><li><a href="mailto:hello@littletownplay.com">hello@littletownplay.com</a></li></ul>
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
@@ -473,33 +173,6 @@
     </div>
   </footer>
 
-  <!-- Our Story page — reduced-motion-aware micro-interactions (IIFE, no globals) -->
-  <script>
-  (function () {
-    'use strict';
-    // Respect prefers-reduced-motion: skip animation work entirely if user prefers
-    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) return;
-
-    // Stagger .step elements so the timeline feels sequential on reveal
-    var steps = document.querySelectorAll('.story-steps-section .step');
-    steps.forEach(function (el, i) {
-      el.setAttribute('data-delay', String(i));
-    });
-
-    // Add hover-jelly to stat cards for a bit of extra bounce
-    var statCards = document.querySelectorAll('.story-stat-card');
-    statCards.forEach(function (card) {
-      card.classList.add('hover-jelly');
-    });
-
-    // Add hover-jelly to the promise chips
-    var chips = document.querySelectorAll('.story-promise-chip');
-    chips.forEach(function (chip) {
-      chip.classList.add('hover-jelly');
-    });
-  }());
-  </script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

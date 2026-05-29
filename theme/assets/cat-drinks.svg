@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Café category: Drinks -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Drinks">
+  <path d="M10 14 q-5 5 0 10 M18 12 q-5 5 0 10 M26 14 q-5 5 0 10" fill="none" stroke="#d5ad7a" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M8 26 H34 V34 a13 13 0 0 1 -26 0 Z" fill="#8fada8"/>
+  <path d="M34 28 a7 7 0 0 1 0 14" fill="none" stroke="#8fada8" stroke-width="3.4"/>
+  <rect x="6" y="42" width="30" height="3.6" rx="1.8" fill="#6d8e88"/>
+</svg>

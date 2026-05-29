@@ -1,0 +1,43 @@
+{%- assign p = request.path -%}
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Little Town Playhouse home">
+      <img src="{{ 'logo.png' | asset_url }}" alt="" width="83" height="40">
+      <span class="brand-text">
+        <span class="brand-name">LITTLE TOWN</span>
+        <span class="brand-sub script">Playhouse</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/"{% if p == '/' %} class="active"{% endif %}>Home</a>
+      <a href="/pages/play-pricing"{% if p contains '/play-pricing' %} class="active"{% endif %}>Play &amp; Pricing</a>
+      <a href="/pages/parties"{% if p contains '/parties' %} class="active"{% endif %}>Parties</a>
+      <a href="/pages/memberships"{% if p contains '/memberships' %} class="active"{% endif %}>Memberships</a>
+      <a href="/pages/fusion"{% if p contains '/fusion' %} class="active"{% endif %}>Fusion</a>
+      <a href="/pages/photo-gallery"{% if p contains '/photo-gallery' %} class="active"{% endif %}>Photo Gallery</a>
+      <a href="/pages/visit-us"{% if p contains '/visit-us' %} class="active"{% endif %}>Visit Us</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn--terracotta btn--cta" href="/pages/memberships"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div>
+      <nav aria-label="Mobile">
+        <a href="/"{% if p == '/' %} class="active"{% endif %}>Home</a>
+        <a href="/pages/play-pricing"{% if p contains '/play-pricing' %} class="active"{% endif %}>Play &amp; Pricing</a>
+        <a href="/pages/parties"{% if p contains '/parties' %} class="active"{% endif %}>Parties</a>
+        <a href="/pages/memberships"{% if p contains '/memberships' %} class="active"{% endif %}>Memberships</a>
+        <a href="/pages/fusion"{% if p contains '/fusion' %} class="active"{% endif %}>Fusion</a>
+        <a href="/pages/photo-gallery"{% if p contains '/photo-gallery' %} class="active"{% endif %}>Photo Gallery</a>
+        <a href="/pages/visit-us"{% if p contains '/visit-us' %} class="active"{% endif %}>Visit Us</a>
+      </nav>
+    </div>
+  </div>
+</header>
+{% schema %}
+{ "name": "Header" }
+{% endschema %}
