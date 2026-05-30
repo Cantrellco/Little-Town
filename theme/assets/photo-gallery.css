@@ -1,35 +1,60 @@
 /* ============================================================
-   Our Story — photo gallery layout
-   Hero + masonry grid + closing CTA.
+   Photo Gallery — hero + masonry grid + closing CTA.
    Mobile-first. Motion silenced under prefers-reduced-motion.
    ============================================================ */
 
 /* ---- Page hero (photo gallery feel: scattered polaroids) ---- */
-.ph--story {
+/* Selector matches the other interior-page heroes (.page-hero.ph--cafe /
+   .ph--play / .ph--member / etc.) so it has the same specificity as the
+   default .page-hero.ph--gallery in styles.css. Source order then wins,
+   and this warm-oat tile background actually applies. */
+.page-hero.ph--gallery {
+  /* Same recipe as Fusion — a single signature tile (cameras) repeated over
+     a warm peach gradient. Gives the gallery its own colour identity. */
   background:
-    url("photo-tile.svg") center / 150px repeat,
-    linear-gradient(180deg, #fceccd 0%, #f9e3bd 52%, #f6d6ac 100%);
-  padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(4.5rem, 9vw, 7rem);
-  text-align: center;
+    url("photo-tile-v2.svg") center / 132px repeat,
+    linear-gradient(180deg, #F6D5C0 0%, #F4E2CB 58%, var(--base) 100%);
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
   position: relative;
   overflow: hidden;
 }
-.ph--story .container { position: relative; z-index: 2; }
-.ph--story .eyebrow { color: var(--accent); letter-spacing: 0.06em; }
-.ph--story h1 {
+.ph--gallery .container { position: relative; z-index: 2; }
+.gallery-hero-inner {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  text-align: center;
+}
+@media (min-width: 760px) {
+  .gallery-hero-inner { grid-template-columns: 1fr auto; }
+}
+.gallery-hero-art { margin-inline: auto; }
+.gallery-hero-art svg { width: 100%; height: auto; display: block; }
+/* Warm-coral partner-tag eyebrow */
+.ph--gallery .partner-tag {
+  background: rgba(255,255,255,0.85);
+  color: #8A3320;
+  border: 1px solid rgba(182,93,69,0.30);
+}
+.ph--gallery .eyebrow { color: var(--accent); letter-spacing: 0.06em; }
+.ph--gallery h1 {
   font-family: var(--font-head);
   font-weight: 700;
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   line-height: 1.05;
-  margin: 0.5rem auto 0.9rem;
+  margin: 0.5rem 0 0.9rem;
   max-width: 22ch;
   color: var(--ink);
 }
-.ph--story .lead {
+.ph--gallery .lead {
   max-width: 52ch;
-  margin: 0 auto;
+  margin: 0;
   font-size: clamp(1rem, 1.4vw, 1.1rem);
   color: var(--ink-soft);
+}
+@media (max-width: 859px) {
+  .ph--gallery h1 { margin-inline: auto; }
+  .ph--gallery .lead { margin-inline: auto; }
 }
 
 /* ---- Scattered polaroid decorations ---- */
@@ -40,8 +65,19 @@
   background: #fff;
   padding: 8px 8px 30px;
   border-radius: 4px;
-  box-shadow: 0 14px 28px rgba(58, 49, 40, 0.18), 0 2px 6px rgba(58, 49, 40, 0.08);
-  transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    0 2px 4px rgba(58, 49, 40, 0.08),
+    0 14px 28px -6px rgba(58, 49, 40, 0.22),
+    0 32px 56px -20px rgba(58, 49, 40, 0.20);
+  transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 0.4s ease;
+}
+.deco-polaroid:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    0 2px 4px rgba(58, 49, 40, 0.10),
+    0 22px 40px -8px rgba(58, 49, 40, 0.28),
+    0 44px 80px -24px rgba(58, 49, 40, 0.24);
 }
 .deco-polaroid img {
   display: block;

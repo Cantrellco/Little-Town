@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Soft four-point sparkle star with radial gradient + inner glow.
+     Sits over photo + sky backdrops, so the highlight is what catches the eye. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="presentation" aria-hidden="true">
-  <path d="M24 2 q3 16 22 22 q-19 6 -22 22 q-3 -16 -22 -22 q19 -6 22 -22Z" fill="#d5ad7a"/>
+  <defs>
+    <radialGradient id="s-fill" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#fff6dc"/>
+      <stop offset="55%" stop-color="#f4c97a"/>
+      <stop offset="100%" stop-color="#c48f3f"/>
+    </radialGradient>
+    <radialGradient id="s-glow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#fff3c8" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#fff3c8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="24" cy="24" r="22" fill="url(#s-glow)"/>
+  <path d="M24 2 q3 16 22 22 q-19 6 -22 22 q-3 -16 -22 -22 q19 -6 22 -22Z" fill="url(#s-fill)"/>
+  <path d="M24 8 q2.4 13 18 16 q-15.6 5 -18 18 q-2.4 -13 -18 -18 q15.6 -3 18 -16Z" fill="#ffffff" opacity="0.35"/>
 </svg>

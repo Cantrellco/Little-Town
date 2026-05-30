@@ -95,6 +95,10 @@
   background:
     url("coffee-beans.svg") center / 132px repeat,
     linear-gradient(180deg, #F3E3C5 0%, #EFD7BD 58%, var(--base) 100%);
+  /* Reserve clear space below the centred CTAs so the next section's flow-top
+     wave (which rises ~flow-h + 18px = up to ~90px above its top edge) lands
+     in empty hero, not slicing across the pill buttons. */
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
 }
 
 /* Real-logo café tower: size by height so the tall tower isn't stretched wide */
@@ -166,6 +170,11 @@
   gap: 1rem;
   max-width: 760px;
   margin-inline: auto;
+  /* Clear space below the panel so the next section's flow-top wave doesn't
+     slice the rounded bottom corners. Section padding alone (~26px mobile /
+     ~46px desktop) is shorter than the wave band (~52px / ~90px), so the
+     box needs an extra margin sized to make up the difference. */
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
 }
 .fusion-partner-panel .partner-icon {
   font-size: 2rem;
@@ -174,6 +183,11 @@
   margin-top: 0.1rem;
 }
 
+/* ---- Closing CTA box: same clearance trick so the footer's scallop wave
+     rises into empty section space instead of cutting across the orange
+     band's rounded bottom corners. ---- */
+.cta-band { margin-bottom: clamp(2.5rem, 5vw, 3.75rem); }
+
 /* ---- Stats / fun-facts pill strip ---- */
 .fusion-stats {
   display: flex;
@@ -181,6 +195,10 @@
   gap: 0.75rem 1.4rem;
   justify-content: center;
   margin-top: 2rem;
+  /* The pills are the section's last content; the next section's flow-top
+     wave was slicing the bottom row. Give the strip clearance below so it
+     sits above the wave band. */
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
 }
 .fusion-stat-pill {
   display: inline-flex;
@@ -196,7 +214,17 @@
   border: 1px solid rgba(80, 60, 30, 0.08);
   color: var(--ink);
 }
-.fusion-stat-pill .pill-icon { font-size: 1.1rem; line-height: 1; }
+.fusion-stat-pill .pill-icon { font-size: 1.1rem; line-height: 1; display: inline-flex; align-items: center; }
+.fusion-stat-pill .pill-icon img { width: 22px; height: 22px; display: block; }
+/* Custom SVG icons replacing emojis — align cleanly inside the inline-flex
+   partner-tag and sticker pills so they read as one unit, not as a glyph
+   floating next to text. */
+.partner-tag img,
+.sticker img { width: 18px; height: 18px; display: block; }
+/* The partner panel's big café mark renders at its intrinsic 44 — drop the
+   emoji-era font-sizing so it doesn't distort. */
+.fusion-partner-panel .partner-icon { font-size: 0; }
+.fusion-partner-panel .partner-icon img { display: block; }
 .fusion-stat-pill--sun   { background: var(--sun-tint);   border-color: rgba(244, 183, 64, 0.3);  }
 .fusion-stat-pill--sky   { background: var(--sky-tint);   border-color: rgba(79, 176, 208, 0.3);  }
 .fusion-stat-pill--sage  { background: var(--sage-tint);  border-color: rgba(156, 176, 130, 0.3); }
@@ -362,6 +390,15 @@
 }
 .signature-drink:hover {
   transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(58,49,40,0.18);
+}
+/* tilt-3d signature drinks: JS owns transform, so drop the transform
+   transition (was smearing the per-frame rAF tilt) and let the lifted
+   shadow still fade in on hover. */
+.signature-drink.tilt-3d {
+  transition: box-shadow 0.25s ease;
+}
+.signature-drink.tilt-3d:hover {
   box-shadow: 0 20px 40px rgba(58,49,40,0.18);
 }
 .signature-art {

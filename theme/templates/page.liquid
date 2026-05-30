@@ -1,4 +1,13 @@
+{%- case page.handle -%}
+    {%- when 'play-pricing' -%}{%- render 'page-play-pricing' -%}
+    {%- when 'parties' -%}{%- render 'page-parties' -%}
+    {%- when 'memberships' -%}{%- render 'page-memberships' -%}
+    {%- when 'fusion' -%}{%- render 'page-fusion' -%}
+    {%- when 'photo-gallery' -%}{%- render 'page-photo-gallery' -%}
+    {%- when 'visit-us' -%}{%- render 'page-visit-us' -%}
+    {%- else -%}
 <main class="section"><div class="container reveal">
-    <div class="center"><h1>{{ page.title }}</h1></div>
-    <div class="rte" style="max-width:740px;margin:1.5rem auto 0">{{ page.content }}</div>
+  <div class="center"><h1>{{ page.title }}</h1></div>
+  <div class="rte" style="max-width:740px;margin:1.5rem auto 0">{{ page.content }}</div>
 </div></main>
+{%- endcase -%}

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" role="img" aria-label="Café next door">
+  <!-- soft cast shadow -->
+  <ellipse cx="22" cy="40.5" rx="15" ry="1.5" fill="#3a2c20" opacity="0.14"/>
+  <!-- building body -->
+  <rect x="8" y="18" width="28" height="22" rx="1.6" fill="#EFE1C7"/>
+  <!-- pitched roof -->
+  <path d="M5 19.5 L22 8 L39 19.5 Z" fill="#A8472A"/>
+  <path d="M5 19.5 L22 8 L39 19.5 L36 21 L22 11 L8 21 Z" fill="#8a361e" opacity="0.4"/>
+  <!-- chimney -->
+  <rect x="29" y="10" width="3" height="6.5" fill="#A8472A"/>
+  <!-- a wisp of steam -->
+  <path d="M30.5 9.5 q-1.4 -1.8 0 -3.2" fill="none" stroke="#FBF5EA" stroke-width="1.3" stroke-linecap="round" opacity="0.85"/>
+  <!-- striped awning -->
+  <path d="M8 18 H36 L33.5 23 H10.5 Z" fill="#E09972"/>
+  <path d="M14 18 V23 M19 18 V23 M25 18 V23 M30 18 V23" stroke="#FBF5EA" stroke-width="1.6"/>
+  <!-- door -->
+  <rect x="19" y="28.5" width="6" height="11.5" rx="0.6" fill="#8A5A2C"/>
+  <circle cx="23.3" cy="34.5" r="0.55" fill="#E7BC76"/>
+  <!-- left window -->
+  <rect x="11" y="26.5" width="6" height="6" rx="0.6" fill="#FBF5EA"/>
+  <path d="M14 26.5 V32.5 M11 29.5 H17" stroke="#8A5A2C" stroke-width="0.9"/>
+  <!-- right window with a tiny coffee cup -->
+  <rect x="27" y="26.5" width="6" height="6" rx="0.6" fill="#FBF5EA"/>
+  <path d="M28.4 28.5 H31.6 V30.2 a1 1 0 0 1 -1 1 H29.4 a1 1 0 0 1 -1 -1 Z" fill="#8A5A2C"/>
+  <path d="M31.6 28.9 a0.8 0.8 0 0 1 0 1.6" fill="none" stroke="#8A5A2C" stroke-width="0.7"/>
+  <path d="M29.4 27.9 q-0.4 0.5 0 1" stroke="#A8472A" stroke-width="0.6" stroke-linecap="round" fill="none"/>
+  <!-- a little welcome bunting under the awning -->
+  <path d="M11 24 q11 3 22 0" fill="none" stroke="#586A36" stroke-width="0.9"/>
+  <circle cx="14" cy="24.6" r="0.7" fill="#E7BC76"/>
+  <circle cx="18" cy="25.1" r="0.7" fill="#E09972"/>
+  <circle cx="22" cy="25.2" r="0.7" fill="#ABBE83"/>
+  <circle cx="26" cy="25.1" r="0.7" fill="#E7BC76"/>
+  <circle cx="30" cy="24.6" r="0.7" fill="#E09972"/>
+</svg>

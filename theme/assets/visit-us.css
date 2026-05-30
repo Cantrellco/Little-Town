@@ -10,26 +10,27 @@
   --bub-1: var(--sky); --bub-2: var(--teal); --bub-3: var(--sage); --bub-4: var(--sun);
 }
 
-/* ---- Hero: a little town MAP — faint street grid, dashed routes, a big pin.
-     No sky here; this page's identity is wayfinding/directions. ---- */
+/* ---- Hero: same recipe as Fusion — a single signature tile (map pins)
+     repeated over a cool teal→meadow gradient. Mini location card sits
+     beside the copy. ---- */
 .page-hero.ph--visit {
-  background-color: #e8f1ea;
-  background-image:
-    linear-gradient(rgba(63,114,104,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(63,114,104,0.07) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: center top;
-  padding-block: clamp(2.2rem, 5vw, 3.4rem) clamp(1.8rem, 4vw, 2.6rem);
+  background:
+    url("visit-tile-v2.svg") center / 132px repeat,
+    linear-gradient(180deg, #C9E2DC 0%, #DCEAE0 58%, var(--base) 100%);
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
 }
-/* Dashed-route layer fills the hero behind the copy */
-.visit-map { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.visit-route { width: 100%; height: 100%; display: block; }
-
-/* Two-column hero: copy + a friendly location card (mini map with our pin) */
+.ph--visit .container {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 760px) {
+  .ph--visit .container { grid-template-columns: 1fr auto; }
+}
 .visit-hero-art {
   position: relative;
   max-width: 340px;
-  margin: 1.8rem auto 0;
+  margin-inline: auto;
 }
 .visit-loc-card {
   width: 100%;
@@ -40,15 +41,11 @@
 @media (prefers-reduced-motion: no-preference) {
   .visit-loc-card { animation: bob 7s ease-in-out infinite; }
 }
-@media (min-width: 880px) {
-  .visit-hero-inner {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    align-items: center;
-    gap: clamp(2rem, 5vw, 3.5rem);
-    text-align: left;
-  }
-  .visit-hero-art { margin: 0 auto; }
+/* Teal partner-tag eyebrow */
+.ph--visit .partner-tag {
+  background: rgba(255,255,255,0.85);
+  color: #2c5a52;
+  border: 1px solid rgba(63,114,104,0.30);
 }
 
 /* Hero pill row — semi-opaque white so they read over the gradient */
@@ -69,9 +66,22 @@
 .hours-card {
   border-radius: var(--r-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
-  background: var(--white);
-  border: 1px solid rgba(80,60,30,0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    0 1px 2px rgba(80,60,30,0.05),
+    0 8px 18px -6px rgba(80,60,30,0.12),
+    0 14px 36px -10px rgba(80,60,30,0.10);
+  background: linear-gradient(180deg, #ffffff 0%, #fcf8f0 100%);
+  border: 1px solid rgba(58,49,40,0.06);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+}
+.hours-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    0 1px 2px rgba(80,60,30,0.06),
+    0 14px 28px -10px rgba(80,60,30,0.16),
+    0 28px 60px -16px rgba(80,60,30,0.14);
 }
 
 .hours-card-header {
@@ -320,6 +330,10 @@
   transform: translateY(-3px);
   box-shadow: 0 18px 38px rgba(58,49,40,0.18);
   border-color: var(--sky);
+}
+/* tilt-3d contact cards: drop transform transition (smeared the rAF tilt). */
+.contact-quick-card.tilt-3d {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .contact-quick-icon {
   flex: 0 0 auto;

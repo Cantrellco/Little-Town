@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- body -->
+  <rect x="2.5" y="7" width="19" height="13.5" rx="2.2" fill="#E09972" stroke="#8A5A2C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- top bump (viewfinder bridge) -->
+  <path d="M8.5 7 L9.5 5 H14.5 L15.5 7 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- flash indicator -->
+  <rect x="4.5" y="9" width="2.5" height="1.5" rx="0.4" fill="#FBF5EA"/>
+  <!-- lens outer -->
+  <circle cx="12" cy="14" r="4.5" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1.5"/>
+  <!-- lens inner -->
+  <circle cx="12" cy="14" r="2.8" fill="#8A5A2C"/>
+  <!-- aperture highlight -->
+  <circle cx="10.8" cy="13" r="0.9" fill="#FBF5EA" opacity="0.75"/>
+  <!-- shutter button -->
+  <rect x="17" y="5" width="2.5" height="1.6" rx="0.6" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1"/>
+</svg>

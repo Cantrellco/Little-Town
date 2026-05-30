@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Soft party balloon with radial highlight + subtle shadow rim.
+     Refined for v11 polish — more dimensional than the original flat fill. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" role="presentation" aria-hidden="true">
-  <ellipse cx="30" cy="30" rx="24" ry="29" fill="#e09488"/>
-  <ellipse cx="22" cy="22" rx="6" ry="9" fill="#ffffff" opacity="0.45"/>
-  <path d="M30 59 l-5 7 l10 0 Z" fill="#cc8076"/>
-  <path d="M30 66 q6 12 -2 22" stroke="#d3c9b7" stroke-width="1.8" fill="none"/>
+  <defs>
+    <radialGradient id="b-fill" cx="38%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#f5b8ad"/>
+      <stop offset="55%" stop-color="#e09488"/>
+      <stop offset="100%" stop-color="#b96e62"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="30" cy="30" rx="24" ry="29" fill="url(#b-fill)"/>
+  <ellipse cx="22" cy="20" rx="7" ry="11" fill="#ffffff" opacity="0.55"/>
+  <ellipse cx="18" cy="35" rx="2" ry="4" fill="#ffffff" opacity="0.35"/>
+  <path d="M30 59 l-5 7 l10 0 Z" fill="#9d5c52"/>
+  <path d="M30 66 q6 12 -2 22" stroke="#d3c9b7" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 </svg>

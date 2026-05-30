@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- top row (offset bricks) -->
+  <rect x="2.5" y="4" width="6" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="9" y="4" width="6" height="5" rx="0.5" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="15.5" y="4" width="6" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+  <!-- middle row (offset) -->
+  <rect x="2.5" y="9.5" width="3" height="5" rx="0.5" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="6" y="9.5" width="6" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="12.5" y="9.5" width="6" height="5" rx="0.5" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="19" y="9.5" width="2.5" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+  <!-- bottom row -->
+  <rect x="2.5" y="15" width="6" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="9" y="15" width="6" height="5" rx="0.5" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.3"/>
+  <rect x="15.5" y="15" width="6" height="5" rx="0.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+</svg>

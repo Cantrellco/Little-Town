@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <link rel="stylesheet" href="assets/css/pages/our-story.css">
+  <link rel="stylesheet" href="assets/css/pages/photo-gallery.css">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html" class="active">Photo Gallery</a>
+        <a href="photo-gallery.html" class="active">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
@@ -42,7 +42,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html" class="active">Photo Gallery</a>
+        <a href="photo-gallery.html" class="active">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
     </div></div>
@@ -50,30 +50,102 @@
 
   <main>
 
-    <!-- ===================== PAGE HERO — polaroid scatter ===================== -->
-    <section class="page-hero ph--story">
-      <!-- Scattered polaroid thumbnails (desktop only; hidden on small screens) -->
-      <span class="deco deco-polaroid pol--tl" data-cap="Slide!" style="top:9%;left:4%">
-        <img src="assets/img/photo-play-slide.jpg" alt="">
-      </span>
-      <span class="deco deco-polaroid pol--bl" data-cap="Smiles" style="top:52%;left:7%">
-        <img src="assets/img/photo-bigsmiles.jpg" alt="">
-      </span>
-      <span class="deco deco-polaroid pol--tr" data-cap="Bridge" style="top:8%;right:5%">
-        <img src="assets/img/photo-play-bridge.jpg" alt="">
-      </span>
-      <span class="deco deco-polaroid pol--br" data-cap="Coffee" style="top:54%;right:8%">
-        <img src="assets/img/photo-cafe-table.jpg" alt="">
-      </span>
-      <!-- A tiny bit of brand sparkle, still on-theme -->
-      <span class="deco anim-bob"     style="top:14%;left:24%;width:30px"><img src="assets/img/deco-balloon.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:22%;right:30%;width:18px"><img src="assets/img/deco-star.svg" alt=""></span>
-      <span class="deco anim-twinkle" style="top:60%;left:28%;width:14px"><img src="assets/img/deco-star.svg" alt=""></span>
+    <!-- ===================== PAGE HERO — same recipe as Fusion: a single
+         signature tile (cameras) on a warm peach gradient, with the polaroid
+         stack beside the copy. ===================================== -->
+    <section class="page-hero ph--gallery">
 
-      <div class="container reveal">
-        <span class="eyebrow">📷 Step inside</span>
-        <h1>Snapshots from <span class="script" style="color:var(--accent)">the little town</span></h1>
-        <p class="lead">Real days, real smiles, real (very small) baristas — a peek at what an afternoon at Little Town actually looks like.</p>
+      <div class="container">
+        <div class="gallery-hero-inner">
+
+          <!-- Copy column -->
+          <div class="reveal">
+            <span class="partner-tag"><img src="assets/img/icon-camera.svg" alt="" width="18" height="18"> Captured moments</span>
+            <h1 style="margin-top:0.8rem">Snapshots from <span class="script" style="color:var(--accent)">the little town</span></h1>
+            <p class="lead"><strong class="hl--coral" style="color:var(--ink)">Real days, real smiles.</strong> A peek at what an afternoon at Little Town actually looks like &#x2014; tiny baristas, big imaginations, and the in-between moments we love most.</p>
+            <div class="flex-cta">
+              <a class="btn btn--lg btn--terracotta btn--pop" href="#gallery">See the gallery &#x2193;</a>
+              <a class="btn btn--lg btn--ghost" href="visit-us.html">Plan a visit</a>
+            </div>
+          </div>
+
+          <!-- Art column: a polished polaroid stack -->
+          <div class="gallery-hero-art reveal" data-delay="1" style="max-width:340px">
+            <svg viewBox="0 0 320 280" role="img" aria-labelledby="galleryArtTitle" xmlns="http://www.w3.org/2000/svg">
+              <title id="galleryArtTitle">A stack of polaroid photos from the playhouse.</title>
+
+              <!-- soft cast shadow under the stack -->
+              <ellipse cx="160" cy="262" rx="120" ry="6" fill="#3a2c20" opacity="0.16"/>
+
+              <!-- back polaroid (sage, tilted left) -->
+              <g transform="translate(160 142) rotate(-12)">
+                <rect x="-90" y="-100" width="180" height="200" rx="6" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <rect x="-76" y="-86" width="152" height="148" rx="3" fill="#BFD6A8"/>
+                <!-- tiny sky + sun + cloud illustration -->
+                <rect x="-76" y="-86" width="152" height="60" rx="3" fill="#C7E5EE"/>
+                <circle cx="34" cy="-66" r="10" fill="#F8D98F"/>
+                <ellipse cx="-30" cy="-50" rx="16" ry="6" fill="#FBF5EA"/>
+                <!-- a little house silhouette -->
+                <rect x="-30" y="-24" width="40" height="34" rx="2" fill="#E09972"/>
+                <polygon points="-30,-24 -10,-44 10,-24" fill="#A8472A"/>
+                <rect x="-14" y="-10" width="10" height="20" rx="1" fill="#8A5A2C"/>
+                <text x="0" y="84" font-family="Pacifico, cursive" font-size="14" fill="#5a2f1c" text-anchor="middle">Main Street</text>
+                <!-- tape -->
+                <rect x="-30" y="-110" width="60" height="14" fill="#F4DDB5" opacity="0.75"/>
+              </g>
+
+              <!-- middle polaroid (sky, tilted right) -->
+              <g transform="translate(160 138) rotate(6)">
+                <rect x="-86" y="-96" width="172" height="192" rx="6" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <rect x="-72" y="-82" width="144" height="140" rx="3" fill="#FDE5C7"/>
+                <!-- coffee cup illustration -->
+                <ellipse cx="0" cy="50" rx="56" ry="6" fill="#E2C79B"/>
+                <path d="M-40 -34 H40 L36 38 Q34 50 18 50 H-18 Q-34 50 -36 38 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2"/>
+                <path d="M40 -22 Q60 -20 60 0 Q60 22 40 20" fill="none" stroke="#8A5A2C" stroke-width="4" stroke-linecap="round"/>
+                <ellipse cx="0" cy="-34" rx="40" ry="9" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2"/>
+                <ellipse cx="0" cy="-34" rx="34" ry="7" fill="#E5C49A"/>
+                <ellipse cx="0" cy="-34" rx="28" ry="5.5" fill="#8A5A2C"/>
+                <path d="M0 -38 q-6 -5 -10 0 q-2 5 10 11 q12 -6 10 -11 q-4 -5 -10 0 Z" fill="#FBF5EA"/>
+                <text x="0" y="86" font-family="Pacifico, cursive" font-size="14" fill="#5a2f1c" text-anchor="middle">Latte day</text>
+              </g>
+
+              <!-- front polaroid (cream, slight tilt) -->
+              <g transform="translate(166 132) rotate(-3)">
+                <rect x="-84" y="-94" width="168" height="186" rx="6" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <rect x="-70" y="-80" width="140" height="136" rx="3" fill="#F2D6BD"/>
+                <!-- two little kids playing illustration -->
+                <ellipse cx="0" cy="52" rx="58" ry="6" fill="#E2C79B"/>
+                <!-- left kid -->
+                <g transform="translate(-28 8)">
+                  <circle cx="0" cy="-14" r="12" fill="#F2D5BD"/>
+                  <path d="M-8 -16 a8 8 0 0 1 16 0 q-8 -6 -16 0Z" fill="#7A4A28"/>
+                  <circle cx="-3.5" cy="-12" r="1.3" fill="#3a322a"/>
+                  <circle cx="3.5" cy="-12" r="1.3" fill="#3a322a"/>
+                  <path d="M-3 -8 q3 3 6 0" stroke="#3a322a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                  <path d="M-12 4 H12 V32 H-12 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.4"/>
+                </g>
+                <!-- right kid -->
+                <g transform="translate(28 8)">
+                  <circle cx="0" cy="-14" r="12" fill="#F2D5BD"/>
+                  <path d="M-8 -16 a8 8 0 0 1 16 0" fill="#A8472A"/>
+                  <circle cx="-3.5" cy="-12" r="1.3" fill="#3a322a"/>
+                  <circle cx="3.5" cy="-12" r="1.3" fill="#3a322a"/>
+                  <path d="M-3 -8 q3 3 6 0" stroke="#3a322a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                  <path d="M-12 4 H12 V32 H-12 Z" fill="#ABBE83" stroke="#8A5A2C" stroke-width="1.4"/>
+                </g>
+                <!-- balloon between -->
+                <ellipse cx="0" cy="-24" rx="8" ry="10" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
+                <path d="M0 -14 q3 5 -1 12" stroke="#8A5A2C" stroke-width="1" fill="none"/>
+                <text x="0" y="80" font-family="Pacifico, cursive" font-size="14" fill="#5a2f1c" text-anchor="middle">Best buds</text>
+              </g>
+
+              <!-- a little heart sparkle accent -->
+              <path transform="translate(38 60) rotate(-10)" d="M0 6 C-7 0 -7 -7 0 -3 C7 -7 7 0 0 6 Z" fill="#A8472A" opacity="0.85"/>
+              <path transform="translate(286 200) rotate(12)" d="M0 -6 q1.3 5 6 6 q-4.7 1 -6 6 q-1.3 -5 -6 -6 q4.7 -1 6 -6Z" fill="#E7BC76"/>
+            </svg>
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -85,7 +157,7 @@
           <figure class="gallery-figure reveal">
             <img src="assets/img/photo-play-slide.jpg" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
             <figcaption>The big slides</figcaption>
-            <span class="gallery-sticker" aria-hidden="true">🛝 Hello!</span>
+            <span class="gallery-sticker" aria-hidden="true"><img src="assets/img/icon-slide.svg" alt="" width="18" height="18"> Hello!</span>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="1">
@@ -106,7 +178,7 @@
           <figure class="gallery-figure reveal" data-delay="1">
             <img src="assets/img/photo-play-blocks.jpg" alt="A child building inside a fort of giant foam blocks." decoding="async">
             <figcaption>Block-tower architects</figcaption>
-            <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true">🧱 Builders</span>
+            <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true"><img src="assets/img/icon-bricks.svg" alt="" width="18" height="18"> Builders</span>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="2">
@@ -125,7 +197,7 @@
       <div class="container">
         <div class="cta-band bg-sunrise on-dark anim-gradient reveal">
           <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">📸 Come see for yourself</span>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem"><img src="assets/img/icon-camera.svg" alt="" width="18" height="18"> Come see for yourself</span>
           <h2>Want to be in the <span class="script">next snapshot?</span></h2>
           <p>Stop in any day we're open — your little one might just star in our gallery.</p>
           <div class="flex-cta center">

@@ -11,33 +11,31 @@
   --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--red); --bub-4: var(--sky);
 }
 
-/* ---------- Hero: a BIRTHDAY PARTY world — confetti scattered across a warm
-     party-glow backdrop, with bunting, balloons and streamers. ---------- */
+/* ---------- Hero: same recipe as Fusion — a single signature tile (balloons)
+     repeated over a warm pink→peach gradient, with the birthday cake beside
+     the copy. ---------- */
 .page-hero.ph--party {
   background:
-    url("../../img/confetti.svg") center top / cover no-repeat,
-    radial-gradient(125% 95% at 50% 0%, #fde2e4 0%, #fbe7d6 52%, var(--base) 100%);
+    url("../../img/party-tile-v2.svg") center / 132px repeat,
+    linear-gradient(180deg, #F8D0CC 0%, #FBE2D2 58%, var(--base) 100%);
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
 }
-
-/* Two-column hero (copy + castle side by side) so the parties hero shares the
-   same on-screen footprint as the other interior heroes instead of stacking
-   tall. Mobile keeps the centred stack; desktop puts the castle beside the copy. */
 .ph--party .container {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
 }
 .ph--party .hero-art {
-  margin-top: 0.4rem;
-  margin-bottom: clamp(2rem, 5vw, 3.4rem);
   margin-inline: auto;
 }
-@media (min-width: 880px) {
-  .ph--party .container { grid-template-columns: 1.05fr 0.95fr; text-align: left; }
-  .ph--party .container > .reveal .flex-cta { justify-content: flex-start; }
-  .ph--party .bunting-row { justify-content: flex-start; }
-  .ph--party .confetti { justify-content: flex-start; }
-  .ph--party .hero-art { margin-top: 0; margin-bottom: 0; }
+@media (min-width: 760px) {
+  .ph--party .container { grid-template-columns: 1fr auto; }
+}
+/* Coral partner-tag eyebrow */
+.ph--party .partner-tag {
+  background: rgba(255,255,255,0.85);
+  color: #8A3320;
+  border: 1px solid rgba(194,128,95,0.30);
 }
 
 /* Bigger, bolder eyebrow confetti dots on the parties hero */
@@ -87,9 +85,13 @@
 }
 
 .parties-stats .stat-card {
-  background: var(--white);
+  background: linear-gradient(180deg, #ffffff 0%, #fcf8f0 100%);
   border-radius: var(--r-xl);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    0 1px 2px rgba(80,60,30,0.05),
+    0 8px 18px -6px rgba(80,60,30,0.12),
+    0 14px 36px -10px rgba(80,60,30,0.10);
   padding: clamp(1.4rem, 3vw, 2.2rem) 1rem;
   text-align: center;
   border: 2px solid transparent;

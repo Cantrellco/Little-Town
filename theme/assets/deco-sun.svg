@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- A soft, friendly sun with eight rounded rays — pairs with .anim-spin-slow. -->
+<!-- Friendly sun with eight rounded rays, a soft gradient body and a halo.
+     v11 polish — radial gradient gives the sphere depth instead of the
+     original flat fill. Pairs with .anim-spin-slow. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" role="presentation" aria-hidden="true">
-  <g fill="#f4cf78">
+  <defs>
+    <radialGradient id="sun-fill" cx="42%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#fff3c8"/>
+      <stop offset="55%" stop-color="#f7d886"/>
+      <stop offset="100%" stop-color="#d9a843"/>
+    </radialGradient>
+    <radialGradient id="sun-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#fce7b0" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#fce7b0" stop-opacity="0.7"/>
+    </radialGradient>
+    <linearGradient id="sun-ray" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#fcd97c"/>
+      <stop offset="100%" stop-color="#e6b056"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#sun-ray)">
     <g transform="rotate(0 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
     <g transform="rotate(45 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
     <g transform="rotate(90 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
@@ -11,7 +28,9 @@
     <g transform="rotate(270 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
     <g transform="rotate(315 65 65)"><rect x="61" y="6" width="8" height="20" rx="4"/></g>
   </g>
-  <circle cx="65" cy="65" r="34" fill="#f7d886"/>
-  <circle cx="65" cy="65" r="34" fill="none" stroke="#fce7b0" stroke-width="5"/>
-  <circle cx="54" cy="54" r="9" fill="#fbe6a8" opacity="0.7"/>
+  <circle cx="65" cy="65" r="38" fill="url(#sun-halo)"/>
+  <circle cx="65" cy="65" r="34" fill="url(#sun-fill)"/>
+  <circle cx="65" cy="65" r="34" fill="none" stroke="#fff3c8" stroke-width="3" opacity="0.6"/>
+  <circle cx="54" cy="54" r="10" fill="#fff6dc" opacity="0.6"/>
+  <circle cx="58" cy="50" r="4" fill="#ffffff" opacity="0.85"/>
 </svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- back bean -->
+  <g transform="translate(8 10) rotate(-22)">
+    <ellipse cx="0" cy="0" rx="6.2" ry="3.8" fill="#7A4A28" stroke="#3a2418" stroke-width="0.5"/>
+    <path d="M-5 0 q5 -2.6 10 0 q-5 2.6 -10 0" fill="#4A2F18"/>
+    <path d="M-3.4 -1.6 q1.6 0.5 0 3.2" stroke="#3a2418" stroke-width="0.4" fill="none" opacity="0.7"/>
+  </g>
+  <!-- front bean -->
+  <g transform="translate(15 14) rotate(20)">
+    <ellipse cx="0" cy="0" rx="6.2" ry="3.8" fill="#8A5A2C" stroke="#3a2418" stroke-width="0.5"/>
+    <path d="M-5 0 q5 -2.6 10 0 q-5 2.6 -10 0" fill="#5A3818"/>
+    <path d="M-3.4 -1.6 q1.6 0.5 0 3.2" stroke="#3a2418" stroke-width="0.4" fill="none" opacity="0.7"/>
+  </g>
+  <!-- tiny third bean -->
+  <g transform="translate(17 5.6) rotate(-12)">
+    <ellipse cx="0" cy="0" rx="3.6" ry="2.3" fill="#7A4A28" stroke="#3a2418" stroke-width="0.4"/>
+    <path d="M-2.9 0 q2.9 -1.5 5.8 0 q-2.9 1.5 -5.8 0" fill="#4A2F18"/>
+  </g>
+</svg>

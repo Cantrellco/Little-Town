@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling "play" texture — same sparse recipe as the Fusion
+     coffee-bean tile: three small motifs at low opacity. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.16" fill="#5a8c8a">
+    <!-- little cloud -->
+    <g transform="translate(34 38)">
+      <ellipse cx="0" cy="0" rx="11" ry="6"/>
+      <ellipse cx="-8" cy="2" rx="6" ry="4"/>
+      <ellipse cx="8" cy="2" rx="7" ry="4.5"/>
+    </g>
+    <!-- 5-point star -->
+    <path transform="translate(96 70) rotate(8)" d="M0 -9 L2.6 -2.6 L9 -2.6 L3.8 1.5 L5.8 8 L0 4 L-5.8 8 L-3.8 1.5 L-9 -2.6 L-2.6 -2.6 Z"/>
+    <!-- balloon -->
+    <ellipse transform="translate(60 104)" cx="0" cy="0" rx="6.5" ry="8.5"/>
+  </g>
+</svg>

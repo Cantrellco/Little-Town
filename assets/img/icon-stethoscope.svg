@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- ear-tips -->
+  <path d="M5 3 v5 a3.5 3.5 0 0 0 3.5 3.5 a3.5 3.5 0 0 0 3.5 -3.5 v-5" fill="none" stroke="#8A5A2C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="5" cy="3" r="1.2" fill="#8A5A2C"/>
+  <circle cx="12" cy="3" r="1.2" fill="#8A5A2C"/>
+  <!-- tubing to chest piece -->
+  <path d="M8.5 11.5 v3 a4 4 0 0 0 4 4 a4 4 0 0 0 4 -4 v-1" fill="none" stroke="#8A5A2C" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- chest piece (terracotta with cream rim) -->
+  <circle cx="16.5" cy="13" r="2.8" fill="#E09972" stroke="#8A5A2C" stroke-width="1.5"/>
+  <circle cx="16.5" cy="13" r="1.4" fill="#FBF5EA"/>
+  <!-- tiny heartbeat dot -->
+  <circle cx="16.5" cy="13" r="0.6" fill="#A8472A"/>
+</svg>

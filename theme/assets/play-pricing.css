@@ -7,56 +7,33 @@
 /* Pastel ribbon colour for the flowing section dividers (playful mix) */
 :root { --flow-accent: linear-gradient(90deg, var(--coral) 0%, var(--sky) 40%, var(--sage) 70%, var(--sun) 100%); }
 
-/* ---------- Hero: a bright OUTDOOR Main Street — sunny sky fading to grass,
-     with a sun in the corner. This is the only interior page that keeps the
-     sky + clouds, which sets it apart from the other three. ---------- */
+/* ---------- Hero: same recipe as Fusion — a single signature tile (toy
+     blocks) repeated over a cool sky-blue gradient, with the wide Main Street
+     beside the copy. Each interior hero shares this fusion skeleton but
+     carries its own colour + bg motif. ---------- */
 .page-hero.ph--play {
-  background: linear-gradient(180deg, #a9dff1 0%, #c6ecf4 38%, #dff1da 70%, #cfe8bc 100%);
-  /* Height + padding come from the shared .page-hero model so this hero matches
-     the other interior pages' footprint. */
+  background:
+    url("play-tile-v3.svg") center / 132px repeat,
+    linear-gradient(180deg, #C5E2EC 0%, #DCEDF2 58%, var(--base) 100%);
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
 }
-/* Two-column hero: copy on the left, the wide Main Street beside it on the
-   right, with the stat-pill strip spanning the full width beneath — keeps the
-   hero the same on-screen size as the other interior pages instead of running
-   tall. Mobile keeps the centred stack. */
 .ph--play .container {
   display: grid;
-  gap: clamp(1.4rem, 3.5vw, 2.6rem);
+  gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
 }
-@media (min-width: 880px) {
-  .ph--play .container { grid-template-columns: 1fr 1.05fr; text-align: left; }
-  .ph--play .container .flex-cta { justify-content: flex-start; }
-  .ph--play .hero-sticker-wrap { justify-self: center; }
+@media (min-width: 760px) {
+  .ph--play .container { grid-template-columns: 1fr auto; }
   .ph--play .stat-strip { grid-column: 1 / -1; }
 }
-/* Soft rolling hills along the bottom of the sky (behind the town) */
-.play-hills {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  width: 100%;
-  height: clamp(70px, 13vw, 140px);
-  z-index: 0;
-  pointer-events: none;
+.ph--play .hero-art { max-width: 540px; }
+.ph--play .hero-art img { width: 100%; height: auto; display: block; }
+/* Sky-blue partner-tag eyebrow */
+.ph--play .partner-tag {
+  background: rgba(255,255,255,0.85);
+  color: #1e5a72;
+  border: 1px solid rgba(63,114,148,0.22);
 }
-.play-hills svg { width: 100%; height: 100%; display: block; }
-/* Sunny corner (shows on all screen sizes) */
-.play-sun {
-  position: absolute;
-  top: 6px; right: 18px;
-  width: 116px; height: 116px;
-  z-index: 0;
-  pointer-events: none;
-}
-.play-sun svg { width: 100%; height: 100%; display: block; }
-@media (prefers-reduced-motion: no-preference) {
-  .play-sun { animation: playSunSpin 90s linear infinite; transform-origin: center; }
-}
-@keyframes playSunSpin { to { transform: rotate(360deg); } }
-@media (max-width: 700px) {
-  .play-sun { width: 84px; height: 84px; top: 4px; right: 8px; }
-}
-
 /* ---------- Hero accent: sticker on the art ---------- */
 .ph--play .hero-sticker-wrap {
   position: relative;
@@ -132,11 +109,10 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease;
 }
-.storefront-card:hover { transform: translateY(-8px) scale(1.015) rotate(0deg) !important; box-shadow: var(--shadow-md); }
-.storefront-card:nth-child(odd)  { transform: rotate(-1.2deg); }
-.storefront-card:nth-child(even) { transform: rotate(1.2deg); }
+/* Transform is owned by JS-driven .tilt-3d (mouse-follow 3D); we only lift the shadow on hover. */
+.storefront-card:hover { box-shadow: var(--shadow-md); }
 
 /* Coloured top band */
 .storefront-cap {

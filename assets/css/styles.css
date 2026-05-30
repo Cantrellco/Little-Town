@@ -122,8 +122,32 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
   padding-inline: clamp(1.1rem, 4vw, 2.5rem);
 }
 
+/* Inline icon images — every sticker / chip / bubble / pill container is a
+   flex or grid box, so an <img> child just needs `display:block` to drop
+   inline-baseline spacing and centre cleanly. Sized via the <img>'s own
+   width/height attributes so each spot can pick its scale. */
+.sticker img, .partner-tag img, .stat-pill img, .pop-bubble img,
+.storefront-sticker img, .gallery-sticker img, .pp-sticker img,
+.member-flag img, .policy-icon img, .eyebrow--icon img,
+.fusion-stat-pill .pill-icon img { display: block; }
+/* Eyebrow with an inline icon — opt-in modifier turns the small caps label
+   into a flex row so the icon and text sit on the same baseline. */
+.eyebrow--icon { display: inline-flex; align-items: center; gap: 0.45rem; }
 .section { padding-block: clamp(2.25rem, 5vw, var(--space-7)); }
 .section--tight { padding-block: clamp(1.6rem, 3.5vw, var(--space-6)); }
+/* Wave clearance — any section directly followed by a flow-top wave, or that
+   sits last in <main> (i.e. just before the wave-edged footer), needs extra
+   bottom space so the next divider's wave band (up to flow-h + 18 ≈ 90px
+   desktop / 52px mobile) rises into empty space rather than over cards,
+   pills, buttons or text. Uses :has() + :last-child so this is automatic
+   for every page without per-section tuning. */
+.section:has(+ section.flow-top),
+.section--tight:has(+ section.flow-top),
+.page-hero:has(+ section.flow-top),
+main > .section:last-child,
+main > .section--tight:last-child {
+  padding-bottom: clamp(4.25rem, 6vw + 1.4rem, 6.75rem);
+}
 .band { background: var(--base-deep); }
 .band-white { background: var(--white); }
 
@@ -746,10 +770,10 @@ p { margin: 0 0 1rem; color: var(--ink-soft); }
 /* Fusion — warm coffee cream with floating café treats */
 .page-hero.ph--cafe { background: linear-gradient(180deg, #f3e3cb 0%, #f7ecd9 46%, var(--base) 100%); }
 
-/* Our Story — quiet, warm paper; restrained and a touch more editorial.
-   (Background is themed further in our-story.css; padding/height come from the
-   shared .page-hero model so it matches the other interior heroes.) */
-.page-hero.ph--story {
+/* Photo Gallery — quiet, warm paper; restrained and a touch more editorial.
+   (Background is themed further in photo-gallery.css; padding/height come from
+   the shared .page-hero model so it matches the other interior heroes.) */
+.page-hero.ph--gallery {
   background: linear-gradient(180deg, #efe7d8 0%, #f4eee2 52%, var(--base) 100%);
 }
 
@@ -1498,3 +1522,867 @@ section.flow-top { overflow: visible; }
   .pp-glimpse-tile { transition: none; }
   .pp-glimpse-tile:hover { transform: none; }
 }
+
+/* ============================================================
+   v11 — Boutique polish
+   A refinement pass that elevates everything one notch without
+   changing the palette or page structure. Crafted multi-layer
+   shadows, paper-finish gloss on cards & buttons, refined typography
+   ornaments, glassier nav, premium gallery treatment, plus new
+   motion primitives (3D mouse tilt, magnetic CTAs, sparkle fields,
+   number count-up). Builds ON TOP of v1–v10 — no existing markup or
+   class is broken.
+   ============================================================ */
+
+:root {
+  /* -------- Refined multi-layer shadow scale --------
+     The single biggest "$10k website" tell: shadows that read as a
+     real light source. Each combines an ambient soft halo + a sharper
+     key contact + (where appropriate) a pastel coloured rim.
+     The old --shadow-sm/md/lg are preserved above for backward compat. */
+  --shadow-xs: 0 1px 1px rgba(80,60,30,0.04), 0 1px 3px rgba(80,60,30,0.05);
+  --shadow-soft: 0 1px 2px rgba(80,60,30,0.06), 0 4px 12px rgba(80,60,30,0.07);
+  --shadow-card: 0 1px 2px rgba(80,60,30,0.05),
+                 0 8px 18px -6px rgba(80,60,30,0.12),
+                 0 14px 36px -10px rgba(80,60,30,0.10);
+  --shadow-float: 0 1px 2px rgba(80,60,30,0.06),
+                  0 14px 28px -10px rgba(80,60,30,0.16),
+                  0 28px 60px -16px rgba(80,60,30,0.14);
+  --shadow-hero: 0 2px 4px rgba(80,60,30,0.06),
+                 0 24px 50px -16px rgba(80,60,30,0.18),
+                 0 48px 96px -28px rgba(80,60,30,0.16);
+  /* Brand-tinted glows for accents on coloured surfaces */
+  --glow-sun:   0 12px 32px -8px rgba(248,217,143,0.55);
+  --glow-coral: 0 12px 32px -8px rgba(244,174,146,0.55);
+  --glow-sage:  0 12px 32px -8px rgba(191,214,168,0.55);
+  --glow-teal:  0 12px 32px -8px rgba(167,210,201,0.55);
+  --glow-sky:   0 12px 32px -8px rgba(174,220,234,0.55);
+
+  /* Crisp hairline + subtle inset highlight */
+  --hairline:    rgba(58,49,40,0.10);
+  --hairline-soft: rgba(58,49,40,0.06);
+  --gloss-top:   inset 0 1px 0 rgba(255,255,255,0.85);
+  --gloss-edge:  inset 0 0 0 1px rgba(255,255,255,0.55);
+
+  /* Display gradient text — boutique flourish for marquee headings */
+  --grad-warm-text: linear-gradient(135deg, var(--accent) 0%, var(--accent-coral) 60%, var(--accent-sun) 100%);
+}
+
+/* -------- Selection + scrollbar polish -------- */
+::selection { background: var(--sun); color: #5a3d12; }
+::-moz-selection { background: var(--sun); color: #5a3d12; }
+@supports (scrollbar-width: thin) {
+  html { scrollbar-width: thin; scrollbar-color: var(--wood) transparent; }
+}
+@media (pointer: fine) {
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--wood), var(--terracotta));
+    border-radius: 999px;
+    border: 3px solid var(--base);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--terracotta), var(--accent-coral)); }
+}
+
+/* -------- First-paint page reveal -------- */
+@media (prefers-reduced-motion: no-preference) {
+  body { animation: pageFade 0.7s ease-out both; }
+  @keyframes pageFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* -------- Refined nav glass + hover rhythm -------- */
+.site-header {
+  background: rgba(247, 243, 236, 0.72);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom-color: rgba(58,49,40,0.05);
+  transition: box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+.site-header.is-stuck {
+  background: rgba(247,243,236,0.92);
+  border-bottom-color: rgba(58,49,40,0.10);
+  box-shadow: 0 1px 0 rgba(58,49,40,0.04), 0 12px 30px -18px rgba(58,49,40,0.20);
+}
+.nav a {
+  transition: color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+}
+.nav a:hover { background: rgba(255,255,255,0.6); }
+/* CTA gets a refined inset gloss + brand-tinted shadow */
+.header-cta .btn--cta {
+  box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral);
+}
+.header-cta .btn--cta:hover { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 18px 36px -10px rgba(224,161,132,0.55); }
+
+/* -------- Refined buttons: tactile depth, gloss top, hover lift -------- */
+.btn {
+  box-shadow:
+    var(--gloss-top),
+    0 1px 2px rgba(80,60,30,0.10),
+    0 8px 18px -8px rgba(80,60,30,0.20);
+  letter-spacing: 0.005em;
+}
+.btn:hover {
+  box-shadow:
+    var(--gloss-top),
+    0 2px 4px rgba(80,60,30,0.10),
+    0 16px 30px -10px rgba(80,60,30,0.24);
+}
+.btn--ghost { box-shadow: none; }
+.btn--ghost:hover { box-shadow: 0 8px 18px -10px rgba(80,60,30,0.18); }
+/* Per-colour soft tinted rim shadow */
+.btn--terracotta { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral); }
+.btn--terracotta:hover { box-shadow: var(--gloss-top), 0 2px 4px rgba(80,60,30,0.12), 0 18px 40px -10px rgba(224,161,132,0.60); }
+.btn--red { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 12px 32px -10px rgba(236,154,144,0.55); }
+.btn--wood { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 12px 32px -10px rgba(232,201,155,0.65); }
+.btn--teal { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-teal); }
+.btn--sun  { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-sun); }
+.btn--coral{ box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral); }
+
+/* -------- Refined cards: paper finish + crafted shadow -------- */
+.card {
+  border: 1px solid var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  /* subtle paper warmth — a faint warm-cream backing layer */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+  position: relative;
+}
+/* Top inner gloss line — the "paper edge catches light" cue */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto 1px;
+  height: 50%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  pointer-events: none;
+  z-index: 0;
+}
+.card > * { position: relative; z-index: 1; }
+.card:hover { box-shadow: var(--shadow-float); }
+
+/* -------- Refined section eyebrow w/ optional ornamental rule -------- */
+.eyebrow {
+  position: relative;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+}
+/* Ornamental eyebrow — small line + dot decoration */
+.eyebrow--rule {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+}
+.eyebrow--rule::before, .eyebrow--rule::after {
+  content: "";
+  width: 22px; height: 1.5px; border-radius: 2px;
+  background: currentColor; opacity: 0.45;
+}
+/* Ornament dot above an H2 — used as a class on the heading */
+.h-ornament {
+  position: relative;
+  padding-top: 1.2rem;
+}
+.h-ornament::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent-coral);
+  transform: translateX(-50%);
+  box-shadow:
+    -14px 0 0 var(--accent-sage),
+    14px 0 0 var(--accent-sun);
+}
+/* Left-aligned ornament variant */
+.h-ornament.h-ornament--left::before { left: 0; transform: none; }
+
+/* Optional display headline w/ subtle gradient ink */
+.h-display {
+  background: var(--grad-warm-text);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* -------- Refined trust bar -------- */
+.trust-bar {
+  box-shadow:
+    var(--gloss-top),
+    var(--shadow-card);
+  border-color: var(--hairline-soft);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+  padding: 1.1rem clamp(1.2rem, 4vw, 2.2rem);
+}
+.trust { font-weight: 600; gap: 0.6rem; }
+.trust svg { width: 24px; height: 24px; color: var(--accent-teal); }
+.trust:nth-child(2) svg { color: var(--accent-coral); }
+.trust:nth-child(3) svg { color: var(--accent-sage); }
+@media (min-width: 760px) {
+  .trust + .trust { border-left-color: var(--hairline-soft); }
+}
+
+/* -------- Refined chip on feature cards -------- */
+.chip {
+  box-shadow:
+    var(--gloss-top),
+    0 6px 14px -6px rgba(80,60,30,0.18);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+/* -------- Refined gallery — polaroid-style frame option -------- */
+.gallery figure {
+  border: 1px solid var(--hairline-soft);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+  box-shadow: var(--shadow-card);
+}
+.gallery figure:hover { box-shadow: var(--shadow-float); }
+/* Polaroid variant — usable on home-glimpse tiles + gallery tiles */
+.frame--polaroid {
+  background: #fff;
+  padding: 0.6rem 0.6rem 1.4rem;
+  border-radius: calc(var(--r-md) + 4px);
+  box-shadow: var(--shadow-card);
+  transform: rotate(-1deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.frame--polaroid:hover { transform: rotate(0deg) translateY(-4px); box-shadow: var(--shadow-float); }
+.frame--polaroid img { border-radius: calc(var(--r-md) - 2px); }
+
+/* -------- Refined accordion -------- */
+.acc-item {
+  border-color: var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+}
+.acc-trigger:hover { background: rgba(255,255,255,0.5); }
+
+/* -------- Refined form fields -------- */
+.field input, .field textarea, .field select {
+  background:
+    linear-gradient(180deg, rgba(252,248,240,0.6) 0%, rgba(255,255,255,1) 100%);
+  box-shadow: inset 0 1px 2px rgba(58,49,40,0.05);
+  border-color: var(--hairline);
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  box-shadow:
+    inset 0 1px 2px rgba(58,49,40,0.04),
+    0 0 0 4px var(--teal-tint),
+    0 8px 20px -10px rgba(63,114,104,0.30);
+}
+
+/* -------- Refined newsletter — layered glow + edge halo -------- */
+.newsletter {
+  background:
+    radial-gradient(140% 100% at 100% 0%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 50%),
+    radial-gradient(120% 100% at 0% 100%, rgba(217,102,61,0.18) 0%, rgba(217,102,61,0) 55%),
+    linear-gradient(135deg, var(--wood) 0%, var(--terracotta) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    var(--shadow-float);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+.newsletter-form input {
+  box-shadow:
+    inset 0 1px 2px rgba(58,49,40,0.06),
+    var(--gloss-top);
+}
+
+/* -------- Refined footer: subtle paper grain + ornamental column heads -------- */
+.site-footer {
+  background:
+    radial-gradient(80% 60% at 0% 0%, rgba(232,201,155,0.10) 0%, rgba(232,201,155,0) 60%),
+    radial-gradient(80% 60% at 100% 100%, rgba(63,114,104,0.10) 0%, rgba(63,114,104,0) 60%),
+    #2a2620;
+}
+.footer-col h4 {
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+.footer-col h4::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 28px; height: 2px; border-radius: 2px;
+  background: var(--wood);
+}
+.footer-col a { transition: color 0.22s ease, opacity 0.22s ease; }
+.footer-col a:hover { color: var(--wood); }
+.socials a {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+.socials a:hover {
+  background: var(--wood);
+  border-color: var(--wood);
+  transform: translateY(-3px) scale(1.04);
+}
+.map-placeholder {
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 18px 40px -16px rgba(0,0,0,0.5);
+}
+
+/* -------- Refined sticky member CTA ring (existing animation, more subtle) */
+@keyframes ctaRing {
+  0%   { box-shadow: 0 0 0 0 rgba(236, 154, 144, 0.55); }
+  70%  { box-shadow: 0 0 0 14px rgba(236, 154, 144, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(236, 154, 144, 0); }
+}
+
+/* -------- Refined pricing card check-mark glyphs (custom SVG) -------- */
+.price-list li::before {
+  width: 18px; height: 18px;
+  background:
+    var(--sage-tint)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236F8A4D' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4 10-11'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(111,138,77,0.45),
+    0 2px 4px rgba(111,138,77,0.15);
+}
+.price-card.featured .price-list li::before {
+  background:
+    var(--terra-tint)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B35A37' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4 10-11'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(179,90,55,0.45),
+    0 2px 4px rgba(179,90,55,0.15);
+}
+
+/* -------- Big stat number — refined display -------- */
+.stat .num { letter-spacing: -0.02em; }
+.stat .num.is-counting { transform: translateY(2px); transition: transform 0.4s ease; }
+.stat .num.is-counted  { transform: none; }
+
+/* -------- Section heading rhythm helper -------- */
+.section-head { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.section-head .section-lead { margin-top: 0.6rem; }
+
+/* -------- v11 — 3D mouse tilt (JS-powered) --------
+   JS owns the per-frame transform (mouse-follow rotateX/Y + subtle scale).
+   No CSS transition here — it would smear the rAF lerp. */
+.tilt-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* Reveal + tilt-3d clash: .reveal declares `transition: transform 0.7s`,
+   which keeps re-firing every time main.js writes a new inline transform —
+   making cards after the first appear frozen. Drop the reveal slide-in on
+   tilt-3d cards; only the opacity fade still applies. */
+.reveal.tilt-3d {
+  transform: none;
+}
+.reveal.tilt-3d.is-visible {
+  transition: opacity 0.6s ease;
+}
+/* Global `.card` declares `transition: transform 0.28s, box-shadow 0.25s`;
+   strip transform here so it doesn't fight the JS rAF on home + menu cards. */
+.card.tilt-3d {
+  transition: box-shadow 0.25s ease;
+}
+.tilt-3d > .tilt-3d-inner {
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .tilt-3d { transform: none !important; }
+}
+
+/* -------- v11 — Magnetic CTA pull (JS-powered) -------- */
+.magnetic {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .magnetic { transform: none !important; }
+}
+
+/* -------- v11 — Sparkle field (CSS-only twinkling dust) -------- */
+.has-sparkles { position: relative; }
+.sparkle-field {
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sparkle-field i {
+  position: absolute;
+  width: 8px; height: 8px;
+  background:
+    radial-gradient(circle at 50% 50%, #fff 0 35%, rgba(255,255,255,0) 70%),
+    radial-gradient(circle at 50% 50%, var(--sun) 0 60%, rgba(248,217,143,0) 90%);
+  border-radius: 50%;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
+  animation: sparkleTwinkle 4.5s ease-in-out infinite;
+}
+.sparkle-field i:nth-child(1)  { top: 12%; left: 8%;  animation-delay: 0.0s; }
+.sparkle-field i:nth-child(2)  { top: 24%; left: 18%; animation-delay: 0.7s; width: 6px; height: 6px; }
+.sparkle-field i:nth-child(3)  { top: 8%;  left: 38%; animation-delay: 1.5s; }
+.sparkle-field i:nth-child(4)  { top: 28%; left: 54%; animation-delay: 2.3s; width: 5px; height: 5px; }
+.sparkle-field i:nth-child(5)  { top: 14%; left: 72%; animation-delay: 0.4s; }
+.sparkle-field i:nth-child(6)  { top: 32%; left: 86%; animation-delay: 3.0s; width: 7px; height: 7px; }
+.sparkle-field i:nth-child(7)  { top: 60%; left: 12%; animation-delay: 2.0s; width: 6px; height: 6px; }
+.sparkle-field i:nth-child(8)  { top: 70%; left: 32%; animation-delay: 1.0s; }
+.sparkle-field i:nth-child(9)  { top: 56%; left: 64%; animation-delay: 3.5s; width: 5px; height: 5px; }
+.sparkle-field i:nth-child(10) { top: 78%; left: 84%; animation-delay: 0.8s; }
+.sparkle-field i:nth-child(11) { top: 44%; left: 28%; animation-delay: 2.6s; width: 4px; height: 4px; }
+.sparkle-field i:nth-child(12) { top: 48%; left: 78%; animation-delay: 1.8s; width: 4px; height: 4px; }
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50%      { opacity: 0.95; transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-field { display: none; }
+}
+
+/* -------- v11 — Marquee strip (used on subtle social-proof bars) -------- */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex; gap: 3rem;
+  width: max-content;
+  animation: marqueeRoll 40s linear infinite;
+}
+@keyframes marqueeRoll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* -------- v11 — Refined hero scrim for richer sky depth -------- */
+.hero-v2 .hero-scrim,
+.page-hero .hero-scrim {
+  background:
+    radial-gradient(60% 40% at 50% 12%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.50) 0%, rgba(255,255,255,0.24) 24%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 72%);
+}
+
+/* -------- v11 — Refined photo glimpse tiles (home + play-pricing) -------- */
+.home-glimpse-tile,
+.pp-glimpse-tile {
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--hairline-soft);
+}
+.home-glimpse-tile:hover,
+.pp-glimpse-tile:hover { box-shadow: var(--shadow-float); }
+
+/* -------- v11 — Pop-bubble refined glow -------- */
+.pop-bubble {
+  box-shadow:
+    var(--gloss-top),
+    var(--shadow-float),
+    var(--glow-sun);
+  border: 1.5px solid rgba(255,255,255,0.7);
+}
+.pop-bubble--sky   { box-shadow: var(--gloss-top), var(--shadow-float), var(--glow-sky); }
+.pop-bubble--coral { box-shadow: var(--gloss-top), var(--shadow-float), var(--glow-coral); }
+.pop-bubble--sage  { box-shadow: var(--gloss-top), var(--shadow-float), var(--glow-sage); }
+
+/* -------- v11 — Polished policy strip -------- */
+.policy {
+  box-shadow:
+    var(--gloss-top),
+    0 1px 2px rgba(80,60,30,0.06),
+    0 12px 28px -14px rgba(80,60,30,0.16);
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 50%),
+    var(--wood-tint);
+}
+
+/* -------- v11 — Polished badge / sticker -------- */
+.badge, .sticker, .savings-sticker, .most-popular-sticker, .pp-sticker, .storefront-sticker,
+.member-flag, .home-card-sticker {
+  box-shadow:
+    var(--gloss-top),
+    0 1px 2px rgba(80,60,30,0.10),
+    0 8px 18px -8px rgba(80,60,30,0.22);
+}
+
+/* -------- v11 — Marker highlight refined (slightly richer band) -------- */
+.hl {
+  background-size: 100% 42%;
+  background-position: 0 82%;
+  padding: 0 0.12em;
+}
+
+/* -------- v11 — Refined storefront cards (play-pricing) -------- */
+.storefront-card {
+  border-color: var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+}
+.storefront-card:hover { box-shadow: var(--shadow-float) !important; }
+
+/* -------- v11 — Refined pricing cards -------- */
+.price-card, .pp-price-card {
+  box-shadow: var(--shadow-card);
+  border-color: var(--hairline-soft);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+}
+.price-card:hover, .pp-price-card:hover { box-shadow: var(--shadow-float); }
+.price-card.featured, .pp-price-card.featured {
+  box-shadow:
+    var(--gloss-top),
+    var(--shadow-float),
+    0 0 0 2px var(--wood);
+}
+
+/* -------- v11 — Booking widget polish (parties) -------- */
+.booking {
+  border-color: var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+}
+.cal .day { transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease; }
+.cal .day.avail:hover { transform: translateY(-2px); background: var(--sage); color: #fff; }
+.cal .day.selected {
+  box-shadow:
+    var(--gloss-top),
+    0 6px 14px -4px rgba(179,90,55,0.45);
+}
+.slot { transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease; }
+.slot:hover { transform: translateY(-2px); border-color: var(--accent-teal); }
+
+/* -------- v11 — Quote card polish -------- */
+.quote {
+  border-color: var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+}
+.quote:hover { transform: translateY(-4px); box-shadow: var(--shadow-float); }
+
+/* -------- v11 — Value-card polish -------- */
+.value-card {
+  border: 1px solid var(--hairline-soft);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(252,248,240,1) 100%);
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.28s ease;
+}
+.value-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); }
+
+/* -------- v11 — Mobile nav refined glass panel -------- */
+.mobile-menu {
+  background: rgba(247, 243, 236, 0.97);
+  backdrop-filter: saturate(160%) blur(10px);
+  -webkit-backdrop-filter: saturate(160%) blur(10px);
+}
+.mobile-menu a {
+  border-radius: var(--r-md);
+  margin-inline: clamp(0.6rem, 3vw, 1.5rem);
+  transition: background 0.2s ease, color 0.2s ease, padding 0.2s ease;
+}
+.mobile-menu a:hover { background: rgba(255,255,255,0.7); }
+
+/* -------- v11 — Refined hero title -------- */
+.home-hero-title,
+.page-hero h1 { letter-spacing: -0.025em; }
+
+/* -------- v11 — Section break ornament (small dot trio between bands) -------- */
+.section-ornament {
+  display: flex; justify-content: center; gap: 0.5rem;
+  padding-block: clamp(1.2rem, 3vw, 2rem);
+}
+.section-ornament i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent-coral); opacity: 0.7;
+}
+.section-ornament i:nth-child(1) { background: var(--accent-sage); }
+.section-ornament i:nth-child(3) { background: var(--accent-sun); }
+
+/* -------- v11 — Preserve the .btn--pop 3D press effect -------- */
+/* The v11 color-variant shadows above (.btn--terracotta etc.) sit later in
+   source than .btn--pop, so without this they'd swap the chunky 3D press
+   for a flat glow. Re-asserting .btn--pop here puts the press back on top —
+   the colour-tinted glow is folded into its hover state instead. */
+.btn--pop {
+  box-shadow:
+    var(--gloss-top),
+    0 5px 0 rgba(90,60,25,0.22),
+    0 8px 18px -8px rgba(80,60,30,0.20);
+}
+.btn--pop:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    var(--gloss-top),
+    0 7px 0 rgba(90,60,25,0.22),
+    0 16px 30px -10px rgba(80,60,30,0.24);
+}
+.btn--pop:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(90,60,25,0.22);
+}
+.btn--pop.btn--terracotta:hover { box-shadow: var(--gloss-top), 0 7px 0 rgba(165,82,52,0.32), 0 18px 36px -10px rgba(224,161,132,0.55); }
+.btn--pop.btn--sun:hover        { box-shadow: var(--gloss-top), 0 7px 0 rgba(170,128,32,0.32), 0 18px 36px -10px rgba(248,217,143,0.55); }
+.btn--pop.btn--coral:hover      { box-shadow: var(--gloss-top), 0 7px 0 rgba(180,90,55,0.32), 0 18px 36px -10px rgba(244,174,146,0.55); }
+
+/* -------- v11 — Reduced motion guards for everything new -------- */
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none !important; }
+  .sparkle-field i { animation: none !important; opacity: 0; }
+  .marquee-track { animation: none !important; }
+}
+
+/* ============================================================
+   v12 — Creative pricing cards
+   Bold sticker-style cards with a chunky offset shadow, slight
+   rotation and a hand-drawn feel. Shared by play-pricing,
+   memberships and parties. 2 or 3 cards per row; featured tier
+   wears a rotated "Most popular!" badge.
+   ============================================================ */
+.cp-grid {
+  display: grid;
+  gap: clamp(1.6rem, 3vw, 2.4rem);
+  grid-template-columns: 1fr;
+  max-width: 1080px;
+  margin: 2.6rem auto 0;
+  /* Leave breathing room so the rotated outer cards don't clip
+     against the section edge on small viewports. */
+  padding: 1rem 0.5rem 1.6rem;
+}
+@media (min-width: 720px) {
+  .cp-grid--2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
+  .cp-grid--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* The card itself — the rotation lives here so the shadow rotates
+   with it; the offset shadow is built with two solid box-shadows
+   (one for the ink border, one for the lift) for that sticker feel. */
+.cp-card {
+  position: relative;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  padding: clamp(1.4rem, 2.8vw, 1.9rem);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 5px 0 0 var(--ink);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease;
+  will-change: transform;
+}
+/* Per-card playful rotation. 2-card grids alternate; 3-card adds a
+   third angle. Pure visual — no layout shift. */
+.cp-grid--2 .cp-card:nth-child(1) { transform: rotate(-1deg); }
+.cp-grid--2 .cp-card:nth-child(2) { transform: rotate(1deg); }
+.cp-grid--3 .cp-card:nth-child(1) { transform: rotate(-1deg); }
+.cp-grid--3 .cp-card:nth-child(2) { transform: rotate(1deg); }
+.cp-grid--3 .cp-card:nth-child(3) { transform: rotate(-2deg); }
+
+.cp-card:hover {
+  box-shadow: 10px 10px 0 0 var(--ink);
+}
+.cp-grid--2 .cp-card:nth-child(1):hover,
+.cp-grid--3 .cp-card:nth-child(1):hover { transform: rotate(-1deg) translate(-4px, -4px); }
+.cp-grid--2 .cp-card:nth-child(2):hover,
+.cp-grid--3 .cp-card:nth-child(2):hover { transform: rotate(1deg) translate(-4px, -4px); }
+.cp-grid--3 .cp-card:nth-child(3):hover { transform: rotate(-2deg) translate(-4px, -4px); }
+
+/* Featured card — sun-tinted background, slightly heavier baseline shadow */
+.cp-card--featured {
+  background: var(--sun-tint);
+  box-shadow: 7px 7px 0 0 var(--ink);
+}
+.cp-card--featured:hover { box-shadow: 12px 12px 0 0 var(--ink); }
+
+/* Rotated "Most popular!" sticker pinned to the top-right corner */
+.cp-popular {
+  position: absolute;
+  top: -0.9rem;
+  right: -0.7rem;
+  background: var(--sun);
+  color: #5a3d12;
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  transform: rotate(8deg);
+  box-shadow: 2px 2px 0 0 var(--ink);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Round, ink-bordered icon container at the top of each card */
+.cp-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.9rem;
+}
+.cp-icon img { width: 26px; height: 26px; }
+.cp-icon--sun   { background: var(--sun-tint); }
+.cp-icon--sky   { background: var(--sky-tint); }
+.cp-icon--coral { background: var(--coral-tint); }
+.cp-icon--sage  { background: var(--sage-tint); }
+.cp-icon--teal  { background: var(--teal-tint); }
+.cp-icon--wood  { background: var(--wood-tint); }
+/* Inside featured card, give the icon a punchier fill so it stands
+   against the sun-tinted card background. */
+.cp-card--featured .cp-icon { background: var(--sun); }
+
+/* Tier name — uses the script face for the handwritten feel */
+.cp-name {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.4vw, 1.8rem);
+  color: var(--ink);
+  margin: 0 0 0.15rem;
+  line-height: 1.15;
+}
+.cp-blurb {
+  font-family: var(--font-body);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin: 0 0 1.1rem;
+}
+
+/* Big chunky price */
+.cp-price {
+  margin: 0.2rem 0 1.1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+.cp-price-amount {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5vw, 3rem);
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.cp-price-unit {
+  font-family: var(--font-head);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+/* Feature list with circular checkmark bullets */
+.cp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.cp-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.cp-check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  margin-top: 0.1rem;
+}
+.cp-check svg { width: 11px; height: 11px; stroke: var(--ink); }
+.cp-card--featured .cp-check { background: var(--sun); }
+
+/* Full-width CTA with its own little offset shadow */
+.cp-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  padding: 0 1rem;
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: var(--base);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  box-shadow: 4px 4px 0 0 var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.cp-cta:hover { background: var(--white); box-shadow: 6px 6px 0 0 var(--ink); transform: translate(-2px, -2px); }
+.cp-cta:active { box-shadow: 2px 2px 0 0 var(--ink); transform: translate(2px, 2px); }
+.cp-card--featured .cp-cta {
+  background: var(--sun);
+  color: #4a3208;
+}
+.cp-card--featured .cp-cta:hover { background: #f9e1a7; }
+
+/* Eyebrow tag above the section title — small, rotated, script */
+.cp-eyebrow {
+  display: inline-block;
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--accent-sky);
+  transform: rotate(-1.5deg);
+  margin-bottom: 0.5rem;
+}
+
+/* Reduced motion: kill all the rotation/lift play */
+@media (prefers-reduced-motion: reduce) {
+  .cp-card,
+  .cp-grid--2 .cp-card:nth-child(1),
+  .cp-grid--2 .cp-card:nth-child(2),
+  .cp-grid--3 .cp-card:nth-child(1),
+  .cp-grid--3 .cp-card:nth-child(2),
+  .cp-grid--3 .cp-card:nth-child(3) {
+    transform: none !important;
+  }
+  .cp-card:hover,
+  .cp-grid--2 .cp-card:nth-child(1):hover,
+  .cp-grid--2 .cp-card:nth-child(2):hover,
+  .cp-grid--3 .cp-card:nth-child(1):hover,
+  .cp-grid--3 .cp-card:nth-child(2):hover,
+  .cp-grid--3 .cp-card:nth-child(3):hover {
+    transform: none !important;
+  }
+  .cp-popular { transform: none !important; }
+  .cp-cta:hover, .cp-cta:active { transform: none !important; }
+}
+
+/* Touch devices: tap = the hover treatment */
+@media (hover: none) {
+  .cp-grid--2 .cp-card:nth-child(1):active { transform: rotate(-1deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
+  .cp-grid--2 .cp-card:nth-child(2):active { transform: rotate(1deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
+  .cp-grid--3 .cp-card:nth-child(1):active { transform: rotate(-1deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
+  .cp-grid--3 .cp-card:nth-child(2):active { transform: rotate(1deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
+  .cp-grid--3 .cp-card:nth-child(3):active { transform: rotate(-2deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
+}
+

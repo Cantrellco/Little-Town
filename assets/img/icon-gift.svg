@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- box bottom -->
+  <rect x="3" y="10" width="18" height="11" rx="1" fill="#E09972" stroke="#8A5A2C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- box lid -->
+  <rect x="2.5" y="7.5" width="19" height="3.5" rx="0.8" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- vertical ribbon -->
+  <rect x="10.6" y="7.5" width="2.8" height="13.5" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1.3"/>
+  <!-- bow loops -->
+  <path d="M12 8 q-4 -4 -5.5 -1 q-0.5 3 4 2 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1.3" stroke-linejoin="round"/>
+  <path d="M12 8 q4 -4 5.5 -1 q0.5 3 -4 2 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1.3" stroke-linejoin="round"/>
+  <!-- bow centre knot -->
+  <ellipse cx="12" cy="8.4" rx="1.2" ry="1" fill="#E7BC76" stroke="#8A5A2C" stroke-width="1"/>
+</svg>

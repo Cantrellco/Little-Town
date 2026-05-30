@@ -18,7 +18,7 @@ The 7 pages are now a real Shopify theme:
 | `parties.html` | `templates/page.parties.liquid` | `/pages/parties` |
 | `memberships.html` | `templates/page.memberships.liquid` | `/pages/memberships` |
 | `fusion.html` | `templates/page.fusion.liquid` | `/pages/fusion` |
-| `our-story.html` | `templates/page.our-story.liquid` | `/pages/our-story` |
+| `photo-gallery.html` | `templates/page.photo-gallery.liquid` | `/pages/photo-gallery` |
 | `visit-us.html` | `templates/page.visit-us.liquid` | `/pages/visit-us` |
 
 - Shared head/header/footer live once in `layout/theme.liquid` + `sections/header.liquid` + `sections/footer.liquid`.
@@ -66,7 +66,7 @@ Each of the 6 sub-pages needs a Page record pointing at its template:
    | Parties | `page.parties` | `parties` |
    | Memberships | `page.memberships` | `memberships` |
    | Fusion | `page.fusion` | `fusion` |
-   | Our Story | `page.our-story` | `our-story` |
+   | Photo Gallery | `page.photo-gallery` | `photo-gallery` |
    | Visit Us | `page.visit-us` | `visit-us` |
 
    (Page body content can stay empty — the design is baked into the template.)

@@ -10,17 +10,28 @@
   --bub-1: var(--sage); --bub-2: var(--teal); --bub-3: var(--sky); --bub-4: var(--sun);
 }
 
-/* ---- Hero: a warm "VIP all-access" glow — a cream→gold→peach SPOTLIGHT
-     (no sky, no busy tile), with rotating light-rays behind the card. This
-     page's identity is value/belonging, so it glows like a members' club. ---- */
+/* ---- Hero: same recipe as Fusion — a single signature tile (sparkles)
+     repeated over a warm gold→peach gradient. Members feel like a glowing
+     club, but the skeleton matches the rest of the site. ---- */
 .page-hero.ph--member {
   background:
-    radial-gradient(125% 100% at 72% 24%,
-      #fff6e6 0%,
-      #fdeac2 40%,
-      #f8d98f 66%,
-      #f4ae92 100%);
-  padding-block: clamp(2.2rem, 5vw, 3.6rem) clamp(1.8rem, 4vw, 2.6rem);
+    url("../../img/sparkle-tile-v2.svg") center / 132px repeat,
+    linear-gradient(180deg, #FFEAB3 0%, #F8D38E 58%, var(--base) 100%);
+  padding-bottom: clamp(5.5rem, 4vw + 4rem, 7.5rem);
+}
+.ph--member .container {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 760px) {
+  .ph--member .container { grid-template-columns: 1fr auto; }
+}
+/* Warm-gold partner-tag eyebrow */
+.ph--member .partner-tag {
+  background: rgba(255,255,255,0.85);
+  color: #7a4a14;
+  border: 1px solid rgba(176,122,47,0.30);
 }
 
 /* Hero sticker sits above the art, angled for playfulness */
@@ -70,16 +81,7 @@
 }
 @keyframes memRays { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .mem-hero-art img { position: relative; z-index: 1; }
-@media (min-width: 880px) {
-  .mem-hero-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(2rem, 5vw, 4rem);
-    text-align: left;
-  }
-  .mem-hero-inner .flex-cta { justify-content: flex-start; }
-  .mem-hero-inner .pill-row  { justify-content: flex-start; }
+@media (min-width: 760px) {
   .mem-hero-art { margin: 0 auto; }
 }
 

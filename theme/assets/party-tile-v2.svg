@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling parties texture — a single balloon motif repeated 3x,
+     matching the Fusion coffee-bean tile's recipe. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.18" fill="#C2805F">
+    <g transform="translate(34 38) rotate(-10)">
+      <ellipse cx="0" cy="-2" rx="7" ry="9"/>
+      <path d="M0 7 L-1.5 13 L1.5 13 Z"/>
+    </g>
+    <g transform="translate(96 70) rotate(14)">
+      <ellipse cx="0" cy="-2" rx="7" ry="9"/>
+      <path d="M0 7 L-1.5 13 L1.5 13 Z"/>
+    </g>
+    <g transform="translate(60 104) rotate(-4)">
+      <ellipse cx="0" cy="-2" rx="7" ry="9"/>
+      <path d="M0 7 L-1.5 13 L1.5 13 Z"/>
+    </g>
+  </g>
+</svg>

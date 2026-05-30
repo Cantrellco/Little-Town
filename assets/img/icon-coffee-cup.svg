@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- steam wisps -->
+  <g stroke="#A8472A" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7">
+    <path d="M8.5 4 q-1.4 1.6 0 3.2"/>
+    <path d="M12 3 q-1.4 1.6 0 3.2"/>
+    <path d="M15.5 4 q-1.4 1.6 0 3.2"/>
+  </g>
+  <!-- mug body -->
+  <path d="M4.5 10 H17 V17 a4 4 0 0 1 -4 4 H8.5 a4 4 0 0 1 -4 -4 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- handle -->
+  <path d="M17 12 a3.2 3.2 0 0 1 0 5.6" fill="none" stroke="#8A5A2C" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- saucer -->
+  <ellipse cx="10.75" cy="22" rx="7.5" ry="1.1" fill="#E7BC76"/>
+  <!-- coffee top -->
+  <ellipse cx="10.75" cy="10" rx="6.25" ry="1.4" fill="#8A5A2C"/>
+  <!-- crema highlight -->
+  <path d="M7 9.6 q3.5 -1.5 7.5 0" stroke="#E09972" stroke-width="0.7" fill="none" stroke-linecap="round" opacity="0.8"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- ticket body (rotated rectangle with semicircular notches at perforation) -->
+  <g transform="rotate(-12 12 12)">
+    <path d="M3 8 H10 a1.5 1.5 0 0 0 0 3 h0 a1.5 1.5 0 0 0 0 3 H10 a1.5 1.5 0 0 0 0 3 H3 Z M21 8 H10 a1.5 1.5 0 0 1 0 3 a1.5 1.5 0 0 1 0 3 H21 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- perforation line -->
+    <line x1="10" y1="9" x2="10" y2="9.5" stroke="#8A5A2C" stroke-width="1.1" stroke-linecap="round"/>
+    <line x1="10" y1="14.5" x2="10" y2="15" stroke="#8A5A2C" stroke-width="1.1" stroke-linecap="round"/>
+    <line x1="10" y1="16.5" x2="10" y2="17" stroke="#8A5A2C" stroke-width="1.1" stroke-linecap="round"/>
+    <line x1="10" y1="6.5" x2="10" y2="7" stroke="#8A5A2C" stroke-width="1.1" stroke-linecap="round"/>
+    <!-- ADMIT label band -->
+    <rect x="13" y="10.5" width="6.5" height="3" rx="0.4" fill="#FBF5EA"/>
+    <line x1="14" y1="12" x2="18.5" y2="12" stroke="#8A5A2C" stroke-width="0.8" stroke-linecap="round"/>
+    <!-- star on stub -->
+    <path d="M6.5 12 l0.4 1.1 l1.1 0.1 l-0.85 0.7 l0.3 1.1 l-1 -0.6 l-1 0.6 l0.3 -1.1 l-0.85 -0.7 l1.1 -0.1 Z" fill="#E7BC76"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling wayfinding texture for the Visit Us hero — sparse and
+     subtle, matching the Fusion coffee-bean tile's three-motif recipe. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.16" fill="#3F7268">
+    <!-- location pin -->
+    <path transform="translate(34 38)" d="M0 -10 a6.5 6.5 0 0 1 6.5 6.5 q0 5.5 -6.5 11 q-6.5 -5.5 -6.5 -11 a6.5 6.5 0 0 1 6.5 -6.5 Z"/>
+    <!-- leaf -->
+    <path transform="translate(96 70) rotate(22)" d="M0 0 q-9 1 -10 8 q0 4 4 5 q6 1 9 -5 q2 -5 -3 -8 Z"/>
+    <!-- arrow -->
+    <path transform="translate(60 104)" d="M-9 0 H6 l3 -3 v6 l-3 -3"/>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling visit-us texture — a single map-pin motif repeated 3x,
+     matching the Fusion coffee-bean tile's recipe. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.18" fill="#3F7268">
+    <g transform="translate(34 38) rotate(-8)">
+      <path d="M0 -11 a7.5 7.5 0 0 1 7.5 7.5 q0 6 -7.5 12 q-7.5 -6 -7.5 -12 a7.5 7.5 0 0 1 7.5 -7.5 Z"/>
+      <circle cx="0" cy="-3" r="2.8" fill="#fff" opacity="0.6"/>
+    </g>
+    <g transform="translate(96 70) rotate(14)">
+      <path d="M0 -11 a7.5 7.5 0 0 1 7.5 7.5 q0 6 -7.5 12 q-7.5 -6 -7.5 -12 a7.5 7.5 0 0 1 7.5 -7.5 Z"/>
+      <circle cx="0" cy="-3" r="2.8" fill="#fff" opacity="0.6"/>
+    </g>
+    <g transform="translate(60 104) rotate(-4)">
+      <path d="M0 -11 a7.5 7.5 0 0 1 7.5 7.5 q0 6 -7.5 12 q-7.5 -6 -7.5 -12 a7.5 7.5 0 0 1 7.5 -7.5 Z"/>
+      <circle cx="0" cy="-3" r="2.8" fill="#fff" opacity="0.6"/>
+    </g>
+  </g>
+</svg>

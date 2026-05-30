@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling confetti texture — sparse and subtle, matching the Fusion
+     coffee-bean tile's three-motif recipe. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.18" fill="#c2805f">
+    <!-- triangle confetti -->
+    <polygon transform="translate(34 38) rotate(-12)" points="-8,4 8,4 0,-8"/>
+    <!-- rectangle confetti -->
+    <rect transform="translate(96 70) rotate(24)" x="-7" y="-2" width="14" height="4" rx="1.4"/>
+    <!-- circle confetti -->
+    <circle transform="translate(60 104)" r="5"/>
+  </g>
+</svg>

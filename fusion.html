@@ -26,7 +26,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html" class="active">Fusion</a>
-        <a href="our-story.html">Photo Gallery</a>
+        <a href="photo-gallery.html">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
@@ -42,7 +42,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html" class="active">Fusion</a>
-        <a href="our-story.html">Photo Gallery</a>
+        <a href="photo-gallery.html">Photo Gallery</a>
         <a href="visit-us.html">Visit Us</a>
       </nav>
     </div></div>
@@ -74,7 +74,7 @@
       <div class="container">
         <!-- Copy -->
         <div class="reveal">
-          <span class="partner-tag">&#x2615; Our sister caf&#xE9;</span>
+          <span class="partner-tag"><img src="assets/img/icon-coffee-cup.svg" alt="" width="18" height="18"> Our sister caf&#xE9;</span>
           <h1 class="fusion-hero-h1" style="margin-top:0.8rem">
             <img class="fusion-logo fusion-logo--hero" src="assets/img/fusion-logo.png" alt="Fusion Coffee" width="684" height="477">
           </h1>
@@ -90,7 +90,7 @@
         <div class="hero-art reveal" data-delay="1" style="max-width:280px">
           <span class="fusion-steam" aria-hidden="true">
             <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none">
+              <g stroke="#8A5A2C" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.6">
                 <path class="st st1" d="M18 66 q-7 -14 0 -26 q7 -12 0 -24"/>
                 <path class="st st2" d="M30 68 q-7 -14 0 -26 q7 -12 0 -24"/>
                 <path class="st st3" d="M42 66 q-7 -14 0 -26 q7 -12 0 -24"/>
@@ -99,31 +99,37 @@
           </span>
           <svg viewBox="0 0 260 240" role="img" aria-labelledby="mugTitle" xmlns="http://www.w3.org/2000/svg">
             <title id="mugTitle">A steaming latte mug on a saucer.</title>
-            <!-- saucer -->
-            <ellipse cx="130" cy="216" rx="100" ry="18" fill="#D9B98A"/>
-            <ellipse cx="130" cy="210" rx="100" ry="18" fill="#F0DCBC"/>
-            <ellipse cx="130" cy="208" rx="58"  ry="9"  fill="#E2C79B"/>
-            <!-- handle -->
-            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
-            <path d="M188 116 Q230 112 230 150 Q230 186 188 184" fill="none" stroke="#E7DCC9" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
-            <!-- mug body -->
-            <path d="M64 104 L196 104 L190 176 Q187 200 162 200 L98 200 Q73 200 70 176 Z" fill="#ffffff"/>
-            <path d="M80 116 Q74 158 86 192" stroke="#EEF4F6" stroke-width="10" stroke-linecap="round" fill="none"/>
-            <path d="M180 116 Q186 156 174 190" stroke="#ECE3D4" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <!-- coffee surface: white lip + foam ring + coffee + latte-art heart -->
-            <ellipse cx="130" cy="104" rx="66" ry="16" fill="#ffffff"/>
+            <!-- soft cast shadow under the saucer -->
+            <ellipse cx="130" cy="232" rx="106" ry="5" fill="#3a2c20" opacity="0.14"/>
+            <!-- saucer: back lip + top with brown stroke + inner well ring -->
+            <ellipse cx="130" cy="218" rx="104" ry="16" fill="#D9B98A"/>
+            <ellipse cx="130" cy="212" rx="104" ry="16" fill="#F0DCBC" stroke="#8A5A2C" stroke-width="3"/>
+            <ellipse cx="130" cy="210" rx="60" ry="9" fill="#E2C79B"/>
+            <!-- coffee beans resting on the saucer -->
+            <g transform="translate(40 208) rotate(-18)">
+              <ellipse cx="0" cy="0" rx="12" ry="7.5" fill="#7A4A28" stroke="#3a2418" stroke-width="0.9"/>
+              <path d="M-10 0 Q0 -5 10 0 Q0 5 -10 0" fill="#4A2F18"/>
+              <path d="M-7 -3 Q3 0.5 -1 6" stroke="#3a2418" stroke-width="0.7" fill="none" opacity="0.7"/>
+            </g>
+            <g transform="translate(220 212) rotate(14)">
+              <ellipse cx="0" cy="0" rx="10.5" ry="6.8" fill="#7A4A28" stroke="#3a2418" stroke-width="0.8"/>
+              <path d="M-9 0 Q0 -4.5 9 0 Q0 4.5 -9 0" fill="#4A2F18"/>
+            </g>
+            <!-- handle: outer thick brown + cream highlight inside -->
+            <path d="M188 116 Q232 112 232 150 Q232 188 188 184" fill="none" stroke="#8A5A2C" stroke-width="18" stroke-linecap="round"/>
+            <path d="M188 116 Q232 112 232 150 Q232 188 188 184" fill="none" stroke="#FBF5EA" stroke-width="6" stroke-linecap="round"/>
+            <!-- mug body: cream porcelain with coffee-brown rim -->
+            <path d="M64 104 L196 104 L190 178 Q187 200 162 200 L98 200 Q73 200 70 178 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="4" stroke-linejoin="round"/>
+            <!-- subtle vertical shading on the porcelain -->
+            <path d="M82 122 Q72 158 90 192" stroke="#E7DCC9" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.6"/>
+            <path d="M178 122 Q186 156 170 188" stroke="#EDDFCA" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.45"/>
+            <!-- coffee surface: porcelain rim, crema ring, rich espresso -->
+            <ellipse cx="130" cy="104" rx="66" ry="16" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="4"/>
             <ellipse cx="130" cy="104" rx="56" ry="13" fill="#E5C49A"/>
-            <ellipse cx="130" cy="104" rx="45" ry="9"  fill="#C68A4E"/>
-            <path d="M130 99 q-7 -6 -12 0 q-4 5 12 13 q16 -8 12 -13 q-5 -6 -12 0 Z" fill="#F2E3C6"/>
-            <!-- a couple of coffee beans by the saucer -->
-            <g transform="translate(40 206) rotate(-18)">
-              <ellipse cx="0" cy="0" rx="11" ry="7" fill="#7A542E"/>
-              <path d="M-9 0 Q0 -5 9 0 Q0 5 -9 0" fill="#5e3f20"/>
-            </g>
-            <g transform="translate(222 210) rotate(14)">
-              <ellipse cx="0" cy="0" rx="10" ry="6.5" fill="#7A542E"/>
-              <path d="M-8 0 Q0 -4.5 8 0 Q0 4.5 -8 0" fill="#5e3f20"/>
-            </g>
+            <ellipse cx="130" cy="104" rx="46" ry="10" fill="#8A5A2C"/>
+            <!-- latte-art heart in the foam -->
+            <path d="M130 96 q-10 -8 -16 0 q-3 7 16 18 q19 -11 16 -18 q-6 -8 -16 0 Z" fill="#FBF5EA"/>
+            <path d="M120 105 q5 -1.5 9 1.5" stroke="#E5C49A" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"/>
           </svg>
         </div>
       </div>
@@ -136,7 +142,7 @@
     <section class="section--tight flow-top">
       <div class="container">
         <div class="panel fusion-partner-panel reveal">
-          <div class="partner-icon" aria-hidden="true">&#x1F3E1;</div>
+          <div class="partner-icon" aria-hidden="true"><img src="assets/img/icon-cafe.svg" alt="" width="44" height="44"></div>
           <div>
             <p style="margin:0"><strong style="color:var(--ink)">Our sister caf&#xE9;, right next door.</strong>
             <span class="fusion-word">Fusion</span> is its own independent coffee shop right beside the playhouse &#x2014; the spot we love sending you to before, during or after play.</p>
@@ -155,22 +161,22 @@
         <p class="section-lead">Everything you need to power through a morning of play.</p>
         <div class="fusion-stats" role="list">
           <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x2600;&#xFE0F;</span> Locally roasted beans
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-beans.svg" alt="" width="22" height="22"></span> Locally roasted beans
           </div>
           <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x1F95B;</span> Oat &amp; decaf always available
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-milk.svg" alt="" width="22" height="22"></span> Oat &amp; decaf always available
           </div>
           <div class="fusion-stat-pill fusion-stat-pill--sage hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x1F9C1;</span> Baked fresh daily
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-cupcake.svg" alt="" width="22" height="22"></span> Baked fresh daily
           </div>
           <div class="fusion-stat-pill fusion-stat-pill--coral hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x1F4F6;</span> Free Wi-Fi for grown-ups
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-wifi.svg" alt="" width="22" height="22"></span> Free Wi-Fi for grown-ups
           </div>
           <div class="fusion-stat-pill fusion-stat-pill--sun hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x1F476;</span> Kid-friendly options
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-baby.svg" alt="" width="22" height="22"></span> Kid-friendly options
           </div>
           <div class="fusion-stat-pill fusion-stat-pill--sky hover-jelly" role="listitem">
-            <span class="pill-icon" aria-hidden="true">&#x1F556;</span> Open every play day
+            <span class="pill-icon" aria-hidden="true"><img src="assets/img/icon-clock.svg" alt="" width="22" height="22"></span> Open every play day
           </div>
         </div>
       </div>
@@ -191,16 +197,43 @@
 
         <!-- Signature drinks — featured trio with mock illustrations -->
         <div class="signature-drinks reveal mt-3" aria-label="Signature drinks">
-          <figure class="signature-drink">
+          <figure class="signature-drink tilt-3d">
             <div class="signature-art" aria-hidden="true">
               <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
-                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#E2C79B"/>
-                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#E0CBA6" stroke-width="10" stroke-linecap="round"/>
-                <path d="M28 50 L92 50 L88 110 Q86 124 70 124 L50 124 Q34 124 32 110 Z" fill="#ffffff" stroke="#E2C79B" stroke-width="2.5"/>
-                <ellipse cx="60" cy="50" rx="32" ry="8" fill="#ffffff" stroke="#E2C79B" stroke-width="2.5"/>
+                <!-- soft cast shadow -->
+                <ellipse cx="60" cy="134" rx="50" ry="3.6" fill="#3a2c20" opacity="0.14"/>
+                <!-- saucer -->
+                <ellipse cx="60" cy="128" rx="48" ry="7" fill="#D9B98A"/>
+                <ellipse cx="60" cy="124" rx="48" ry="7" fill="#F0DCBC"/>
+                <ellipse cx="60" cy="122" rx="28" ry="4" fill="#E2C79B"/>
+                <!-- coffee beans on saucer -->
+                <g transform="translate(22 124) rotate(-12)">
+                  <ellipse cx="0" cy="0" rx="5" ry="3" fill="#7A4A28"/>
+                  <path d="M-4 0 Q0 -2 4 0 Q0 2 -4 0" fill="#4A2F18"/>
+                </g>
+                <g transform="translate(96 126) rotate(10)">
+                  <ellipse cx="0" cy="0" rx="4.5" ry="2.7" fill="#7A4A28"/>
+                  <path d="M-3.6 0 Q0 -1.8 3.6 0 Q0 1.8 -3.6 0" fill="#4A2F18"/>
+                </g>
+                <!-- steam wisps -->
+                <g stroke="#8A5A2C" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.55">
+                  <path d="M44 30 q-6 -10 0 -22"/>
+                  <path d="M60 24 q-6 -10 0 -22"/>
+                  <path d="M76 30 q-6 -10 0 -22"/>
+                </g>
+                <!-- handle (outer thick, inner highlight) -->
+                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#8A5A2C" stroke-width="7" stroke-linecap="round"/>
+                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#FBF5EA" stroke-width="3" stroke-linecap="round"/>
+                <!-- mug body -->
+                <path d="M28 50 L92 50 L88 110 Q86 124 70 124 L50 124 Q34 124 32 110 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- soft vertical shading on the mug -->
+                <path d="M40 60 Q34 88 44 118" stroke="#E7DCC9" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.6"/>
+                <!-- coffee top: white rim, crema ring, espresso -->
+                <ellipse cx="60" cy="50" rx="32" ry="8" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5"/>
                 <ellipse cx="60" cy="50" rx="26" ry="6" fill="#E5C49A"/>
-                <ellipse cx="60" cy="50" rx="20" ry="4.5" fill="#C68A4E"/>
-                <path d="M60 47 q-4 -3 -7 0 q-2 3 7 8 q9 -5 7 -8 q-3 -3 -7 0 Z" fill="#F2E3C6"/>
+                <ellipse cx="60" cy="50" rx="20" ry="4.5" fill="#9c6932"/>
+                <!-- latte-art heart in foam -->
+                <path d="M60 47 q-4.5 -3.5 -7.5 0 q-2 3 7.5 8.5 q9.5 -5.5 7.5 -8.5 q-3 -3.5 -7.5 0 Z" fill="#FBF5EA"/>
               </svg>
             </div>
             <figcaption>
@@ -209,17 +242,38 @@
               <em>$5.00</em>
             </figcaption>
           </figure>
-          <figure class="signature-drink">
+          <figure class="signature-drink tilt-3d">
             <div class="signature-art" aria-hidden="true">
               <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
-                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#A8C9B0"/>
-                <rect x="34" y="36" width="52" height="86" rx="8" fill="#EAF6E8"/>
-                <rect x="34" y="36" width="52" height="38" rx="8" fill="#7CB67A"/>
-                <rect x="34" y="74" width="52" height="6" fill="#fff" opacity="0.5"/>
-                <circle cx="46" cy="92" r="3" fill="#7CB67A"/>
-                <circle cx="60" cy="100" r="3" fill="#7CB67A"/>
-                <circle cx="74" cy="92" r="3" fill="#7CB67A"/>
-                <path d="M52 22 q4 8 0 14 M60 18 q4 8 0 14 M68 22 q4 8 0 14" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.85"/>
+                <!-- soft cast shadow -->
+                <ellipse cx="60" cy="134" rx="44" ry="3.6" fill="#3a2c20" opacity="0.14"/>
+                <!-- glass back (so liquid sits cleanly inside) -->
+                <path d="M32 26 H88 L82 124 Q81 130 75 130 H45 Q39 130 38 124 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- matcha liquid -->
+                <path d="M34.6 42 H85.4 L80.4 122 Q79.7 127 75 127 H45 Q40.3 127 39.6 122 Z" fill="#7CB67A"/>
+                <!-- foam top + rim -->
+                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="#D7EBC9"/>
+                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="none" stroke="#8A5A2C" stroke-width="2"/>
+                <!-- ice cubes (rounded squares, layered) -->
+                <g opacity="0.7">
+                  <rect x="42" y="50" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(-12 49 57)"/>
+                  <rect x="42" y="50" width="14" height="14" rx="2.2" fill="none" stroke="#8A5A2C" stroke-width="1.2" opacity="0.5" transform="rotate(-12 49 57)"/>
+                </g>
+                <g opacity="0.7">
+                  <rect x="60" y="62" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(16 67 69)"/>
+                  <rect x="60" y="62" width="14" height="14" rx="2.2" fill="none" stroke="#8A5A2C" stroke-width="1.2" opacity="0.5" transform="rotate(16 67 69)"/>
+                </g>
+                <g opacity="0.65">
+                  <rect x="46" y="82" width="12" height="12" rx="2" fill="#FBF5EA" transform="rotate(-8 52 88)"/>
+                </g>
+                <!-- straw -->
+                <path d="M66 16 L60 130" stroke="#E09972" stroke-width="4.4" stroke-linecap="round"/>
+                <path d="M66 16 L60 130" stroke="#FBF5EA" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="5 4" opacity="0.85"/>
+                <!-- glass front highlight -->
+                <line x1="42" y1="56" x2="42" y2="110" stroke="#FBF5EA" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+                <!-- little leaf garnish on rim -->
+                <path d="M80 32 q6 -7 13 -3 q-2 7 -9 7 q-3 -1 -4 -4 Z" fill="#586A36"/>
+                <path d="M82 32 q5 -2 9 0" stroke="#FBF5EA" stroke-width="1.1" fill="none" opacity="0.75"/>
               </svg>
             </div>
             <figcaption>
@@ -228,17 +282,37 @@
               <em>$5.50</em>
             </figcaption>
           </figure>
-          <figure class="signature-drink">
+          <figure class="signature-drink tilt-3d">
             <div class="signature-art" aria-hidden="true">
               <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
-                <ellipse cx="60" cy="128" rx="46" ry="6" fill="#C9A77A"/>
-                <path d="M34 36 L86 36 L82 122 Q80 130 70 130 L50 130 Q40 130 38 122 Z" fill="#F4ECD8"/>
-                <path d="M40 60 L80 60 L77 118 Q76 124 68 124 L52 124 Q44 124 43 118 Z" fill="#5B3A1E"/>
-                <ellipse cx="60" cy="60" rx="20" ry="4" fill="#3D2410"/>
-                <rect x="50" y="22" width="20" height="14" rx="3" fill="#A8E2F4"/>
-                <rect x="56" y="14" width="8" height="14" rx="2" fill="#A8E2F4"/>
-                <circle cx="48" cy="78" r="3" fill="#fff" opacity="0.5"/>
-                <circle cx="48" cy="92" r="2.5" fill="#fff" opacity="0.4"/>
+                <!-- soft cast shadow -->
+                <ellipse cx="60" cy="134" rx="44" ry="3.6" fill="#3a2c20" opacity="0.14"/>
+                <!-- glass -->
+                <path d="M32 26 H88 L82 124 Q81 130 75 130 H45 Q39 130 38 124 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- cold brew liquid (dark) -->
+                <path d="M34.6 42 H85.4 L80.4 122 Q79.7 127 75 127 H45 Q40.3 127 39.6 122 Z" fill="#5B3A1E"/>
+                <!-- crema/foam top + rim -->
+                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="#C9A77A"/>
+                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="none" stroke="#8A5A2C" stroke-width="2"/>
+                <!-- ice cubes (lighter cool tone behind dark liquid) -->
+                <g opacity="0.55">
+                  <rect x="42" y="52" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(-12 49 59)"/>
+                </g>
+                <g opacity="0.5">
+                  <rect x="60" y="66" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(16 67 73)"/>
+                </g>
+                <g opacity="0.45">
+                  <rect x="46" y="86" width="12" height="12" rx="2" fill="#FBF5EA" transform="rotate(-8 52 92)"/>
+                </g>
+                <!-- paper straw with stripes (warm coral + cream dashes) -->
+                <path d="M68 14 L60 130" stroke="#E09972" stroke-width="5" stroke-linecap="round"/>
+                <path d="M68 14 L60 130" stroke="#FBF5EA" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="5 4" opacity="0.92"/>
+                <!-- condensation drops -->
+                <ellipse cx="36" cy="78" rx="2" ry="3" fill="#FBF5EA" opacity="0.8"/>
+                <ellipse cx="84" cy="96" rx="1.7" ry="2.6" fill="#FBF5EA" opacity="0.75"/>
+                <ellipse cx="38" cy="104" rx="1.4" ry="2" fill="#FBF5EA" opacity="0.65"/>
+                <!-- glass front highlight -->
+                <line x1="42" y1="58" x2="42" y2="112" stroke="#FBF5EA" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
               </svg>
             </div>
             <figcaption>
@@ -409,7 +483,7 @@
       <div class="container">
         <div class="cta-band bg-candy on-dark anim-gradient reveal">
           <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">&#x2615; See you next door</span>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem"><img src="assets/img/icon-coffee-cup.svg" alt="" width="18" height="18"> See you next door</span>
           <h2 style="margin-bottom:0.5rem">Coffee's on at</h2>
           <img class="fusion-logo fusion-logo--mark" src="assets/img/fusion-logo.png" alt="Fusion Coffee" width="684" height="477">
           <p style="margin-top:0.6rem">Come on in before, during or after play &#x2014; the coffee's always on next door.</p>

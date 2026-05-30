@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- leaf shape -->
+  <path d="M20 4 q-13 1 -15 9 q-1 5 3 7 q7 3 12 -3 q3 -6 0 -13 Z" fill="#ABBE83" stroke="#586A36" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- vein -->
+  <path d="M19 5 q-10 4 -13 14" stroke="#586A36" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <!-- side veins -->
+  <path d="M14 7 q-1 2 -3 2" stroke="#586A36" stroke-width="0.9" fill="none" opacity="0.7"/>
+  <path d="M16 11 q-1 2 -4 2" stroke="#586A36" stroke-width="0.9" fill="none" opacity="0.7"/>
+  <path d="M15 15 q-2 1.5 -5 1.5" stroke="#586A36" stroke-width="0.9" fill="none" opacity="0.7"/>
+</svg>

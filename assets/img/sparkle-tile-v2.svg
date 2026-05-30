@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Faint, tiling memberships texture — a single sparkle motif repeated 3x,
+     matching the Fusion coffee-bean tile's recipe. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.18" fill="#B07A2F">
+    <path transform="translate(34 38) rotate(-8)" d="M0 -11 q1.6 9 11 11 q-9.4 1.6 -11 11 q-1.6 -9.4 -11 -11 q9.4 -1.6 11 -11Z"/>
+    <path transform="translate(96 70) rotate(14)" d="M0 -11 q1.6 9 11 11 q-9.4 1.6 -11 11 q-1.6 -9.4 -11 -11 q9.4 -1.6 11 -11Z"/>
+    <path transform="translate(60 104) rotate(-4)" d="M0 -11 q1.6 9 11 11 q-9.4 1.6 -11 11 q-1.6 -9.4 -11 -11 q9.4 -1.6 11 -11Z"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- left ladder rails -->
+  <line x1="4" y1="6" x2="4" y2="20" stroke="#8A5A2C" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="7" y1="6" x2="7" y2="14" stroke="#8A5A2C" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- rungs -->
+  <line x1="4" y1="9" x2="7" y2="9" stroke="#8A5A2C" stroke-width="1.4"/>
+  <line x1="4" y1="12" x2="7" y2="12" stroke="#8A5A2C" stroke-width="1.4"/>
+  <line x1="4" y1="15" x2="4.5" y2="15" stroke="#8A5A2C" stroke-width="1.4"/>
+  <!-- slide curve (terracotta) -->
+  <path d="M5.5 6 q3 0 4 4 q1 6 7 10 H22 v1.5 q-1 1.2 -2 1 H15 q-7 -3 -8.5 -10 q-0.5 -2 -1 -2.5 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- slide highlight -->
+  <path d="M7 9 q1.5 0.4 2.4 3" stroke="#FBF5EA" stroke-width="0.9" fill="none" opacity="0.7"/>
+  <!-- a tiny star at top -->
+  <path d="M5.7 4.2 l0.4 1.1 l1.1 0.1 l-0.85 0.7 l0.3 1.1 l-1 -0.6 l-1 0.6 l0.3 -1.1 l-0.85 -0.7 l1.1 -0.1 Z" fill="#E7BC76"/>
+</svg>

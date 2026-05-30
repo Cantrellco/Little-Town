@@ -8,6 +8,12 @@
     if template.name == 'index'
       assign meta_key = 'index'
     endif
+    # Fail-safe: when a page sits on the default page template (no suffix),
+    # use the page's own handle as the key so it still picks up the right CSS
+    # + meta. Pairs with the handle-routed default page.liquid below.
+    if meta_key == blank and template.name == 'page'
+      assign meta_key = page.handle
+    endif
   -%}
   {%- case meta_key -%}
     {%- when 'index' -%}{%- assign meta_title = "Little Town Playhouse — A little town built for big imaginations" -%}{%- assign meta_desc = "A warm, imaginative indoor play town for little ones. Become a member for unlimited play, plus open play, private parties, and great coffee next door at Fusion." -%}{%- assign page_css = "home.css" -%}
@@ -15,7 +21,7 @@
     {%- when 'parties' -%}{%- assign meta_title = "Parties — Rent the whole town | Little Town Playhouse" -%}{%- assign meta_desc = "Book a private buyout of Little Town Playhouse — exclusive use for two hours. Booking mockup, deposit and cancellation policy, gallery and FAQ." -%}{%- assign page_css = "parties.css" -%}
     {%- when 'memberships' -%}{%- assign meta_title = "Memberships — Little Town Playhouse" -%}{%- assign meta_desc = "Monthly and Annual memberships for unlimited imaginative play at Little Town Playhouse — grown-ups always play free, cancel anytime." -%}{%- assign page_css = "memberships.css" -%}
     {%- when 'fusion' -%}{%- assign meta_title = "Fusion — Coffee next door | Little Town Playhouse" -%}{%- assign meta_desc = "Fusion is the sister café next door to Little Town Playhouse — locally roasted coffee, fresh snacks and little treats, served all day." -%}{%- assign page_css = "fusion.css" -%}
-    {%- when 'our-story' -%}{%- assign meta_title = "Photo Gallery — Little Town Playhouse" -%}{%- assign meta_desc = "A peek inside Little Town Playhouse — a gallery of the play floor, the storefronts and the little ones who run the show." -%}{%- assign page_css = "our-story.css" -%}
+    {%- when 'photo-gallery' -%}{%- assign meta_title = "Photo Gallery — Little Town Playhouse" -%}{%- assign meta_desc = "A peek inside Little Town Playhouse — a gallery of the play floor, the storefronts and the little ones who run the show." -%}{%- assign page_css = "photo-gallery.css" -%}
     {%- when 'visit-us' -%}{%- assign meta_title = "Visit Us — Little Town Playhouse" -%}{%- assign meta_desc = "Hours, address and directions for Little Town Playhouse on Main Street, Riverbend. Get in touch and find answers to common visitor questions." -%}{%- assign page_css = "visit-us.css" -%}
     {%- else -%}{%- assign meta_title = page_title -%}{%- assign meta_desc = page_description -%}{%- assign page_css = blank -%}
   {%- endcase -%}

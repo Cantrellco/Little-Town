@@ -26,7 +26,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html">Photo Gallery</a>
+        <a href="photo-gallery.html">Photo Gallery</a>
         <a href="visit-us.html" class="active">Visit Us</a>
       </nav>
       <div class="header-cta">
@@ -42,7 +42,7 @@
         <a href="parties.html">Parties</a>
         <a href="memberships.html">Memberships</a>
         <a href="fusion.html">Fusion</a>
-        <a href="our-story.html">Photo Gallery</a>
+        <a href="photo-gallery.html">Photo Gallery</a>
         <a href="visit-us.html" class="active">Visit Us</a>
       </nav>
     </div></div>
@@ -51,59 +51,23 @@
   <main>
 
     <!-- ============================================================
-         HERO — lively sky backdrop, sticker, highlighted headline
+         HERO — same recipe as Fusion: a single signature tile (map pins)
+         on a cool teal→meadow gradient, with the mini location card beside
+         the copy.
          ============================================================ -->
     <section class="page-hero ph--visit">
-      <!-- Map / wayfinding world: a faint street grid (CSS) with dashed routes
-           leading to a big "you are here" pin. Shows on every screen size. -->
-      <div class="visit-map" aria-hidden="true">
-        <svg class="visit-route" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-40 330 C 180 330 230 150 440 150 S 770 300 1010 210"
-                fill="none" stroke="#3F7268" stroke-width="3.5" stroke-dasharray="0.5 16" stroke-linecap="round" opacity="0.42"/>
-          <path d="M150 -30 C 150 120 380 150 400 300 S 700 440 770 440"
-                fill="none" stroke="#C2805F" stroke-width="3.5" stroke-dasharray="0.5 16" stroke-linecap="round" opacity="0.32"/>
-        </svg>
-      </div>
-      <!-- a two-way signpost (desktop flourish) -->
-      <span class="deco anim-sway" style="top:26%;left:7%;width:48px" aria-hidden="true">
-        <svg viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="5" width="3" height="32" rx="1.5" fill="#cdb89a"/>
-          <path d="M4 9 H29 l6 5 -6 5 H4 Z" fill="#AEDCEA" stroke="#fff" stroke-width="0.8"/>
-          <path d="M40 21 H17 l-6 5 6 5 H40 Z" fill="#F8D98F" stroke="#fff" stroke-width="0.8"/>
-        </svg>
-      </span>
-      <!-- a friendly little tree along the route -->
-      <span class="deco anim-bob slow" style="bottom:16%;left:17%;width:30px" aria-hidden="true">
-        <svg viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="13" y="24" width="4" height="13" rx="1.5" fill="#cdb89a"/>
-          <circle cx="15" cy="16" r="13" fill="#BFD6A8"/>
-          <circle cx="10" cy="13" r="3" fill="#fff" opacity="0.3"/>
-        </svg>
-      </span>
 
       <div class="container">
-        <div class="visit-hero-inner">
-          <div class="reveal">
-          <!-- Walk-ins sticker above the eyebrow -->
-          <div class="visit-hero-sticker">
-            <span class="sticker anim-pop" aria-label="Walk-ins welcome">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Walk-ins welcome!
-            </span>
-          </div>
 
-          <span class="eyebrow">Visit us</span>
-          <h1>Come <span class="hl hl--sky">play</span> in our <span class="script" style="color:var(--accent)">little town</span></h1>
-          <p class="lead" style="max-width:42ch">You'll find us right on Main Street in Riverbend. Drop in whenever you're ready — we'd love to have you.</p>
+        <div class="reveal">
+          <span class="partner-tag"><img src="assets/img/icon-pin.svg" alt="" width="18" height="18"> Visit us · Riverbend</span>
+          <h1 style="margin-top:0.8rem">Come <span class="hl hl--sky">play</span> in our <span class="script" style="color:var(--accent)">little town</span></h1>
+          <p class="lead"><strong class="hl--sky" style="color:var(--ink)">Right on Main Street in Riverbend.</strong> Drop in whenever you're ready — we'd love to have you.</p>
 
-          <div class="pill-row" style="justify-content:flex-start; margin-top:1rem">
+          <div class="pill-row">
             <span class="pill">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="display:inline;vertical-align:-2px;margin-right:3px"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
               12 Main Street, Riverbend
-            </span>
-            <span class="pill">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="display:inline;vertical-align:-2px;margin-right:3px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Free parking off Maple Lane
             </span>
             <span class="pill">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="display:inline;vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
@@ -115,10 +79,10 @@
             <a class="btn btn--lg btn--terracotta btn--pop" href="#contact">Say hello</a>
             <a class="btn btn--lg btn--ghost" href="memberships.html">See membership plans</a>
           </div>
-          </div>
+        </div>
 
-          <!-- Art column: a friendly location card — a mini map with our pin on it -->
-          <div class="visit-hero-art reveal" data-delay="1">
+        <!-- Art column: a friendly location card — a mini map with our pin on it -->
+        <div class="visit-hero-art reveal" data-delay="1">
             <svg class="visit-loc-card" viewBox="0 0 300 240" role="img" aria-label="A map card showing the Little Town location pin at 12 Main Street." xmlns="http://www.w3.org/2000/svg">
               <rect x="6" y="10" width="288" height="222" rx="22" fill="#ffffff" stroke="#e6dfd1" stroke-width="2"/>
               <clipPath id="visitMapClip"><rect x="20" y="24" width="260" height="158" rx="14"/></clipPath>
@@ -141,7 +105,6 @@
               <text x="150" y="215" text-anchor="middle" font-family="Quicksand, system-ui, sans-serif" font-weight="700" font-size="13" fill="#3F7268">12 Main Street</text>
             </svg>
           </div>
-        </div>
       </div>
     </section>
 
@@ -220,7 +183,7 @@
         <!-- RIGHT: map + sticker cluster -->
         <div class="reveal" data-delay="1">
           <div class="map-frame pop-host">
-            <span class="pop-bubble pop-bubble--coral" aria-hidden="true">📍</span>
+            <span class="pop-bubble pop-bubble--coral" aria-hidden="true"><img src="assets/img/icon-pin.svg" alt="" width="22" height="22"></span>
             <!-- map-light.svg is auto-inlined + animated by main.js; keep filename -->
             <div class="map-light">
               <img src="assets/img/map-light.svg" alt="Stylized illustrated map showing Little Town Playhouse on Main Street, Riverbend." width="600" height="380" loading="lazy" decoding="async">
@@ -230,10 +193,6 @@
 
           <!-- Sticker cluster — wayfinding quick-facts -->
           <div class="map-stickers" aria-label="Visitor quick-facts">
-            <span class="sticker sticker--sky hover-jelly">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Free parking
-            </span>
             <span class="sticker sticker--sage hover-jelly">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
               Step-free access
@@ -294,7 +253,7 @@
         </div>
 
         <div class="contact-quick reveal mt-4">
-          <a class="contact-quick-card" href="tel:+15550142025">
+          <a class="contact-quick-card tilt-3d" href="tel:+15550142025">
             <span class="contact-quick-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>
             </span>
@@ -304,7 +263,7 @@
               <small>Open hours, every play day</small>
             </span>
           </a>
-          <a class="contact-quick-card" href="mailto:hello@littletownplay.com">
+          <a class="contact-quick-card tilt-3d" href="mailto:hello@littletownplay.com">
             <span class="contact-quick-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </span>
@@ -341,18 +300,6 @@
             <div class="acc-panel">
               <div>
                 <p>Open play is walk-in friendly. On busy weekends and school breaks we may reach capacity, so members and guests who reserve ahead get priority entry.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="acc-item reveal" aria-expanded="false">
-            <button class="acc-trigger" aria-expanded="false">
-              Do you have parking?
-              <span class="acc-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="acc-panel">
-              <div>
-                <p>Yes — free parking is available behind the building off Maple Lane, with step-free access and stroller-friendly entry right onto Main Street.</p>
               </div>
             </div>
           </div>

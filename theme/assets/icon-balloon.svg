@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- balloon -->
+  <ellipse cx="12" cy="9" rx="6.5" ry="7.5" fill="#E09972" stroke="#8A5A2C" stroke-width="1.4"/>
+  <!-- highlight -->
+  <ellipse cx="9" cy="6" rx="1.6" ry="2.4" fill="#FBF5EA" opacity="0.6"/>
+  <!-- tie -->
+  <path d="M12 16.4 l-1.4 1.8 l2.8 0 Z" fill="#A8472A" stroke="#8A5A2C" stroke-width="1.1" stroke-linejoin="round"/>
+  <!-- ribbon -->
+  <path d="M12 18.3 q3 3 -1 5.5" fill="none" stroke="#8A5A2C" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

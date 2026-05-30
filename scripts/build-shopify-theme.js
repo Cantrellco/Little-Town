@@ -59,7 +59,7 @@ const LINKS = {
   "parties.html": "/pages/parties",
   "memberships.html": "/pages/memberships",
   "fusion.html": "/pages/fusion",
-  "our-story.html": "/pages/photo-gallery",
+  "photo-gallery.html": "/pages/photo-gallery",
   "visit-us.html": "/pages/visit-us",
 };
 
@@ -141,8 +141,8 @@ const PAGES = [
   { file: "parties.html",      tmpl: "page.parties.liquid",      key: "parties" },
   { file: "memberships.html",  tmpl: "page.memberships.liquid",  key: "memberships" },
   { file: "fusion.html",       tmpl: "page.fusion.liquid",       key: "fusion" },
-  { file: "our-story.html",    tmpl: "page.our-story.liquid",    key: "our-story" },
-  { file: "visit-us.html",     tmpl: "page.visit-us.liquid",     key: "visit-us" },
+  { file: "photo-gallery.html", tmpl: "page.photo-gallery.liquid", key: "photo-gallery" },
+  { file: "visit-us.html",      tmpl: "page.visit-us.liquid",      key: "visit-us" },
 ];
 
 const meta = {}; // key -> { title, desc, css }
@@ -150,6 +150,11 @@ for (const p of PAGES) {
   const src = read(p.file);
   const body = wireCommerce(transformBody(extractMain(src)), p.key);
   write("templates/" + p.tmpl, body + "\n");
+  /* Also emit each page body as a snippet, so the default page.liquid can
+     auto-route by page.handle when an admin hasn't manually assigned the
+     custom template. This makes the page render correctly even if the
+     "Theme template" dropdown in admin is left on the default "page". */
+  if (p.key !== "index") write("snippets/page-" + p.key + ".liquid", body + "\n");
   meta[p.key] = {
     title: head(src, /<title>([\s\S]*?)<\/title>/i),
     desc: head(src, /<meta name="description" content="([^"]*)"/i),
@@ -183,6 +188,12 @@ write(
     assign meta_key = template.suffix
     if template.name == 'index'
       assign meta_key = 'index'
+    endif
+    # Fail-safe: when a page sits on the default page template (no suffix),
+    # use the page's own handle as the key so it still picks up the right CSS
+    # + meta. Pairs with the handle-routed default page.liquid below.
+    if meta_key == blank and template.name == 'page'
+      assign meta_key = page.handle
     endif
   -%}
 ${metaCase}
@@ -453,12 +464,25 @@ write(
 `
 );
 
+/* Smart default page.liquid — if a Shopify page's handle matches one of our
+   custom marketing pages, render that page's snippet body. Otherwise fall
+   back to the generic title + content layout. This way the marketing pages
+   render correctly even when the admin "Theme template" dropdown is left on
+   the default "page" instead of the matching custom template. */
+const pageHandleCases = PAGES
+  .filter((p) => p.key !== "index")
+  .map((p) => `    {%- when '${p.key}' -%}{%- render 'page-${p.key}' -%}`)
+  .join("\n");
 write(
   "templates/page.liquid",
-  `<main class="section"><div class="container reveal">
-    <div class="center"><h1>{{ page.title }}</h1></div>
-    <div class="rte" style="max-width:740px;margin:1.5rem auto 0">{{ page.content }}</div>
+  `{%- case page.handle -%}
+${pageHandleCases}
+    {%- else -%}
+<main class="section"><div class="container reveal">
+  <div class="center"><h1>{{ page.title }}</h1></div>
+  <div class="rte" style="max-width:740px;margin:1.5rem auto 0">{{ page.content }}</div>
 </div></main>
+{%- endcase -%}
 `
 );
 

@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Faint, tiling "snapshots" texture for the Photo Gallery hero: tiny
-     cameras + sparkles over the warm cream gradient (mirrors the Fusion
-     coffee-bean tile). -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140" role="presentation" aria-hidden="true">
-  <g opacity="0.17" fill="#bb8350">
-    <!-- camera, top-left -->
-    <g transform="translate(30,34) rotate(-11)">
-      <rect x="-15" y="-9" width="30" height="20" rx="4"/>
-      <rect x="-7" y="-13" width="11" height="5" rx="1.6"/>
-      <circle cx="2" cy="1" r="6.6" fill="#f6e7cf"/>
-      <circle cx="2" cy="1" r="3.3"/>
-      <circle cx="-9" cy="-4.5" r="1.5" fill="#f6e7cf"/>
+<!-- Faint, tiling photo gallery texture — sparse and subtle, matching the
+     Fusion coffee-bean tile's three-motif recipe (tiny camera, sparkle,
+     polaroid). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="130" height="130" role="presentation" aria-hidden="true">
+  <g opacity="0.16" fill="#bb8350">
+    <!-- camera -->
+    <g transform="translate(34 38) rotate(-10)">
+      <rect x="-12" y="-7" width="24" height="16" rx="3"/>
+      <rect x="-5" y="-10.5" width="9" height="4" rx="1.3"/>
+      <circle cx="2" cy="1" r="5"/>
     </g>
-    <!-- sparkle, upper-right -->
-    <path transform="translate(104,30)" d="M0 -8 Q1.3 -1.3 8 0 Q1.3 1.3 0 8 Q-1.3 1.3 -8 0 Q-1.3 -1.3 0 -8Z"/>
-    <!-- heart, lower-left -->
-    <path transform="translate(34,104) rotate(-8)" d="M0 6 C-6.5 0.6 -6 -6.4 0 -2.6 C6 -6.4 6.5 0.6 0 6Z"/>
-    <!-- camera, lower-right -->
-    <g transform="translate(102,100) rotate(9)">
-      <rect x="-13" y="-8" width="26" height="17" rx="3.5"/>
-      <rect x="-6" y="-11.5" width="9.5" height="4.4" rx="1.4"/>
-      <circle cx="1.5" cy="1" r="5.6" fill="#f6e7cf"/>
-      <circle cx="1.5" cy="1" r="2.8"/>
-      <circle cx="-8" cy="-4" r="1.3" fill="#f6e7cf"/>
+    <!-- sparkle -->
+    <path transform="translate(96 70)" d="M0 -8 q1.3 6.4 8 8 q-6.7 1.6 -8 8 q-1.3 -6.4 -8 -8 q6.7 -1.6 8 -8Z"/>
+    <!-- polaroid tilted -->
+    <g transform="translate(60 104) rotate(8)">
+      <rect x="-9" y="-9" width="18" height="20" rx="1.6"/>
+      <rect x="-7" y="-7" width="14" height="11" rx="0.6" fill="#fff5e0"/>
     </g>
-    <!-- small sparkle, center to fill -->
-    <path transform="translate(70,68) scale(0.7)" d="M0 -8 Q1.3 -1.3 8 0 Q1.3 1.3 0 8 Q-1.3 1.3 -8 0 Q-1.3 -1.3 0 -8Z"/>
   </g>
 </svg>

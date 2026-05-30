@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
+  <!-- party popper cone -->
+  <path d="M5 19 L17 7 L20 10 L8 22 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- cone band -->
+  <path d="M5.5 18.5 L8.5 21.5" stroke="#8A5A2C" stroke-width="1.4" stroke-linecap="round"/>
+  <!-- confetti pieces -->
+  <rect x="11.5" y="2" width="2" height="1" rx="0.3" fill="#E7BC76" transform="rotate(20 12.5 2.5)"/>
+  <rect x="16" y="3" width="2.2" height="1.1" rx="0.3" fill="#ABBE83" transform="rotate(-12 17 3.5)"/>
+  <rect x="18" y="6" width="2" height="1" rx="0.3" fill="#A8472A" transform="rotate(34 19 6.5)"/>
+  <rect x="20" y="2.5" width="1.6" height="1" rx="0.3" fill="#8A5A2C" transform="rotate(-30 20.8 3)"/>
+  <circle cx="14" cy="5" r="0.85" fill="#E09972"/>
+  <circle cx="20" cy="9" r="0.75" fill="#E7BC76"/>
+  <circle cx="13.5" cy="9" r="0.7" fill="#ABBE83"/>
+  <!-- streamers -->
+  <path d="M13 4 q1 1 2 0.5" stroke="#A8472A" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <path d="M16 5.5 q1 -0.6 1.6 0.3" stroke="#586A36" stroke-width="1" fill="none" stroke-linecap="round"/>
+</svg>
