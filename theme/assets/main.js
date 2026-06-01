@@ -310,6 +310,8 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
   var ICON_CUP =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M3 8h15v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M7 1v2M11 1v2M15 1v2"/></svg>';
+  var ICON_X =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
   /* ---------- 1. Persistent bottom Action Bar ----------
      Two thumb-reach actions pinned to the bottom of every page on phones:
@@ -383,6 +385,30 @@
 
     function isMobile() { return window.innerWidth < 960; }
 
+    // The drawer is a right-side slide-in panel. Move it out of the header so
+    // position:fixed is relative to the viewport — the header's backdrop-filter
+    // would otherwise trap it inside the (short) header box. Then enrich the
+    // panel with a sticky top bar (title + close) and a footer CTA.
+    if (menu.parentNode !== document.body) document.body.appendChild(menu);
+    var panel = menu.querySelector("div");
+    if (panel && !panel.querySelector(".m-drawer-top")) {
+      var top = document.createElement("div");
+      top.className = "m-drawer-top";
+      top.innerHTML =
+        '<span class="m-drawer-title">Menu</span>' +
+        '<button type="button" class="m-drawer-close" aria-label="Close menu">' + ICON_X + "</button>";
+      panel.insertBefore(top, panel.firstChild);
+      top.querySelector(".m-drawer-close").addEventListener("click", function () { close(true); });
+
+      var membersHref = findHref("membership") || "#";
+      var foot = document.createElement("div");
+      foot.className = "m-drawer-foot";
+      foot.innerHTML =
+        '<a class="btn btn--terracotta btn--pop" href="' + membersHref + '">Become a Member</a>' +
+        '<a class="m-drawer-call" href="' + telHref() + '">' + ICON_PHONE + "<span>Call (555) 014-2025</span></a>";
+      panel.appendChild(foot);
+    }
+
     function setInert(on) {
       // Keep collapsed menu links out of the tab order + a11y tree.
       if (on) {
@@ -443,10 +469,10 @@
       if ((e.key === "Escape" || e.key === "Esc") && header.classList.contains("nav-open")) close(true);
     });
 
-    // Tap/click outside the header closes the menu.
-    document.addEventListener("click", function (e) {
-      if (!header.classList.contains("nav-open")) return;
-      if (!header.contains(e.target)) close(false);
+    // Tapping the dimmed scrim (the .mobile-menu area outside the panel) closes
+    // the drawer. The panel itself and the toggle are excluded.
+    menu.addEventListener("click", function (e) {
+      if (e.target === menu) close(false);
     });
 
     // Resizing up to desktop must always leave a clean, unlocked state.
