@@ -59,10 +59,9 @@
     </section>
 
     <!-- ============================================================
-         HOURS + MAP — lively hours card, map with sticker cluster
-         flow-top: the wave divider that rises out of the hero on every page
+         HOURS + MAP — lively hours card, map with sticker cluster · beat 1 (colour wash)
          ============================================================ -->
-    <section class="section flow-top">
+    <section class="section flow-top sec-color">
       <div class="container split">
 
         <!-- LEFT: hours + contact details -->
@@ -106,7 +105,7 @@
               </div>
               <div class="contact-detail-copy">
                 <strong>Address</strong>
-                <span>12 Main Street, Riverbend, CA 90210</span>
+                <a href="https://maps.google.com/?q=12+Main+Street+Riverbend+CA" target="_blank" rel="noopener">12 Main Street, Riverbend, CA 90210</a>
               </div>
             </div>
             <div class="contact-detail-row">
@@ -115,7 +114,7 @@
               </div>
               <div class="contact-detail-copy">
                 <strong>Phone</strong>
-                <a href="#" data-noop>(555) 014-2025</a>
+                <a href="tel:+15550142025">(555) 014-2025</a>
               </div>
             </div>
             <div class="contact-detail-row">
@@ -124,7 +123,7 @@
               </div>
               <div class="contact-detail-copy">
                 <strong>Email</strong>
-                <a href="#" data-noop>hello@littletownplay.com</a>
+                <a href="mailto:hello@littletownplay.com">hello@littletownplay.com</a>
               </div>
             </div>
           </div>
@@ -160,7 +159,8 @@
     <!-- ============================================================
          PLAN YOUR VISIT — 3-step numbered guide
          ============================================================ -->
-    <section class="section visit-steps-section flow-top has-bubbles">
+    <!-- beat 2 (dots on white) -->
+    <section class="section visit-steps-section flow-top sec-dots has-bubbles">
       <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
@@ -193,7 +193,8 @@
     <!-- ============================================================
          CONTACT — simple, two-channel "Contact us for more info"
          ============================================================ -->
-    <section class="section band flow-top" id="contact">
+    <!-- beat 3 (calm) -->
+    <section class="section flow-top sec-calm" id="contact">
       <div class="container" style="max-width:760px">
 
         <div class="center reveal">
@@ -233,7 +234,9 @@
     <!-- ============================================================
          VISITOR FAQ — accordion, all 4 Q&As intact
          ============================================================ -->
-    <section class="section visit-faq-section">
+    <!-- beat 4 (playful: colour wash + dots) -->
+    <section class="section flow-top sec-play has-bubbles visit-faq-section">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Before you come</span>
@@ -282,12 +285,15 @@
     </section>
 
     <!-- ============================================================
-         CLOSING CTA BAND — sky/teal gradient, warm send-off
+         CLOSING CTA BAND — sky/teal gradient, warm send-off.
+         Shared sticker lead-in + confetti so the page ender matches the rest
+         of the site; the wave rides in like every other section transition.
          ============================================================ -->
     <section class="section flow-top">
       <div class="container">
         <div class="visit-cta-band reveal anim-gradient">
-          <span class="eyebrow on-dark">Ready for an adventure?</span>
+          <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem"><img src="{{ 'icon-pin.svg' | asset_url }}" alt="" width="18" height="18"> Ready for an adventure?</span>
           <h2>We'll see you <span class="script" style="color:var(--accent)">in town!</span></h2>
           <p style="max-width:42ch;margin-inline:auto">No booking needed for open play — just show up, swap shoes for socks, and let the fun begin.</p>
           <div class="flex-cta center">

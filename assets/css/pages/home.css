@@ -5,12 +5,28 @@
    ============================================================ */
 
 /* Pastel ribbon colour for the flowing section dividers (this page) */
-:root { --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--sage) 50%, var(--sun) 100%); }
+:root {
+  --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--sage) 50%, var(--sun) 100%);
+  /* section-rhythm washes — sky into sun, the home palette */
+  --wash-1: #e1f2f8;  /* pale sky */
+  --wash-2: #fdf1d0;  /* pale sun */
+}
 
 /* ---------- Hero: bolder, brighter, a touch more playful ---------- */
 /* A warmer, sunnier sky wash behind the town so the hero reads brighter
    while keeping the same blue-sky family as the rest of the site. */
 .hero-v2 { background: linear-gradient(180deg, #bfe4f0 0%, #cfe8ef 60%, #c5e2ec 100%); }
+
+/* Soft rolling lawn at the foot of the hero. Sits behind the town mark (it is
+   the first child, so the buildings paint over it) and in front of the sky, so
+   the town, the flanking trees/bushes and the wave divider all share one green
+   ground line instead of floating on flat blue. Stretched full-width. */
+.hero-ground {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 0;
+  height: clamp(150px, 18vw, 200px);
+  pointer-events: none;
+}
+.hero-ground img { width: 100%; height: 100%; display: block; }
 
 /* Sticker sits above the eyebrow, centred, with a little breathing room. */
 .home-hero-sticker {
@@ -146,7 +162,11 @@
 @media (max-width: 859px) { .hm-deco { display: none; } }
 
 /* ---------- Explore the town: wonky cards with corner stickers ---------- */
-.home-explore .card { position: relative; overflow: visible; }
+/* Flex column so the trailing CTA pins to the bottom of every card — the three
+   blurbs differ in length, and without this the buttons float at mismatched
+   heights. The card art keeps its natural size; only the button is pushed down. */
+.home-explore .card { position: relative; overflow: visible; display: flex; flex-direction: column; }
+.home-explore .card > .btn { margin-top: auto; align-self: flex-start; }
 .home-card-sticker {
   position: absolute;
   top: -0.75rem;
@@ -287,6 +307,215 @@
   /* Slightly smaller price stamp, nudged fully onto the photo on phones */
   .member-price { width: 100px; height: 100px; left: 0.4rem; bottom: -0.7rem; }
   .member-price b { font-size: 1.7rem; }
+}
+
+/* ============================================================
+   Mobile excellence layer — home page only
+   All changes gated behind max-width so desktop is untouched.
+   Builds ON TOP of the global v13 layer in styles.css.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   HERO — headline, lead, CTAs + ground art at 320–480px
+   ----------------------------------------------------------
+   The global layer sets .hero-v2 min-height: clamp(520px,80vh,640px)
+   and hides sparkles. Here we tighten the type scale, lower the
+   lead's max-width so it wraps into a comfortable two-liner, and
+   push the hero-ground up a touch so the town mark doesn't plant
+   its feet too far below the fold. */
+
+@media (max-width: 480px) {
+  /* Pull the headline back so it never takes more than 2 lines,
+     even on a 320px screen. clamp floor matches the global lead size. */
+  .home-hero-title {
+    font-size: clamp(1.9rem, 8.5vw, 2.6rem);
+    letter-spacing: -0.01em;
+  }
+
+  /* Narrower lead column so it wraps at a legible measure, not full-width. */
+  .hero-v2 .lead {
+    font-size: clamp(0.97rem, 3.6vw, 1.12rem);
+    max-width: 32ch;
+  }
+
+  /* Shrink the ground strip so it doesn't eat into available hero height
+     on short phones; the town mark still "stands" on the lawn. */
+  .hero-ground {
+    height: clamp(90px, 18vw, 140px);
+  }
+
+  /* Sticker: already 0.82rem above; give it slightly less vertical breathing
+     room so the whole composition fits above the fold without scrolling. */
+  .home-hero-sticker { margin-bottom: 0.55rem; }
+}
+
+/* On very narrow phones (320px) push the hero content padding down a touch
+   so it clears the fixed header and doesn't feel squeezed at the top. */
+@media (max-width: 359px) {
+  .home-hero-title { font-size: 1.75rem; }
+  .hero-v2 .lead  { font-size: 0.95rem; }
+}
+
+/* ----------------------------------------------------------
+   EXPLORE THE TOWN — card stickers at 320–600px
+   ----------------------------------------------------------
+   Cards stack to 1-up below 720px (.grid-3 resets to 1fr) so the
+   sticker's negative left offset (-0.4rem) risks being clipped by
+   the container edge. Pull it back to zero and flatten the rotation
+   slightly so it sits entirely inside the safe area of the card. */
+
+@media (max-width: 600px) {
+  .home-card-sticker {
+    /* Land the sticker inside the card boundary — no negative left on narrow widths */
+    left: 0.6rem;
+    top: -0.65rem;
+    /* Tone down rotation so it reads clearly at single-column width */
+    font-size: 0.72rem;
+    padding: 0.35rem 0.7rem;
+  }
+  /* Restore rotations scoped to phone — gentler than the desktop angles */
+  .home-explore .card:nth-child(odd)  .home-card-sticker { transform: rotate(-4deg); }
+  .home-explore .card:nth-child(even) .home-card-sticker { transform: rotate(3.5deg); }
+
+  /* Make sure the card's overflow:visible doesn't leak the sticker
+     beyond the section edge — cap each card's visual container. */
+  .home-explore .card { margin-top: 0.8rem; }
+
+  /* The stacked card height feels generous on desktop; give the art a
+     sensible max so single-column logos don't balloon. */
+  .home-explore .card-art { padding: 0.7rem; }
+  .home-explore .card-art img { max-height: 140px; }
+}
+
+/* ----------------------------------------------------------
+   MEMBERSHIP BAND — polaroid + medallion at 320–600px
+   ----------------------------------------------------------
+   The band stacks to a single column below 860px. The .member-art
+   sits below the copy, and the .member-price medallion (position:
+   absolute, bottom:-0.9rem, left:-0.4rem) can bleed out of the band
+   on narrow phones. We re-anchor it on the photo and add bottom
+   clearance inside the band so the medallion is never clipped.
+   We also strip the polaroid tilt at ≤480px — a rotated photo inside
+   a tight single-column layout can introduce a horizontal scroll nub. */
+
+@media (max-width: 600px) {
+  /* The parent .member-band has overflow:hidden (styles.css), which clips the
+     absolutely-positioned .member-price medallion that overhangs the bottom of
+     .member-art. Fix: let the band paint past its bottom edge while keeping the
+     dot-grid ::before clipped to the rounded card via the inner element. */
+  .home-member { overflow: visible; }
+  /* Re-clip the dot-grid texture so it doesn't bleed past the band corners. */
+  .home-member::before { overflow: hidden; }
+
+  /* Give the art wrapper enough room for the medallion to breathe below it. */
+  .member-art { padding-bottom: 1.6rem; }
+
+  /* Pull the tilt back to a very gentle angle so the photo stays
+     comfortably inside the section's padding on a 360px screen. */
+  .member-photo { transform: rotate(-0.8deg); }
+
+  /* Keep the medallion on-card — never outside the band's left edge. */
+  .member-price {
+    left: 0.5rem;
+    bottom: -0.5rem;
+    width: 96px;
+    height: 96px;
+  }
+  .member-price b  { font-size: 1.65rem; }
+  .member-price small { font-size: 0.58rem; }
+
+  /* Perk list: tighten the row spacing so three items scan in one glance. */
+  .home-member .member-perks { gap: 0.45rem; }
+
+  /* The band's CTA pair is already full-width via .flex-cta ≤559px;
+     add a little top margin so it breathes below the perks list. */
+  .home-member .flex-cta { margin-top: 1.2rem; }
+}
+
+@media (max-width: 380px) {
+  /* No tilt at all on the very smallest phones — keeps the photo
+     from introducing a micro horizontal-overflow nub. */
+  .member-photo { transform: none; }
+
+  /* Medallion: smallest-phone treatment, fully on the photo. */
+  .member-price {
+    width: 86px;
+    height: 86px;
+    left: 0.3rem;
+  }
+  .member-price b { font-size: 1.45rem; }
+}
+
+/* ----------------------------------------------------------
+   GLIMPSE GRID — bento tiles at 320–560px
+   ----------------------------------------------------------
+   The global breakpoint in home.css already goes 1-up below 561px
+   with grid-auto-rows: clamp(200px,62vw,320px). At 360px, 62vw
+   = ~223px which is comfortable; the one tweak needed is making sure
+   the caption scrim text doesn't feel cramped on very narrow tiles. */
+
+@media (max-width: 480px) {
+  /* A touch less row height at the very narrow end so tiles don't
+     feel disproportionately tall on a 360px screen. */
+  .home-glimpse-grid { grid-auto-rows: clamp(180px, 58vw, 270px); }
+
+  /* Tighten caption padding — leave room for the scrim gradient. */
+  .home-glimpse-tile figcaption { padding: 1.2rem 0.85rem 0.75rem; }
+  .glimpse-cap { font-size: 0.86rem; }
+
+  /* Tighten the note text under the grid. */
+  .glimpse-note { font-size: 0.8rem; }
+}
+
+/* ----------------------------------------------------------
+   HOW A VISIT WORKS — steps at 360–760px
+   ----------------------------------------------------------
+   Steps are already 1-column on phones (global .steps rule). We
+   add a hairline divider between steps and tighten the badge size
+   so the 3-step stack doesn't tower over the page. */
+
+@media (max-width: 600px) {
+  /* Tighter step gap so three steps fit without excessive scrolling. */
+  .home-steps .steps { gap: 0.9rem; }
+
+  /* Reduce the step badge size a touch — 60px is generous on a phone. */
+  .home-steps .step .step-no { width: 50px; height: 50px; font-size: 1.2rem; }
+
+  /* Constrain the descriptive paragraph to a comfortable measure. */
+  .home-steps .step p { max-width: 30ch; }
+}
+
+/* ----------------------------------------------------------
+   PARENT REASSURANCE — icon chips at 360–600px
+   ----------------------------------------------------------
+   Three .reassure columns already stack to 1-up via .grid-3.
+   We limit the icon chip size on phones so it doesn't feel huge
+   on a single-column layout where it's centred and prominent. */
+
+@media (max-width: 600px) {
+  .reassure .chip { width: 60px; height: 60px; }
+  .reassure .chip img { width: 28px; height: 28px; }
+}
+
+/* ----------------------------------------------------------
+   TESTIMONIALS — .home-quotes (future-proof stub)
+   ----------------------------------------------------------
+   The band doesn't exist in the current HTML but the CSS selector
+   is defined; keep the cards comfortable if it's ever added. */
+
+@media (max-width: 600px) {
+  .home-quotes .quote { padding: 1.1rem 1rem; }
+  .home-quotes .quote p { font-size: 0.97rem; }
+}
+
+/* ----------------------------------------------------------
+   STAT STRIP — .home-stats (future-proof stub)
+   ----------------------------------------------------------
+   Already 2-up on phones. Ensure numbers don't clip at 320px. */
+
+@media (max-width: 480px) {
+  .home-stats .stat .num { font-size: clamp(2rem, 9.5vw, 2.8rem); }
+  .home-stats .stat .label { font-size: 0.85rem; }
 }
 
 /* ---------- Reduced motion: silence every home-only flourish ---------- */

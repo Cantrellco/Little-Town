@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Soft rolling lawn the little town and its parkland rest on. Drawn in the
+     same pastel town-logo greens as deco-tree / deco-bush so the whole hero
+     scene reads as one grounded scene rather than floaters on flat sky.
+     Stretched full-width (preserveAspectRatio=none); three depth layers. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+  <!-- Back rise — hazy, lightest, sits furthest away -->
+  <path d="M0 96 C 180 62 360 72 540 96 C 760 126 980 70 1200 84 C 1320 90 1400 96 1440 92 L1440 220 L0 220 Z" fill="#c6d6b2"/>
+  <!-- Main lawn — the town green the trees stand on -->
+  <path d="M0 150 C 220 120 430 134 640 150 C 880 168 1090 126 1300 142 C 1372 147 1412 152 1440 150 L1440 220 L0 220 Z" fill="#b1c49c"/>
+  <!-- Sunlit crest highlight skimming the lawn's top edge -->
+  <path d="M0 150 C 220 120 430 134 640 150 C 880 168 1090 126 1300 142 C 1372 147 1412 152 1440 150 L1440 160 C 1412 162 1372 157 1300 152 C 1090 136 880 178 640 160 C 430 144 220 130 0 160 Z" fill="#cfdfbc" opacity="0.7"/>
+  <!-- Near grass lip — slightly deeper green for grounding depth at the front -->
+  <path d="M0 184 C 260 166 520 178 760 186 C 1000 194 1200 174 1440 184 L1440 220 L0 220 Z" fill="#9fb389"/>
+</svg>

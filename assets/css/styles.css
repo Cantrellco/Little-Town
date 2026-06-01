@@ -976,6 +976,13 @@ main > .section--tight:last-child {
 .member-band .price-list li { color: var(--ink); }
 .member-band .price-list li::before { background: rgba(58,49,40,0.10); box-shadow: inset 0 0 0 3px var(--accent-teal); }
 .member-art img { width: 100%; border-radius: var(--r-lg); box-shadow: var(--shadow-md); display: block; }
+/* Responsive <picture> wrappers around cropped/object-fit photos must stay
+   transparent to layout, so the inner <img> still sizes to the tile exactly as
+   it did before the AVIF/WebP sources were added. */
+.member-photo picture,
+.home-glimpse-tile picture,
+.pp-glimpse-tile picture,
+.gallery-figure picture { display: contents; }
 @media (min-width: 860px) { .member-band { grid-template-columns: 1.05fr 0.95fr; } }
 .btn--onfill { background: #fff; color: var(--accent-teal); }
 .btn--onfill:hover { background: #fff; }
@@ -1066,6 +1073,12 @@ a.btn--terracotta[href="memberships.html"]::after {
   --sun-tint:   #fdf1d0;
   --sky-tint:   #e1f2f8;
   --coral-tint: #fce6db;
+
+  /* Section-rhythm washes — the two soft colour beats in the repeating
+     section cycle. Each page overrides these to its own hue (see page CSS)
+     so the rhythm is identical site-wide while the colour stays on-brand. */
+  --wash-1: var(--sky-tint);
+  --wash-2: var(--sun-tint);
 
   /* Ready-made playful gradients */
   --grad-sunrise: linear-gradient(135deg, var(--sun) 0%, var(--coral) 100%);
@@ -1247,6 +1260,30 @@ section.flow-top { overflow: visible; }
 .flow-top.bg-sunrise   { --surface: var(--grad-sunrise); }
 .flow-top.bg-candy     { --surface: var(--grad-candy); }
 .flow-top.bg-sky       { --surface: var(--grad-sky); }
+
+/* ============================================================
+   Section rhythm — one shared vertical flow for every page
+   The body of each page is skinned in a fixed 4-beat cycle, applied by
+   POSITION (not by what the section contains), so flipping between pages
+   reads as one consistent site:
+     beat 1  .sec-color → soft colour wash (the page's own hue, --wash-1)
+     beat 2  .sec-dots  → clean white + the playful pastel dot field
+     beat 3  .sec-calm  → warm neutral cream (a quiet breather, different
+                          from the colour beats)
+     beat 4  .sec-play  → second colour wash (--wash-2) + dots = the lively
+                          peak, then the cycle repeats (5=color, 6=dots …).
+   Every beat carries `flow-top` so the wave divider rides every transition.
+   The dotted beats (.sec-dots / .sec-play) also take `has-bubbles` + a
+   `<span class="bubbles">` child. Each page sets --wash-1/--wash-2 to its
+   own colour, so the rhythm is identical and the palette stays on-brand. */
+.sec-color { background: var(--wash-1); }
+.sec-dots  { background: var(--white); }
+.sec-calm  { background: var(--base-deep); }
+.sec-play  { background: var(--wash-2); }
+.flow-top.sec-color { --surface: var(--wash-1); }
+.flow-top.sec-dots  { --surface: var(--white); }
+.flow-top.sec-calm  { --surface: var(--base-deep); }
+.flow-top.sec-play  { --surface: var(--wash-2); }
 
 /* The dark footer pours in with the same wave, so the page is bookended by
    flowing edges. Its surface is the footer's own dark tone; the pastel rim
@@ -1488,7 +1525,9 @@ section.flow-top { overflow: visible; }
   gap: 1.1rem;
 }
 @media (max-width: 980px) { .pp-glimpse-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .pp-glimpse-grid { grid-template-columns: 1fr; } }
+/* Stay 2-up on phones (with a tighter gap) — a single column stacks four tall
+   4:5 tiles into ~1800px of scroll, which reads as a gallery rather than a glimpse. */
+@media (max-width: 480px) { .pp-glimpse-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; } }
 .pp-glimpse-tile {
   position: relative;
   margin: 0;
@@ -1663,6 +1702,11 @@ section.flow-top { overflow: visible; }
   z-index: 0;
 }
 .card > * { position: relative; z-index: 1; }
+/* The pop-bubble must sit ABOVE the card art it springs from, pinned to the
+   corner. The blanket `.card > *` rule above overrides BOTH its `position:absolute`
+   (forcing it into normal flow, top-left, before the art) and its `z-index`
+   (letting the art paint over it) — restore both with a more specific rule. */
+.card > .pop-bubble { position: absolute; z-index: 6; }
 .card:hover { box-shadow: var(--shadow-float); }
 
 /* -------- Refined section eyebrow w/ optional ornamental rule -------- */
@@ -2386,3 +2430,175 @@ section.flow-top { overflow: visible; }
   .cp-grid--3 .cp-card:nth-child(3):active { transform: rotate(-2deg) translate(-3px, -3px); box-shadow: 8px 8px 0 0 var(--ink); }
 }
 
+/* ============================================================
+   v13 — Mobile experience layer
+   A phone-first refinement pass that makes the small-screen view
+   the strongest version of the site. The centrepiece is a
+   persistent bottom Action Bar (tap-to-call + a context-aware
+   "convert" button) injected by main.js; around it we tighten the
+   hero crop, enlarge every touch target to a comfortable minimum,
+   stack CTAs for the thumb, harden the menu, balance headline wrap
+   and trim the motion/battery budget. Desktop is untouched —
+   everything is gated behind a max-width query or the .m-actionbar
+   element, which is display:none from 760px up.
+   ============================================================ */
+
+/* iOS text-inflation guard + nicer wrapping everywhere (progressive) */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+h1, h2, h3, .cp-name { text-wrap: balance; }
+p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
+
+/* ---------- Persistent bottom Action Bar (mobile only) ---------- */
+.m-actionbar { display: none; }
+
+@media (max-width: 759px) {
+  .m-actionbar {
+    position: fixed;
+    z-index: 60;
+    left: 0; right: 0; bottom: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;   /* Call hugs its content; convert takes the rest */
+    gap: 0.55rem;
+    padding: 0.5rem 0.7rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(247, 243, 236, 0.88);
+    backdrop-filter: saturate(165%) blur(16px);
+    -webkit-backdrop-filter: saturate(165%) blur(16px);
+    border-top: 1px solid var(--hairline-soft);
+    box-shadow: 0 -10px 28px -14px rgba(58,49,40,0.34);
+    animation: actionbarIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes actionbarIn {
+    from { transform: translateY(115%); }
+    to   { transform: none; }
+  }
+  .m-action {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0.5rem;
+    min-height: 52px;
+    padding: 0 1.1rem;
+    border-radius: var(--r-pill);
+    font-family: var(--font-head); font-weight: 700;
+    font-size: clamp(0.88rem, 3.6vw, 1rem);
+    line-height: 1; white-space: nowrap; text-decoration: none;
+    border: 2px solid transparent;
+    box-shadow:
+      var(--gloss-top),
+      0 1px 2px rgba(80,60,30,0.12),
+      0 8px 18px -8px rgba(80,60,30,0.22);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+  }
+  .m-action-ic { display: inline-flex; flex: none; }
+  .m-action-ic svg { width: 20px; height: 20px; display: block; }
+  .m-action--call {
+    background: var(--white);
+    color: var(--accent-teal);
+    border-color: rgba(63,114,104,0.20);
+    padding-inline: 1.25rem;
+  }
+  .m-action--primary { background: var(--terracotta); color: var(--ink); }
+  .m-action:active { transform: translateY(1px) scale(0.985); box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.12), 0 4px 10px -6px rgba(80,60,30,0.22); }
+
+  /* Slide the bar out of the way while the full menu is open. */
+  html.nav-open .m-actionbar { transform: translateY(125%); pointer-events: none; }
+
+  /* Reserve space so the fixed bar never sits over footer content. */
+  body.has-actionbar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-actionbar { animation: none !important; }
+}
+
+/* ---------- Scroll-lock behind the open menu (no layout shift) ---------- */
+@media (max-width: 959px) {
+  html.nav-open, html.nav-open body { overflow: hidden; }
+}
+
+/* ---------- Header: tighter + smarter on small screens ---------- */
+@media (max-width: 759px) {
+  :root { --header-h: 64px; }
+}
+@media (max-width: 420px) {
+  .brand svg, .brand img { height: 34px; }
+  .brand-name { font-size: 0.82rem; letter-spacing: 0.08em; }
+  .brand-sub { font-size: 0.95rem; }
+  .header-inner { gap: 0.5rem; }
+}
+@media (max-width: 360px) {
+  /* The town mark alone carries the brand at the very smallest widths. */
+  .brand-text { display: none; }
+}
+
+/* ---------- Mobile menu: bigger, clearer, easier to hit ---------- */
+@media (max-width: 959px) {
+  .mobile-menu nav { padding: 0.5rem 0 0.85rem; }
+  .mobile-menu a {
+    display: flex; align-items: center;
+    min-height: 52px;
+    font-size: 1.08rem; font-weight: 600;
+    padding: 0.85rem clamp(1rem, 4vw, 1.6rem);
+  }
+  .mobile-menu a.active {
+    background: var(--terra-tint);
+    color: var(--accent);
+    font-weight: 700;
+  }
+}
+
+/* ---------- Touch targets: 44px+ minimum for tappable chrome ---------- */
+@media (max-width: 759px) {
+  .footer-col li { margin-bottom: 0.15rem; }
+  .footer-col li a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+  .socials a { width: 46px; height: 46px; }
+  .socials { gap: 0.7rem; margin-top: 1rem; }
+  .acc-trigger { padding-block: 1.15rem; }
+  .slot { min-height: 44px; padding: 0.6rem 1.05rem; }
+  .booking-nav button { width: 40px; height: 40px; }
+}
+
+/* ---------- CTAs: stack full-width for the thumb on true phones ---------- */
+@media (max-width: 559px) {
+  .flex-cta { flex-direction: column; align-items: stretch; }
+  .flex-cta .btn { width: 100%; justify-content: center; }
+  .flex-cta.center { align-items: stretch; }
+  .newsletter-form { flex-direction: column; }
+  .newsletter-form input,
+  .newsletter-form .btn,
+  .newsletter-form button { width: 100%; }
+  /* Header keeps its inline Join + hamburger — only in-content CTAs stack. */
+  .header-cta { flex-direction: row; align-items: center; }
+}
+
+/* ---------- Hero crop: trim tall-phone emptiness, keep it immersive ---------- */
+@media (max-width: 759px) {
+  .hero-v2 { min-height: clamp(520px, 80vh, 640px); }
+  .page-hero {
+    min-height: clamp(400px, 66vh, 520px);
+    padding-block: clamp(2rem, 7vw, 3rem);
+  }
+  .page-hero .hero-art { margin-top: 1.1rem; }
+}
+
+/* ---------- Tap feedback colour ---------- */
+@media (max-width: 959px) {
+  a, button, .btn, summary, .acc-trigger, .slot, [role="button"] {
+    -webkit-tap-highlight-color: rgba(179, 90, 55, 0.12);
+  }
+}
+
+/* ---------- Motion / battery budget on phones ----------
+   The drifting clouds stay (the signature shared motion across the
+   site), but the subtler desktop flourishes that are barely visible
+   on a small screen are switched off to save battery and avoid jank. */
+@media (max-width: 759px) {
+  .sparkle-field { display: none; }
+  .bubbles { opacity: calc(var(--bub-opacity, 0.30) * 0.7); }
+}
+
+/* ---------- Horizontal-overflow guards ---------- */
+@media (max-width: 480px) {
+  .cp-popular { right: -0.15rem; top: -0.8rem; font-size: 0.85rem; padding: 0.45rem 0.8rem; }
+  .cp-grid { padding-inline: 0.25rem; }
+}

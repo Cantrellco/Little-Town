@@ -99,40 +99,64 @@
       </div>
     </section>
 
-    <!-- ===================== GALLERY ===================== -->
-    <section class="section flow-top gallery-section">
+    <!-- ===================== GALLERY · beat 1 (colour wash) ===================== -->
+    <section class="section flow-top sec-color gallery-section">
       <div class="container">
         <div class="gallery-grid">
 
           <figure class="gallery-figure reveal">
-            <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-slide-600.avif' | asset_url }} 600w, {{ 'photo-play-slide-900.avif' | asset_url }} 900w, {{ 'photo-play-slide-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-play-slide-600.webp' | asset_url }} 600w, {{ 'photo-play-slide-900.webp' | asset_url }} 900w, {{ 'photo-play-slide-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
+            </picture>
             <figcaption>The big slides</figcaption>
             <span class="gallery-sticker" aria-hidden="true"><img src="{{ 'icon-slide.svg' | asset_url }}" alt="" width="18" height="18"> Hello!</span>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="1">
-            <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="A toddler grinning inside the playhouse." decoding="async" style="object-position:center 30%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-bigsmiles-600.avif' | asset_url }} 600w, {{ 'photo-bigsmiles-900.avif' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-bigsmiles-600.webp' | asset_url }} 600w, {{ 'photo-bigsmiles-900.webp' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="A toddler grinning inside the playhouse." decoding="async" style="object-position:center 30%">
+            </picture>
             <figcaption>Big smiles, all afternoon</figcaption>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="2">
-            <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colorful rock wall." decoding="async" style="object-position:center 35%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-climb-600.avif' | asset_url }} 600w, {{ 'photo-play-climb-900.avif' | asset_url }} 900w, {{ 'photo-play-climb-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-play-climb-600.webp' | asset_url }} 600w, {{ 'photo-play-climb-900.webp' | asset_url }} 900w, {{ 'photo-play-climb-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colorful rock wall." decoding="async" style="object-position:center 35%">
+            </picture>
             <figcaption>Up the climbing wall</figcaption>
           </figure>
 
           <figure class="gallery-figure reveal">
-            <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across the rope bridge." decoding="async" style="object-position:center 30%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-bridge-600.avif' | asset_url }} 600w, {{ 'photo-play-bridge-900.avif' | asset_url }} 900w, {{ 'photo-play-bridge-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-play-bridge-600.webp' | asset_url }} 600w, {{ 'photo-play-bridge-900.webp' | asset_url }} 900w, {{ 'photo-play-bridge-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across the rope bridge." decoding="async" style="object-position:center 30%">
+            </picture>
             <figcaption>Crossing the rope bridge</figcaption>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="1">
-            <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." decoding="async">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-blocks-600.avif' | asset_url }} 600w, {{ 'photo-play-blocks-900.avif' | asset_url }} 900w, {{ 'photo-play-blocks-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-play-blocks-600.webp' | asset_url }} 600w, {{ 'photo-play-blocks-900.webp' | asset_url }} 900w, {{ 'photo-play-blocks-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." decoding="async">
+            </picture>
             <figcaption>Block-tower architects</figcaption>
             <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true"><img src="{{ 'icon-bricks.svg' | asset_url }}" alt="" width="18" height="18"> Builders</span>
           </figure>
 
           <figure class="gallery-figure reveal" data-delay="2">
-            <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="A latte and croissant on a wooden table at Fusion café." decoding="async">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-cafe-table-600.avif' | asset_url }} 600w, {{ 'photo-cafe-table-900.avif' | asset_url }} 900w, {{ 'photo-cafe-table-1000.avif' | asset_url }} 1000w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <source type="image/webp" srcset="{{ 'photo-cafe-table-600.webp' | asset_url }} 600w, {{ 'photo-cafe-table-900.webp' | asset_url }} 900w, {{ 'photo-cafe-table-1000.webp' | asset_url }} 1000w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
+              <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="A latte and croissant on a wooden table at Fusion café." decoding="async">
+            </picture>
             <figcaption>Snack break at Fusion</figcaption>
           </figure>
 
@@ -143,7 +167,7 @@
     </section>
 
     <!-- ===================== CLOSING CTA ===================== -->
-    <section class="section">
+    <section class="section flow-top">
       <div class="container">
         <div class="cta-band bg-sunrise on-dark anim-gradient reveal">
           <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>

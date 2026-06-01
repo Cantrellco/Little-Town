@@ -1,10 +1,15 @@
 <main>
     <!-- ============ HERO (full-bleed animated background) ============ -->
     <section class="hero-v2 has-sparkles">
+      <!-- Soft rolling lawn the whole scene rests on — sits behind the town so
+           the buildings, trees and bushes all share one grounded green base
+           that meets the wave divider below instead of floating on flat sky. -->
+      <div class="hero-ground" aria-hidden="true"><img src="{{ 'deco-meadow.svg' | asset_url }}" alt="" width="1440" height="220" fetchpriority="high" decoding="async"></div>
       <!-- Town backdrop is the brand logo mark — the same little town from the
            header — sitting on the sky wash. The motion lives in the separate
            cloud layer below. -->
       <picture class="hero-bg">
+        <source type="image/webp" srcset="{{ 'logo.webp' | asset_url }}">
         <img src="{{ 'logo.png' | asset_url }}" alt="The Little Town mark — a play slide tunnel, market, café tower and clinic." fetchpriority="high" decoding="async">
       </picture>
       <div class="hero-scrim" aria-hidden="true"></div>
@@ -39,11 +44,17 @@
       <span class="deco anim-spin-slow" style="top:6%;right:5%;width:120px"><img src="{{ 'deco-sun.svg' | asset_url }}" alt=""></span>
       <span class="deco anim-sway" style="top:28%;right:13%;width:80px"><img src="{{ 'deco-kite.svg' | asset_url }}" alt=""></span>
       <span class="deco anim-twinkle" style="top:14%;right:27%;width:20px"><img src="{{ 'deco-star.svg' | asset_url }}" alt=""></span>
-      <!-- parkland on the sand, flanking the town left and right -->
-      <span class="deco" style="bottom:0;left:4%;width:120px"><img src="{{ 'deco-tree.svg' | asset_url }}" alt=""></span>
-      <span class="deco" style="bottom:1%;left:15%;width:104px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
-      <span class="deco" style="bottom:0;right:3.5%;width:132px"><img src="{{ 'deco-tree.svg' | asset_url }}" alt=""></span>
-      <span class="deco" style="bottom:1%;right:14%;width:92px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
+      <!-- Parkland — little groves nestled on the lawn, flanking the town. Each
+           side layers a tall tree behind a bush and a low shrub so the flanks
+           read full and rooted (not lone floaters), and bridge toward the town. -->
+      <span class="deco" style="bottom:46px;left:2%;width:126px"><img src="{{ 'deco-tree.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:30px;left:11%;width:112px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:34px;left:19.5%;width:72px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:22px;left:7%;width:60px"><img src="{{ 'deco-flowers.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:50px;right:2%;width:134px"><img src="{{ 'deco-tree.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:30px;right:10.5%;width:108px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:34px;right:18.5%;width:74px"><img src="{{ 'deco-bush.svg' | asset_url }}" alt=""></span>
+      <span class="deco" style="bottom:22px;right:6%;width:64px"><img src="{{ 'deco-flowers.svg' | asset_url }}" alt=""></span>
       <div class="container hero-content reveal">
         <span class="eyebrow">Indoor imaginative play · Ages 0–8</span>
         <h1 class="home-hero-title">A little town built for <span class="hl hl--sky">big</span> <span class="script" style="color:var(--accent)">imaginations</span></h1>
@@ -55,8 +66,8 @@
       </div>
     </section>
 
-    <!-- ============ EXPLORE THE TOWN (3 experiences) ============ -->
-    <section class="section band flow-top">
+    <!-- ============ EXPLORE THE TOWN (3 experiences) · beat 1 (colour wash) ============ -->
+    <section class="section flow-top sec-color">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Welcome to Main Street</span>
@@ -84,7 +95,7 @@
             <span class="sticker sticker--sage home-card-sticker">Next door</span>
             <span class="pop-bubble pop-bubble--sage" aria-hidden="true"><img src="{{ 'icon-coffee-cup.svg' | asset_url }}" alt="" width="22" height="22"></span>
             <div class="card-art"><img src="{{ 'logo-cafe.png' | asset_url }}" alt="The Little Town café tower, Fusion next door." width="156" height="373" loading="lazy" decoding="async"></div>
-            <h3>Fusion <span class="partner-tag">Next door</span></h3>
+            <h3>Fusion</h3>
             <p>Our sister café Fusion pours locally roasted coffee and fresh snacks — grab a cup before, during or after play.</p>
             <a class="btn btn--ghost mt-1" href="/pages/fusion">See Fusion</a>
           </article>
@@ -92,8 +103,9 @@
       </div>
     </section>
 
-    <!-- ============ INSIDE THE TOWN — photo glimpse ============ -->
-    <section class="section flow-top home-glimpse-section">
+    <!-- ============ INSIDE THE TOWN — photo glimpse · beat 2 (dots) ============ -->
+    <section class="section flow-top sec-dots has-bubbles home-glimpse-section">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">A peek inside</span>
@@ -102,19 +114,35 @@
         </div>
         <div class="home-glimpse-grid mt-4 reveal" data-delay="1">
           <figure class="home-glimpse-tile home-glimpse-tile--feature">
-            <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A smiling child crossing the rope bridge." loading="lazy" decoding="async" style="object-position:center 28%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-bridge-600.avif' | asset_url }} 600w, {{ 'photo-play-bridge-900.avif' | asset_url }} 900w, {{ 'photo-play-bridge-1200.avif' | asset_url }} 1200w" sizes="(min-width: 700px) 48vw, 92vw">
+              <source type="image/webp" srcset="{{ 'photo-play-bridge-600.webp' | asset_url }} 600w, {{ 'photo-play-bridge-900.webp' | asset_url }} 900w, {{ 'photo-play-bridge-1200.webp' | asset_url }} 1200w" sizes="(min-width: 700px) 48vw, 92vw">
+              <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A smiling child crossing the rope bridge." loading="lazy" decoding="async" style="object-position:center 28%">
+            </picture>
             <figcaption><span class="glimpse-cap">The rope bridge</span></figcaption>
           </figure>
           <figure class="home-glimpse-tile">
-            <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colourful rock wall." loading="lazy" decoding="async" style="object-position:center 35%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-climb-600.avif' | asset_url }} 600w, {{ 'photo-play-climb-900.avif' | asset_url }} 900w, {{ 'photo-play-climb-1200.avif' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
+              <source type="image/webp" srcset="{{ 'photo-play-climb-600.webp' | asset_url }} 600w, {{ 'photo-play-climb-900.webp' | asset_url }} 900w, {{ 'photo-play-climb-1200.webp' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
+              <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colourful rock wall." loading="lazy" decoding="async" style="object-position:center 35%">
+            </picture>
             <figcaption><span class="glimpse-cap">The climbing wall</span></figcaption>
           </figure>
           <figure class="home-glimpse-tile">
-            <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="The bright slides above the ball pit at Little Town." loading="lazy" decoding="async">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-slide-600.avif' | asset_url }} 600w, {{ 'photo-play-slide-900.avif' | asset_url }} 900w, {{ 'photo-play-slide-1200.avif' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
+              <source type="image/webp" srcset="{{ 'photo-play-slide-600.webp' | asset_url }} 600w, {{ 'photo-play-slide-900.webp' | asset_url }} 900w, {{ 'photo-play-slide-1200.webp' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
+              <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="The bright slides above the ball pit at Little Town." loading="lazy" decoding="async">
+            </picture>
             <figcaption><span class="glimpse-cap">Slides &amp; ball pit</span></figcaption>
           </figure>
           <figure class="home-glimpse-tile home-glimpse-tile--wide">
-            <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." loading="lazy" decoding="async" style="object-position:center 38%">
+            <picture>
+              <source type="image/avif" srcset="{{ 'photo-play-blocks-600.avif' | asset_url }} 600w, {{ 'photo-play-blocks-900.avif' | asset_url }} 900w, {{ 'photo-play-blocks-1200.avif' | asset_url }} 1200w" sizes="(min-width: 700px) 48vw, 92vw">
+              <source type="image/webp" srcset="{{ 'photo-play-blocks-600.webp' | asset_url }} 600w, {{ 'photo-play-blocks-900.webp' | asset_url }} 900w, {{ 'photo-play-blocks-1200.webp' | asset_url }} 1200w" sizes="(min-width: 700px) 48vw, 92vw">
+              <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." loading="lazy" decoding="async" style="object-position:center 38%">
+            </picture>
             <figcaption><span class="glimpse-cap">Giant foam blocks</span></figcaption>
           </figure>
         </div>
@@ -123,9 +151,8 @@
       </div>
     </section>
 
-    <!-- ============ HOW A VISIT WORKS (numbered steps) ============ -->
-    <section class="section bg-sky-tint home-steps flow-top has-bubbles">
-      <span class="bubbles" aria-hidden="true"></span>
+    <!-- ============ HOW A VISIT WORKS (numbered steps) · beat 3 (calm) ============ -->
+    <section class="section home-steps flow-top sec-calm">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Easy as one, two, three</span>
@@ -152,8 +179,9 @@
       </div>
     </section>
 
-    <!-- ============ PARENT REASSURANCE ============ -->
-    <section class="section band-white flow-top">
+    <!-- ============ PARENT REASSURANCE · beat 4 (playful: colour wash + dots) ============ -->
+    <section class="section flow-top sec-play has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Parents, you can relax</span>
@@ -179,8 +207,8 @@
       </div>
     </section>
 
-    <!-- ============ MEMBERSHIP BAND (main offer) ============ -->
-    <section class="section flow-top">
+    <!-- ============ MEMBERSHIP BAND (main offer) · beat 5 (colour wash) ============ -->
+    <section class="section flow-top sec-color">
       <div class="container">
         <div class="member-band home-member reveal">
           <!-- Soft floater adds a brand touch in the band's empty top-right corner (desktop only) -->
@@ -204,7 +232,11 @@
             <div class="member-photo pop-host">
               <span class="pop-bubble" aria-hidden="true"><img src="{{ 'icon-heart.svg' | asset_url }}" alt="" width="22" height="22"></span>
               <!-- Placeholder photo (Unsplash, free license) — swap for your own play-floor shots later -->
-              <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across a rope bridge inside the soft-play structure." width="1000" height="800" loading="lazy" decoding="async" style="aspect-ratio:5/4;object-fit:cover;object-position:center 30%">
+              <picture>
+                <source type="image/avif" srcset="{{ 'photo-play-bridge-600.avif' | asset_url }} 600w, {{ 'photo-play-bridge-900.avif' | asset_url }} 900w, {{ 'photo-play-bridge-1200.avif' | asset_url }} 1200w" sizes="(min-width: 860px) 45vw, 92vw">
+                <source type="image/webp" srcset="{{ 'photo-play-bridge-600.webp' | asset_url }} 600w, {{ 'photo-play-bridge-900.webp' | asset_url }} 900w, {{ 'photo-play-bridge-1200.webp' | asset_url }} 1200w" sizes="(min-width: 860px) 45vw, 92vw">
+                <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across a rope bridge inside the soft-play structure." width="1000" height="800" loading="lazy" decoding="async" style="aspect-ratio:5/4;object-fit:cover;object-position:center 30%">
+              </picture>
             </div>
             <p class="member-price"><small>from</small><b>$45</b><small>a&nbsp;month</small></p>
           </div>
@@ -212,8 +244,9 @@
       </div>
     </section>
 
-    <!-- ============ PRICING (membership featured) ============ -->
-    <section class="section flow-top">
+    <!-- ============ PRICING (membership featured) · beat 6 (dots) ============ -->
+    <section class="section flow-top sec-dots has-bubbles">
+      <span class="bubbles" aria-hidden="true"></span>
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Simple, friendly pricing</span>

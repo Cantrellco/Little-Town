@@ -15,21 +15,11 @@
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  /* ---- Mobile nav toggle ---- */
-  var toggle = document.querySelector(".nav-toggle");
-  if (toggle && header) {
-    toggle.addEventListener("click", function () {
-      var open = header.classList.toggle("nav-open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-    // Close menu when a link is tapped
-    document.querySelectorAll(".mobile-menu a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        header.classList.remove("nav-open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
+  /* ---- Mobile nav toggle ----
+     The full open/close logic (scroll-lock, Esc / outside-tap / resize close,
+     focus management + inert a11y) lives in the v13 "Hardened mobile menu"
+     module near the bottom of this file. Kept there so all the menu state is
+     owned in one place rather than split across two handlers. */
 
   /* ---- Scroll reveal via IntersectionObserver ---- */
   var revealEls = document.querySelectorAll(".reveal");
@@ -256,4 +246,217 @@
       nums.forEach(function (n) { numIO.observe(n); });
     }
   }
+})();
+
+/* ============================================================
+   v13 — Mobile experience layer
+   Everything here is phone-first and self-injecting, so it works
+   identically on the static site and the built Shopify theme with
+   no per-page markup. Three parts:
+     1. a persistent bottom Action Bar (tap-to-call + convert),
+     2. hardened mobile-menu behaviour (Esc / outside-tap / resize
+        close, focus + inert a11y, body scroll-lock),
+     3. small touch-feel niceties.
+   All of it bails out cleanly on desktop and respects the user's
+   reduced-motion / reduced-data preferences.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var MOBILE_BP = 760; // must match the CSS action-bar / menu breakpoint
+  var header = document.querySelector(".site-header");
+
+  /* ---------- shared helpers ---------- */
+  // Find an existing in-page link whose href contains a keyword. Reusing the
+  // real nav/footer hrefs means the Action Bar resolves correctly on BOTH the
+  // static site (memberships.html) and Shopify (/pages/memberships) without
+  // knowing which platform it is running on.
+  function findHref(keyword) {
+    var links = document.querySelectorAll(
+      ".site-header a[href], .site-footer a[href]"
+    );
+    for (var i = 0; i < links.length; i++) {
+      var h = links[i].getAttribute("href") || "";
+      if (h && h !== "#" && h.toLowerCase().indexOf(keyword) !== -1) return h;
+    }
+    return null;
+  }
+  function telHref() {
+    var t = document.querySelector('a[href^="tel:"]');
+    return (t && t.getAttribute("href")) || "tel:+15550142025";
+  }
+  // Which marketing page are we on? Read the active nav link, fall back to the
+  // URL. Returns a short key like "memberships" / "visit-us" / "home".
+  function currentPageKey() {
+    var active = document.querySelector(
+      ".site-header .nav a.active, .site-header .mobile-menu a.active"
+    );
+    var ref = (active && active.getAttribute("href")) || location.pathname || "";
+    ref = ref.toLowerCase();
+    var keys = ["play-pricing", "memberships", "parties", "fusion", "photo-gallery", "visit-us"];
+    for (var i = 0; i < keys.length; i++) {
+      if (ref.indexOf(keys[i]) !== -1) return keys[i];
+    }
+    return "home";
+  }
+
+  var ICON_PHONE =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>';
+  var ICON_HEART =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  var ICON_PIN =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  var ICON_CALENDAR =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
+  var ICON_CUP =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M3 8h15v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M7 1v2M11 1v2M15 1v2"/></svg>';
+
+  /* ---------- 1. Persistent bottom Action Bar ----------
+     Two thumb-reach actions pinned to the bottom of every page on phones:
+     a real tap-to-call, plus a context-aware "convert" button that adapts
+     to the page you are on (and never links to the page you are already on). */
+  (function buildActionBar() {
+    if (!document.body || document.querySelector(".m-actionbar")) return;
+
+    var page = currentPageKey();
+    var membersHref = findHref("membership");
+    var visitHref = findHref("visit");
+    var partiesHref = findHref("parties");
+    var fusionHref = findHref("fusion");
+    var playHref = findHref("play-pricing");
+
+    // Decide the primary "convert" action by page so it always points forward.
+    var primary;
+    switch (page) {
+      case "memberships":
+        primary = { label: "Plan a Visit", href: visitHref, icon: ICON_PIN, key: "visit" };
+        break;
+      case "parties":
+        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
+        break;
+      case "fusion":
+        primary = { label: "Plan a Visit", href: visitHref, icon: ICON_PIN, key: "visit" };
+        break;
+      case "visit-us":
+        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
+        break;
+      case "photo-gallery":
+        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
+        break;
+      case "play-pricing":
+        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
+        break;
+      default: // home
+        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
+    }
+    // Safety: if the chosen target couldn't be resolved, fall back sensibly.
+    if (!primary.href) primary = { label: "Plan a Visit", href: visitHref || "#", icon: ICON_PIN, key: "visit" };
+
+    var bar = document.createElement("nav");
+    bar.className = "m-actionbar";
+    bar.setAttribute("aria-label", "Quick actions");
+    bar.innerHTML =
+      '<a class="m-action m-action--call" href="' + telHref() + '">' +
+        '<span class="m-action-ic">' + ICON_PHONE + "</span>" +
+        "<span class=\"m-action-tx\">Call</span>" +
+      "</a>" +
+      '<a class="m-action m-action--primary" href="' + primary.href + '">' +
+        '<span class="m-action-ic">' + primary.icon + "</span>" +
+        '<span class="m-action-tx">' + primary.label + "</span>" +
+      "</a>";
+    document.body.appendChild(bar);
+    // Lets the stylesheet reserve bottom space for the fixed bar (more widely
+    // supported than a :has() selector).
+    document.body.classList.add("has-actionbar");
+
+    // Hide the bar while the mobile menu is open (the menu already offers the
+    // same destinations), and reveal it again on close. Driven by a class the
+    // menu logic below toggles on <html>.
+  })();
+
+  /* ---------- 2. Hardened mobile menu ---------- */
+  (function hardenMenu() {
+    if (!header) return;
+    var toggle = header.querySelector(".nav-toggle");
+    var menu = header.querySelector(".mobile-menu");
+    if (!toggle || !menu) return;
+
+    function isMobile() { return window.innerWidth < 960; }
+
+    function setInert(on) {
+      // Keep collapsed menu links out of the tab order + a11y tree.
+      if (on) {
+        menu.setAttribute("aria-hidden", "true");
+        try { menu.inert = true; } catch (e) {}
+      } else {
+        menu.removeAttribute("aria-hidden");
+        try { menu.inert = false; } catch (e) {}
+      }
+    }
+
+    function open() {
+      header.classList.add("nav-open");
+      // The class on <html> drives the CSS scroll-lock (overflow:hidden). Using
+      // overflow rather than position:fixed keeps the sticky header in place.
+      document.documentElement.classList.add("nav-open");
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", "Close menu");
+      setInert(false);
+      // Move focus to the first menu link for keyboard users.
+      var first = menu.querySelector("a");
+      if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+    }
+
+    function close(returnFocus) {
+      if (!header.classList.contains("nav-open")) return;
+      header.classList.remove("nav-open");
+      document.documentElement.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+      setInert(true);
+      if (returnFocus) { try { toggle.focus({ preventScroll: true }); } catch (e) { toggle.focus(); } }
+    }
+
+    // Initial state: collapsed + inert on mobile, fully interactive on desktop.
+    function syncInitial() {
+      if (isMobile()) {
+        if (!header.classList.contains("nav-open")) setInert(true);
+      } else {
+        setInert(false);
+        close(false);
+      }
+    }
+    syncInitial();
+
+    toggle.addEventListener("click", function () {
+      if (header.classList.contains("nav-open")) close(true);
+      else open();
+    });
+
+    // Tapping any menu link navigates → close immediately.
+    menu.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { close(false); });
+    });
+
+    // Esc closes and returns focus to the toggle.
+    document.addEventListener("keydown", function (e) {
+      if ((e.key === "Escape" || e.key === "Esc") && header.classList.contains("nav-open")) close(true);
+    });
+
+    // Tap/click outside the header closes the menu.
+    document.addEventListener("click", function (e) {
+      if (!header.classList.contains("nav-open")) return;
+      if (!header.contains(e.target)) close(false);
+    });
+
+    // Resizing up to desktop must always leave a clean, unlocked state.
+    var rT;
+    window.addEventListener("resize", function () {
+      clearTimeout(rT);
+      rT = setTimeout(function () {
+        if (!isMobile()) close(false);
+        syncInitial();
+      }, 150);
+    });
+  })();
 })();

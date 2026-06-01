@@ -33,6 +33,9 @@
   --sun-tint:   #F1DFB9;
   --sky-tint:   #EED2BB;  /* warm clay tint (was pale blue)  */
   --coral-tint: #F2D6BD;
+  /* section-rhythm washes — warm sand into clay (fusion stays all-warm) */
+  --wash-1: #F1DFB9;  /* warm sand */
+  --wash-2: #EFD7BE;  /* warm clay */
   --sage-tint:  #DCE5C0;
   --terra-tint: #EED6C0;
   --wood-tint:  #EEDBB8;
@@ -439,4 +442,246 @@
 @media (prefers-reduced-motion: reduce) {
   .signature-drink { transition: none; }
   .signature-drink:hover { transform: none; }
+}
+
+/* ============================================================
+   FUSION — Mobile experience layer
+   Every rule here is gated behind a max-width query so the
+   desktop layout is never touched. Order: hero → stats →
+   menu (the critical piece) → partner panel → CTA band.
+   ============================================================ */
+
+/* ---- Hero: tame the logo on narrow phones ----------------
+   The clamp floor of 230px is fine at ~680px+ but takes up
+   too much vertical space at 320–414px.  Drop it to a
+   viewport-proportional size with a comfortable floor. ---- */
+@media (max-width: 600px) {
+  .fusion-logo--hero {
+    width: clamp(160px, 52vw, 230px);
+  }
+  /* Stack art below copy (hero container is already a grid;
+     single-column is the default — just make sure the mug
+     art isn't eating too much height on short phones). */
+  .ph--cafe .hero-art {
+    max-width: 180px !important;  /* override the inline style */
+    margin-inline: auto;
+  }
+  .ph--cafe .hero-art img {
+    max-height: clamp(140px, 30vh, 200px);
+  }
+  /* The steam animation container is absolutely positioned;
+     scale it with the mug on small screens. */
+  .fusion-steam {
+    width: 34px;
+  }
+  /* Tighten hero bottom padding — the wave band is also
+     shorter at this width so we need less clearance. */
+  .page-hero.ph--cafe {
+    padding-bottom: clamp(3.5rem, 8vw, 5.5rem);
+  }
+}
+
+/* ---- Stat pills: wrap comfortably, never overflow --------- */
+@media (max-width: 480px) {
+  .fusion-stats {
+    gap: 0.6rem 0.9rem;
+    margin-top: 1.4rem;
+  }
+  .fusion-stat-pill {
+    font-size: 0.84rem;
+    padding: 0.55rem 0.95rem;
+  }
+}
+
+/* ---- Signature drinks: more breathing room on one-column --
+   The trio already collapses to 1-col at ≤760px (global rule
+   above), but on a narrow phone the cards feel squat. Give
+   each a row layout so the art and text sit side-by-side and
+   take less vertical space. --------------------------------- */
+@media (max-width: 600px) {
+  .signature-drinks { gap: 0.8rem; }
+  .signature-drink {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    gap: 0.9rem;
+  }
+  .signature-art {
+    width: 72px;
+    height: 84px;
+    flex: none;
+  }
+  .signature-drink figcaption { align-items: flex-start; }
+  .signature-drink span {
+    max-width: none;
+    margin-inline: 0;
+    font-size: 0.85rem;
+  }
+  .signature-drink em { margin-top: 0.15rem; font-size: 0.98rem; }
+}
+
+/* ---- Menu group headings: keep chip + label + sticker in
+   one neat row without overflowing at 320px.  The sticker
+   (`margin-left:auto`) pushes to the right and can clip off
+   the card edge on the very smallest screens. -------------- */
+@media (max-width: 480px) {
+  /* Shrink the heading font just enough so all three elements
+     (chip, label, sticker) always fit in one line. */
+  .menu-group h3 {
+    font-size: 1.2rem;
+    gap: 0.5rem;
+  }
+  /* Ensure the chip stays its designed size; the label
+     shrinks via font-size above. */
+  .menu-cat-chip {
+    width: 34px;
+    height: 34px;
+    flex: none;
+  }
+  /* Shrink the sticker badge text so it doesn't clip. */
+  .menu-group--drinks h3 .sticker,
+  .menu-group--eats h3 .sticker,
+  .menu-group--treats h3 .sticker {
+    font-size: 0.68rem !important;
+    padding: 0.28rem 0.55rem;
+  }
+}
+
+/* ---- Menu rows: the key layout fix ----------------------------
+   At 320px the default `44px 1fr auto` grid leaves the 1fr
+   column only ~170px wide.  Long item names + descriptions
+   are fine (they wrap within 1fr), but the `.m-price` pill
+   (`auto`) can squeeze the description or visually collide
+   with it when it wraps to two lines and the pill re-anchors.
+
+   Fix: switch to a 2-row sub-layout.  Row 1 keeps the icon
+   + name side-by-side; the price pill is anchored to the
+   right of that same first row.  Row 2 (description) spans
+   all three columns so it always gets the full width.
+   ---------------------------------------------------------------- */
+@media (max-width: 600px) {
+  /* Redefine the grid: 3 columns exactly as desktop so we
+     can place cells explicitly — but drop `align-items:center`
+     so rows can have independent heights. */
+  .menu-row {
+    grid-template-columns: 40px 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: start;
+    gap: 0.3rem 0.65rem;
+    padding: 0.75rem 0;
+  }
+  /* Icon: spans both rows so it stays vertically centred next
+     to the name + description block. */
+  .menu-row .m-icon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 40px;
+    height: 40px;
+    align-self: center;
+  }
+  /* Name row: sits in col 2 row 1, same row as the price. */
+  .menu-row .m-name {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    padding-top: 0.05rem;   /* optical alignment with price pill */
+  }
+  /* Price pill: col 3 row 1 — always right-aligned beside the
+     name, never next to the description. */
+  .menu-row .m-price {
+    grid-column: 3;
+    grid-row: 1;
+    font-size: 0.82rem;
+    padding: 0.18rem 0.5rem;
+    align-self: center;
+    white-space: nowrap;
+  }
+  /* Description: spans the whole content width (cols 2–3) in
+     row 2 so it wraps gracefully below name + price. */
+  .menu-row > div:not(.m-price) {
+    display: contents;  /* unwrap the wrapper div so children
+                           are direct grid items */
+  }
+  .menu-row .m-desc {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    font-size: 0.83rem;
+    line-height: 1.45;
+    padding-bottom: 0.1rem;
+  }
+  /* Hover translate is nice but keep it subtle on small screens
+     so it doesn't cause layout jitter. */
+  .menu-row:hover { transform: translateX(2px); }
+}
+
+/* Tighten menu group card padding on narrow phones so the rows
+   have more horizontal room. */
+@media (max-width: 480px) {
+  .menu-group.card {
+    padding: 1.1rem 0.9rem;
+  }
+  /* Left-border accent still looks great at the smaller size. */
+  .menu-group--drinks h3,
+  .menu-group--eats   h3,
+  .menu-group--treats h3 {
+    padding-left: 0.55rem;
+  }
+}
+
+/* ---- Member savings callout: stack on very narrow phones -- */
+@media (max-width: 420px) {
+  .menu-member-callout {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+  }
+  .menu-member-callout p { font-size: 0.9rem; }
+}
+
+/* ---- Partner panel: comfortable on phone ----------------
+   The default panel padding (`clamp(1.5rem, 4vw, 3rem)`)
+   is generous; on a 360px phone that's ~1.5rem per side which
+   is fine — but the dashed border + flex row can still feel
+   cramped.  Give the icon more breathing room. ------------ */
+@media (max-width: 480px) {
+  .fusion-partner-panel {
+    flex-direction: row;   /* keep icon + text side-by-side */
+    gap: 0.75rem;
+    padding: 1.1rem 1rem;
+  }
+  .fusion-partner-panel .partner-icon img {
+    width: 36px;
+    height: 36px;
+  }
+  .fusion-partner-panel p { font-size: 0.92rem; }
+}
+
+/* ---- Closing CTA band: tighten padding so content breathes
+   at narrow widths.  styles.css already stacks `.flex-cta`
+   at ≤559px so three buttons land in a clean full-width
+   column automatically.  The logo mark uses the base clamp
+   (150–210px) which is already well-sized — no override
+   needed.  We just ensure the band's own padding suits a
+   phone card. -------------------------------------------- */
+@media (max-width: 600px) {
+  .cta-band {
+    padding: clamp(1.8rem, 6vw, 2.5rem) clamp(1rem, 5vw, 2rem);
+  }
+}
+
+/* ---- Overflow guard: nothing bleeds at 320px ------------ */
+@media (max-width: 360px) {
+  /* Collapse stat pills to fill the narrow viewport. */
+  .fusion-stats { gap: 0.5rem 0.7rem; }
+  .fusion-stat-pill { font-size: 0.8rem; padding: 0.5rem 0.8rem; }
+  /* Menu rows: tighten further. */
+  .menu-row {
+    gap: 0.25rem 0.5rem;
+    padding: 0.65rem 0;
+  }
+  .menu-row .m-name { font-size: 0.9rem; }
+  .menu-row .m-price { font-size: 0.78rem; padding: 0.15rem 0.4rem; }
+  .menu-row .m-desc { font-size: 0.78rem; }
 }

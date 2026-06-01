@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A little clump of grass + simple lollipop blooms in the site pastels, to
+     sprinkle life across the hero lawn. Kept as soft as the trees/bushes:
+     blob blooms with a lighter center, no fussy petals. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" role="presentation" aria-hidden="true">
+  <ellipse cx="48" cy="66" rx="40" ry="5" fill="#849473" opacity="0.14"/>
+  <!-- grass blades -->
+  <path d="M12 66 C 8 52 12 44 16 40 C 16 50 16 58 18 66 Z" fill="#a3b98c"/>
+  <path d="M84 66 C 88 50 84 42 80 38 C 80 48 80 58 78 66 Z" fill="#9bb284"/>
+  <path d="M58 66 C 56 56 58 50 61 46 C 61 54 61 60 62 66 Z" fill="#a3b98c"/>
+  <!-- stems -->
+  <rect x="25" y="34" width="2.6" height="32" rx="1.3" fill="#8aa472"/>
+  <rect x="47" y="26" width="2.6" height="40" rx="1.3" fill="#8aa472"/>
+  <rect x="70" y="38" width="2.6" height="28" rx="1.3" fill="#8aa472"/>
+  <!-- blooms -->
+  <circle cx="26.3" cy="30" r="7.5" fill="#F8D98F"/><circle cx="26.3" cy="30" r="3" fill="#EFC25E"/>
+  <circle cx="48.3" cy="22" r="8" fill="#F4AE92"/><circle cx="48.3" cy="22" r="3.2" fill="#E58A66"/>
+  <circle cx="71.3" cy="34" r="7" fill="#EC9A90"/><circle cx="71.3" cy="34" r="2.8" fill="#DC766C"/>
+</svg>

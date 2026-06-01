@@ -9,6 +9,9 @@
 :root {
   --flow-accent: linear-gradient(90deg, var(--sun) 0%, var(--coral) 38%, var(--red) 68%, var(--sky) 100%);
   --bub-1: var(--sun); --bub-2: var(--coral); --bub-3: var(--red); --bub-4: var(--sky);
+  /* section-rhythm washes — festive rose into peach */
+  --wash-1: #fbe7e3;  /* pale rose  */
+  --wash-2: #fcefdd;  /* pale peach */
 }
 
 /* ---------- Hero: same recipe as Fusion — a single signature tile (balloons)
@@ -393,9 +396,7 @@
 }
 
 /* ---------- FAQ section: candy tint background ---------- */
-.parties-faq-section {
-  background: var(--base);
-}
+/* Background is handled by the shared section-rhythm skin (.sec-*). */
 .parties-faq-section .acc-item { border-color: rgba(80,60,30,0.06); }
 .parties-faq-section .acc-trigger {
   font-size: 1.04rem;
@@ -412,24 +413,10 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
-.parties-cta-band::before {
-  content: "";
-  position: absolute;
-  width: 300px; height: 300px;
-  right: -80px; top: -100px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
-}
-.parties-cta-band::after {
-  content: "";
-  position: absolute;
-  width: 200px; height: 200px;
-  left: -60px; bottom: -80px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
-}
-/* Keep the copy + buttons above the confetti layer */
+/* Decoration matches every other closing CTA: confetti only (no blob shapes).
+   Keep the copy + buttons above the confetti layer. */
 .parties-cta-band > :not(.confetti-rain) { position: relative; z-index: 1; }
 .parties-cta-band h2,
 .parties-cta-band p { color: var(--ink); }
@@ -454,13 +441,329 @@
   .parties-gallery .gal-item:hover figure { transform: none !important; }
 
   .parties-stats .stat-card:hover { transform: none !important; }
-
-  .parties-cta-band::before,
-  .parties-cta-band::after { display: none; }
 }
 
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 480px) {
   .bunting-row { height: 32px; }
   .gal-sticker { font-size: 0.66rem; }
+}
+
+
+/* ============================================================
+   PARTIES — MOBILE EXPERIENCE LAYER
+   Gate: max-width 760 / 600 / 480 / 360.
+   Desktop is untouched. Build on top of styles.css v13.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. HERO  (.page-hero.ph--party)
+   • Scale down or hide the cake art so the copy breathes.
+   • Shrink hero padding a little — the global rule already
+     trims it, but the party page has a taller bunting row.
+   • Confetti dots go slightly smaller so they don't crowd
+     the h1 on a 360 px screen.
+   ---------------------------------------------------------- */
+@media (max-width: 759px) {
+  /* Let cake SVG stay visible but cap it so it doesn't eat
+     half the viewport on a 430 px phone. */
+  .ph--party .hero-art {
+    max-width: 280px;
+  }
+  .ph--party .confetti i {
+    width: 11px;
+    height: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On tight phones hide the cake entirely — the tile bg + copy
+     is enough festivity and the art was pushing content below
+     the fold before a single word was read. */
+  .ph--party .hero-art {
+    display: none;
+  }
+  /* Hero lead text comfortable at 360 px */
+  .ph--party .container .lead {
+    font-size: 1rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   2. BOOKING PANEL WRAP
+   • Reduce the outer padding so the inner .booking card
+     doesn't get squeezed inside double-padded walls.
+   • Let the .split fall into a single column (it already
+     does at 820px via styles.css; just fine-tune spacing).
+   ---------------------------------------------------------- */
+@media (max-width: 759px) {
+  .booking-panel-wrap {
+    padding: clamp(1.2rem, 4vw, 1.8rem);
+    border-radius: var(--r-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-panel-wrap {
+    padding: 1rem;
+    /* No horizontal overflow bleed */
+    margin-inline: 0;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   3. CALENDAR (.booking card, .cal, .day, .slots, .slot)
+   The 7-column grid can squeeze cells to ~36px on 320px when
+   the card has standard padding. These overrides ensure:
+   • The calendar padding is tight enough to let cells breathe.
+   • Day cells stay ≥ 36px (aspect-ratio 1 handles height).
+   • .slot buttons flow into a 2-per-row grid for a cleaner
+     thumb-friendly look on phones.
+   ---------------------------------------------------------- */
+@media (max-width: 600px) {
+  /* Tighten card padding so the 7-column cal has more room */
+  .booking-panel-wrap .booking {
+    padding: 1rem 0.85rem;
+    border-radius: var(--r-md);
+  }
+
+  /* Shrink the inter-cell gap to gain back ~0.5rem across 6 gaps */
+  .booking-panel-wrap .cal {
+    gap: 0.22rem;
+  }
+
+  /* Header row */
+  .booking-panel-wrap .booking-head {
+    margin-bottom: 0.75rem;
+  }
+  .booking-panel-wrap .booking-head .month {
+    font-size: 1rem;
+  }
+
+  /* Day-of-week labels: just a single letter, already set —
+     ensure font doesn't push cell wider than the grid allows */
+  .booking-panel-wrap .cal .dow {
+    font-size: 0.68rem;
+    padding-bottom: 0.2rem;
+  }
+
+  /* Day cells: reduce font so they don't overflow their column */
+  .booking-panel-wrap .cal .day {
+    font-size: 0.8rem;
+  }
+
+  /* Slots: 2-column grid so each slot is a satisfying tap target
+     instead of a thin pill that wraps awkwardly. */
+  .booking-panel-wrap .slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+
+  /* Each slot fills its cell; min-height already 44px from
+     styles.css v13, keep it */
+  .booking-panel-wrap .slot {
+    width: 100%;
+    text-align: center;
+    padding-inline: 0.5rem;
+    justify-content: center;
+  }
+
+  /* "Request" button — full-width already via btn--block;
+     ensure mt doesn't add too much space */
+  .booking-panel-wrap .btn--block {
+    margin-top: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  /* At 320 px the 7-col cal cells can be as small as 34 px.
+     Drop cell font slightly more and shrink gap to 2px. */
+  .booking-panel-wrap .cal {
+    gap: 2px;
+  }
+  .booking-panel-wrap .cal .day {
+    font-size: 0.72rem;
+    border-radius: 4px;
+  }
+  .booking-panel-wrap .cal .dow {
+    font-size: 0.62rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   4. PRICING CARDS (.cp-grid / .cp-card) inside booking panel
+   The cp-grid here carries inline style overrides but these
+   scoped rules win for mobile. Goals:
+   • Cards stack full-width, no rotation at 600px and below
+     (rotation clips the .cp-popular sticker at narrow widths).
+   • Reduce padding so cards don't feel wasteful of vertical space.
+   • .cp-popular sticker: pull inside the card boundary so it
+     can't clip out of the container.
+   ---------------------------------------------------------- */
+@media (max-width: 600px) {
+  .booking-panel-wrap .cp-grid {
+    gap: 1.2rem;
+    padding: 0.4rem 0 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Kill rotation on phones — sticker clips at <400px */
+  .booking-panel-wrap .cp-card,
+  .booking-panel-wrap .cp-grid--2 .cp-card:nth-child(1),
+  .booking-panel-wrap .cp-grid--2 .cp-card:nth-child(2) {
+    transform: none !important;
+  }
+
+  /* Compact card padding to save vertical space */
+  .booking-panel-wrap .cp-card {
+    padding: 1rem 1rem 1.1rem;
+  }
+
+  /* Anchor sticker inside card bounds */
+  .booking-panel-wrap .cp-popular {
+    right: 0.5rem;
+    top: -0.7rem;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* Tighten the feature list gap on phones */
+  .booking-panel-wrap .cp-list {
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Price number: slightly smaller on phones so the card
+     doesn't feel dominated by a massive figure */
+  .booking-panel-wrap .cp-price-amount {
+    font-size: clamp(2rem, 8vw, 2.4rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .booking-panel-wrap .cp-card {
+    padding: 0.9rem;
+  }
+  .booking-panel-wrap .cp-popular {
+    font-size: 0.76rem;
+    right: 0.3rem;
+    top: -0.65rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   5. POLICY CARDS (.policy-cards / .policy-card)
+   Already 1-col on phones — just tighten padding and ensure
+   the bullet dots + text don't overlap on 320px.
+   ---------------------------------------------------------- */
+@media (max-width: 480px) {
+  .policy-card {
+    padding: 1.1rem 1rem;
+  }
+  .policy-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.65rem;
+  }
+  .policy-card li {
+    font-size: 0.93rem;
+    padding: 0.4rem 0;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   6. FAQ ACCORDION
+   Trigger text can wrap onto 3 lines on 360px — give it
+   more vertical breathing room, and ensure the icon badge
+   doesn't shrink below its circle.
+   ---------------------------------------------------------- */
+@media (max-width: 600px) {
+  .parties-faq-section .acc-trigger {
+    font-size: 0.97rem;
+    /* tighter inline padding frees more width for the question */
+    padding-inline: 1rem;
+    /* comfortable tap target already set in styles.css (1.15rem block) */
+  }
+  /* Icon badge: never shrink below its defined size */
+  .parties-faq-section .acc-trigger .acc-icon {
+    flex: none;
+    width: 26px;
+    height: 26px;
+  }
+  .parties-faq-section .acc-panel p {
+    padding-inline: 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   7. FINAL CTA BAND (.parties-cta-band)
+   • Reduce padding so it doesn't become an endless scroll
+     of background on a 375px phone.
+   • Heading size already uses clamp; the paragraph's max-width
+     of 44ch is fine — remove it on tiny screens so it doesn't
+     over-constrain at 320px.
+   • Sticker: ensure inline-flex + margin-bottom don't combine
+     with the h2 margin to create excess vertical whitespace.
+   ---------------------------------------------------------- */
+@media (max-width: 600px) {
+  .parties-cta-band {
+    padding: clamp(1.8rem, 6vw, 2.6rem) clamp(1.2rem, 4vw, 1.8rem);
+    border-radius: var(--r-lg);
+  }
+  .parties-cta-band p {
+    max-width: 100%;
+    font-size: 0.97rem;
+  }
+  .parties-cta-band .sticker {
+    margin-bottom: 0.6rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   8. GALLERY STICKER — contain overflow on all phone sizes
+   At 320px the gal-sticker positioned at right:-0.5rem bleeds
+   outside the section. Bring it fully inside.
+   ---------------------------------------------------------- */
+@media (max-width: 480px) {
+  .gal-sticker {
+    right: 0.1rem;
+    top: -0.4rem;
+    font-size: 0.62rem;
+    padding: 0.28rem 0.55rem;
+  }
+  .gal-item:nth-child(even) .gal-sticker {
+    left: 0.1rem;
+    right: auto;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   9. STAT CARDS — small polish at 320px
+   The number uses clamp(2.8rem, 7vw, 4.2rem) which gives
+   ~2.8rem at 320px — readable. Just ensure padding doesn't
+   waste space at the narrowest viewport.
+   ---------------------------------------------------------- */
+@media (max-width: 360px) {
+  .parties-stats .stat-card {
+    padding: 1.2rem 0.85rem;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   10. REDUCED MOTION — parties mobile additions
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) and (max-width: 759px) {
+  .ph--party .hero-art { animation: none !important; }
+  .parties-cta-band .sticker { animation: none !important; }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "little-town-playhouse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Little Town Playhouse marketing site + Shopify theme build pipeline",
+  "scripts": {
+    "optimize:img": "node scripts/optimize-images.js",
+    "build:theme": "node scripts/build-shopify-theme.js",
+    "build": "npm run optimize:img && npm run build:theme"
+  },
+  "devDependencies": {
+    "csso": "^5.0.5",
+    "sharp": "^0.33.5"
+  }
+}

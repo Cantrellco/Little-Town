@@ -5,7 +5,12 @@
    ============================================================ */
 
 /* Pastel ribbon colour for the flowing section dividers (playful mix) */
-:root { --flow-accent: linear-gradient(90deg, var(--coral) 0%, var(--sky) 40%, var(--sage) 70%, var(--sun) 100%); }
+:root {
+  --flow-accent: linear-gradient(90deg, var(--coral) 0%, var(--sky) 40%, var(--sage) 70%, var(--sun) 100%);
+  /* section-rhythm washes — play's cool sky leading into a warm sun beat */
+  --wash-1: #e1f2f8;  /* pale sky */
+  --wash-2: #fdf1d0;  /* pale sun */
+}
 
 /* ---------- Hero: same recipe as Fusion — a single signature tile (toy
      blocks) repeated over a cool sky-blue gradient, with the wide Main Street
@@ -511,3 +516,105 @@
 }
 /* (Inside-the-town glimpse styles live in shared styles.css so they work
    on both index and play-pricing.) */
+
+/* ============================================================
+   Play & Pricing — mobile refinement layer
+   All rules are gated behind max-width queries; desktop is
+   completely untouched. Build on top of the site-wide v13 layer
+   in styles.css — never fight it.
+   ============================================================ */
+
+/* ---------- Hero: narrow-phone tightening ---------- */
+@media (max-width: 760px) {
+  /* Hide the hero art on phones — the logo image (currently a town
+     mark placeholder) is redundant below the copy and wastes 30%+
+     of the viewport. The stat-pill strip tells the story instead. */
+  .ph--play .hero-art { display: none; }
+
+  /* Give the copy a little more breathing room without the art. */
+  .ph--play .container { gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  /* Stat pills: tighten gap + slightly smaller type so all five pills
+     wrap into a comfortable 2–3 line cluster rather than sprawling. */
+  .stat-strip { gap: 0.45rem; margin-top: 1.2rem; }
+  .stat-pill {
+    font-size: 0.8rem;
+    padding: 0.42rem 0.75rem;
+    gap: 0.35rem;
+  }
+  .stat-pill .sp-icon img { width: 15px; height: 15px; }
+}
+
+/* ---------- Pricing cards: tighter fit + safe sticker at 320px ---------- */
+@media (max-width: 600px) {
+  /* Lift the card container padding so the rotated card shadow
+     can't bleed outside the screen edge. */
+  .pricing-section .cp-grid { padding-inline: 0.5rem; }
+
+  /* .cp-cta — confirm 44px touch target (styles.css doesn't set min-height) */
+  .cp-cta { min-height: 44px; }
+}
+
+@media (max-width: 400px) {
+  /* At the very narrowest widths (320–400px) the ±1deg card rotation
+     combined with the 7px offset shadow nudges a sliver past the
+     viewport edge. Zero it out here — the cards still look great flat.
+     Scoped to play-pricing via .pricing-section which only exists here. */
+  .pricing-section .cp-grid--2 .cp-card:nth-child(1),
+  .pricing-section .cp-grid--2 .cp-card:nth-child(2) { transform: none; }
+
+  /* Make the feature list items a touch more spacious to read on small
+     screens — the default 0.45rem padding is a bit tight finger-counting. */
+  .cp-list li { padding-block: 0.5rem; font-size: 0.92rem; }
+  .cp-price-amount { font-size: clamp(2rem, 10vw, 2.6rem); }
+}
+
+/* ---------- Policy grid: force single-column below 500px ----------
+   The global auto-fit minmax(260px, 1fr) snaps to a single column
+   at ~260px — but between 260 and 500px it can try to squeeze two
+   260px columns into ~320px of viewport, causing overflow.  */
+@media (max-width: 500px) {
+  .policy-row { grid-template-columns: 1fr; }
+}
+
+/* ---------- Storefront cards: comfortable art height on phones ---------- */
+@media (max-width: 480px) {
+  /* Cap the logo art area so the grocery (tallest image) doesn't push
+     the card body too far down. Keeps all three cards uniform height. */
+  .storefront-art img,
+  .storefront-art svg { max-height: 130px; }
+
+  /* Tighten the art padding to reclaim vertical space. */
+  .storefront-art { padding: 0.9rem 0.8rem 0.6rem; }
+
+  /* Sticker: pull back any negative right offset to stay in-bounds. */
+  .storefront-sticker { right: 0.45rem; top: 0.45rem; }
+}
+
+/* ---------- Photo glimpse strip: caption legibility at 2-up ---------- */
+@media (max-width: 480px) {
+  /* The 2-up grid is already set by styles.css; just ensure the gradient
+     caption has enough height to be readable without overlapping the image. */
+  .pp-glimpse-tile figcaption {
+    padding: 1rem 0.5rem 0.55rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* ---------- Showcase frame badge: stay in-bounds on tiny screens ---------- */
+@media (max-width: 360px) {
+  .showcase-badge { right: 0.4rem; bottom: 0.4rem; }
+}
+
+/* ---------- Member cross-link band: comfortable padding on phones ---------- */
+@media (max-width: 480px) {
+  .member-xlink-inner { padding: 1.5rem 1rem; }
+}
+
+/* ---------- Reduced-motion: mobile additions ---------- */
+@media (prefers-reduced-motion: reduce) {
+  /* The additions above that use transform: none for narrow screens
+     are already transform-free by definition; nothing extra needed. */
+}

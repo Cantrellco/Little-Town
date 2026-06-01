@@ -8,6 +8,9 @@
 :root {
   --flow-accent: linear-gradient(90deg, var(--sky) 0%, var(--teal) 50%, var(--sage) 100%);
   --bub-1: var(--sky); --bub-2: var(--teal); --bub-3: var(--sage); --bub-4: var(--sun);
+  /* section-rhythm washes — cool teal into a sky beat */
+  --wash-1: #dfeeea;  /* pale teal */
+  --wash-2: #e7f1f7;  /* pale sky  */
 }
 
 /* ---- Hero: same recipe as Fusion — a single signature tile (map pins)
@@ -369,9 +372,7 @@
 .contact-quick-copy small { color: var(--ink-soft); font-size: 0.85rem; }
 
 /* ---- FAQ section ---- */
-.visit-faq-section {
-  background: var(--band, var(--base-deep));
-}
+/* Background is handled by the shared section-rhythm skin (.sec-*). */
 
 /* Accent colour on open accordion question */
 .acc-item[aria-expanded="true"] .acc-trigger {
@@ -386,27 +387,16 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
-.visit-cta-band::before {
-  content: "";
-  position: absolute;
-  width: 320px; height: 320px;
-  right: -90px; top: -110px;
-  background: rgba(255,255,255,0.10);
-  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
-  pointer-events: none;
-}
-.visit-cta-band::after {
-  content: "";
-  position: absolute;
-  width: 200px; height: 200px;
-  left: -60px; bottom: -80px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 54% 46% 40% 60% / 46% 56% 44% 54%;
-  pointer-events: none;
-}
+/* Decoration matches every other closing CTA: confetti only (real content is
+   lifted above the .confetti-rain layer, which is z-index 0). The .sticker
+   keeps its own sun-pill styling — it just needs to ride above the confetti. */
 .visit-cta-band h2,
-.visit-cta-band p { color: var(--ink); position: relative; z-index: 1; }
+.visit-cta-band p { color: var(--ink); }
+.visit-cta-band .sticker,
+.visit-cta-band h2,
+.visit-cta-band p,
 .visit-cta-band .flex-cta { position: relative; z-index: 1; }
 .visit-cta-band .btn--sun {
   box-shadow: 0 5px 0 rgba(90,60,25,0.25), var(--shadow-md);
@@ -425,12 +415,192 @@
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .visit-steps .step-no { box-shadow: var(--shadow-sm) !important; }
-  .visit-cta-band::before,
-  .visit-cta-band::after { display: none; }
   .contact-detail-row:hover .contact-detail-icon { transform: none !important; }
 }
 
 /* ---- Responsive tweaks ---- */
 @media (max-width: 480px) {
   .map-stickers { justify-content: flex-start; }
+}
+
+/* ==============================================================
+   MOBILE LAYER — visit-us page-specific
+   Primary targets: 360 – 414 px; verified down to 320 px.
+   All desktop rules above are untouched; every rule here is
+   gated behind a max-width so it can't bleed up.
+   ============================================================== */
+
+/* ── 760 px threshold: collapse hero art below copy ────────── */
+@media (max-width: 760px) {
+  /* Art card sits below the hero copy on narrow viewports */
+  .ph--visit .container {
+    grid-template-columns: 1fr;
+  }
+  /* Tuck the card in tighter so it doesn't dwarf the copy */
+  .visit-hero-art {
+    max-width: 260px;
+    margin-top: 0.25rem;
+  }
+}
+
+/* ── 600 px threshold: hours + map section ─────────────────── */
+@media (max-width: 600px) {
+  /* Stack the split columns so hours comes first, map second */
+  .section .container.split {
+    display: block;
+  }
+
+  /* Hours card: full-width, slightly tighter inner padding */
+  .hours-card {
+    max-width: 100% !important; /* override the inline max-width:420px */
+  }
+  .hours-row {
+    padding-inline: 1rem;
+  }
+  .hours-card-header {
+    padding-inline: 1rem;
+  }
+
+  /* Contact detail rows: bigger touch targets, clearer type */
+  .contact-detail-row {
+    align-items: center;          /* icon + text vertically centred */
+    min-height: 44px;
+    gap: 0.9rem;
+  }
+  .contact-detail-icon {
+    width: 42px;
+    height: 42px;
+    flex: none;
+  }
+  /* Make address + phone + email links obviously tappable */
+  .contact-detail-copy a {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-teal, #3F7268);
+    text-decoration: underline;
+    text-decoration-color: rgba(63,114,104,0.35);
+    text-underline-offset: 3px;
+  }
+  .contact-detail-copy a:active {
+    color: var(--accent, #d9774e);
+  }
+
+  /* Map: don't let it shrink to a sliver — give it a readable height */
+  .map-frame {
+    margin-top: 1.5rem;
+  }
+  .map-light img {
+    width: 100%;
+    height: auto;
+    min-height: 180px;   /* readable but not a full-screen takeover */
+    max-height: 280px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Map stickers: comfortable tap targets inline */
+  .map-stickers {
+    margin-top: 0.85rem;
+    gap: 0.5rem;
+  }
+}
+
+/* ── 480 px threshold: small phones ────────────────────────── */
+@media (max-width: 480px) {
+
+  /* ·· Hero ·· */
+  /* Art card: smaller on very narrow screens, no overflow */
+  .visit-hero-art {
+    max-width: 200px;
+  }
+
+  /* Hero pills: don't squash, let them wrap gracefully */
+  .ph--visit .pill-row {
+    gap: 0.5rem;
+  }
+  .ph--visit .pill {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* ·· Hours card ·· */
+  .hours-day,
+  .hours-time {
+    font-size: 0.93rem;
+  }
+  /* Today badge: keep it but pull it slightly if space is tight */
+  .today-badge {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  /* ·· Steps ·· */
+  /* The shared .steps grid already collapses; just nudge the step-no */
+  .visit-steps .step-no {
+    width: 52px;
+    height: 52px;
+    font-size: 1.2rem;
+    margin-inline: auto;
+  }
+  .visit-steps .step h3 { font-size: 1rem; }
+  .visit-steps .step p  { font-size: 0.93rem; }
+
+  /* ·· Contact quick-cards ·· */
+  /* Already stacks at 640px; on a phone ensure the card fills width and
+     icon+copy have enough breathing room */
+  .contact-quick-card {
+    padding: 1rem 1.1rem;
+    gap: 0.85rem;
+  }
+  .contact-quick-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    flex: none;
+  }
+  /* Phone number big and easy to tap */
+  .contact-quick-copy strong {
+    font-size: 1.05rem;
+  }
+
+  /* ·· FAQ accordion ·· */
+  /* Trigger button: generous tap area */
+  .acc-trigger {
+    padding-block: 1rem;
+    font-size: 0.97rem;
+  }
+
+  /* ·· CTA band ·· */
+  .visit-cta-band {
+    padding-inline: 1.1rem;
+  }
+  .visit-cta-band h2 {
+    font-size: clamp(1.4rem, 5vw, 1.7rem);
+  }
+  .visit-cta-band p {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── 320 px safety net ──────────────────────────────────────── */
+@media (max-width: 320px) {
+  /* Prevent any inline SVG art from forcing overflow */
+  .visit-hero-art  { max-width: 160px; }
+  .visit-loc-card  { max-width: 100%; }
+
+  /* Hours rows: allow time to wrap beneath day name gracefully */
+  .hours-row {
+    flex-wrap: wrap;
+    row-gap: 0.1rem;
+    padding-block: 0.6rem;
+  }
+
+  /* Contact detail: slightly smaller icon, prevent text overflow */
+  .contact-detail-icon { width: 36px; height: 36px; }
+  .contact-detail-copy a { font-size: 0.92rem; }
+}
+
+/* ── Reduced-motion additions for mobile ───────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .visit-loc-card { animation: none !important; }
 }

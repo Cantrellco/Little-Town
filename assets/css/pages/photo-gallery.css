@@ -1,7 +1,14 @@
 /* ============================================================
    Photo Gallery — hero + masonry grid + closing CTA.
    Mobile-first. Motion silenced under prefers-reduced-motion.
+   v2 — phone polish layer (≤480 / ≤600 breakpoints added).
    ============================================================ */
+
+/* section-rhythm washes — warm peach into cream-gold (gallery's hue) */
+:root {
+  --wash-1: #fbe8dc;  /* pale peach      */
+  --wash-2: #f6edd8;  /* pale cream-gold */
+}
 
 /* ---- Page hero (photo gallery feel: scattered polaroids) ---- */
 /* Selector matches the other interior-page heroes (.page-hero.ph--cafe /
@@ -204,4 +211,119 @@
   .gallery-figure,
   .gallery-figure figcaption { transition: none; }
   .gallery-figure:hover { transform: none; }
+}
+
+/* ============================================================
+   MOBILE POLISH — ≤600px / ≤480px / 320px
+   All rules are gated so desktop look is untouched.
+   ============================================================ */
+
+/* --- Hero: tighten vertical breathing room on phones --- */
+@media (max-width: 600px) {
+  .page-hero.ph--gallery {
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  /* Scale the polaroid SVG art down so it doesn't push CTAs off-screen */
+  .gallery-hero-art {
+    max-width: 220px !important; /* override the inline style */
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Slightly tighter headline — still prominent, not overwhelming */
+  .ph--gallery h1 {
+    font-size: clamp(1.9rem, 7.5vw, 2.6rem);
+    margin-bottom: 0.6rem;
+  }
+
+  .ph--gallery .lead {
+    font-size: 0.975rem;
+    line-height: 1.55;
+  }
+
+  /* Eyebrow / partner-tag: make sure it wraps gracefully */
+  .ph--gallery .partner-tag {
+    font-size: 0.82rem;
+    padding: 0.3rem 0.75rem;
+  }
+}
+
+/* --- Hero art: hide entirely at 360px and below to keep hero compact --- */
+@media (max-width: 380px) {
+  .gallery-hero-art { display: none; }
+}
+
+/* --- Gallery grid: 2-up on phones (not 1-col) for a proper photo-feed feel --- */
+/* The existing rule collapses to 1-col at ≤540px; override to keep 2-up tighter */
+@media (max-width: 540px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;            /* tighter gutters — photos fill the screen edge-to-edge */
+    padding-inline: 0;      /* let the container's own padding handle edges */
+  }
+
+  /* 2-up at 360px = ~168px tiles; 1:1 is fine, but 4:3 fills better and shows more content */
+  .gallery-figure {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--r-md, 14px); /* softer radius at small size */
+  }
+
+  /* Captions: smaller text so they don't eat the photo */
+  .gallery-figure figcaption {
+    font-size: 0.82rem;
+    padding: 1rem 0.65rem 0.55rem;
+  }
+
+  /* Stickers: scale down slightly and keep inside the tile */
+  .gallery-sticker {
+    font-size: 0.7rem;
+    padding: 0.22rem 0.5rem;
+    top: 0.4rem;
+    left: 0.4rem;
+    /* ensure the pill never overflows the tile */
+    max-width: calc(100% - 0.8rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Sticker icons: hide on tiny tiles to keep text legible */
+  .gallery-sticker img { display: none; }
+}
+
+/* --- 320px safety net: confirm no horizontal overflow --- */
+@media (max-width: 340px) {
+  .gallery-grid { gap: 0.35rem; }
+  .gallery-figure { border-radius: 10px; }
+  .gallery-sticker { font-size: 0.65rem; padding: 0.18rem 0.4rem; }
+}
+
+/* --- Gallery section: less top padding on phones --- */
+@media (max-width: 600px) {
+  .gallery-section { padding-top: 1.25rem; }
+
+  /* gallery-note: comfortable reading line at small widths */
+  .gallery-note {
+    font-size: 0.88rem;
+    margin-top: 1.25rem;
+    padding-inline: 0.5rem;
+    line-height: 1.5;
+  }
+}
+
+/* --- Closing CTA band: padding + heading size for phones --- */
+@media (max-width: 480px) {
+  /* .cta-band is a shared component — only adjust what affects this page's flow */
+  .section .cta-band {
+    padding-inline: clamp(1rem, 5vw, 1.75rem);
+  }
+
+  .cta-band h2 {
+    font-size: clamp(1.55rem, 6vw, 2rem);
+  }
+
+  .cta-band p {
+    font-size: 0.925rem;
+  }
 }

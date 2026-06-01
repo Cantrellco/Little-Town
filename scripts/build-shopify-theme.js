@@ -37,14 +37,26 @@ for (const f of fs.readdirSync(imgDir)) {
   imgCount++;
 }
 
-// ---- 2. css (flatten image url() paths to same-folder filenames) -------
+// ---- 2. css (flatten image url() paths, then minify for the storefront) --
 const flattenCss = (css) =>
   css.replace(/\.\.\/\.\.\/img\//g, "").replace(/\.\.\/img\//g, "");
 
-write("assets/styles.css", flattenCss(read("assets/css/styles.css")));
+// Source CSS in assets/css stays human-readable (documented design tokens);
+// only the shipped theme copy is minified. Degrades gracefully if csso isn't
+// installed — run `npm install` to enable minification.
+let minifyCss = (css) => css;
+try {
+  const csso = require("csso");
+  minifyCss = (css) => csso.minify(css).css;
+} catch {
+  console.warn("  (csso not installed — shipping unminified CSS; run `npm install`)");
+}
+const buildCss = (css) => minifyCss(flattenCss(css));
+
+write("assets/styles.css", buildCss(read("assets/css/styles.css")));
 const pagesCssDir = path.join(root, "assets", "css", "pages");
 for (const f of fs.readdirSync(pagesCssDir)) {
-  write("assets/" + f, flattenCss(fs.readFileSync(path.join(pagesCssDir, f), "utf8")));
+  write("assets/" + f, buildCss(fs.readFileSync(path.join(pagesCssDir, f), "utf8")));
 }
 
 // ---- 3. js (selector matched assets/img/ paths; on Shopify the src is a

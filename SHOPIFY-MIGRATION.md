@@ -140,6 +140,13 @@ The footer/newsletter signup should post to your email tool:
 ---
 
 ## Notes / gotchas
+- **Images / performance.** Run `npm install` once, then `npm run build` (which runs
+  `optimize:img` → `build:theme`). `scripts/optimize-images.js` recompresses every raster in
+  `assets/img/` in place and generates a `.webp`/`.avif` responsive ladder for the rendered
+  photos; the marketing pages use `<picture>` to serve them. **When you add or replace a photo,
+  re-run `npm run optimize:img`** so its ladder exists before you reference new `-600/-900/-1200`
+  variants. The theme build also minifies the shipped CSS (source CSS in `assets/css/` stays
+  readable). The optimizer is idempotent (cached via `scripts/.img-cache.json`).
 - The old `.github/workflows/deploy.yml` still publishes the original static prototype to
   GitHub Pages. That's independent of Shopify — keep it as a reference preview or delete it.
 - Social links in the footer are still `#` placeholders — drop in the client's real
