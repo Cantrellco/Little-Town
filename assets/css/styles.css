@@ -796,7 +796,10 @@ main > .section--tight:last-child {
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+/* Release the compositor hint once the intro has played. Left on, `will-change`
+   keeps every revealed element (incl. the hero copy) on its own GPU layer
+   forever, which makes it trail the page during a touch-scroll. */
+.reveal.is-visible { opacity: 1; transform: none; will-change: auto; }
 .reveal[data-delay="1"] { transition-delay: 0.08s; }
 .reveal[data-delay="2"] { transition-delay: 0.16s; }
 .reveal[data-delay="3"] { transition-delay: 0.24s; }
@@ -948,6 +951,15 @@ main > .section--tight:last-child {
   .hero-cloud.c3 { width: 74px; }
   .hero-cloud.c4 { width: 140px; }
   .hero-cloud.c5 { width: 60px; }
+}
+/* Touch devices: the cloud track is a permanently GPU-promoted, continuously
+   animating transform layer. During a touch-scroll the compositor advances it
+   on its own cadence, so it lags the page and the hero appears to "drag" as you
+   scroll from the top. Freeze the clouds (still visible, just static) and drop
+   the promotion so the layer paints with the hero and scrolls locked to it.
+   Desktop keeps the gentle drift. */
+@media (hover: none) {
+  .hero-clouds .cloud-track { animation: none; will-change: auto; }
 }
 
 /* Trust bar — a contained "proof" strip with dividers between claims */
