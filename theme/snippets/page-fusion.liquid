@@ -131,8 +131,9 @@
           <p class="section-lead">Fresh coffee and eats, served all day right next door.</p>
         </div>
 
-        <!-- Signature drinks — featured trio with mock illustrations -->
-        <div class="signature-drinks reveal mt-3" aria-label="Signature drinks">
+        <!-- Most popular — featured trio with mock illustrations -->
+        <p class="center reveal" style="margin:1.25rem 0 0"><span class="eyebrow">&#x2605; Most popular</span></p>
+        <div class="signature-drinks reveal mt-2" aria-label="Most popular">
           <figure class="signature-drink tilt-3d">
             <div class="signature-art" aria-hidden="true">
               <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -173,7 +174,7 @@
               </svg>
             </div>
             <figcaption>
-              <strong>Signature Latte</strong>
+              <strong>Latte</strong>
               <span>Double-shot espresso, silky oat or whole milk, latte-art on top.</span>
               <em>$5.00</em>
             </figcaption>
@@ -182,40 +183,56 @@
             <div class="signature-art" aria-hidden="true">
               <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
                 <!-- soft cast shadow -->
-                <ellipse cx="60" cy="134" rx="44" ry="3.6" fill="#3a2c20" opacity="0.14"/>
-                <!-- glass back (so liquid sits cleanly inside) -->
-                <path d="M32 26 H88 L82 124 Q81 130 75 130 H45 Q39 130 38 124 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
-                <!-- matcha liquid -->
-                <path d="M34.6 42 H85.4 L80.4 122 Q79.7 127 75 127 H45 Q40.3 127 39.6 122 Z" fill="#7CB67A"/>
-                <!-- foam top + rim -->
-                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="#D7EBC9"/>
-                <ellipse cx="60" cy="40" rx="26" ry="4.2" fill="none" stroke="#8A5A2C" stroke-width="2"/>
-                <!-- ice cubes (rounded squares, layered) -->
-                <g opacity="0.7">
-                  <rect x="42" y="50" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(-12 49 57)"/>
-                  <rect x="42" y="50" width="14" height="14" rx="2.2" fill="none" stroke="#8A5A2C" stroke-width="1.2" opacity="0.5" transform="rotate(-12 49 57)"/>
+                <ellipse cx="60" cy="134" rx="50" ry="3.6" fill="#3a2c20" opacity="0.14"/>
+                <!-- saucer -->
+                <ellipse cx="60" cy="128" rx="48" ry="7" fill="#D9B98A"/>
+                <ellipse cx="60" cy="124" rx="48" ry="7" fill="#F0DCBC"/>
+                <ellipse cx="60" cy="122" rx="28" ry="4" fill="#E2C79B"/>
+                <!-- star anise on saucer -->
+                <g transform="translate(23 124)">
+                  <g fill="#7A4A28">
+                    <ellipse cx="0" cy="0" rx="2.1" ry="4.4"/>
+                    <ellipse cx="0" cy="0" rx="2.1" ry="4.4" transform="rotate(60)"/>
+                    <ellipse cx="0" cy="0" rx="2.1" ry="4.4" transform="rotate(120)"/>
+                  </g>
+                  <circle cx="0" cy="0" r="1.5" fill="#4A2F18"/>
                 </g>
-                <g opacity="0.7">
-                  <rect x="60" y="62" width="14" height="14" rx="2.2" fill="#FBF5EA" transform="rotate(16 67 69)"/>
-                  <rect x="60" y="62" width="14" height="14" rx="2.2" fill="none" stroke="#8A5A2C" stroke-width="1.2" opacity="0.5" transform="rotate(16 67 69)"/>
+                <!-- cinnamon stick on saucer -->
+                <g transform="translate(95 126) rotate(16)">
+                  <rect x="-8" y="-2.3" width="16" height="4.6" rx="2.3" fill="#A66A36"/>
+                  <line x1="-8" y1="0" x2="8" y2="0" stroke="#7A4A28" stroke-width="0.9"/>
                 </g>
-                <g opacity="0.65">
-                  <rect x="46" y="82" width="12" height="12" rx="2" fill="#FBF5EA" transform="rotate(-8 52 88)"/>
+                <!-- steam wisps -->
+                <g stroke="#8A5A2C" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.55">
+                  <path d="M44 30 q-6 -10 0 -22"/>
+                  <path d="M60 24 q-6 -10 0 -22"/>
+                  <path d="M76 30 q-6 -10 0 -22"/>
                 </g>
-                <!-- straw -->
-                <path d="M66 16 L60 130" stroke="#E09972" stroke-width="4.4" stroke-linecap="round"/>
-                <path d="M66 16 L60 130" stroke="#FBF5EA" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="5 4" opacity="0.85"/>
-                <!-- glass front highlight -->
-                <line x1="42" y1="56" x2="42" y2="110" stroke="#FBF5EA" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
-                <!-- little leaf garnish on rim -->
-                <path d="M80 32 q6 -7 13 -3 q-2 7 -9 7 q-3 -1 -4 -4 Z" fill="#586A36"/>
-                <path d="M82 32 q5 -2 9 0" stroke="#FBF5EA" stroke-width="1.1" fill="none" opacity="0.75"/>
+                <!-- handle (outer thick, inner highlight) -->
+                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#8A5A2C" stroke-width="7" stroke-linecap="round"/>
+                <path d="M92 64 Q116 62 116 86 Q116 110 92 108" fill="none" stroke="#FBF5EA" stroke-width="3" stroke-linecap="round"/>
+                <!-- mug body -->
+                <path d="M28 50 L92 50 L88 110 Q86 124 70 124 L50 124 Q34 124 32 110 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- soft vertical shading on the mug -->
+                <path d="M40 60 Q34 88 44 118" stroke="#E7DCC9" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.6"/>
+                <!-- chai top: white rim, milk-foam ring, spiced amber surface -->
+                <ellipse cx="60" cy="50" rx="32" ry="8" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.5"/>
+                <ellipse cx="60" cy="50" rx="26" ry="6" fill="#E9D3AE"/>
+                <ellipse cx="60" cy="50" rx="20" ry="4.5" fill="#C0833F"/>
+                <!-- cinnamon dusting on the foam -->
+                <g fill="#7A4A28" opacity="0.85">
+                  <circle cx="54" cy="49.2" r="0.9"/>
+                  <circle cx="62" cy="51" r="0.8"/>
+                  <circle cx="66.5" cy="48.6" r="0.7"/>
+                  <circle cx="58" cy="51.6" r="0.7"/>
+                  <circle cx="69" cy="50.4" r="0.6"/>
+                </g>
               </svg>
             </div>
             <figcaption>
-              <strong>Iced Matcha</strong>
-              <span>Stone-ground ceremonial matcha, lightly sweetened, over ice.</span>
-              <em>$5.50</em>
+              <strong>Chai</strong>
+              <span>Spiced black tea latte, steamed milk &amp; a dusting of cinnamon.</span>
+              <em>$5.00</em>
             </figcaption>
           </figure>
           <figure class="signature-drink tilt-3d">
@@ -330,9 +347,9 @@
               <div class="m-price">$4.00</div>
             </li>
             <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Babyccino</div><div class="m-desc">Frothed milk in a tiny cup for the smallest customers. <span class="muted">Free for kids under 4.</span></div></div>
-              <div class="m-price">$2.00</div>
+              <img class="m-icon" src="{{ 'm-coffee.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
+              <div><div class="m-name">Steamer</div><div class="m-desc">Steamed milk with a shot of flavor &mdash; vanilla, caramel or honey.</div></div>
+              <div class="m-price">$3.00</div>
             </li>
             <li class="menu-row">
               <img class="m-icon" src="{{ 'm-juice.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
@@ -366,44 +383,6 @@
               <img class="m-icon" src="{{ 'm-sandwich.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
               <div><div class="m-name">Panini</div><div class="m-desc">Warm pressed sandwich &mdash; choose ham &amp; cheese, caprese, or veggie.</div></div>
               <div class="m-price">$10.00&#x2013;$11.00</div>
-            </li>
-            <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-fruit.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Fruit Cup</div><div class="m-desc">Seasonal fresh fruit, cut for tiny hands.</div></div>
-              <div class="m-price">$4.50</div>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Treats -->
-        <div class="menu-group menu-group--treats card reveal">
-          <h3>
-            <span class="menu-cat-chip menu-cat-chip--treats" aria-hidden="true">
-              <img src="{{ 'cat-treats.svg' | asset_url }}" alt="" width="26" height="26" loading="lazy" decoding="async">
-            </span>
-            Treats
-            <span class="sticker" style="margin-left:auto;font-size:0.75rem">Baked fresh</span>
-          </h3>
-          <ul class="menu-list">
-            <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-muffin.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Muffin</div><div class="m-desc">Rotating seasonal flavor, baked here every morning.</div></div>
-              <div class="m-price">$3.50</div>
-            </li>
-            <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-cookie.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Cookie</div><div class="m-desc">Big, chewy &mdash; chocolate chip, snickerdoodle or oatmeal raisin.</div></div>
-              <div class="m-price">$2.50</div>
-            </li>
-            <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-muffin.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Banana Bread</div><div class="m-desc">A thick slice, toasted to order with butter.</div></div>
-              <div class="m-price">$3.00</div>
-            </li>
-            <li class="menu-row">
-              <img class="m-icon" src="{{ 'm-cookie.svg' | asset_url }}" alt="" width="44" height="44" loading="lazy" decoding="async">
-              <div><div class="m-name">Croissant</div><div class="m-desc">Flaky &amp; buttery &mdash; plain, almond or chocolate.</div></div>
-              <div class="m-price">$3.50&#x2013;$4.00</div>
             </li>
           </ul>
         </div>
