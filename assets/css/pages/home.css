@@ -357,6 +357,98 @@
 }
 
 /* ----------------------------------------------------------
+   HERO SCENE — phone/tablet parkland + sky (≤880px)
+   ----------------------------------------------------------
+   The desktop .deco floaters are display:none ≤880px (they're
+   sized + placed for a wide hero and would crowd the centred
+   headline on a phone). This is the small-screen counterpart:
+   the same brand SVGs, but resized and re-anchored for a narrow
+   screen so they FRAME the copy — sky flourishes tucked to the
+   top corners, a little parkland flanking the town along the
+   lawn — rather than sit behind the headline. It hands off to
+   the desktop floaters cleanly at the same 880px line, and the
+   drifting clouds (styles.css) animate underneath on every size.
+   The .anim-* classes (bob / sway / spin-slow / twinkle) are the
+   shared global keyframes; reduced-motion already stills them. */
+.hero-scene-m { display: none; }
+
+@media (max-width: 880px) {
+  .hero-scene-m {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;            /* in front of the town + clouds, behind the copy (z2) */
+    pointer-events: none;
+    overflow: hidden;      /* clip the edge trees so they never add page overflow */
+  }
+  .m-deco { position: absolute; }
+  .m-deco img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 7px rgba(80, 60, 30, 0.14));
+  }
+
+  /* Sky — sun, balloons, a kite and twinkles. The whole top of a phone hero is
+     filled by the centred copy (eyebrow → headline → lead → CTAs), so the only
+     clean sky is the band BETWEEN the CTAs and the town roofline. Anchor these
+     to the bottom (like the town) so they always float just above it, in
+     whatever sky the viewport gives, and spread them left→right so the centre
+     (the tall café tower) stays clear. */
+  .m-sun       { bottom: 195px; right: 6%;  width: 52px; }
+  .m-balloon   { bottom: 198px; left: 6%;   width: 30px; }
+  .m-balloon-2 { bottom: 190px; left: 19%;  width: 21px; }
+  .m-kite      { bottom: 166px; left: 31%;  width: 36px; }
+  .m-star-1    { bottom: 248px; left: 26%;  width: 14px; }
+  .m-star-2    { bottom: 230px; right: 27%; width: 12px; }
+
+  /* Parkland — little groves flanking the town along the lawn (foreground:
+     in front of the town base, behind the copy). Negative outer offsets let
+     the tallest trees root just off the edge so the flanks read full. */
+  .m-tree-l    { bottom: 28px; left: -3%;  width: 86px; }
+  .m-bush-l    { bottom: 18px; left: 13%;  width: 66px; }
+  .m-flowers-l { bottom: 12px; left: 4%;   width: 46px; }
+  .m-tree-r    { bottom: 30px; right: -3%; width: 90px; }
+  .m-bush-r    { bottom: 18px; right: 12%; width: 64px; }
+  .m-flowers-r { bottom: 12px; right: 3%;  width: 48px; }
+}
+
+/* Smaller phones: trim the sizes a notch so the sky band stays uncrowded and
+   the parkland doesn't crowd the (proportionally larger) town. */
+@media (max-width: 480px) {
+  .m-sun       { bottom: 188px; width: 46px; }
+  .m-balloon   { bottom: 190px; left: 5%;  width: 26px; }
+  .m-balloon-2 { bottom: 184px; left: 18%; width: 18px; }
+  .m-kite      { bottom: 162px; left: 32%; width: 32px; }
+  .m-star-1    { bottom: 236px; left: 25%; width: 13px; }
+  .m-star-2    { bottom: 220px; right: 28%; width: 11px; }
+  .m-tree-l    { width: 74px; }
+  .m-bush-l    { left: 14%; width: 58px; }
+  .m-flowers-l { width: 40px; }
+  .m-tree-r    { width: 78px; }
+  .m-bush-r    { right: 13%; width: 56px; }
+  .m-flowers-r { width: 42px; }
+}
+
+@media (max-width: 359px) {
+  /* Tightest phones: drop the smallest twinkles + the second balloon and shrink
+     the groves so the scene stays calm in the limited sky. */
+  .m-star-1, .m-star-2, .m-balloon-2 { display: none; }
+  .m-sun     { bottom: 176px; width: 40px; }
+  .m-balloon { bottom: 178px; }
+  .m-kite    { bottom: 152px; left: 33%; width: 28px; }
+  .m-tree-l  { width: 64px; }
+  .m-tree-r  { width: 66px; }
+  .m-bush-l, .m-bush-r { width: 50px; }
+}
+
+/* Reduced motion stills the sky animations (the global rule already sets
+   animation:none); keep the pieces visible, just static. */
+@media (prefers-reduced-motion: reduce) {
+  .m-deco { animation: none !important; }
+}
+
+/* ----------------------------------------------------------
    EXPLORE THE TOWN — card stickers at 320–600px
    ----------------------------------------------------------
    Cards stack to 1-up below 720px (.grid-3 resets to 1fr) so the

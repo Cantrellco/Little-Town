@@ -398,19 +398,12 @@
 .visit-cta-band h2,
 .visit-cta-band p,
 .visit-cta-band .flex-cta { position: relative; z-index: 1; }
-.visit-cta-band .btn--sun {
-  box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12);
-}
 .visit-cta-band .btn--ghost {
-  background: rgba(255,255,255,0.55);
-  border-color: rgba(58,49,40,0.22);
+  background: var(--white);
+  border-color: var(--btn-edge);
   color: var(--ink);
 }
-.visit-cta-band .btn--ghost:hover {
-  background: #fff;
-  border-color: var(--accent);
-  color: var(--accent);
-}
+.visit-cta-band .btn--ghost:hover { color: var(--accent); }
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {

@@ -53,10 +53,7 @@
   margin-bottom: 0.9rem;
 }
 
-/* Party-specific CTA: kept grounded to match the rest of the site (no hard lip) */
-.ph--party .btn--pop {
-  box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12);
-}
+/* Party hero CTA inherits the standard neobrutalist button — no override needed */
 
 /* Inline bunting string: a decorative SVG-like CSS strip */
 .bunting-row {
@@ -420,19 +417,12 @@
 .parties-cta-band > :not(.confetti-rain) { position: relative; z-index: 1; }
 .parties-cta-band h2,
 .parties-cta-band p { color: var(--ink); }
-.parties-cta-band .btn--sun {
-  box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12);
-}
 .parties-cta-band .btn--ghost {
-  background: rgba(255,255,255,0.55);
-  border-color: rgba(58,49,40,0.22);
+  background: var(--white);
+  border-color: var(--btn-edge);
   color: var(--ink);
 }
-.parties-cta-band .btn--ghost:hover {
-  background: #fff;
-  border-color: var(--accent);
-  color: var(--accent);
-}
+.parties-cta-band .btn--ghost:hover { color: var(--accent); }
 
 /* ---------- Reduced motion overrides (parties-specific) ---------- */
 @media (prefers-reduced-motion: reduce) {
