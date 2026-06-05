@@ -842,9 +842,9 @@ main > .section--tight:last-child {
 .anim-drift   { animation: drift 16s ease-in-out infinite; }
 .anim-twinkle { animation: twinkle 4.5s ease-in-out infinite; }
 
-/* Bouncier, more playful hovers */
-.btn { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background 0.2s ease; }
-.btn:hover { transform: translateY(-3px) scale(1.03); }
+/* Bouncier, more playful hovers (buttons stay grounded — gentle 1px lift only) */
+.btn { transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+.btn:hover { transform: translateY(-1px); }
 .card { transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; }
 .card:hover { transform: translateY(-7px) scale(1.015); }
 .card:hover .card-art img { animation: wiggle 0.55s ease; }
@@ -1143,10 +1143,10 @@ a.btn--terracotta[href="memberships.html"]::after {
 .sticker--sky   { background: var(--sky);   color: #08323d; }
 .sticker--sage  { background: var(--sage);  color: #243016; }
 
-/* ---- Chunky "pop" button: playful 3D press (opt-in on top of .btn) ---- */
-.btn--pop { box-shadow: 0 5px 0 rgba(90,60,25,0.22), var(--shadow-sm); }
-.btn--pop:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(90,60,25,0.22), var(--shadow-md); }
-.btn--pop:active { transform: translateY(3px);  box-shadow: 0 2px 0 rgba(90,60,25,0.22); }
+/* ---- "pop" buttons: kept grounded (no hard 3D lip, matches every other btn) ---- */
+.btn--pop { box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12); }
+.btn--pop:hover  { transform: translateY(-1px); box-shadow: var(--gloss-top), 0 5px 14px -4px rgba(80,60,30,0.16); }
+.btn--pop:active { transform: translateY(0);    box-shadow: var(--gloss-top), 0 1px 3px rgba(80,60,30,0.12); }
 .btn--sun   { --btn-bg: var(--sun);   --btn-fg: #5a3d12; }
 .btn--coral { --btn-bg: var(--coral); }
 
@@ -1668,36 +1668,39 @@ section.flow-top { overflow: visible; }
   transition: color 0.22s ease, background 0.22s ease, transform 0.22s ease;
 }
 .nav a:hover { background: rgba(255,255,255,0.6); }
-/* CTA gets a refined inset gloss + brand-tinted shadow */
+/* CTA gets a refined inset gloss + faint grounded shadow */
 .header-cta .btn--cta {
-  box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral);
+  box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12);
 }
-.header-cta .btn--cta:hover { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 18px 36px -10px rgba(224,161,132,0.55); }
+.header-cta .btn--cta:hover { box-shadow: var(--gloss-top), 0 5px 14px -4px rgba(80,60,30,0.16); }
 
-/* -------- Refined buttons: tactile depth, gloss top, hover lift -------- */
+/* -------- Buttons: soft & grounded — faint close shadow, gentle hover lift -------- */
 .btn {
   box-shadow:
     var(--gloss-top),
-    0 1px 2px rgba(80,60,30,0.10),
-    0 8px 18px -8px rgba(80,60,30,0.20);
+    0 2px 6px rgba(80,60,30,0.12);
   letter-spacing: 0.005em;
 }
 .btn:hover {
   box-shadow:
     var(--gloss-top),
-    0 2px 4px rgba(80,60,30,0.10),
-    0 16px 30px -10px rgba(80,60,30,0.24);
+    0 5px 14px -4px rgba(80,60,30,0.16);
 }
 .btn--ghost { box-shadow: none; }
-.btn--ghost:hover { box-shadow: 0 8px 18px -10px rgba(80,60,30,0.18); }
-/* Per-colour soft tinted rim shadow */
-.btn--terracotta { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral); }
-.btn--terracotta:hover { box-shadow: var(--gloss-top), 0 2px 4px rgba(80,60,30,0.12), 0 18px 40px -10px rgba(224,161,132,0.60); }
-.btn--red { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 12px 32px -10px rgba(236,154,144,0.55); }
-.btn--wood { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), 0 12px 32px -10px rgba(232,201,155,0.65); }
-.btn--teal { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-teal); }
-.btn--sun  { box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-sun); }
-.btn--coral{ box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.10), var(--glow-coral); }
+.btn--ghost:hover { box-shadow: 0 4px 10px -6px rgba(80,60,30,0.16); }
+/* Every solid colour shares the same grounded shadow (no floating glow) */
+.btn--terracotta,
+.btn--red,
+.btn--wood,
+.btn--teal,
+.btn--sun,
+.btn--coral { box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12); }
+.btn--terracotta:hover,
+.btn--red:hover,
+.btn--wood:hover,
+.btn--teal:hover,
+.btn--sun:hover,
+.btn--coral:hover { box-shadow: var(--gloss-top), 0 5px 14px -4px rgba(80,60,30,0.16); }
 
 /* -------- Refined cards: paper finish + crafted shadow -------- */
 .card {
@@ -2166,31 +2169,26 @@ section.flow-top { overflow: visible; }
 .section-ornament i:nth-child(1) { background: var(--accent-sage); }
 .section-ornament i:nth-child(3) { background: var(--accent-sun); }
 
-/* -------- v11 — Preserve the .btn--pop 3D press effect -------- */
-/* The v11 color-variant shadows above (.btn--terracotta etc.) sit later in
-   source than .btn--pop, so without this they'd swap the chunky 3D press
-   for a flat glow. Re-asserting .btn--pop here puts the press back on top —
-   the colour-tinted glow is folded into its hover state instead. */
+/* -------- "pop" buttons kept grounded (was a chunky 3D press) -------- */
+/* This block used to re-assert a hard `0 5px 0` lip — the solid edge that
+   made the buttons look like they hung off the page. Flattened to the same
+   soft, close shadow every other button uses; the colour-tinted hover glows
+   are gone so all CTAs sit flat and lift gently on hover. */
 .btn--pop {
   box-shadow:
     var(--gloss-top),
-    0 5px 0 rgba(90,60,25,0.22),
-    0 8px 18px -8px rgba(80,60,30,0.20);
+    0 2px 6px rgba(80,60,30,0.12);
 }
 .btn--pop:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow:
     var(--gloss-top),
-    0 7px 0 rgba(90,60,25,0.22),
-    0 16px 30px -10px rgba(80,60,30,0.24);
+    0 5px 14px -4px rgba(80,60,30,0.16);
 }
 .btn--pop:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 rgba(90,60,25,0.22);
+  transform: translateY(0);
+  box-shadow: var(--gloss-top), 0 1px 3px rgba(80,60,30,0.12);
 }
-.btn--pop.btn--terracotta:hover { box-shadow: var(--gloss-top), 0 7px 0 rgba(165,82,52,0.32), 0 18px 36px -10px rgba(224,161,132,0.55); }
-.btn--pop.btn--sun:hover        { box-shadow: var(--gloss-top), 0 7px 0 rgba(170,128,32,0.32), 0 18px 36px -10px rgba(248,217,143,0.55); }
-.btn--pop.btn--coral:hover      { box-shadow: var(--gloss-top), 0 7px 0 rgba(180,90,55,0.32), 0 18px 36px -10px rgba(244,174,146,0.55); }
 
 /* -------- v11 — Reduced motion guards for everything new -------- */
 @media (prefers-reduced-motion: reduce) {

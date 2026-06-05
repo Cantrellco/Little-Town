@@ -399,7 +399,7 @@
 .visit-cta-band p,
 .visit-cta-band .flex-cta { position: relative; z-index: 1; }
 .visit-cta-band .btn--sun {
-  box-shadow: 0 5px 0 rgba(90,60,25,0.25), var(--shadow-md);
+  box-shadow: var(--gloss-top), 0 2px 6px rgba(80,60,30,0.12);
 }
 .visit-cta-band .btn--ghost {
   background: rgba(255,255,255,0.55);
