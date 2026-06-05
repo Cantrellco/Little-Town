@@ -2655,6 +2655,12 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
   .m-drawer-close svg { width: 18px; height: 18px; }
   .m-drawer-close:active { transform: scale(0.9); background: var(--terra-tint); color: var(--accent); }
 
+  /* The panel takes programmatic focus on open (so keyboard users land inside
+     the dialog); it must never render its own focus ring — the links within it
+     still get one when tabbed to. */
+  .mobile-menu > div:focus,
+  .mobile-menu > div:focus-visible { outline: none; }
+
   /* Link list. */
   .mobile-menu nav {
     flex: 1;

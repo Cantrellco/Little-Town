@@ -400,11 +400,9 @@
       panel.insertBefore(top, panel.firstChild);
       top.querySelector(".m-drawer-close").addEventListener("click", function () { close(true); });
 
-      var membersHref = findHref("membership") || "#";
       var foot = document.createElement("div");
       foot.className = "m-drawer-foot";
       foot.innerHTML =
-        '<a class="btn btn--terracotta btn--pop" href="' + membersHref + '">Become a Member</a>' +
         '<a class="m-drawer-call" href="' + telHref() + '">' + ICON_PHONE + "<span>Call (555) 014-2025</span></a>";
       panel.appendChild(foot);
     }
@@ -428,9 +426,14 @@
       toggle.setAttribute("aria-expanded", "true");
       toggle.setAttribute("aria-label", "Close menu");
       setInert(false);
-      // Move focus to the first menu link for keyboard users.
-      var first = menu.querySelector("a");
-      if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+      // Move focus into the drawer itself (the panel, not a link) so keyboard
+      // users land inside the dialog and Tab/Esc work — without dropping the
+      // black :focus-visible ring on the active "Home" link, which otherwise
+      // looked like a border stuck around it after tapping another page.
+      if (panel) {
+        panel.setAttribute("tabindex", "-1");
+        try { panel.focus({ preventScroll: true }); } catch (e) { panel.focus(); }
+      }
     }
 
     function close(returnFocus) {

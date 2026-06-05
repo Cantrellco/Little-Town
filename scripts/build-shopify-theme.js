@@ -262,7 +262,6 @@ write(
 ${navLinks("      ")}
     </nav>
     <div class="header-cta">
-      <a class="btn btn--terracotta btn--cta" href="/pages/memberships"><span class="cta-full">Become a Member</span><span class="cta-short">Join</span></a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
       </button>
