@@ -1,10 +1,12 @@
+{%- assign daypass_prod = all_products['day-pass'] -%}
+{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
 <main>
     <!-- ============ HERO (full-bleed animated background) ============ -->
     <section class="hero-v2 has-sparkles">
       <!-- Soft rolling lawn the whole scene rests on — sits behind the town so
            the buildings, trees and bushes all share one grounded green base
            that meets the wave divider below instead of floating on flat sky. -->
-      <div class="hero-ground" aria-hidden="true"><img src="{{ 'deco-meadow.svg' | asset_url }}" alt="" width="1440" height="220" fetchpriority="high" decoding="async"></div>
+      <div class="hero-ground" aria-hidden="true"><img src="{{ 'deco-meadow.svg' | asset_url }}" alt="" width="1440" height="220" decoding="async"></div>
       <!-- Town backdrop is the brand logo mark — the same little town from the
            header — sitting on the sky wash. The motion lives in the separate
            cloud layer below. -->
@@ -69,19 +71,17 @@
         <span class="m-deco m-star-1 anim-twinkle"><img src="{{ 'deco-star.svg' | asset_url }}" alt="" width="15" height="15" loading="lazy" decoding="async"></span>
         <span class="m-deco m-star-2 anim-twinkle"><img src="{{ 'deco-star.svg' | asset_url }}" alt="" width="13" height="13" loading="lazy" decoding="async"></span>
         <span class="m-deco m-tree-l"><img src="{{ 'deco-tree.svg' | asset_url }}" alt="" width="84" height="123" loading="lazy" decoding="async"></span>
-        <span class="m-deco m-bush-l"><img src="{{ 'deco-bush.svg' | asset_url }}" alt="" width="64" height="37" loading="lazy" decoding="async"></span>
         <span class="m-deco m-flowers-l"><img src="{{ 'deco-flowers.svg' | asset_url }}" alt="" width="44" height="33" loading="lazy" decoding="async"></span>
         <span class="m-deco m-tree-r"><img src="{{ 'deco-tree.svg' | asset_url }}" alt="" width="88" height="128" loading="lazy" decoding="async"></span>
-        <span class="m-deco m-bush-r"><img src="{{ 'deco-bush.svg' | asset_url }}" alt="" width="62" height="36" loading="lazy" decoding="async"></span>
         <span class="m-deco m-flowers-r"><img src="{{ 'deco-flowers.svg' | asset_url }}" alt="" width="46" height="35" loading="lazy" decoding="async"></span>
       </div>
       <div class="container hero-content reveal">
-        <span class="eyebrow">Indoor imaginative play · Ages 0–8</span>
+        <span class="eyebrow">Indoor imaginative play · <span style="white-space:nowrap">Ages 2–7</span></span>
         <h1 class="home-hero-title">A little town built for <span class="hl hl--sky">big</span> <span class="script" style="color:var(--accent)">imaginations</span></h1>
         <p class="lead">Where little ones run the shops and grown-ups actually relax. Become a member for unlimited play in our cozy little downtown.</p>
         <div class="flex-cta center">
           <a class="btn btn--lg btn--pop btn--terracotta" href="/pages/memberships">Become a Member</a>
-          <a class="btn btn--lg btn--ghost" href="/pages/visit-us">Plan a Visit</a>
+          <a class="btn btn--lg btn--ghost" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Day Pass</a>
         </div>
       </div>
     </section>
@@ -188,7 +188,7 @@
           <div class="step reveal pop" data-delay="1">
             <div class="step-no" aria-hidden="true"></div>
             <h3>Run the little town</h3>
-            <p>Little ones take over the shops, the clinic and the slides while you keep an easy eye from comfy seating.</p>
+            <p>Little ones take over the shops, the clinic and the slides while you settle into the gated parent lounge with a clear view of the floor.</p>
           </div>
           <div class="step reveal pop" data-delay="2">
             <div class="step-no" aria-hidden="true"></div>
@@ -205,8 +205,82 @@
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Parents, you can relax</span>
-          <h2>Safe, comfy, easy</h2>
+          <h2>Safe, comfy, <span class="hl">easy</span></h2>
         </div>
+
+        <!-- Featured: the gated parent lounge — the star of this section. It
+             sits right at the entrance, gated off from the play floor, so
+             grown-ups get a calm spot with a Fusion coffee and clear sightlines.
+             Leads the trio of reassurance cards below. -->
+        <div class="lounge-feature reveal mt-4">
+          <div class="lounge-feature-copy">
+            <span class="lounge-flag"><img src="{{ 'icon-coffee-cup.svg' | asset_url }}" alt="" width="16" height="16"> Right inside the door</span>
+            <span class="eyebrow">The Parent Lounge</span>
+            <h3 class="lounge-title">A lounge that's <span class="script" style="color:var(--accent)">all yours</span></h3>
+            <p>The moment you walk in there's a gated lounge just for grown-ups — sink into comfy seating with a Fusion coffee in hand and keep a clear eye on the play floor through the gate. Close enough to watch, calm enough to actually relax.</p>
+            <ul class="lounge-perks">
+              <li>Gated off from the play floor — grown-ups only</li>
+              <li>Sip a Fusion coffee while the little ones play</li>
+              <li>Comfy seats with clear sightlines across the floor</li>
+            </ul>
+          </div>
+          <div class="lounge-feature-art" aria-hidden="true">
+            <svg class="lounge-card" viewBox="0 0 320 260" role="img" aria-label="A gated parent lounge at the entrance — a comfy armchair and a Fusion coffee, with a low gate separating it from the play floor." xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="308" height="240" rx="22" fill="#ffffff" stroke="#e6dfd1" stroke-width="2"/>
+              <clipPath id="loungeClip"><rect x="20" y="24" width="280" height="170" rx="14"/></clipPath>
+              <g clip-path="url(#loungeClip)">
+                <!-- two zones: warm lounge on the left, sky-toned play floor on the right -->
+                <rect x="20" y="24" width="280" height="170" fill="#f7eee1"/>
+                <rect x="206" y="24" width="94" height="170" fill="#e3f1f6"/>
+                <rect x="20" y="150" width="280" height="44" fill="#efe2cf"/>
+                <rect x="206" y="150" width="94" height="44" fill="#d6e9ef"/>
+                <!-- rug under the armchair -->
+                <ellipse cx="96" cy="158" rx="76" ry="12" fill="#f2d9bf"/>
+                <!-- armchair -->
+                <ellipse cx="92" cy="156" rx="54" ry="8" fill="#3a2c20" opacity="0.10"/>
+                <rect x="56" y="78" width="74" height="62" rx="18" fill="#E0A184" stroke="#C2805F" stroke-width="2.5"/>
+                <rect x="46" y="104" width="20" height="44" rx="10" fill="#D98F70" stroke="#C2805F" stroke-width="2.5"/>
+                <rect x="120" y="104" width="20" height="44" rx="10" fill="#D98F70" stroke="#C2805F" stroke-width="2.5"/>
+                <rect x="52" y="116" width="82" height="30" rx="12" fill="#E9B59C" stroke="#C2805F" stroke-width="2.5"/>
+                <rect x="72" y="90" width="34" height="30" rx="9" fill="#F8D98F" stroke="#E3B85C" stroke-width="2" transform="rotate(-6 89 105)"/>
+                <!-- side table + steaming Fusion coffee -->
+                <ellipse cx="162" cy="150" rx="20" ry="6" fill="#caa97f"/>
+                <rect x="158" y="128" width="8" height="22" fill="#b98f5f"/>
+                <ellipse cx="162" cy="128" rx="20" ry="6.5" fill="#d9b98a" stroke="#a9824f" stroke-width="2"/>
+                <g stroke="#8A5A2C" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5">
+                  <path d="M157 116 q-4 -6 0 -12"/>
+                  <path d="M167 114 q-4 -6 0 -12"/>
+                </g>
+                <path d="M150 118 h22 l-2 12 q-1 6 -9 6 q-8 0 -9 -6 Z" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M172 120 q9 0 9 7 q0 7 -9 7" fill="none" stroke="#8A5A2C" stroke-width="2.2"/>
+                <ellipse cx="161" cy="118" rx="11" ry="3" fill="#8A5A2C"/>
+                <!-- the gate: a low panel that fences the lounge off from the play floor -->
+                <rect x="186" y="112" width="40" height="80" rx="8" fill="#ffffff" stroke="#cdbfa6" stroke-width="2.5"/>
+                <g stroke="#cdbfa6" stroke-width="3" stroke-linecap="round">
+                  <line x1="196" y1="120" x2="196" y2="184"/>
+                  <line x1="206" y1="120" x2="206" y2="184"/>
+                  <line x1="216" y1="120" x2="216" y2="184"/>
+                </g>
+                <rect x="184" y="126" width="44" height="6" rx="3" fill="#BFD6A8" stroke="#9bb583" stroke-width="1.5"/>
+                <rect x="184" y="160" width="44" height="6" rx="3" fill="#BFD6A8" stroke="#9bb583" stroke-width="1.5"/>
+                <circle cx="224" cy="149" r="3.5" fill="#D9663D"/>
+                <!-- a glimpse of the play floor through the gate: slide + ball -->
+                <line x1="248" y1="116" x2="248" y2="150" stroke="#2F8AA6" stroke-width="4" stroke-linecap="round"/>
+                <g stroke="#F8D98F" stroke-width="3" stroke-linecap="round">
+                  <line x1="243" y1="126" x2="253" y2="126"/>
+                  <line x1="243" y1="138" x2="253" y2="138"/>
+                </g>
+                <path d="M248 116 q24 2 40 34" fill="none" stroke="#AEDCEA" stroke-width="9" stroke-linecap="round"/>
+                <path d="M248 116 q24 2 40 34" fill="none" stroke="#7fc6dc" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+                <circle cx="262" cy="161" r="9" fill="#F4AE92" stroke="#d98f70" stroke-width="2"/>
+                <path d="M253 161 h18 M262 152 v18" stroke="#fff" stroke-width="1.5" opacity="0.85"/>
+              </g>
+              <rect x="58" y="206" width="204" height="30" rx="15" fill="#f3ead9"/>
+              <text x="160" y="226" text-anchor="middle" font-family="Quicksand, system-ui, sans-serif" font-weight="700" font-size="13" fill="#3F7268">Parents' Lounge · gated off</text>
+            </svg>
+          </div>
+        </div>
+
         <div class="grid grid-3 mt-4">
           <div class="reassure reveal">
             <div class="chip"><img src="{{ 'icon-safe.svg' | asset_url }}" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
@@ -215,13 +289,13 @@
           </div>
           <div class="reassure reveal" data-delay="1">
             <div class="chip" style="background:var(--wood-tint)"><img src="{{ 'icon-wifi.svg' | asset_url }}" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
-            <h3>Coffee Next Door + Wi-Fi</h3>
-            <p>Fusion café is steps away with locally roasted coffee, plus fast Wi-Fi and comfy seating with sightlines to the floor.</p>
+            <h3>Fast, Free Wi-Fi</h3>
+            <p>Settle into the lounge with fast, free Wi-Fi — answer a few emails or just scroll while the little ones run the town.</p>
           </div>
           <div class="reassure reveal" data-delay="2">
             <div class="chip" style="background:var(--terra-tint)"><img src="{{ 'icon-baby.svg' | asset_url }}" alt="" width="38" height="38" loading="lazy" decoding="async"></div>
             <h3>Little Ones Welcome</h3>
-            <p>A gated infant nook for crawlers and new walkers, plus changing tables and a nursing corner.</p>
+            <p>Pint-sized storefronts and soft, secure play zones designed for ages 2–7 — every corner built for little hands to explore.</p>
           </div>
         </div>
       </div>
@@ -277,7 +351,7 @@
 
           <!-- Day Pass -->
           <article class="cp-card reveal" aria-label="Day Pass pricing">
-            <span class="cp-icon cp-icon--sky" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="26" height="26"></span>
+            <span class="cp-icon cp-icon--sky" aria-hidden="true"><img src="{{ 'icon-slide.svg' | asset_url }}" alt="" width="26" height="26"></span>
             <h3 class="cp-name">Day Pass</h3>
             <p class="cp-blurb">One-time visit, all-day play.</p>
             <div class="cp-price">
@@ -287,15 +361,15 @@
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Re-entry the same day</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One free grown-up</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
             </ul>
-            <a class="cp-cta" href="/pages/play-pricing">Buy Day Pass</a>
+            <a class="cp-cta" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Buy Day Pass</a>
           </article>
 
           <!-- Membership (featured) -->
           <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Membership — most popular">
             <span class="cp-popular">Most popular!</span>
-            <span class="cp-icon" aria-hidden="true"><img src="{{ 'icon-heart.svg' | asset_url }}" alt="" width="26" height="26"></span>
+            <span class="cp-icon" aria-hidden="true"><img src="{{ 'icon-star.svg' | asset_url }}" alt="" width="26" height="26"></span>
             <h3 class="cp-name">Membership</h3>
             <p class="cp-blurb">Unlimited play for the regulars — the best deal.</p>
             <div class="cp-price">
@@ -310,21 +384,21 @@
             <a class="cp-cta" href="/pages/memberships">Choose Membership</a>
           </article>
 
-          <!-- Play Pack -->
-          <article class="cp-card reveal" data-delay="2" aria-label="Play Pack pricing">
-            <span class="cp-icon cp-icon--coral" aria-hidden="true"><img src="{{ 'icon-backpack.svg' | asset_url }}" alt="" width="26" height="26"></span>
-            <h3 class="cp-name">Play Pack</h3>
-            <p class="cp-blurb">Five passes to share — never expires.</p>
+          <!-- Household Family Pass -->
+          <article class="cp-card reveal" data-delay="2" aria-label="Household Family Pass pricing">
+            <span class="cp-icon cp-icon--coral" aria-hidden="true"><img src="{{ 'icon-family.svg' | asset_url }}" alt="" width="26" height="26"></span>
+            <h3 class="cp-name">Household Family Pass</h3>
+            <p class="cp-blurb">One pass for the whole household — made for 2+ kids.</p>
             <div class="cp-price">
               <span class="cp-price-amount">$75</span>
-              <span class="cp-price-unit">/ 5 visits</span>
+              <span class="cp-price-unit">/ household</span>
             </div>
             <ul class="cp-list">
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Five all-day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Better value than day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Never expires</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Good for 2 or more kids</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Everyone in the same household</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the family</li>
             </ul>
-            <a class="cp-cta" href="/pages/play-pricing">Buy Play Pack</a>
+            <a class="cp-cta" href="/pages/play-pricing">Buy Family Pass</a>
           </article>
 
         </div>

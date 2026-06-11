@@ -694,6 +694,24 @@ main > .section--tight:last-child {
   font-size: 0.84rem; color: #9b948a;
 }
 
+/* Site-wide "watch your own child" reminder — sits atop every footer */
+.footer-notice {
+  display: flex; align-items: center; gap: 0.95rem;
+  margin-bottom: 2.4rem; padding: 1rem 1.25rem;
+  background: rgba(232,201,155,0.10);
+  border: 1px solid rgba(232,201,155,0.24);
+  border-radius: var(--r-md);
+  color: #ece6da;
+}
+.footer-notice__icon { flex: none; display: flex; color: var(--wood); }
+.footer-notice__icon svg { width: 28px; height: 28px; }
+.footer-notice p { margin: 0; font-size: 0.95rem; line-height: 1.55; color: #ece6da; }
+.footer-notice strong { color: #fff; font-weight: 700; }
+@media (max-width: 520px) {
+  .footer-notice { align-items: flex-start; gap: 0.75rem; padding: 0.9rem 1rem; }
+  .footer-notice p { font-size: 0.9rem; }
+}
+
 /* ---------- Map placeholder (light, on Visit page) ---------- */
 .map-light { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
 .map-light svg, .map-light img { width: 100%; height: auto; display: block; }
@@ -705,8 +723,11 @@ main > .section--tight:last-child {
      slice of the screen and vertically centres its content, so the whole site
      reads as one consistent design even though each hero is its own world.
      (Home keeps its taller bespoke .hero-v2 anchor.) min-height is a floor —
-     content-rich heroes can grow past it and stay centred. */
-  min-height: clamp(540px, 70vh, 680px);
+     content-rich heroes can grow past it and stay centred.
+     svh (with a static px fallback) keeps the height fixed as the mobile URL
+     bar collapses, so interior heroes don't stretch on scroll either. */
+  min-height: 600px;
+  min-height: clamp(540px, 70svh, 680px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -900,7 +921,14 @@ main > .section--tight:last-child {
 .hero-v2 {
   position: relative; overflow: hidden; text-align: center;
   display: flex; justify-content: center; align-items: flex-start;
-  min-height: clamp(600px, 86vh, 800px);
+  /* Static px fallback first, then svh. svh = the SMALL viewport (URL bar
+     visible), which is constant as the mobile address bar collapses — so the
+     hero never resizes ("extends") mid-scroll. The px line is the fallback for
+     browsers without svh; it's static too, so even there the bar toggle can't
+     stretch the hero. (vh is deliberately avoided — it IS the large viewport
+     and grows as the bar hides, which is exactly the drag we're killing.) */
+  min-height: 720px;
+  min-height: clamp(600px, 86svh, 800px);
   background: #c5e2ec;
 }
 /* The town backdrop is the brand logo mark (transparent buildings only, no
@@ -913,6 +941,13 @@ main > .section--tight:last-child {
    hero's next sibling so every other .flow-top transition is unaffected. */
 .hero-v2 + .flow-top::before { top: calc(-1 * var(--flow-h) - 18px + 48px); }
 .hero-v2 + .flow-top::after  { top: calc(-1 * var(--flow-h) + 48px); }
+/* That 48px pull sinks the wave ~48px INTO this first section. Its front layer
+   (::after) is the section's own colour and paints OVER the relatively-positioned
+   "Welcome to Main Street" eyebrow, clipping the tops of its letters on phones
+   (where the default 2.25rem top padding leaves the eyebrow at ~+43px, inside
+   the wave's reach to +48px). Raise the top-padding FLOOR to 3.75rem so the
+   heading always sits clear below the wave; desktop already had ≥4.5rem. */
+.hero-v2 + .flow-top { padding-top: clamp(3.75rem, 5vw, var(--space-7)); }
 /* gentle bright-sky wash at the very top — keeps the blue sky visible */
 .hero-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -2471,15 +2506,13 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
     box-shadow:
       0 -1px 0 var(--hairline-soft),
       0 -16px 34px -20px rgba(58, 49, 40, 0.42);
-    /* `backwards`, not `both`: holding the end transform under `both` would
-       keep overriding the `html.nav-open` slide-away below, leaving the bar
-       lurking behind the open menu. */
-    animation: actionbarIn 0.5s cubic-bezier(0.22,1,0.36,1) backwards;
+    transition: transform 0.42s cubic-bezier(0.22,1,0.36,1);
   }
-  @keyframes actionbarIn {
-    from { transform: translateY(115%); }
-    to   { transform: none; }
-  }
+  /* Tucked away while the page is at the very top: keeps the bar from ever
+     covering the hero or the section header sitting right beneath it. main.js
+     adds .is-attop near scrollY 0 and removes it once you scroll into the
+     content, so the bar slides up exactly when it becomes useful. */
+  .m-actionbar.is-attop { transform: translateY(125%); pointer-events: none; }
   .m-action {
     display: inline-flex; align-items: center; justify-content: center;
     gap: 0.5rem;
@@ -2534,7 +2567,39 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .m-actionbar { animation: none !important; }
+  .m-actionbar { transition: none; }
+}
+
+/* ---------- Buttery scroll on phones: drop the live backdrop blur ----------
+   This is the real "the hero isn't smooth when I scroll" fix. The sticky
+   header AND the fixed bottom Action Bar both used `backdrop-filter: blur()`.
+   On a phone, that forces the browser to RE-BLUR the busy, animated hero
+   (drifting clouds + town) behind both bars on every single scroll frame —
+   two live blurs per frame over moving content. That's what tanks the frame
+   rate and makes the hero look like it smears / "drags" as it passes under
+   the header. Desktop keeps the glass (cheap there, no per-frame scrolling
+   blur cost on a pointer device); on touch we swap the live blur for a frosted
+   *solid* fill that reads almost identically but costs the GPU nothing while
+   scrolling. Scoped to the touch-nav range so it also covers tablets. */
+@media (max-width: 959px) {
+  .site-header,
+  .site-header.is-stuck {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  /* Bump opacity so the nav stays crisp over the hero now that there's no blur
+     to soften what's behind it. At the very top (over sky only) a hint of
+     translucency still feels airy; once stuck over real content we go nearly
+     solid so no sharp text ghosts through where the blur used to frost it. */
+  .site-header        { background: rgba(247, 243, 236, 0.92); }
+  .site-header.is-stuck { background: rgba(247, 243, 236, 0.985); }
+}
+@media (max-width: 759px) {
+  .m-actionbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(248, 244, 237, 0.97);
+  }
 }
 
 /* ---------- Scroll-lock behind the open menu (no layout shift) ---------- */
@@ -2738,20 +2803,17 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
 
 /* ---------- Hero crop: trim tall-phone emptiness, keep it immersive ---------- */
 @media (max-width: 759px) {
-  /* Size the hero to the SMALL viewport (svh = address bar visible). Plain vh
-     is the *large* viewport, so as the mobile address bar collapses on scroll,
-     a vh-sized hero grew taller and the whole scene appeared to "drag" /
-     rubber-band with the page. svh is constant across that toggle, so the hero
-     stays put while you scroll. vh stays first as a fallback for browsers that
-     don't understand svh. A touch more height than before gives the revived
-     sky scene room to breathe between the headline and the town. */
-  .hero-v2 {
-    min-height: clamp(540px, 82vh, 660px);
-    min-height: clamp(540px, 82svh, 660px);
-  }
+  /* Fixed px height on phones — NO viewport units at all, so the "hero extends
+     on scroll" behaviour is gone entirely. svh was already stable across the
+     address-bar toggle, but tying the hero to the viewport in ANY way still
+     coupled it to those state changes; a plain px height fully decouples it.
+     It stays min-height, so taller content (a tiny phone that wraps more) grows
+     the hero instead of clipping — it just never reacts to the URL bar. The
+     ~600 / 460 values match what a typical phone showed before, so the look is
+     unchanged; only the wobble is removed. */
+  .hero-v2  { min-height: 600px; }
   .page-hero {
-    min-height: clamp(400px, 66vh, 520px);
-    min-height: clamp(400px, 66svh, 520px);
+    min-height: 460px;
     padding-block: clamp(2rem, 7vw, 3rem);
   }
   .page-hero .hero-art { margin-top: 1.1rem; }

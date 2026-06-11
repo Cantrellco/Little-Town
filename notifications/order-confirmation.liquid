@@ -1,0 +1,309 @@
+<!-- ============================================================
+     Little Town Playhouse — Order confirmation email
+     Paste into: Shopify admin → Settings → Notifications →
+                 Order confirmation → (edit code) → replace ALL.
+     This fires automatically after every checkout (day pass,
+     household pass, membership, party buyout).
+     ============================================================ -->
+{%- comment -%} ---- derive a few helpers ---- {%- endcomment -%}
+{%- assign guest_first = customer.first_name | default: 'there' -%}
+{%- assign guest_name  = billing_address.name | default: customer.name | default: 'Guest' -%}
+{%- assign is_party = false -%}
+{%- assign is_fusion_party = false -%}
+{%- assign is_membership = false -%}
+{%- for line in subtotal_line_items -%}
+  {%- assign t = line.title | downcase -%}
+  {%- if t contains 'buyout' -%}{%- assign is_party = true -%}{%- endif -%}
+  {%- if t contains 'buyout' and t contains 'fusion' -%}{%- assign is_fusion_party = true -%}{%- endif -%}
+  {%- if t contains 'membership' -%}{%- assign is_membership = true -%}{%- endif -%}
+{%- endfor -%}
+{%- comment -%} The QR opens the check-in page (/pages/check-in), which plays a "peep" + shows "checked in". Only the order number rides along — no customer name/PII is sent to the QR host. {%- endcomment -%}
+{%- assign order_param = order_name | remove: '#' -%}
+{%- capture checkin_url -%}{{ shop.url }}/pages/check-in?o={{ order_param | url_encode }}{%- endcapture -%}
+{%- assign qr_src = checkin_url | url_encode | prepend: 'https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&qzone=2&ecc=M&data=' -%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>You're all set — Little Town Playhouse</title>
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&display=swap');
+    /* clients that strip the link still get solid fallbacks below */
+    body { margin:0; padding:0; width:100% !important; background:#EFE7D8; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table { border-collapse:collapse !important; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+    a { color:#B35A37; }
+    .lt-script { font-family:'Fraunces', Georgia, 'Times New Roman', serif; font-style:italic; }
+    .lt-sans { font-family:'Quicksand', 'Trebuchet MS', 'Segoe UI', Verdana, Arial, sans-serif; }
+    @media only screen and (max-width:620px) {
+      .lt-container { width:100% !important; }
+      .lt-pad { padding-left:22px !important; padding-right:22px !important; }
+      .lt-h1 { font-size:30px !important; line-height:36px !important; }
+    }
+    /* keep the human-readable pass legible if a client force-inverts to dark mode */
+    [data-ogsc] .lt-darkfix, [data-ogsb] .lt-darkfix { color:#333333 !important; }
+  </style>
+</head>
+<body class="lt-sans" style="margin:0; padding:0; background:#EFE7D8; font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif; color:#333333;">
+  <!-- preview text (hidden) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EFE7D8;">
+    You're all set, {{ guest_first }} — here's your Little Town check-in pass. We can't wait to see you!&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFE7D8;">
+    <tr>
+      <td align="center" style="padding:26px 12px 40px 12px;">
+
+        <!-- ===== card ===== -->
+        <table role="presentation" class="lt-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background:#F7F3EC; border:3px solid #333333; border-radius:22px; overflow:hidden;">
+
+          <!-- top color bar -->
+          <tr><td style="height:8px; background:#F4AE92; line-height:8px; font-size:8px;">&nbsp;</td></tr>
+
+          <!-- header / wordmark -->
+          <tr>
+            <td align="center" class="lt-pad" style="padding:26px 36px 8px 36px;">
+              <div style="font-size:13px; letter-spacing:3px; font-weight:700; color:#B35A37; text-transform:uppercase;">Little Town</div>
+              <div class="lt-script" style="font-size:34px; line-height:38px; color:#333333; margin-top:2px;">Playhouse</div>
+            </td>
+          </tr>
+
+          <!-- hero -->
+          <tr>
+            <td align="center" class="lt-pad" style="padding:14px 40px 6px 40px;">
+              <div class="lt-h1" style="font-size:34px; line-height:40px; font-weight:700; color:#333333;">You&rsquo;re all set, {{ guest_first }}! 🎉</div>
+              <p style="margin:14px 0 0 0; font-size:17px; line-height:26px; color:#5b5750;">
+                Thank you so much for your order — we genuinely can&rsquo;t wait to see your little ones
+                playing their way through the town.
+              </p>
+              <!-- order chip -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 4px auto;">
+                <tr>
+                  <td style="background:#EFE7D8; border:2px solid #333333; border-radius:999px; padding:8px 18px; font-size:14px; font-weight:600; color:#333333;">
+                    Order {{ order_name }}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {%- if is_party %}
+          <!-- party banner -->
+          <tr>
+            <td class="lt-pad" style="padding:14px 40px 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fce6db; border:2px solid #333333; border-radius:14px;">
+                <tr><td style="padding:14px 18px; font-size:15px; line-height:22px; color:#333333;">
+                  🎉 <strong>Your private party is booked!</strong> The private space is yours for two hours —
+                  your date &amp; time are on your pass below. Bring your own cake and decorations to set it up however you like.{% if is_fusion_party %} Plus Fusion next door is opening just for you, with a barista pouring coffee &amp; drinks.{% endif %}
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+          {%- endif %}
+
+          {%- if is_membership %}
+          <!-- membership banner -->
+          <tr>
+            <td class="lt-pad" style="padding:14px 40px 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e1ede9; border:2px solid #333333; border-radius:14px;">
+                <tr><td style="padding:14px 18px; font-size:15px; line-height:22px; color:#333333;">
+                  💛 <strong>Welcome to the family!</strong> Your membership means unlimited imaginative play.
+                  Just walk right in whenever we&rsquo;re open — and remember, grown-ups always play free.
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+          {%- endif %}
+
+          <!-- ===== CHECK-IN PASS ===== -->
+          <tr>
+            <td class="lt-pad" style="padding:26px 40px 4px 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff; border:3px solid #333333; border-radius:18px;">
+                <!-- pass header -->
+                <tr>
+                  <td align="center" style="padding:18px 20px 6px 20px;">
+                    <div style="font-size:12px; letter-spacing:3px; font-weight:700; color:#B35A37; text-transform:uppercase;">Your Check-In Pass</div>
+                    <div style="font-size:13px; color:#5b5750; margin-top:4px;">Scan this with your phone when you arrive to check in.</div>
+                  </td>
+                </tr>
+                <!-- QR -->
+                <tr>
+                  <td align="center" style="padding:8px 20px 8px 20px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background:#ffffff; border:2px solid #EFE7D8; border-radius:14px;">
+                      <tr><td align="center" bgcolor="#ffffff" style="padding:14px; background:#ffffff;">
+                        <img src="{{ qr_src }}" width="210" height="210" alt="Little Town check-in pass for order {{ order_name }} — show this email when you arrive." style="display:block; width:210px; height:210px; background:#ffffff;">
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- tappable check-in link: a real anchor survives image-blocking AND
+                     anti-phishing QR-image removal (Outlook/365), and works on desktop -->
+                <tr><td align="center" style="padding:4px 24px 10px 24px;">
+                  <a href="{{ shop.url }}/pages/check-in?o={{ order_param }}" target="_blank" style="display:inline-block; font-size:14px; font-weight:700; color:#B35A37; text-decoration:underline;">Can&rsquo;t scan it? Tap here to check in &rarr;</a>
+                  <div style="font-size:12px; line-height:18px; color:#6f675b; margin-top:7px;">Either way, your name &amp; order number below are all you need to come in.</div>
+                </td></tr>
+                <!-- perforation -->
+                <tr><td style="padding:6px 20px 0 20px;">
+                  <div style="border-top:2px dashed #cbb9a0; font-size:1px; line-height:1px;">&nbsp;</div>
+                </td></tr>
+                <!-- stub -->
+                <tr>
+                  <td style="padding:14px 22px 20px 22px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="font-size:12px; color:#6f675b; text-transform:uppercase; letter-spacing:1px; padding-bottom:2px;">Name</td>
+                        <td align="right" style="font-size:12px; color:#6f675b; text-transform:uppercase; letter-spacing:1px; padding-bottom:2px;">Order</td>
+                      </tr>
+                      <tr>
+                        <td class="lt-darkfix" style="font-size:16px; font-weight:600; color:#333333;">{{ guest_name }}</td>
+                        <td align="right" class="lt-darkfix" style="font-size:16px; font-weight:600; color:#333333;">{{ order_name }}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== order summary ===== -->
+          <tr>
+            <td class="lt-pad" style="padding:24px 40px 6px 40px;">
+              <div style="font-size:13px; letter-spacing:2px; font-weight:700; color:#B35A37; text-transform:uppercase; margin-bottom:10px;">What you ordered</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                {%- for line in subtotal_line_items %}
+                <tr>
+                  <td style="padding:8px 0; border-bottom:1px solid #e7dcc7; vertical-align:top;">
+                    <span style="font-size:15px; font-weight:600; color:#333333;">{{ line.title }}</span>
+                    <span style="font-size:14px; color:#6f675b;">&nbsp;× {{ line.quantity }}</span>
+                    {%- assign property_size = line.properties | size -%}
+                    {%- if property_size > 0 %}
+                      {%- for p in line.properties -%}
+                        {%- assign p_key = p.first | slice: 0 -%}
+                        {%- unless p.last == blank or p.first == blank or p_key == '_' %}
+                          <div style="font-size:13px; color:#5b5750; margin-top:3px;">{{ p.first }}: {{ p.last }}</div>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif %}
+                  </td>
+                  <td align="right" style="padding:8px 0; border-bottom:1px solid #e7dcc7; vertical-align:top; font-size:15px; font-weight:600; color:#333333; white-space:nowrap;">
+                    {{ line.final_line_price | money }}
+                  </td>
+                </tr>
+                {%- endfor %}
+                <tr>
+                  <td style="padding:12px 0 0 0; font-size:16px; font-weight:700; color:#333333;">Total</td>
+                  <td align="right" style="padding:12px 0 0 0; font-size:16px; font-weight:700; color:#333333;">{{ total_price | money }}</td>
+                </tr>
+              </table>
+              <!-- view order button -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:22px auto 6px auto;">
+                <tr>
+                  <td align="center" bgcolor="#F4AE92" style="border:2px solid #333333; border-radius:999px;">
+                    <a href="{{ order_status_url }}" target="_blank" style="display:inline-block; padding:13px 30px; font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif; font-size:15px; font-weight:700; color:#333333; text-decoration:none;">View your order &rarr;</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== Fusion help ===== -->
+          <tr>
+            <td class="lt-pad" style="padding:20px 40px 4px 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e1f2f8; border:2px solid #333333; border-radius:16px;">
+                <tr><td style="padding:20px 22px;">
+                  <div style="font-size:18px; font-weight:700; color:#333333; margin-bottom:6px;">Questions? We&rsquo;re right next door ☕</div>
+                  <p style="margin:0; font-size:15px; line-height:23px; color:#5b5750;">
+                    Little Town runs on a relaxed, walk-right-in vibe, so if you ever need a hand —
+                    a membership question, help with anything at all — just pop into
+                    <strong>Fusion</strong>, our sister café right next door. There&rsquo;s always someone
+                    there happy to help (and the coffee&rsquo;s really good).
+                  </p>
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== Good to know ===== -->
+          <tr>
+            <td class="lt-pad" style="padding:22px 40px 6px 40px;">
+              <div style="font-size:13px; letter-spacing:2px; font-weight:700; color:#B35A37; text-transform:uppercase; margin-bottom:12px;">Good to know before you visit</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0 0 14px 0;">📍</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0 0 14px 0;">
+                    <strong>205 East Main Street</strong>, Fairfield, IL 62837 — right beside Fusion.
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0 0 14px 0;">🕒</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0 0 14px 0;">
+                    Mon–Fri <strong>6am–6pm</strong> · Sat <strong>6am–4pm</strong> · Sun closed.
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0 0 14px 0;">🧦</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0 0 14px 0;">
+                    <strong>Socks only, no shoes</strong> — for big and little feet alike. Please bring a clean pair for everyone who&rsquo;s playing.
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0 0 14px 0;">👀</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0 0 14px 0;">
+                    Little Town is a <strong>watch-your-own-child</strong> space — please stay with your little ones and always know where they are.
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0 0 14px 0;">🛋</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0 0 14px 0;">
+                    Settle into our <strong>gated parent lounge</strong> right at the entrance — relax with a Fusion coffee and keep an eye on the play floor through the gate.
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="font-size:20px; padding:0;">🆓</td>
+                  <td valign="top" style="font-size:15px; line-height:22px; color:#333333; padding:0;">
+                    <strong>Grown-ups always play free.</strong>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {%- if is_party %}
+          <tr>
+            <td class="lt-pad" style="padding:6px 40px 0 40px;">
+              <p style="margin:0; font-size:13px; line-height:20px; color:#6f675b;">A quick heads-up: party bookings are final. See you soon!</p>
+            </td>
+          </tr>
+          {%- endif %}
+
+          <!-- ===== footer ===== -->
+          <tr>
+            <td style="padding:26px 40px 30px 40px; border-top:1px solid #e7dcc7;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr><td align="center">
+                  <div style="font-size:12px; letter-spacing:3px; font-weight:700; color:#B35A37; text-transform:uppercase;">Little Town</div>
+                  <div class="lt-script" style="font-size:24px; color:#333333;">Playhouse</div>
+                  <p style="margin:10px 0 0 0; font-size:13px; line-height:20px; color:#6f675b;">
+                    205 East Main Street, Fairfield, IL 62837<br>
+                    <a href="mailto:littletownplayhousellc@gmail.com" style="color:#B35A37; text-decoration:none;">littletownplayhousellc@gmail.com</a>
+                  </p>
+                  <p style="margin:14px 0 0 0; font-size:12px; line-height:18px; color:#6f675b;">
+                    A little town built for big imaginations.<br>Made with imagination in Fairfield.
+                  </p>
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /card -->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

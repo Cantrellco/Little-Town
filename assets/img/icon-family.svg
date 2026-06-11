@@ -1,11 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="">
-  <!-- parent left -->
-  <circle cx="7" cy="6" r="3" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3"/>
-  <path d="M2 21 q0 -7 5 -7 q5 0 5 7 Z" fill="#E09972" stroke="#8A5A2C" stroke-width="1.3" stroke-linejoin="round"/>
-  <!-- parent right -->
-  <circle cx="17" cy="6" r="3" fill="#E7BC76" stroke="#8A5A2C" stroke-width="1.3"/>
-  <path d="M12 21 q0 -7 5 -7 q5 0 5 7 Z" fill="#E7BC76" stroke="#8A5A2C" stroke-width="1.3" stroke-linejoin="round"/>
-  <!-- child center -->
-  <circle cx="12" cy="10.5" r="2.2" fill="#ABBE83" stroke="#8A5A2C" stroke-width="1.2"/>
-  <path d="M8.5 21 q0 -4 3.5 -4 q3.5 0 3.5 4 Z" fill="#ABBE83" stroke="#8A5A2C" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- Three siblings — for the "3+ Children" tier. Graduated heights, brand
+       palette (gold / coral / sage), clay-brown linework. Center child drawn
+       last so it reads in front of the two on either side. -->
+  <g stroke="#8A5A2C" stroke-width="1.3" stroke-linejoin="round">
+    <!-- left child (gold) -->
+    <path d="M2.6 21 q0 -8 3.2 -8 q3.2 0 3.2 8 Z" fill="#E7BC76"/>
+    <circle cx="5.8" cy="10.8" r="2.6" fill="#E7BC76"/>
+    <!-- right child (sage) -->
+    <path d="M15 21 q0 -8 3.2 -8 q3.2 0 3.2 8 Z" fill="#ABBE83"/>
+    <circle cx="18.2" cy="10.8" r="2.6" fill="#ABBE83"/>
+    <!-- center child (coral, tallest) -->
+    <path d="M8.6 21 q0 -9.4 3.4 -9.4 q3.4 0 3.4 9.4 Z" fill="#E09972"/>
+    <circle cx="12" cy="9.2" r="2.8" fill="#E09972"/>
+  </g>
 </svg>

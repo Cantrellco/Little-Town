@@ -11,6 +11,8 @@
   Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.
 </div>
 {%- endif -%}
+{%- assign m_plan = blank -%}{%- if monthly_prod.selling_plan_groups.size > 0 -%}{%- assign m_plan = monthly_prod.selling_plan_groups.first.selling_plans.first.id -%}{%- endif -%}
+{%- assign a_plan = blank -%}{%- if annual_prod.selling_plan_groups.size > 0 -%}{%- assign a_plan = annual_prod.selling_plan_groups.first.selling_plans.first.id -%}{%- endif -%}
 <main>
 
     <!-- ============================================================
@@ -43,7 +45,7 @@
     </section>
 
     <!-- ============================================================
-         TIERS — Monthly / Annual cards with toggle (lead with the offer)
+         TIERS — Monthly / Annual cards, both shown (lead with the offer)
          ============================================================ -->
     <!-- beat 1 (colour wash) -->
     <section class="section flow-top sec-color" id="tiers">
@@ -54,16 +56,14 @@
           <p class="section-lead mem-section-intro">Unlimited play for the whole family, priced to fit. Pick monthly for flexibility, or go annual and get two months free.</p>
         </div>
 
-        <!-- Monthly/Annual toggle (JS-enhanced; no-JS shows both groups) -->
-        <div class="plan-toggle-wrap reveal" style="margin-top:2rem">
-          <div class="plan-toggle" role="tablist" aria-label="Billing period">
-            <button role="tab" id="tab-monthly" aria-selected="true" aria-controls="group-monthly" class="toggle-monthly">Monthly</button>
-            <button role="tab" id="tab-annual"  aria-selected="false" aria-controls="group-annual"  class="toggle-annual">Annual <span class="toggle-annual-badge">Save up to $190</span></button>
-          </div>
+        <!-- Quick jump to each billing option — both plan groups stay visible below -->
+        <div class="plan-jump-wrap reveal" style="margin-top:2rem">
+          <a class="plan-jump" href="#group-monthly">Monthly</a>
+          <a class="plan-jump" href="#group-annual">Annual <span class="toggle-annual-badge">Save up to $190</span></a>
         </div>
 
         <!-- ---- MONTHLY GROUP ---- -->
-        <div class="plan-group" id="group-monthly" role="tabpanel" aria-labelledby="tab-monthly">
+        <div class="plan-group" id="group-monthly">
           <div class="plan-group-header reveal">
             <span class="group-pill group-pill--monthly">Monthly — cancel anytime</span>
             <h3>Pay month to month</h3>
@@ -86,7 +86,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
               </ul>
-              <a class="cp-cta" href="{{ monthly_prod.url | default: '/products/monthly-membership' }}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
 
             <!-- 2 Children Monthly — MOST POPULAR -->
@@ -104,7 +104,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
               </ul>
-              <a class="cp-cta" href="{{ monthly_prod.url | default: '/products/monthly-membership' }}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
 
             <!-- 3+ Children Monthly -->
@@ -121,7 +121,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
               </ul>
-              <a class="cp-cta" href="{{ monthly_prod.url | default: '/products/monthly-membership' }}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
 
           </div>
@@ -133,7 +133,7 @@
         </div>
 
         <!-- ---- ANNUAL GROUP ---- -->
-        <div class="plan-group" id="group-annual" role="tabpanel" aria-labelledby="tab-annual">
+        <div class="plan-group" id="group-annual">
           <div class="plan-group-header reveal">
             <span class="group-pill group-pill--annual">Annual — two months free</span>
             <h3>Commit &amp; save big</h3>
@@ -156,7 +156,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Pause up to 60 days a year</li>
               </ul>
-              <a class="cp-cta" href="{{ annual_prod.url | default: '/products/annual-membership' }}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
             </article>
 
             <!-- 2 Children Annual — MOST POPULAR + FEATURED -->
@@ -174,7 +174,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Pause up to 60 days a year</li>
               </ul>
-              <a class="cp-cta" href="{{ annual_prod.url | default: '/products/annual-membership' }}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
             </article>
 
             <!-- 3+ Children Annual -->
@@ -191,7 +191,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Pause up to 60 days a year</li>
               </ul>
-              <a class="cp-cta" href="{{ annual_prod.url | default: '/products/annual-membership' }}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
             </article>
 
           </div>
@@ -209,7 +209,7 @@
         <div class="center reveal">
           <span class="eyebrow">Getting started</span>
           <h2>How membership <span class="hl--sky">works</span></h2>
-          <p class="section-lead">Three easy steps and your family is in — no complicated forms, no long waits.</p>
+          <p class="section-lead">Three easy steps and your family is in — no complicated forms, no long waits. Join online right here in a couple of taps, or pop next door to Fusion and they'll get you set up.</p>
         </div>
         <div class="steps mt-4">
           <div class="step reveal">
@@ -261,7 +261,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Yes — the membership is tied to your child, so any responsible adult (16+) can bring them in — they just walk straight in, no check-in needed.</p>
+              <p>Yes — the membership is tied to your child, so any responsible adult can bring them in — they just walk straight in, no check-in needed.</p>
             </div></div>
           </div>
 

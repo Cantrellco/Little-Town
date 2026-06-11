@@ -86,14 +86,16 @@ You just need to create the products with the exact handles below, and the butto
 The included `product.liquid` is subscription-aware: it shows a variant picker (the
 child-count tiers), a subscription plan selector, and a working Add-to-cart → Shopify checkout.
 
-### A. Day Pass + Play Pack → ordinary Products
+### A. Day Pass + Household Family Pass → ordinary Products
 1. **Products → Add product**: create two products.
    - **Day Pass** — price **$18**, URL handle **`day-pass`**.
-   - **Play Pack** — price **$75**, URL handle **`play-pack`**.
+   - **Household Family Pass** — price **$75**, URL handle **`household-family-pass`**.
+     (Good for 2+ kids who live in the same household.)
 2. For each: turn **off** "Track quantity" (unlimited) and **uncheck** "This is a physical
    product" (no shipping).
-3. ✅ Buttons already point at `/products/day-pass` and `/products/play-pack`
-   (on the home page and the Play & Pricing page).
+3. ✅ Buttons already point at `/products/day-pass` and `/products/household-family-pass`
+   (on the home page and the Play & Pricing page). The theme also still recognizes a
+   legacy `play-pack` handle, so a renamed existing product keeps working.
 
 ### B. Membership → Shopify Subscriptions (chosen)
 We're modelling the 6 tiers as **two subscription products**, each with **3 variants**
@@ -124,13 +126,52 @@ Setup steps:
 > products send me the variant IDs (or paste `?variant=<id>` onto each button) and I'll
 > wire one-click tiers.
 
-### C. Parties → booking or inquiry
-The parties page has a booking-widget mockup (calendar + time slots) and "Request a
-date" buttons. Options:
-- **Simplest:** turn the buttons into a contact/inquiry form (Shopify's `contact` form
-  or a form app) so you capture the request and follow up manually.
-- **Bookable:** add a booking app (e.g. Easy Appointment Booking, Sesami) and make
-  "Party Buyout" a bookable product with a deposit.
+### C. Parties → custom calendar → Shopify checkout (NO app, $0)
+Books parties end-to-end with a **custom calendar** — no booking app. Flow: pick a weekend
+date on the calendar → pick a time → pick a package → Shopify checkout, paid in full,
+all-sales-final. Built + live; needs only the product published (done).
+
+1. **Product:** ONE `private-buyout` with variants **Little Town $185** / **Little Town +
+   Fusion $295** (track-quantity off, physical off, published to Online Store). The build
+   script splits variants by title (Fusion → $295), so no IDs to paste.
+2. **How it works:** each package is a `<form>` POSTing to `/cart/add` (return_to=/checkout).
+   The booking rides along as line-item properties:
+   - `Party date and time` — human-readable (shows on order + email), e.g. "Saturday, June 13, 2026 · 4:30–6:30 PM".
+   - `Party date` — `2026-06-13` (machine-readable, for Flow).
+   - `Party time` — `4:30–6:30 PM` (machine-readable, for Flow).
+   Calendar markup `.bk-cal`/`.bk-times` in `parties.html`; engine `partyBooking` in
+   `main.js`; variant injection + the availability `<script>` in `build-shopify-theme.js`
+   (`wireCommerce` `parties`). Slots are hard-coded (`SLOTS_BY_DOW` in `main.js`): Sat 4:30–6:30,
+   Sun 1–3, Sun 4–6.
+
+3. **Email on booking (Shopify-native):** Settings → Notifications → **Staff order
+   notifications** → Add recipient → `littletownplayhousellc@gmail.com`. Every order emails
+   that address; the party date/time is on the order. Customer also gets auto-confirmation.
+
+4. **Date-blocking (Shopify Flow + shop metafield, $0):** the calendar greys out booked dates
+   by reading a shop metafield. Set up once:
+   1. **Metafield:** Settings → Custom data → **Metafields → Shop** → Add definition.
+      Namespace+key `lt_booking.taken`, type **Single line text**. Leave value empty.
+   2. **Flow** (Shopify Flow → Create workflow):
+      - **Trigger:** Order created (or Order paid).
+      - *(optional)* Condition: order contains product `Private Buyout`.
+      - **Action: Update shop metafield** → `lt_booking` / `taken` / single line text.
+        Value appends the new booking to the existing list (entries `YYYY-MM-DD|slot`,
+        `;`-separated). Liquid sketch (finalize against your trigger's line-item vars):
+        ```
+        {{ shop.metafields.lt_booking.taken.value }};{{ <Party date prop> }}|{{ <Party time prop> }}
+        ```
+        Target stored value, e.g.: `2026-06-13|4:30–6:30 PM;2026-06-14|1:00–3:00 PM`
+   3. The storefront reads `lt_booking.taken` on every load → `window.LT_BOOKED_RAW` →
+      `partyBooking` greys out any date whose slots are all taken (partly-booked Sundays just
+      hide the taken time). For multi-slot days (Sunday) the `Party time` string must match
+      `SLOTS_BY_DOW` exactly to hide the right slot; single-slot days (Saturday) grey out on
+      any booking for that date, so a Saturday time change can't un-block an existing order.
+
+> **Residual race:** two people checking out the same slot in the same ~2-min window could
+> both pay (Flow writes *after* the order). Near-zero at ~3 slots/week; all-sales-final +
+> watching orders covers it. Only a booking app's slot-holds (or the date-as-inventory model)
+> fully prevents it.
 
 ### D. Newsletter → email capture
 The footer/newsletter signup should post to your email tool:
@@ -138,6 +179,23 @@ The footer/newsletter signup should post to your email tool:
 - **Klaviyo / Mailchimp** app embed.
 
 ---
+
+## Post-purchase email (order confirmation)
+
+A branded order-confirmation email lives in [`notifications/order-confirmation.liquid`](notifications/order-confirmation.liquid).
+It fires automatically after **every** checkout (day pass, household pass, membership,
+party buyout) and includes a thank-you, a "Check-In Pass" QR, a "questions? see Fusion"
+block, and a before-you-visit checklist. Install it once via **Settings → Notifications
+→ Order confirmation → Edit code → paste**. Full steps + the QR explanation are in
+[`notifications/README.md`](notifications/README.md). This template is admin-managed, so
+it is **not** part of `shopify theme push`.
+
+The email's QR opens a **check-in page** that plays a "peep" and shows "✓ checked in"
+when the customer taps it on arrival. That page *is* in the theme
+(`templates/page.check-in.liquid`, built by the script), so after pushing the theme,
+add one more Page: title *Check in*, handle **`check-in`**, template **`page.check-in`**
+(same Add-page flow as the table above). Preview locally via
+[`notifications/check-in-preview.html`](notifications/check-in-preview.html).
 
 ## Notes / gotchas
 - **Images / performance.** Run `npm install` once, then `npm run build` (which runs
@@ -150,7 +208,7 @@ The footer/newsletter signup should post to your email tool:
 - The old `.github/workflows/deploy.yml` still publishes the original static prototype to
   GitHub Pages. That's independent of Shopify — keep it as a reference preview or delete it.
 - Social links in the footer are still `#` placeholders — drop in the client's real
-  Instagram/Facebook/TikTok URLs.
+  Instagram/Facebook URLs.
 - Phone + email in the footer are now real `tel:` / `mailto:` links.
 - The iOS SVG-animation enhancement (`main.js`) relies on `fetch()` to the Shopify CDN;
   it degrades gracefully to static images if a request is blocked.

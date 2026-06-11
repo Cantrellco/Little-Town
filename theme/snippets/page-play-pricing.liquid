@@ -1,3 +1,18 @@
+{%- assign daypass_prod = all_products['day-pass'] -%}
+{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- assign familypass_prod = all_products['household-family-pass'] -%}
+{%- if familypass_prod == blank -%}{%- assign familypass_prod = all_products['play-pack'] -%}{%- endif -%}
+{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'family' and p.handle contains 'pass' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'play' and p.handle contains 'pack' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- if daypass_prod == blank or familypass_prod == blank -%}
+<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">
+  <strong>⚠ Setup needed.</strong> The storefront can't see 
+  {%- if daypass_prod == blank %} <em>Day Pass</em>{%- endif -%}
+  {%- if daypass_prod == blank and familypass_prod == blank %} +{%- endif -%}
+  {%- if familypass_prod == blank %} <em>Household Family Pass</em>{%- endif %}. 
+  Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.
+</div>
+{%- endif -%}
 <main>
 
     <!-- ===================== PAGE HERO ===================== -->
@@ -6,7 +21,7 @@
     <section class="page-hero ph--play">
       <div class="container">
         <div class="reveal">
-          <span class="partner-tag"><img src="{{ 'icon-bricks.svg' | asset_url }}" alt="" width="18" height="18"> Open Play · Ages 0–8</span>
+          <span class="partner-tag"><img src="{{ 'icon-bricks.svg' | asset_url }}" alt="" width="18" height="18"> Open Play · Ages 2–7</span>
           <h1 style="margin-top:0.8rem">A whole little town to <span class="script" style="color:var(--accent)">explore</span></h1>
           <p class="lead"><strong class="hl--sky" style="color:var(--ink)">Wander Main Street and step inside.</strong> A grocery to stock, a clinic to run, a café to serve — soft, safe and endlessly re-imaginable.</p>
           <div class="flex-cta">
@@ -17,16 +32,18 @@
 
         <!-- Hero art: the wide Main Street (the page's identity) -->
         <div class="hero-art reveal" data-delay="1">
-          <img src="{{ 'logo.png' | asset_url }}" alt="The Little Town main street: grocery with a slide, café tower and clinic." width="875" height="422" fetchpriority="high" decoding="async">
+          <picture>
+            <source srcset="{{ 'logo.webp' | asset_url }}" type="image/webp">
+            <img src="{{ 'logo.png' | asset_url }}" alt="The Little Town main street: grocery with a slide, café tower and clinic." width="875" height="422" fetchpriority="high" decoding="async">
+          </picture>
         </div>
 
         <!-- Stat pill strip — spans full width beneath the copy + street -->
         <div class="stat-strip reveal" data-delay="2" aria-label="Quick facts">
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-baby.svg' | asset_url }}" alt="" width="18" height="18"></span> Ages 0–8</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-baby.svg' | asset_url }}" alt="" width="18" height="18"></span> Ages 2–7</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="18" height="18"></span> Socks only, no shoes</span>
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="18" height="18"></span> 1 free grown-up per child</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="18" height="18"></span> Grown-ups always free</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-refresh.svg' | asset_url }}" alt="" width="18" height="18"></span> Re-entry all day</span>
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-baby.svg' | asset_url }}" alt="" width="18" height="18"></span> Under-1s play free</span>
         </div>
       </div>
     </section>
@@ -38,7 +55,7 @@
         <div class="center reveal">
           <span class="eyebrow">Open-play pricing</span>
           <h2>Pay as you <span class="hl">play</span></h2>
-          <p class="section-lead">One paid child brings one free grown-up. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
+          <p class="section-lead">Grown-ups always play free — no limit per child. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
         <div class="cp-grid cp-grid--2">
@@ -56,32 +73,31 @@
             </div>
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play with re-entry</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One free grown-up per child</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Infants under 1 play free</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Extra siblings just $14 each</li>
             </ul>
-            <a class="cp-cta" href="/products/day-pass">Buy Day Pass</a>
+            <a class="cp-cta" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/day-pass{%- endif -%}">Buy Day Pass</a>
           </article>
 
-          <!-- Play Pack (featured) -->
-          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Play Pack pricing — best value">
+          <!-- Household Family Pass (featured) -->
+          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Household Family Pass pricing — best value">
             <span class="cp-popular" aria-label="Best value">Best value!</span>
             <span class="cp-icon" aria-hidden="true">
               <img src="{{ 'icon-star.svg' | asset_url }}" alt="" width="26" height="26">
             </span>
-            <h3 class="cp-name">Play Pack</h3>
-            <p class="cp-blurb">Five all-day passes — share them across the whole family.</p>
+            <h3 class="cp-name">Household Family Pass</h3>
+            <p class="cp-blurb">One pass that covers every kid in your household — made for families with 2+ siblings.</p>
             <div class="cp-price">
               <span class="cp-price-amount">$75</span>
-              <span class="cp-price-unit">/ 5 visits</span>
+              <span class="cp-price-unit">/ household</span>
             </div>
             <ul class="cp-list">
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Five all-day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Better value than day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Shareable between siblings</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Never expires</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Good for 2 or more kids</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All siblings in one household</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the whole family</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Skip buying separate day passes</li>
             </ul>
-            <a class="cp-cta" href="/products/play-pack">Buy Play Pack</a>
+            <a class="cp-cta" href="{%- if familypass_prod != blank -%}/cart/{{ familypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/household-family-pass{%- endif -%}">Buy Household Family Pass</a>
           </article>
 
         </div>
@@ -208,9 +224,10 @@
               <h3>Ages &amp; supervision</h3>
             </div>
             <ul>
-              <li>Designed for ages 0–8; infant nook gated for under-2s.</li>
-              <li>A grown-up (16+) must stay on-site at all times.</li>
-              <li>One free adult per paid child; extra adults always free.</li>
+              <li>Designed for ages 2–7.</li>
+              <li>This is a watch-your-own-child space — a grown-up stays with their little one and keeps them in sight the whole visit.</li>
+              <li>You know your child best: please always know where they are and step in when they need you.</li>
+              <li>Grown-ups always play free — no limit per child.</li>
             </ul>
           </div>
 
@@ -277,11 +294,11 @@
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              What's the age range — will my baby or my 8-year-old enjoy it?
+              What's the age range — is it a good fit for my child?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>The town is built for 0–8. There's a gated infant nook for under-2s with soft shapes and mirrors, the storefronts are pitched at preschool/early-elementary imaginations, and the bigger kids love running the café register and "shopping" with play money. Over-8s are welcome if they're with a younger sibling.</p>
+              <p>The town is built for ages 2–7. The storefronts are pitched at preschool and early-elementary imaginations — the littler ones love the hands-on, soft-play corners, and the bigger kids love running the café register and "shopping" with play money.</p>
             </div></div>
           </div>
 
@@ -311,7 +328,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Play Packs never expire, so there's no rush.</p>
+              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Bought a Household Family Pass? Same deal — just reach out and we'll make it right.</p>
             </div></div>
           </div>
 

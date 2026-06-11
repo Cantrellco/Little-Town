@@ -116,47 +116,43 @@
   }
 }
 
-/* ---- Plan toggle (Monthly / Annual tabs) ---- */
-.plan-toggle-wrap {
+/* ---- Plan jump links (scroll to the Monthly / Annual groups below) ----
+   Replaces the old Monthly/Annual tab toggle. Both plan groups now stay
+   visible at once, so these are plain in-page jump links — symmetric, with
+   no "stuck selected" state, just a neobrutalist chip that presses on hover. */
+.plan-jump-wrap {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
   margin-bottom: 2.4rem;
 }
 
-.plan-toggle {
+.plan-jump {
   display: inline-flex;
-  background: rgba(0,0,0,0.06);
-  border-radius: var(--r-pill);
-  padding: 4px;
-  gap: 2px;
-}
-
-.plan-toggle button {
+  align-items: center;
   font-family: var(--font-head);
   font-weight: 600;
   font-size: 0.95rem;
-  padding: 0.65rem 1.5rem;
-  border: none;
-  border-radius: var(--r-pill);
-  background: transparent;
-  color: var(--ink-soft);
-  cursor: pointer;
-  transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
-  white-space: nowrap;
+  line-height: 1;
+  padding: 0.7rem 1.3rem;
   min-height: 44px;
-}
-
-.plan-toggle button[aria-selected="true"] {
+  border-radius: var(--r-sm);
+  border: 2px solid var(--btn-edge);
   background: var(--white);
   color: var(--ink);
-  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--btn-hard);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, color 0.16s ease;
+  white-space: nowrap;
 }
+/* Neobrutalist press — slide onto the shadow as it shrinks away */
+.plan-jump:hover  { transform: translate(2px, 2px); box-shadow: var(--btn-hard-hover); color: var(--accent); }
+.plan-jump:active { transform: translate(4px, 4px); box-shadow: 0 0 0 0 var(--btn-edge); }
 
-.plan-toggle button[aria-selected="true"].toggle-annual {
-  background: var(--grad-meadow);
-  color: var(--ink);
-  box-shadow: var(--shadow-sm);
-}
+/* Land the group heading clear of the sticky header when jumped to */
+.plan-group { scroll-margin-top: calc(var(--header-h) + 1rem); }
 
 /* Annual badge on toggle button */
 .toggle-annual-badge {
@@ -172,15 +168,7 @@
   line-height: 1.5;
 }
 
-/* Plan groups — shown/hidden by JS; no-JS: both shown */
-.plan-group {
-  /* Always visible; JS hides with data-hidden */
-}
-.plan-group[data-hidden="true"] {
-  display: none;
-}
-
-/* Spacing between monthly & annual groups when both are visible (no-JS) */
+/* Both plan groups are always visible, divided by .plan-sep */
 .plan-group + .plan-group { margin-top: 3rem; }
 
 /* ---- Group headers ---- */
@@ -405,32 +393,29 @@
    line at 320 px — we shrink the font and allow wrap on the
    badge itself while keeping the button single-line. ---- */
 @media (max-width: 600px) {
-  .plan-toggle-wrap {
+  .plan-jump-wrap {
     /* A little extra bottom breathing room before the cards */
-    margin-bottom: 0;
+    margin-bottom: 1.6rem;
   }
 
-  /* Let the toggle be as wide as the phone needs */
-  .plan-toggle { width: 100%; justify-content: center; }
-
-  .plan-toggle button {
-    /* Slightly smaller to fit both buttons at 320 px */
+  .plan-jump {
+    /* Slightly smaller to fit both chips comfortably at 320 px */
     padding: 0.65rem 1rem;
     font-size: 0.88rem;
   }
 }
 
 @media (max-width: 380px) {
-  /* Shrink the savings badge so it doesn't push the button off-screen */
+  /* Shrink the savings badge so it doesn't push the chip off-screen */
   .toggle-annual-badge {
     font-size: 0.65rem;
     padding: 0.1rem 0.35rem;
     margin-left: 0.25rem;
   }
 
-  /* Allow the button text to wrap if needed rather than stretching
+  /* Allow the chip text to wrap if needed rather than stretching
      past the viewport — the badge can sit on its own line at 320 px */
-  .plan-toggle button {
+  .plan-jump {
     white-space: normal;
     text-align: center;
     line-height: 1.3;

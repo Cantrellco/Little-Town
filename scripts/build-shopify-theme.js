@@ -87,15 +87,35 @@ function rewriteLinks(html) {
 }
 const transformBody = (html) => rewriteLinks(rewriteAssets(html));
 
-// Commerce wiring: turn placeholder "buy" buttons into links to the matching
-// Shopify product. Handles below must match the product handles you create.
+// Build a one-tap "buy" link that goes straight to Shopify checkout for a single
+// membership tier, via a cart permalink (/cart/{variant}:1?selling_plan={id}, which
+// adds the item and redirects to checkout). Resolves the tier's variant by title
+// first (e.g. "2 Children"), then by position, then falls back to the product page
+// if the product/variant can't be found yet.
+function memberCta(prod, plan, label, idx, handle, text) {
+  return (
+    `{%- assign _v = blank -%}` +
+    `{%- if ${prod} != blank -%}` +
+    `{%- for v in ${prod}.variants -%}{%- if v.title contains '${label}' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}` +
+    `{%- if _v == blank -%}{%- assign _v = ${prod}.variants[${idx}] -%}{%- endif -%}` +
+    `{%- endif -%}` +
+    `<a class="$1" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if ${plan} != blank %}?selling_plan={{ ${plan} }}{%- endif -%}{%- else -%}/products/${handle}{%- endif -%}">${text}</a>`
+  );
+}
+
+// Commerce wiring: turn placeholder "buy" buttons into one-tap checkout links.
+// Every buy button skips the product page AND the cart, landing the customer
+// straight on Shopify checkout via a cart permalink. Handles below must match the
+// products you create; if a product/variant can't be resolved the link falls back
+// to its product page and a diagnostic banner appears, so nothing breaks pre-setup.
 function wireCommerce(html, key) {
   if (key === "memberships") {
     // Resilient lookup: try the exact handle first, then fall back to any
     // product whose handle contains both 'monthly'+'membership' (or annual).
     // Shows a diagnostic banner if either product can't be found on the
     // storefront — usually means it isn't published to the Online Store
-    // sales channel, or has an unexpected handle.
+    // sales channel, or has an unexpected handle. m_plan/a_plan capture each
+    // product's subscription selling-plan id once, for the permalinks below.
     const prelude = [
       "{%- assign monthly_prod = all_products['monthly-membership'] -%}",
       "{%- if monthly_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'monthly' and p.handle contains 'membership' -%}{%- assign monthly_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
@@ -110,28 +130,100 @@ function wireCommerce(html, key) {
       '  Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.',
       "</div>",
       "{%- endif -%}",
+      "{%- assign m_plan = blank -%}{%- if monthly_prod.selling_plan_groups.size > 0 -%}{%- assign m_plan = monthly_prod.selling_plan_groups.first.selling_plans.first.id -%}{%- endif -%}",
+      "{%- assign a_plan = blank -%}{%- if annual_prod.selling_plan_groups.size > 0 -%}{%- assign a_plan = annual_prod.selling_plan_groups.first.selling_plans.first.id -%}{%- endif -%}",
+      "",
+    ].join("\n");
+    html = prelude + html
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="1">Join Monthly<\/button>/g, memberCta("monthly_prod", "m_plan", "1 Child", 0, "monthly-membership", "Join Monthly"))
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="2">Join Monthly<\/button>/g, memberCta("monthly_prod", "m_plan", "2 Children", 1, "monthly-membership", "Join Monthly"))
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="3">Join Monthly<\/button>/g, memberCta("monthly_prod", "m_plan", "3+ Children", 2, "monthly-membership", "Join Monthly"))
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="1">Join Annual<\/button>/g, memberCta("annual_prod", "a_plan", "1 Child", 0, "annual-membership", "Join Annual"))
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="2">Join Annual<\/button>/g, memberCta("annual_prod", "a_plan", "2 Children", 1, "annual-membership", "Join Annual"))
+      .replace(/<button class="([^"]*)" type="button" data-noop data-tier="3">Join Annual<\/button>/g, memberCta("annual_prod", "a_plan", "3+ Children", 2, "annual-membership", "Join Annual"));
+  }
+  if (key === "index") {
+    // Home hero's secondary button: send visitors straight to Shopify checkout
+    // for a single Day Pass via a cart permalink, exactly like the one-tap buy
+    // buttons elsewhere. Resolve the product resiliently (exact 'day-pass' handle
+    // first, then any handle containing both 'day' and 'pass'). No setup banner
+    // here — the hero stays clean — so if the product isn't published yet the
+    // button just falls back to the Play & Pricing page.
+    const prelude = [
+      "{%- assign daypass_prod = all_products['day-pass'] -%}",
+      "{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
       "",
     ].join("\n");
     html = prelude + html
       .replace(
-        /<button class="([^"]*)" type="button" data-noop>Join Monthly<\/button>/g,
-        `<a class="$1" href="{{ monthly_prod.url | default: '/products/monthly-membership' }}">Join Monthly</a>`
+        /<a class="([^"]*)" href="\/pages\/play-pricing" data-daypass-cta>Day Pass<\/a>/,
+        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Day Pass</a>`
       )
-      .replace(
-        /<button class="([^"]*)" type="button" data-noop>Join Annual<\/button>/g,
-        `<a class="$1" href="{{ annual_prod.url | default: '/products/annual-membership' }}">Join Annual</a>`
-      );
-  }
-  if (key === "play-pricing" || key === "index") {
-    html = html
       .replace(
         /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Day Pass<\/button>/g,
-        '<a class="$1" href="/products/day-pass">Buy Day Pass</a>'
+        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Buy Day Pass</a>`
+      );
+  }
+  if (key === "play-pricing") {
+    // Day Pass + Household Family Pass are single-variant, so the card already
+    // holds every choice — link straight to checkout, falling back to the product
+    // page (and a setup banner) until the products exist + are published. The
+    // family pass resolves by its new 'household-family-pass' handle first, then
+    // the legacy 'play-pack' handle, so an existing/renamed product still works.
+    const prelude = [
+      "{%- assign daypass_prod = all_products['day-pass'] -%}",
+      "{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+      "{%- assign familypass_prod = all_products['household-family-pass'] -%}",
+      "{%- if familypass_prod == blank -%}{%- assign familypass_prod = all_products['play-pack'] -%}{%- endif -%}",
+      "{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'family' and p.handle contains 'pass' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+      "{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'play' and p.handle contains 'pack' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+      "{%- if daypass_prod == blank or familypass_prod == blank -%}",
+      '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
+      "  <strong>⚠ Setup needed.</strong> The storefront can't see ",
+      "  {%- if daypass_prod == blank %} <em>Day Pass</em>{%- endif -%}",
+      "  {%- if daypass_prod == blank and familypass_prod == blank %} +{%- endif -%}",
+      "  {%- if familypass_prod == blank %} <em>Household Family Pass</em>{%- endif %}. ",
+      '  Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.',
+      "</div>",
+      "{%- endif -%}",
+      "",
+    ].join("\n");
+    html = prelude + html
+      .replace(
+        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Day Pass<\/button>/g,
+        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/day-pass{%- endif -%}">Buy Day Pass</a>`
       )
       .replace(
-        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Play Pack<\/button>/g,
-        '<a class="$1" href="/products/play-pack">Buy Play Pack</a>'
+        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Household Family Pass<\/button>/g,
+        `<a class="$1" href="{%- if familypass_prod != blank -%}/cart/{{ familypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/household-family-pass{%- endif -%}">Buy Household Family Pass</a>`
       );
+  }
+  if (key === "parties") {
+    // One bookable product `private-buyout` carries both prices as variants:
+    // "Little Town" ($185) and "Little Town + Fusion" ($295). Resolve it, split
+    // the two variants by title (the Fusion one contains "Fusion"), and inject
+    // their ids into the booking forms' hidden id inputs so each form POSTs the
+    // right variant to /cart/add -> checkout. Setup banner until it's published.
+    const prelude = [
+      "{%- assign buyout_prod = all_products['private-buyout'] -%}",
+      "{%- if buyout_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'buyout' -%}{%- assign buyout_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+      "{%- assign lt_variant = blank -%}{%- assign fusion_variant = blank -%}",
+      "{%- if buyout_prod != blank -%}{%- for v in buyout_prod.variants -%}{%- if v.title contains 'Fusion' -%}{%- assign fusion_variant = v -%}{%- else -%}{%- assign lt_variant = v -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+      "{%- if buyout_prod == blank -%}",
+      '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
+      "  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Private Buyout</em> product, so the party booking buttons can't reach checkout yet. ",
+      '  Check its <strong>URL handle</strong> is <code>private-buyout</code> (Search engine listing) and that it is <strong>published to Online Store</strong> under Sales channels.',
+      "</div>",
+      "{%- endif -%}",
+      // Date-blocking: expose the booked-slots shop metafield to the calendar.
+      // Shopify Flow appends "YYYY-MM-DD|slot;" to lt_booking.taken on each order;
+      // main.js (partyBooking) reads window.LT_BOOKED_RAW and greys those out.
+      '<script>window.LT_BOOKED_RAW = {%- if shop.metafields.lt_booking.taken.value != blank -%}{{ shop.metafields.lt_booking.taken.value | json }}{%- else -%}""{%- endif -%};</script>',
+      "",
+    ].join("\n");
+    html = prelude + html
+      .replace(/data-bk-variant="little-town" value=""/g, 'data-bk-variant="little-town" value="{{ lt_variant.id }}"')
+      .replace(/data-bk-variant="fusion" value=""/g, 'data-bk-variant="fusion" value="{{ fusion_variant.id }}"');
   }
   return html;
 }
@@ -214,17 +306,17 @@ ${metaCase}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
-  {%- if page_css contains 'fusion' -%}<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">{%- endif -%}
   <link rel="icon" href="{{ 'logo.png' | asset_url }}" type="image/png">
   {{ 'styles.css' | asset_url | stylesheet_tag }}
   {%- if page_css != blank -%}{{ page_css | asset_url | stylesheet_tag }}{%- endif -%}
+  {%- if meta_key == 'index' or meta_key == 'play-pricing' -%}<link rel="preload" as="image" href="{{ 'logo.webp' | asset_url }}" type="image/webp" fetchpriority="high">{%- endif -%}
   {{ content_for_header }}
 </head>
 <body>
   {% section 'header' %}
   {{ content_for_layout }}
   {% section 'footer' %}
-  {{ 'main.js' | asset_url | script_tag }}
+  <script src="{{ 'main.js' | asset_url }}" defer></script>
 </body>
 </html>
 `
@@ -285,6 +377,10 @@ write(
   "sections/footer.liquid",
   `<footer class="site-footer">
   <div class="container">
+    <div class="footer-notice" role="note">
+      <span class="footer-notice__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      <p>Little Town is a <strong>watch-your-own-child</strong> space — please stay with your little ones and always know where they are. Grown-ups are responsible for supervising their own children while they play.</p>
+    </div>
     <div class="footer-grid">
       <div class="footer-brand footer-col">
         <a class="brand" href="/" aria-label="Little Town Playhouse home">
@@ -297,41 +393,113 @@ write(
         <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
         <div class="socials">
           <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>
-          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.1 1.5 3.6 3.5 3.9V10c-1.3 0-2.5-.4-3.5-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
-        </div>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>        </div>
       </div>
       <div class="footer-col">
         <h4>Hours</h4>
         <ul>
-          <li>Mon – Thu · 9am – 6pm</li>
-          <li>Fri – Sat · 9am – 8pm</li>
-          <li>Sunday · 10am – 5pm</li>
+          <li>Mon – Fri · 6am – 6pm</li>
+          <li>Saturday · 6am – 4pm</li>
+          <li>Sunday · Closed</li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Visit Us</h4>
         <ul>
-          <li>12 Main Street</li>
-          <li>Riverbend, CA 90210</li>
-          <li><a href="tel:+15550142025">(555) 014-2025</a></li>
-          <li><a href="mailto:hello@littletownplay.com">hello@littletownplay.com</a></li>
+          <li>205 East Main Street</li>
+          <li>Fairfield, IL 62837</li>
+          <li><a href="mailto:littletownplayhousellc@gmail.com">littletownplayhousellc@gmail.com</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Find Us</h4>
-        <div class="map-placeholder"><img src="{{ 'map-dark.svg' | asset_url }}" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
+        <div class="map-placeholder"><img src="{{ 'map-dark.png' | asset_url }}" alt="Map of 205 East Main Street, Fairfield, IL — Little Town Playhouse, next door to Fusion Coffee." width="320" height="180" loading="lazy" decoding="async"></div>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} Little Town Playhouse</span>
-      <span>Made with imagination in Riverbend</span>
+      <span>Made with imagination in Fairfield</span>
     </div>
   </div>
 </footer>
 {% schema %}
 { "name": "Footer" }
 {% endschema %}
+`
+);
+
+// ---- 6b. check-in page (the QR in the order-confirmation email opens this) ----
+// A standalone "kiosk" screen: customer taps a button, the phone plays a short
+// two-tone "peep" (Web Audio, no audio file) + vibrates, then shows "checked in".
+// It's the arrival ritual referenced by notifications/order-confirmation.liquid.
+// The order number rides in as ?o=1001 and is shown for a legit feel.
+const CHECKIN_SNIPPET = `<style>
+  .lt-ci-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F7F3EC;padding:24px;box-sizing:border-box;font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif;color:#333}
+  .lt-ci-card{width:100%;max-width:380px;background:#fff;border:3px solid #333;border-radius:24px;box-shadow:0 16px 0 -4px rgba(51,51,51,.10);padding:30px 26px 34px;text-align:center;box-sizing:border-box}
+  .lt-ci-eyebrow{font-size:12px;letter-spacing:3px;font-weight:700;color:#B35A37;text-transform:uppercase}
+  .lt-ci-script{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:30px;line-height:1;margin-top:2px;color:#333}
+  .lt-ci-bar{height:8px;background:#F4AE92;border-radius:999px;width:70px;margin:14px auto 0}
+  .lt-ci-h{font-size:26px;font-weight:700;margin:18px 0 4px}
+  .lt-ci-order{display:none;font-size:14px;font-weight:600;color:#6f675b;margin:0 0 6px}
+  .lt-ci-sub{font-size:15px;color:#5b5750;line-height:1.5;margin:0 0 22px}
+  .lt-ci-btn{appearance:none;-webkit-appearance:none;border:3px solid #333;background:#F4AE92;color:#333;font:inherit;font-weight:700;font-size:18px;padding:16px 26px;border-radius:999px;cursor:pointer;box-shadow:0 5px 0 #333;transition:transform .08s,box-shadow .08s;width:100%;max-width:300px}
+  .lt-ci-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #333}
+  .lt-ci-done{display:none}
+  .lt-ci-check{width:96px;height:96px;border-radius:50%;background:#BFD6A8;border:3px solid #333;line-height:90px;margin:6px auto 14px;font-size:52px;animation:lt-ci-pop .5s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes lt-ci-pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+  .lt-ci-foot{font-size:12px;color:#6f675b;margin-top:18px}
+</style>
+<div class="lt-ci-wrap">
+  <div class="lt-ci-card">
+    <div class="lt-ci-eyebrow">Little Town</div>
+    <div class="lt-ci-script">Playhouse</div>
+    <div class="lt-ci-bar"></div>
+    <div id="lt-ci-pre">
+      <div class="lt-ci-h">Welcome! &#128075;</div>
+      <div class="lt-ci-order" id="lt-ci-order"></div>
+      <p class="lt-ci-sub">Ready to play? Tap below to check in.</p>
+      <button class="lt-ci-btn" id="lt-ci-btn" type="button">&#127915; Tap to check in</button>
+    </div>
+    <div class="lt-ci-done" id="lt-ci-done">
+      <div class="lt-ci-check">&#10003;</div>
+      <div class="lt-ci-h">You're checked in!</div>
+      <p class="lt-ci-sub">Come on in and have fun &mdash; enjoy your play. Need anything? Pop into Fusion next door.</p>
+      <div class="lt-ci-foot">Show this screen if anyone asks.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var o=(p.get('o')||p.get('order')||'').replace(/[^-0-9A-Za-z]/g,'');
+  if(o){var el=document.getElementById('lt-ci-order');if(el){el.textContent='Order #'+o;el.style.display='block';}}
+  var btn=document.getElementById('lt-ci-btn'),pre=document.getElementById('lt-ci-pre'),done=document.getElementById('lt-ci-done');
+  function peep(){try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;var ctx=new AC();if(ctx.state==='suspended'&&ctx.resume){ctx.resume();}function tone(f,s,d){var osc=ctx.createOscillator(),g=ctx.createGain();osc.type='sine';osc.frequency.value=f;osc.connect(g);g.connect(ctx.destination);var t=ctx.currentTime+s;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.5,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d);osc.start(t);osc.stop(t+d+0.03);}tone(880,0,0.12);tone(1320,0.12,0.2);}catch(e){}}
+  function checkin(){peep();if(navigator.vibrate){try{navigator.vibrate([60,40,90]);}catch(e){}}if(pre){pre.style.display='none';}if(done){done.style.display='block';}}
+  if(btn){btn.addEventListener('click',checkin);}
+})();
+</script>
+`;
+write("snippets/page-check-in.liquid", CHECKIN_SNIPPET);
+// Standalone full-screen version (no site header/footer) — this is what /pages/check-in
+// renders once its Page has the page.check-in template assigned.
+write(
+  "templates/page.check-in.liquid",
+  `{% layout none %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check in &mdash; Little Town Playhouse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>html,body{margin:0;padding:0;background:#F7F3EC}</style>
+</head>
+<body>
+{% render 'page-check-in' %}
+</body>
+</html>
 `
 );
 
@@ -361,6 +529,8 @@ write(
         <div class="price-tag" id="pdp-price">{{ cv.price | money }}</div>
         <div class="rte" style="margin:1rem 0">{{ product.description }}</div>
         {%- form 'product', product, id: 'pdp-form' -%}
+          {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
+          <input type="hidden" name="return_to" value="/checkout">
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">
@@ -390,7 +560,7 @@ write(
             </fieldset>
           {%- endif -%}
           <button class="btn btn--lg btn--terracotta btn--pop" type="submit" name="add"{% unless product.available %} disabled{% endunless %}>
-            {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Add to cart{% endif %}{% else %}Sold out{% endif %}
+            {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Buy now{% endif %}{% else %}Sold out{% endif %}
           </button>
         {%- endform -%}
       </div>
@@ -480,10 +650,14 @@ write(
    back to the generic title + content layout. This way the marketing pages
    render correctly even when the admin "Theme template" dropdown is left on
    the default "page" instead of the matching custom template. */
-const pageHandleCases = PAGES
-  .filter((p) => p.key !== "index")
-  .map((p) => `    {%- when '${p.key}' -%}{%- render 'page-${p.key}' -%}`)
-  .join("\n");
+const pageHandleCases = [
+  ...PAGES.filter((p) => p.key !== "index").map(
+    (p) => `    {%- when '${p.key}' -%}{%- render 'page-${p.key}' -%}`
+  ),
+  // check-in is a bespoke page (no root .html); render its snippet too, so the
+  // QR's /pages/check-in still works even if the page is left on the default template.
+  `    {%- when 'check-in' -%}{%- render 'page-check-in' -%}`,
+].join("\n");
 write(
   "templates/page.liquid",
   `{%- case page.handle -%}

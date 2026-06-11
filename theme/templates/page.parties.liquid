@@ -1,3 +1,14 @@
+{%- assign buyout_prod = all_products['private-buyout'] -%}
+{%- if buyout_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'buyout' -%}{%- assign buyout_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- assign lt_variant = blank -%}{%- assign fusion_variant = blank -%}
+{%- if buyout_prod != blank -%}{%- for v in buyout_prod.variants -%}{%- if v.title contains 'Fusion' -%}{%- assign fusion_variant = v -%}{%- else -%}{%- assign lt_variant = v -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- if buyout_prod == blank -%}
+<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">
+  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Private Buyout</em> product, so the party booking buttons can't reach checkout yet. 
+  Check its <strong>URL handle</strong> is <code>private-buyout</code> (Search engine listing) and that it is <strong>published to Online Store</strong> under Sales channels.
+</div>
+{%- endif -%}
+<script>window.LT_BOOKED_RAW = {%- if shop.metafields.lt_booking.taken.value != blank -%}{{ shop.metafields.lt_booking.taken.value | json }}{%- else -%}""{%- endif -%};</script>
 <main>
 
     <!-- =====================================================
@@ -10,11 +21,11 @@
         <div class="reveal">
           <span class="partner-tag"><img src="{{ 'icon-balloon.svg' | asset_url }}" alt="" width="18" height="18"> Private party buyout</span>
           <h1 style="margin-top:0.8rem">The whole town — <span class="script" style="color:var(--accent)">just for you</span></h1>
-          <p class="lead"><strong class="hl--coral" style="color:var(--ink)">Every storefront is yours.</strong> No strangers, no sharing, zero clean-up — just your crew and the run of the whole place.</p>
+          <p class="lead"><strong class="hl--coral" style="color:var(--ink)">Every storefront is yours.</strong> No strangers, no sharing, no waiting your turn — just your crew and the run of the whole place.</p>
 
           <div class="flex-cta">
-            <button class="btn btn--lg btn--coral btn--pop hover-jelly" type="button" data-noop>Check Availability</button>
-            <a class="btn btn--lg btn--ghost" href="#booking">See booking mockup</a>
+            <a class="btn btn--lg btn--coral btn--pop hover-jelly" href="#booking">Check availability</a>
+            <a class="btn btn--lg btn--ghost" href="#faq">Party FAQ</a>
           </div>
 
         </div>
@@ -120,97 +131,127 @@
 
 
     <!-- =====================================================
-         BOOKING WIDGET — lead with the offer (price + book)
+         BOOKING — two-step: pick a time, pick a package → checkout.
+         No booking app: the package <form>s POST to /cart/add with the
+         chosen slot as the "Party slot" line-item property + return_to=/checkout.
+         Variant ids injected by build-shopify-theme.js (wireCommerce 'parties').
+         JS lives in main.js (partyBooking). See SHOPIFY-MIGRATION.md §C.
          ===================================================== -->
     <!-- beat 1 (colour wash) -->
     <section class="section flow-top sec-color" id="booking">
       <div class="container">
 
         <div class="booking-panel-wrap reveal">
-          <div class="split" style="align-items:start">
 
-            <!-- Left: copy + pricing -->
-            <div>
-              <span class="eyebrow">Book your party</span>
-              <p class="booking-heading">Find your perfect slot</p>
-              <p>Pick a date and time — every buyout comes with decorations, café platters and a dedicated party host.</p>
-
-              <!-- Pricing cards (stacked in the booking-panel left column) -->
-              <div class="cp-grid" style="margin:1.4rem 0 1rem;padding:0.6rem 0.4rem 1.2rem">
-
-                <article class="cp-card" aria-label="Weekday party buyout">
-                  <span class="cp-icon cp-icon--sky" aria-hidden="true"><img src="{{ 'icon-balloon.svg' | asset_url }}" alt="" width="26" height="26"></span>
-                  <h3 class="cp-name">Weekday Buyout</h3>
-                  <p class="cp-blurb">Mon–Fri private play, perfect for smaller crews.</p>
-                  <div class="cp-price">
-                    <span class="cp-price-amount">$350</span>
-                    <span class="cp-price-unit">from / 2hr slot</span>
-                  </div>
-                  <ul class="cp-list">
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Whole playhouse to yourselves</li>
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Themed decoration package</li>
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Dedicated party host</li>
-                  </ul>
-                  <a class="cp-cta" href="#booking" data-noop>Pick a weekday slot</a>
-                </article>
-
-                <article class="cp-card cp-card--featured" aria-label="Weekend party buyout — most popular">
-                  <span class="cp-popular">Most popular!</span>
-                  <span class="cp-icon" aria-hidden="true"><img src="{{ 'icon-confetti.svg' | asset_url }}" alt="" width="26" height="26"></span>
-                  <h3 class="cp-name">Weekend Buyout</h3>
-                  <p class="cp-blurb">Sat–Sun private play — the classic Little Town birthday.</p>
-                  <div class="cp-price">
-                    <span class="cp-price-amount">$450</span>
-                    <span class="cp-price-unit">from / 2hr slot</span>
-                  </div>
-                  <ul class="cp-list">
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Whole playhouse to yourselves</li>
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Themed decoration package</li>
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Café platters for grown-ups</li>
-                    <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Dedicated party host</li>
-                  </ul>
-                  <a class="cp-cta" href="#booking" data-noop>Pick a weekend slot</a>
-                </article>
-
-              </div>
-
-              <p class="mock-note" style="text-align:left;margin-top:0.4rem">Slots fill quickly — pick a 1st and 2nd choice and we'll confirm by email within one business day.</p>
-
-              <a class="btn btn--ghost mt-3" href="/pages/memberships">Explore Memberships</a>
-            </div>
-
-            <!-- Right: visual-only calendar/time-slot widget
-                 CRITICAL: keep .booking, .cal, .day/.day.muted/.day.avail/.day.selected,
-                 .slots, .slot, .slot.active, [data-noop] exactly as-is for main.js. -->
-            <div class="booking reveal" data-delay="1" aria-label="Booking date and time selector — design mockup, non-functional">
-              <div class="booking-head">
-                <span class="month">May 2026</span>
-                <div class="booking-nav">
-                  <button type="button" data-noop aria-label="Previous month">‹</button>
-                  <button type="button" data-noop aria-label="Next month">›</button>
-                </div>
-              </div>
-              <div class="cal" role="grid" aria-label="May 2026 calendar">
-                <span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span><span class="dow">S</span>
-                <span class="day muted" aria-hidden="true">28</span><span class="day muted" aria-hidden="true">29</span><span class="day muted" aria-hidden="true">30</span>
-                <span class="day">1</span><span class="day">2</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 3 May, available">3</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 4 May, available">4</span>
-                <span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 10 May, available">10</span><span class="day avail selected" tabindex="0" role="button" aria-label="Sunday 11 May, selected" aria-pressed="true">11</span>
-                <span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 17 May, available">17</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 18 May, available">18</span>
-                <span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 24 May, available">24</span><span class="day avail" tabindex="0" role="button" aria-label="Sunday 25 May, available">25</span>
-                <span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day avail" tabindex="0" role="button" aria-label="Saturday 31 May, available">31</span><span class="day muted" aria-hidden="true">1</span>
-              </div>
-              <p style="font-family:var(--font-head);font-weight:600;font-size:.9rem;margin:1.2rem 0 0">Available times · Sun 11 May</p>
-              <div class="slots" role="group" aria-label="Available time slots">
-                <button class="slot" type="button" data-noop aria-pressed="false">9:30 AM</button>
-                <button class="slot active" type="button" data-noop aria-pressed="true">12:00 PM</button>
-                <button class="slot" type="button" data-noop aria-pressed="false">2:30 PM</button>
-                <button class="slot" type="button" data-noop aria-pressed="false">5:00 PM</button>
-              </div>
-              <button class="btn btn--block btn--coral btn--pop mt-3" type="button" data-noop>Request This Slot</button>
-              <p class="mock-note">No payment yet — we'll reply to confirm your slot, then send a secure link for the $100 deposit.</p>
-            </div>
-
+          <div class="center bk-head">
+            <span class="eyebrow">Book your party</span>
+            <p class="booking-heading">Book in a few taps</p>
+            <p class="bk-intro">Choose a weekend date and time, pick your package, and you'll go straight to secure checkout — no deposit, no waiting on a callback. Your date and time are saved right onto the order.</p>
+            <p class="bk-intro bk-intro--note">Buyouts run on weekends — Saturday evening and Sunday — outside our standard open-play hours, so the whole place is yours.</p>
           </div>
+
+          <!-- STEP 1 · pick a date on the calendar, then a time.
+               main.js (partyBooking) renders the month: weekdays + past days are
+               muted and non-selectable, weekends are colored + tappable, and any
+               fully-booked date is greyed out (the availability seam — BOOKED /
+               window.LT_BOOKED, populated by the backend later). Picking a date
+               reveals its free time(s): Sat → 4:30–6:30; Sun → 1–3 / 4–6. Date + time
+               combine into the "Party date and time" line-item property. -->
+          <div class="bk-step reveal">
+            <div class="bk-step-head">
+              <span class="bk-step-no">1</span>
+              <h3 class="bk-step-title">Pick your date &amp; time</h3>
+            </div>
+
+            <div class="bk-cal" data-bk-cal aria-label="Choose a weekend date for your party">
+              <div class="bk-cal-head">
+                <button class="bk-cal-nav" type="button" data-bk-prev aria-label="Previous month">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <span class="bk-cal-title" data-bk-title aria-live="polite">&nbsp;</span>
+                <button class="bk-cal-nav" type="button" data-bk-next aria-label="Next month">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+              <div class="bk-cal-dows" aria-hidden="true">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+              <div class="bk-cal-days" data-bk-days role="group" aria-label="Choose a day"></div>
+              <p class="bk-cal-legend">
+                <span class="bk-legend-item"><span class="bk-legend-swatch bk-legend-swatch--avail" aria-hidden="true"></span> Weekends open</span>
+                <span class="bk-legend-item"><span class="bk-legend-swatch bk-legend-swatch--picked" aria-hidden="true"></span> Your pick</span>
+              </p>
+              <noscript><p class="bk-cal-legend">To book online please enable JavaScript — or give us a call and we'll book you in.</p></noscript>
+            </div>
+
+            <div class="bk-times" data-bk-times hidden>
+              <p class="bk-times-label" data-bk-times-label></p>
+              <div class="bk-times-grid" data-bk-times-grid role="group" aria-label="Choose a time"></div>
+            </div>
+          </div>
+
+          <!-- STEP 2 · pick a package → each form POSTs to /cart/add → /checkout.
+               The chosen date + time ride along as the "Party date and time"
+               line-item property. Variant ids injected by the build script. -->
+          <div class="bk-step reveal" data-delay="1">
+            <div class="bk-step-head">
+              <span class="bk-step-no">2</span>
+              <h3 class="bk-step-title">Pick your package</h3>
+            </div>
+
+            <p class="bk-chosen" data-bk-summary hidden>Your party: <strong data-bk-summary-text></strong></p>
+
+            <div class="bk-packages is-locked" data-bk-packages>
+
+              <form class="cp-card bk-pkg" method="post" action="/cart/add" data-bk-form aria-label="Book the Little Town buyout">
+                <input type="hidden" name="id" data-bk-variant="little-town" value="{{ lt_variant.id }}">
+                <input type="hidden" name="properties[Party date and time]" value="" data-bk-slot-input>
+                <input type="hidden" name="properties[Party date]" value="" data-bk-date-input>
+                <input type="hidden" name="properties[Party time]" value="" data-bk-time-input>
+                <input type="hidden" name="return_to" value="/checkout">
+                <span class="cp-icon cp-icon--sky" aria-hidden="true"><img src="{{ 'icon-balloon.svg' | asset_url }}" alt="" width="26" height="26"></span>
+                <h4 class="cp-name">Little Town</h4>
+                <p class="cp-blurb">The whole playhouse to yourselves — just your crew, no sharing.</p>
+                <div class="cp-price">
+                  <span class="cp-price-amount">$185</span>
+                  <span class="cp-price-unit">/ 2-hour buyout</span>
+                </div>
+                <ul class="cp-list">
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Whole playhouse, exclusively yours</li>
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Two hours of private play</li>
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Weekend slots — Saturday &amp; Sunday</li>
+                </ul>
+                <button class="btn btn--block btn--coral btn--pop bk-pkg-btn" type="submit">Book Little Town · $185</button>
+              </form>
+
+              <form class="cp-card cp-card--featured bk-pkg" method="post" action="/cart/add" data-bk-form aria-label="Book the Little Town plus Fusion buyout">
+                <input type="hidden" name="id" data-bk-variant="fusion" value="{{ fusion_variant.id }}">
+                <input type="hidden" name="properties[Party date and time]" value="" data-bk-slot-input>
+                <input type="hidden" name="properties[Party date]" value="" data-bk-date-input>
+                <input type="hidden" name="properties[Party time]" value="" data-bk-time-input>
+                <input type="hidden" name="return_to" value="/checkout">
+                <span class="cp-popular">Café + barista</span>
+                <span class="cp-icon" aria-hidden="true"><img src="{{ 'icon-confetti.svg' | asset_url }}" alt="" width="26" height="26"></span>
+                <h4 class="cp-name">Little Town + Fusion</h4>
+                <p class="cp-blurb">Add the café next door, opened just for you with a barista.</p>
+                <div class="cp-price">
+                  <span class="cp-price-amount">$295</span>
+                  <span class="cp-price-unit">/ 2-hour buyout</span>
+                </div>
+                <ul class="cp-list">
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Everything in the Little Town buyout</li>
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fusion café next door, all yours</li>
+                  <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>A Fusion barista pouring coffee &amp; drinks</li>
+                </ul>
+                <button class="btn btn--block btn--sun btn--pop bk-pkg-btn" type="submit">Book + Fusion · $295</button>
+              </form>
+
+            </div>
+
+            <p class="bk-lock-hint" data-bk-hint>↑ Tap a time to unlock booking.</p>
+            <p class="mock-note bk-finenote">Secure checkout by Shopify · paid in full · all bookings final.</p>
+          </div>
+
         </div>
 
       </div>
@@ -225,21 +266,21 @@
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Good to know</span>
-          <h2>Deposit &amp; cancellation</h2>
-          <p class="section-lead">We keep it simple and stress-free, because parties should be fun — not stressful.</p>
+          <h2>Booking &amp; cancellation</h2>
+          <p class="section-lead">We keep it simple: pick your slot, pay in full online, and you're locked in. Here's the fine print.</p>
         </div>
         <div class="policy-cards mt-4">
 
           <div class="policy-card policy-card--deposit tilt-3d reveal">
             <h3>
               <span class="policy-icon" aria-hidden="true"><img src="{{ 'icon-heart.svg' | asset_url }}" alt="" width="22" height="22"></span>
-              Deposit
+              Booking &amp; payment
             </h3>
             <ul>
-              <li>A $100 deposit secures your date and slot.</li>
-              <li>The deposit is credited toward your final balance.</li>
-              <li>Balance is due one week before the party.</li>
-              <li>Final headcount confirmed 72 hours ahead.</li>
+              <li>Pay in full when you book — no deposit, no balance later.</li>
+              <li>Your date and time are locked in the moment you pay.</li>
+              <li>You'll get an instant email confirmation.</li>
+              <li>Final headcount? Just let us know 72 hours ahead.</li>
             </ul>
           </div>
 
@@ -249,10 +290,10 @@
               Cancellation
             </h3>
             <ul>
-              <li>Cancel 14+ days ahead for a full deposit refund.</li>
-              <li>Within 14 days, the deposit transfers to a new date.</li>
-              <li>One free reschedule per booking.</li>
-              <li>We'll always work with you for weather or illness.</li>
+              <li>All bookings are final — payments aren't refundable.</li>
+              <li>We're unable to refund or reschedule once a slot is booked.</li>
+              <li>The one exception: severe weather or illness — reach out and we'll do our best to help.</li>
+              <li>Not sure on a date? Email us before you book and we'll help you choose.</li>
             </ul>
           </div>
 
@@ -265,7 +306,7 @@
          FAQ ACCORDION — friendly voice, all selectors kept
          ===================================================== -->
     <!-- beat 3 (calm) -->
-    <section class="section flow-top sec-calm parties-faq-section">
+    <section class="section flow-top sec-calm parties-faq-section" id="faq">
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">You might be wondering…</span>
@@ -282,47 +323,47 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Absolutely — your cake is always welcome. We provide table settings and a styled dessert display, and you're free to add a few personal touches. Our team handles the rest of the setup and all of the tidy-up.</p>
+              <p>Yes — the space is entirely yours, so bring your cake, balloons and any decorations you like and set up however you want. Just gather your bits to take home at the end, and we'll tidy the play space afterwards.</p>
             </div></div>
           </div>
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              Is food included for the grown-ups?
+              Can the grown-ups get coffee?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Coffee and tea are included with every buyout. Add a Fusion café platter package for pastries, sandwiches and snacks so the adults are well taken care of too.</p>
+              <p>Choose the <strong>Little Town + Fusion</strong> package and we'll open the café next door just for you — with a barista on hand pouring coffee and drinks for the adults while the kids play. The Little Town–only buyout doesn't include café service.</p>
             </div></div>
           </div>
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              How early can we arrive to set up?
+              How does set-up and timing work?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Your two-hour slot includes private access, and our hosts have the space beautifully decorated before you arrive. You're welcome to come 15 minutes early to add personal items and greet your guests as they arrive.</p>
+              <p>Your two-hour slot is private from start to finish, so build a little decorating time into the beginning and allow a few minutes to pack down at the end. If you'd like extra set-up time, just ask us when you book and we'll do our best.</p>
             </div></div>
           </div>
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              Do adults and siblings count toward the 40-guest capacity?
+              How many guests can we bring?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Our buyout comfortably hosts around 40 guests total, including grown-ups and siblings. If you're expecting a bigger crowd, just ask — we're happy to help you plan the best setup for your family.</p>
+              <p>The whole playhouse is yours, so bring your crew — kids, siblings and grown-ups all welcome. If you're planning a big group, give us a heads-up when you book and we'll help you make sure everyone's comfortable.</p>
             </div></div>
           </div>
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              Are themed parties available?
+              Can we theme the party ourselves?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Yes! We offer a range of add-on decoration packages — from jungle safari to underwater adventure. Ask us about current themes when you reach out, or let us know if your little one has a favorite and we'll do our best.</p>
+              <p>Absolutely — and you get full creative freedom. The space is a blank canvas, so bring decorations in your little one's favourite theme and make it completely your own.</p>
             </div></div>
           </div>
 
@@ -340,10 +381,10 @@
           <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <span class="sticker anim-pulse" style="margin-bottom:1rem;display:inline-flex"><img src="{{ 'icon-cake.svg' | asset_url }}" alt="" width="18" height="18"> Ready to celebrate?</span>
           <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-top:0.4rem">Let's plan something <span class="script">magical</span></h2>
-          <p style="max-width:44ch;margin-inline:auto;opacity:0.92">Check availability, ask a question or dive straight into the booking mockup. We'd love to help make it the best party ever.</p>
+          <p style="max-width:44ch;margin-inline:auto;opacity:0.92">Check availability, ask a question or jump straight to the booking calendar. We'd love to help make it the best party ever.</p>
           <div class="flex-cta center mt-4" style="position:relative;z-index:1">
-            <button class="btn btn--lg btn--sun btn--pop hover-jelly" type="button" data-noop>Check Availability</button>
-            <a class="btn btn--lg btn--ghost" href="#booking">Back to booking</a>
+            <a class="btn btn--lg btn--sun btn--pop hover-jelly" href="#booking">Check availability</a>
+            <a class="btn btn--lg btn--ghost" href="#faq">Party FAQ</a>
           </div>
         </div>
       </div>

@@ -161,6 +161,70 @@
 .hm-deco--star { width: 36px; top: 1.5rem; right: 1.6rem; }
 @media (max-width: 859px) { .hm-deco { display: none; } }
 
+/* ---------- Parent Lounge feature (leads the reassurance section) ----------
+   The gated parent lounge is a marquee amenity, so it gets a hero feature block
+   above the three reassurance cards. A warm cream→coral card (deliberately
+   distinct from the green membership band) carries the illustrated lounge scene
+   beside the copy. Single column on phones; copy | art from 860px. */
+.lounge-feature {
+  display: grid;
+  gap: clamp(1.4rem, 4vw, 2.6rem);
+  align-items: center;
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 50%),
+    linear-gradient(135deg, var(--sun-tint) 0%, var(--coral-tint) 100%);
+  border-radius: var(--r-xl);
+  padding: clamp(1.5rem, 4vw, 2.8rem);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.6), var(--shadow-lg);
+  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+}
+@media (min-width: 860px) {
+  .lounge-feature { grid-template-columns: 1.05fr 0.95fr; }
+}
+.lounge-feature-copy { position: relative; z-index: 1; }
+.lounge-feature .lounge-title { margin: 0.2rem 0 0.6rem; }
+
+/* Inline "right inside the door" flag */
+.lounge-flag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--accent); background: #fff;
+  padding: 0.4rem 0.9rem; border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm); margin-bottom: 0.85rem;
+}
+.lounge-flag img { width: 16px; height: 16px; }
+
+/* Perks: warm coral check badges (mirrors the membership band's teal ones) */
+.lounge-perks {
+  list-style: none; margin: 0.5rem 0 0; padding: 0;
+  display: grid; gap: 0.55rem; max-width: 44ch;
+}
+.lounge-perks li {
+  position: relative; padding-left: 2rem;
+  color: var(--ink); font-weight: 500; line-height: 1.4;
+}
+.lounge-perks li::before {
+  content: ""; position: absolute; left: 0; top: 0.05rem;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent-coral)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4 10-11'/%3E%3C/svg%3E")
+    center / 13px no-repeat;
+  box-shadow: 0 3px 7px rgba(217, 102, 61, 0.4);
+}
+
+/* Illustrated lounge scene */
+.lounge-feature-art { position: relative; }
+.lounge-feature-art svg {
+  width: 100%; height: auto; display: block;
+  max-width: 420px; margin-inline: auto;
+  filter: drop-shadow(0 14px 26px rgba(80, 60, 30, 0.16));
+}
+/* On phones the art stacks below the copy; cap it so it never dwarfs the text. */
+@media (max-width: 859px) {
+  .lounge-feature-art svg { max-width: 340px; }
+}
+
 /* ---------- Explore the town: wonky cards with corner stickers ---------- */
 /* Flex column so the trailing CTA pins to the bottom of every card — the three
    blurbs differ in length, and without this the buttons float at mismatched
@@ -354,6 +418,9 @@
 @media (max-width: 359px) {
   .home-hero-title { font-size: 1.75rem; }
   .hero-v2 .lead  { font-size: 0.95rem; }
+  /* Tighten the eyebrow so the "· Ages 2–7" tail fits on one line at 320px
+     instead of orphaning a lone "7" onto the next row. */
+  .hero-v2 .eyebrow { letter-spacing: 0.12em; font-size: 0.72rem; }
 }
 
 /* ----------------------------------------------------------
@@ -402,31 +469,31 @@
   .m-star-1    { bottom: 248px; left: 26%;  width: 14px; }
   .m-star-2    { bottom: 230px; right: 27%; width: 12px; }
 
-  /* Parkland — little groves flanking the town along the lawn (foreground:
-     in front of the town base, behind the copy). Negative outer offsets let
-     the tallest trees root just off the edge so the flanks read full. */
+  /* Parkland — a tree + a low flower cluster flanking each side of the town on
+     the lawn (foreground: in front of the town base, behind the copy). Negative
+     outer offsets let the tallest trees root just off the edge so the flanks
+     read full. The mid bushes were removed: the town mark spans nearly the full
+     phone width, so they sat ON the buildings and covered the logo. */
   .m-tree-l    { bottom: 28px; left: -3%;  width: 86px; }
-  .m-bush-l    { bottom: 18px; left: 13%;  width: 66px; }
   .m-flowers-l { bottom: 12px; left: 4%;   width: 46px; }
   .m-tree-r    { bottom: 30px; right: -3%; width: 90px; }
-  .m-bush-r    { bottom: 18px; right: 12%; width: 64px; }
   .m-flowers-r { bottom: 12px; right: 3%;  width: 48px; }
 }
 
 /* Smaller phones: trim the sizes a notch so the sky band stays uncrowded and
    the parkland doesn't crowd the (proportionally larger) town. */
 @media (max-width: 480px) {
-  .m-sun       { bottom: 188px; width: 46px; }
-  .m-balloon   { bottom: 190px; left: 5%;  width: 26px; }
-  .m-balloon-2 { bottom: 184px; left: 18%; width: 18px; }
-  .m-kite      { bottom: 162px; left: 32%; width: 32px; }
-  .m-star-1    { bottom: 236px; left: 25%; width: 13px; }
-  .m-star-2    { bottom: 220px; right: 28%; width: 11px; }
+  /* Sky decos re-anchored to sit in the open band just BELOW the CTAs (instead
+     of poking out from behind them). Hero height itself is unchanged. */
+  .m-sun       { bottom: 147px; width: 46px; }
+  .m-balloon   { bottom: 156px; left: 5%;  width: 26px; }
+  .m-balloon-2 { bottom: 158px; left: 18%; width: 18px; }
+  .m-kite      { bottom: 122px; left: 32%; width: 32px; }
+  .m-star-1    { bottom: 154px; left: 25%; width: 13px; }
+  .m-star-2    { bottom: 166px; right: 28%; width: 11px; }
   .m-tree-l    { width: 74px; }
-  .m-bush-l    { left: 14%; width: 58px; }
   .m-flowers-l { width: 40px; }
   .m-tree-r    { width: 78px; }
-  .m-bush-r    { right: 13%; width: 56px; }
   .m-flowers-r { width: 42px; }
 }
 
@@ -434,12 +501,11 @@
   /* Tightest phones: drop the smallest twinkles + the second balloon and shrink
      the groves so the scene stays calm in the limited sky. */
   .m-star-1, .m-star-2, .m-balloon-2 { display: none; }
-  .m-sun     { bottom: 176px; width: 40px; }
-  .m-balloon { bottom: 178px; }
-  .m-kite    { bottom: 152px; left: 33%; width: 28px; }
+  .m-sun     { bottom: 165px; width: 40px; }
+  .m-balloon { bottom: 168px; }
+  .m-kite    { bottom: 144px; left: 33%; width: 28px; }
   .m-tree-l  { width: 64px; }
   .m-tree-r  { width: 66px; }
-  .m-bush-l, .m-bush-r { width: 50px; }
 }
 
 /* Reduced motion stills the sky animations (the global rule already sets

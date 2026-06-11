@@ -237,6 +237,353 @@
 }
 .price-pill strong { color: var(--accent); }
 
+/* ============================================================
+   BOOKING FLOW — two-step picker (slots → package forms)
+   Mobile-first. Replaces the old calendar mockup. Packages reuse
+   .cp-card, so only the slot picker + step chrome are new here.
+   ============================================================ */
+.bk-head {
+  max-width: 48ch;
+  margin-inline: auto;
+}
+.bk-intro {
+  color: var(--ink-soft);
+  margin-top: 0.55rem;
+}
+
+.bk-step { margin-top: clamp(1.6rem, 5vw, 2.6rem); }
+.bk-step-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+.bk-step-no {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #fff;
+  background: var(--grad-sunrise, linear-gradient(135deg, var(--sun), var(--coral)));
+  box-shadow: 0 3px 0 rgba(90,60,25,0.18), var(--shadow-sm);
+}
+.bk-step-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ---- Step 1: the calendar ---- */
+.bk-cal {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: clamp(0.85rem, 3.5vw, 1.25rem);
+  max-width: 420px;
+  margin-inline: auto;
+}
+.bk-cal-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+.bk-cal-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.05rem, 4vw, 1.25rem);
+  color: var(--ink);
+}
+.bk-cal-nav {
+  flex: none;
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(80,60,30,0.12);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.bk-cal-nav svg { width: 18px; height: 18px; }
+.bk-cal-nav:hover { background: var(--sun-tint); border-color: rgba(80,60,30,0.22); }
+.bk-cal-nav:active { transform: scale(0.92); }
+.bk-cal-nav:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.bk-cal-nav[disabled] { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.bk-cal-dows {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.28rem;
+  margin-bottom: 0.35rem;
+}
+.bk-cal-dows span {
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.bk-cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.28rem;
+}
+.bk-cal-day {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--ink);
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+.bk-cal-day--blank { visibility: hidden; }
+/* weekdays / past / other-month: plain & muted, not selectable ("white") */
+.bk-cal-day--muted { color: rgba(80,60,30,0.30); }
+/* today: a subtle reference ring */
+.bk-cal-day--today { box-shadow: inset 0 0 0 2px rgba(80,60,30,0.22); }
+/* weekends, open: colored & tappable */
+.bk-cal-day--avail {
+  background: var(--sun-tint);
+  color: #9a4a2a;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.15s ease, box-shadow 0.15s ease;
+}
+.bk-cal-day--avail:hover {
+  background: var(--coral-tint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.bk-cal-day--avail:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* fully booked: greyed + struck, not selectable */
+.bk-cal-day--booked {
+  color: rgba(80,60,30,0.34);
+  background: rgba(80,60,30,0.05);
+  text-decoration: line-through;
+}
+/* the chosen date */
+.bk-cal-day--selected {
+  background: var(--coral);
+  color: #fff;
+  box-shadow: 0 3px 0 rgba(150,70,40,0.28);
+}
+
+.bk-cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  justify-content: center;
+  margin: 0.85rem 0 0;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.bk-legend-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+.bk-legend-swatch { flex: none; width: 15px; height: 15px; border-radius: 5px; }
+.bk-legend-swatch--avail { background: var(--sun-tint); }
+.bk-legend-swatch--picked { background: var(--coral); }
+
+/* ---- Step 1: time cards (revealed after a date is chosen) ---- */
+.bk-times { margin-top: 1.3rem; }
+.bk-times[hidden] { display: none; }
+.bk-times-label {
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--ink);
+  margin: 0 0 0.7rem;
+}
+.bk-times-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+  max-width: 420px;
+  margin-inline: auto;
+}
+.bk-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 64px;
+  padding: 0.9rem 1.1rem;
+  background: var(--white);
+  border: 2px solid rgba(80,60,30,0.14);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+              border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.bk-slot:hover {
+  transform: translateY(-2px);
+  border-color: rgba(80,60,30,0.26);
+  box-shadow: var(--shadow-md);
+}
+.bk-slot:active { transform: translateY(0) scale(0.99); }
+.bk-slot:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.bk-slot-when { display: flex; flex-direction: column; gap: 0.12rem; }
+.bk-slot-day { font-family: var(--font-head); font-weight: 700; font-size: 1.06rem; color: var(--ink); }
+.bk-slot-time { font-size: 0.9rem; color: var(--ink-soft); }
+
+.bk-slot-mark {
+  flex: none;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(80,60,30,0.18);
+  color: #fff;
+  background: transparent;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+.bk-slot-mark svg { width: 15px; height: 15px; opacity: 0; transition: opacity 0.15s ease; }
+
+.bk-slot.is-selected {
+  border-color: var(--coral);
+  background: var(--coral-tint);
+  box-shadow: 0 0 0 3px rgba(236,154,144,0.30), var(--shadow-md);
+}
+.bk-slot.is-selected .bk-slot-mark { background: var(--coral); border-color: var(--coral); transform: scale(1.06); }
+.bk-slot.is-selected .bk-slot-mark svg { opacity: 1; }
+
+/* Shake nudge if someone hits Book before choosing a time */
+@keyframes bk-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.bk-times-grid.bk-nudge { animation: bk-shake 0.4s ease; }
+
+/* ---- Step 2: chosen-date chip + packages ---- */
+.bk-chosen {
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--sun-tint);
+  border: 1.5px solid rgba(80,60,30,0.12);
+  border-radius: var(--r-pill);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin: 0 auto 1.2rem;
+  display: inline-flex;
+}
+.bk-chosen[hidden] { display: none; }
+.bk-chosen strong { color: var(--accent); }
+
+.bk-packages {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+/* The package card is a <form> — keep it a clean flex column so the buy
+   button sits at the bottom and aligns across both cards. */
+.bk-pkg { margin: 0; display: flex; flex-direction: column; }
+.bk-pkg-btn { margin-top: auto; }
+
+/* Locked: cards readable, only the buy buttons are muted until a time is
+   chosen. Desaturate + a gentle opacity drop signals "not yet" while KEEPING
+   the price and CTA label legible (a flat 0.45 opacity washed the price out —
+   the most conversion-critical text on the page). */
+.bk-packages.is-locked .bk-pkg-btn {
+  opacity: 0.9;
+  filter: grayscale(0.5);
+  cursor: not-allowed;
+}
+.bk-lock-hint {
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-top: 1rem;
+}
+.bk-packages:not(.is-locked) ~ .bk-lock-hint { display: none; }
+.bk-finenote { text-align: center; margin-top: 0.7rem; }
+
+/* ---- Responsive ---- */
+@media (min-width: 520px) {
+  .bk-times-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+}
+@media (min-width: 700px) {
+  .bk-packages { grid-template-columns: repeat(2, 1fr); }
+}
+/* Wide screens: once a date is chosen, the time slots slide in to the RIGHT
+   of the calendar instead of stacking underneath. Gated on the times being
+   visible (:has), so before a pick the calendar stays centered on its own.
+   Phones/tablets keep the stacked layout — mobile-first. */
+@media (min-width: 800px) {
+  .bk-step:has(.bk-times:not([hidden])) {
+    display: grid;
+    grid-template-columns: minmax(0, 420px) minmax(220px, 340px);
+    grid-template-areas:
+      "head head"
+      "cal  times";
+    column-gap: clamp(1.5rem, 3.5vw, 2.75rem);
+    align-items: start;
+    justify-content: center;
+  }
+  .bk-step:has(.bk-times:not([hidden])) .bk-step-head { grid-area: head; }
+  .bk-step:has(.bk-times:not([hidden])) .bk-cal {
+    grid-area: cal;
+    margin-inline: 0;
+    width: 100%;
+  }
+  .bk-step:has(.bk-times:not([hidden])) .bk-times {
+    grid-area: times;
+    margin-top: 0;
+  }
+  .bk-step:has(.bk-times:not([hidden])) .bk-times-grid {
+    grid-template-columns: 1fr;
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+/* Phones: trim the calendar's inner padding and shrink the inter-cell gap to
+   give the weekend cells more width, then lock in a 44px min height. The 7-col
+   grid caps how wide a cell can get, so guaranteeing the height is what brings
+   the (only) tappable cells up to a comfortable touch target. */
+@media (max-width: 480px) {
+  .bk-cal { padding: 0.7rem; }
+  .bk-cal-days, .bk-cal-dows { gap: 0.22rem; }
+  .bk-cal-day { min-height: 44px; }
+}
+@media (max-width: 360px) {
+  .bk-cal-days, .bk-cal-dows { gap: 0.18rem; }
+  .bk-cal-day { font-size: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk-slot, .bk-slot:hover, .bk-slot:active,
+  .bk-cal-day--avail, .bk-cal-day--avail:hover { transform: none !important; }
+  .bk-times-grid.bk-nudge { animation: none !important; }
+}
+
 /* ---------- Policy strips — friendlier cards ---------- */
 .policy-cards {
   display: grid;

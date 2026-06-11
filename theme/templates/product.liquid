@@ -21,6 +21,8 @@
         <div class="price-tag" id="pdp-price">{{ cv.price | money }}</div>
         <div class="rte" style="margin:1rem 0">{{ product.description }}</div>
         {%- form 'product', product, id: 'pdp-form' -%}
+          {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
+          <input type="hidden" name="return_to" value="/checkout">
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">
@@ -50,7 +52,7 @@
             </fieldset>
           {%- endif -%}
           <button class="btn btn--lg btn--terracotta btn--pop" type="submit" name="add"{% unless product.available %} disabled{% endunless %}>
-            {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Add to cart{% endif %}{% else %}Sold out{% endif %}
+            {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Buy now{% endif %}{% else %}Sold out{% endif %}
           </button>
         {%- endform -%}
       </div>

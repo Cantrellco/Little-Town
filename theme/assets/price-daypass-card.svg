@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Day Pass hero art — a warm "all-day play" card.
+     Same hand-illustrated family as price-membership.svg / price-buyout.svg /
+     price-household.svg: warm gold card, clay-brown linework (#8A5A2C), Fraunces
+     wordmark, signature 4-point sparkles, soft cast shadow, slight tilt. Themed
+     for the day pass: a friendly sun emblem + an "ADMIT ONE" ticket resting on the
+     top-right. Price-agnostic on purpose (matches the rest of the product family). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" role="img" aria-label="Little Town Day Pass card">
+  <defs>
+    <linearGradient id="dp-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#FBE7BE"/>
+      <stop offset="0.55" stop-color="#F0C97E"/>
+      <stop offset="1"    stop-color="#E0A35F"/>
+    </linearGradient>
+    <radialGradient id="dp-badge" cx="50%" cy="38%" r="62%">
+      <stop offset="0" stop-color="#FFF6DE"/>
+      <stop offset="1" stop-color="#F0CD83"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ambient confetti (bunting palette, kept to the corners) -->
+  <g opacity="0.9">
+    <rect x="36" y="40" width="11" height="15" rx="2" fill="#F8D98F" transform="rotate(18 41 47)"/>
+    <polygon points="60,96 72,96 66,85" fill="#BFD6A8"/>
+    <circle cx="44" cy="120" r="4.5" fill="#AEDCEA"/>
+    <rect x="312" y="120" width="11" height="15" rx="2" fill="#F4AE92" transform="rotate(-16 317 127)"/>
+    <circle cx="332" cy="86" r="4.5" fill="#EC9A90"/>
+    <polygon points="300,250 312,250 306,239" fill="#F8D98F"/>
+    <circle cx="52" cy="252" r="4.5" fill="#F4AE92"/>
+  </g>
+
+  <!-- soft cast shadow under the card -->
+  <ellipse cx="180" cy="282" rx="120" ry="8" fill="#3a2c20" opacity="0.16"/>
+
+  <!-- card group (tilted as one) -->
+  <g transform="rotate(-3 180 188)">
+    <!-- body -->
+    <rect x="40" y="108" width="280" height="160" rx="22" fill="url(#dp-bg)" stroke="#8A5A2C" stroke-width="2.6" stroke-linejoin="round"/>
+    <!-- top gloss -->
+    <ellipse cx="138" cy="138" rx="104" ry="22" fill="#FBF5EA" opacity="0.14"/>
+
+    <!-- emblem badge + friendly sun -->
+    <circle cx="80" cy="150" r="21" fill="url(#dp-badge)" stroke="#8A5A2C" stroke-width="2"/>
+    <g transform="translate(80 150)">
+      <g fill="#E8A93E">
+        <g transform="rotate(0)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(45)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(90)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(135)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(180)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(225)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(270)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+        <g transform="rotate(315)"><rect x="-1.6" y="-16.5" width="3.2" height="5.5" rx="1.6"/></g>
+      </g>
+      <circle r="8.6" fill="#F4C969" stroke="#8A5A2C" stroke-width="1.4"/>
+      <circle cx="-2.8" cy="-3" r="3" fill="#FFF6DC" opacity="0.75"/>
+      <circle cx="-1.4" cy="-4" r="1.3" fill="#ffffff" opacity="0.85"/>
+    </g>
+
+    <!-- brand wordmark -->
+    <text x="116" y="146" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="27" font-weight="700" fill="#5a2f1c">Day Pass</text>
+    <text x="117" y="164" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="9.5" font-weight="600" letter-spacing="2.4" fill="#8A5A2C" opacity="0.82">ALL-DAY OPEN PLAY</text>
+
+    <!-- divider -->
+    <line x1="62" y1="184" x2="298" y2="184" stroke="#8A5A2C" stroke-width="1.2" opacity="0.26"/>
+
+    <!-- perk: re-entry loop + benefit -->
+    <g transform="translate(63 197) scale(0.78)" fill="none" stroke="#8A5A2C" stroke-linecap="round">
+      <path d="M5 12 a7 7 0 0 1 11.6 -5.4" stroke-width="1.8"/>
+      <path d="M19 12 a7 7 0 0 1 -11.6 5.4" stroke-width="1.8"/>
+      <path d="M17 3.5 L17 7 L13.5 7" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M7 20.5 L7 17 L10.5 17" stroke-width="1.7" stroke-linejoin="round"/>
+    </g>
+    <circle cx="72.4" cy="206.4" r="1.5" fill="#D9663D"/>
+    <text x="92" y="210" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="13.5" font-weight="600" fill="#5a2f1c">Come and go all day</text>
+
+    <!-- footer row -->
+    <text x="62" y="246" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="1.6" fill="#8A5A2C" opacity="0.9">GROWN-UPS PLAY FREE</text>
+    <text x="262" y="246" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" fill="#B35A37">2026</text>
+
+    <!-- small sparkle on the card -->
+    <path d="M274 198 l1 2.7 l2.9 0.3 l-2.2 1.8 l0.7 2.7 l-2.4 -1.6 l-2.4 1.6 l0.7 -2.7 l-2.2 -1.8 l2.9 -0.3 Z" fill="#FBF5EA" opacity="0.9"/>
+  </g>
+
+  <!-- hero ticket resting on the top-right (on top of the card) -->
+  <g transform="rotate(-10 270 84)">
+    <rect x="222" y="61" width="96" height="46" rx="8" fill="#AEDCEA" stroke="#8A5A2C" stroke-width="2.4"/>
+    <rect x="227" y="66" width="86" height="8" rx="4" fill="#FBF5EA" opacity="0.28"/>
+    <!-- perforation -->
+    <line x1="250" y1="65" x2="250" y2="103" stroke="#8A5A2C" stroke-width="1.8" stroke-dasharray="3 5" stroke-linecap="round"/>
+    <!-- sparkle on the stub -->
+    <path d="M236 76 l1.3 3.6 l3.7 0.4 l-2.8 2.3 l0.9 3.6 l-3.1 -2 l-3.1 2 l0.9 -3.6 l-2.8 -2.3 l3.7 -0.4 Z" fill="#E8B24E"/>
+    <!-- ADMIT band + lines -->
+    <rect x="259" y="68" width="51" height="11" rx="2" fill="#FBF5EA" stroke="#8A5A2C" stroke-width="0.8"/>
+    <text x="284.5" y="76.4" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="6.6" font-weight="700" letter-spacing="0.6" fill="#8A5A2C" text-anchor="middle">ADMIT ONE</text>
+    <text x="284.5" y="92" font-family="Quicksand, system-ui, 'Segoe UI', sans-serif" font-size="6" font-weight="600" letter-spacing="0.8" fill="#5a7f88" text-anchor="middle">ALL-DAY PLAY</text>
+  </g>
+
+  <!-- ambient sparkles outside the card -->
+  <path d="M40 92 l1.1 3 l3.2 0.3 l-2.4 2 l0.8 3.1 l-2.7 -1.7 l-2.7 1.7 l0.8 -3.1 l-2.4 -2 l3.2 -0.3 Z" fill="#F4AE92" opacity="0.9"/>
+  <path d="M318 232 l1.2 3.2 l3.4 0.4 l-2.6 2.1 l0.85 3.2 l-2.9 -1.8 l-2.9 1.8 l0.85 -3.2 l-2.6 -2.1 l3.4 -0.4 Z" fill="#AEDCEA" opacity="0.85"/>
+  <path d="M206 30 l1 2.7 l2.9 0.3 l-2.2 1.8 l0.7 2.7 l-2.4 -1.6 l-2.4 1.6 l0.7 -2.7 l-2.2 -1.8 l2.9 -0.3 Z" fill="#BFD6A8" opacity="0.9"/>
+</svg>

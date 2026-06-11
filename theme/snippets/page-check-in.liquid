@@ -1,0 +1,46 @@
+<style>
+  .lt-ci-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F7F3EC;padding:24px;box-sizing:border-box;font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif;color:#333}
+  .lt-ci-card{width:100%;max-width:380px;background:#fff;border:3px solid #333;border-radius:24px;box-shadow:0 16px 0 -4px rgba(51,51,51,.10);padding:30px 26px 34px;text-align:center;box-sizing:border-box}
+  .lt-ci-eyebrow{font-size:12px;letter-spacing:3px;font-weight:700;color:#B35A37;text-transform:uppercase}
+  .lt-ci-script{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:30px;line-height:1;margin-top:2px;color:#333}
+  .lt-ci-bar{height:8px;background:#F4AE92;border-radius:999px;width:70px;margin:14px auto 0}
+  .lt-ci-h{font-size:26px;font-weight:700;margin:18px 0 4px}
+  .lt-ci-order{display:none;font-size:14px;font-weight:600;color:#6f675b;margin:0 0 6px}
+  .lt-ci-sub{font-size:15px;color:#5b5750;line-height:1.5;margin:0 0 22px}
+  .lt-ci-btn{appearance:none;-webkit-appearance:none;border:3px solid #333;background:#F4AE92;color:#333;font:inherit;font-weight:700;font-size:18px;padding:16px 26px;border-radius:999px;cursor:pointer;box-shadow:0 5px 0 #333;transition:transform .08s,box-shadow .08s;width:100%;max-width:300px}
+  .lt-ci-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #333}
+  .lt-ci-done{display:none}
+  .lt-ci-check{width:96px;height:96px;border-radius:50%;background:#BFD6A8;border:3px solid #333;line-height:90px;margin:6px auto 14px;font-size:52px;animation:lt-ci-pop .5s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes lt-ci-pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+  .lt-ci-foot{font-size:12px;color:#6f675b;margin-top:18px}
+</style>
+<div class="lt-ci-wrap">
+  <div class="lt-ci-card">
+    <div class="lt-ci-eyebrow">Little Town</div>
+    <div class="lt-ci-script">Playhouse</div>
+    <div class="lt-ci-bar"></div>
+    <div id="lt-ci-pre">
+      <div class="lt-ci-h">Welcome! &#128075;</div>
+      <div class="lt-ci-order" id="lt-ci-order"></div>
+      <p class="lt-ci-sub">Ready to play? Tap below to check in.</p>
+      <button class="lt-ci-btn" id="lt-ci-btn" type="button">&#127915; Tap to check in</button>
+    </div>
+    <div class="lt-ci-done" id="lt-ci-done">
+      <div class="lt-ci-check">&#10003;</div>
+      <div class="lt-ci-h">You're checked in!</div>
+      <p class="lt-ci-sub">Come on in and have fun &mdash; enjoy your play. Need anything? Pop into Fusion next door.</p>
+      <div class="lt-ci-foot">Show this screen if anyone asks.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var o=(p.get('o')||p.get('order')||'').replace(/[^-0-9A-Za-z]/g,'');
+  if(o){var el=document.getElementById('lt-ci-order');if(el){el.textContent='Order #'+o;el.style.display='block';}}
+  var btn=document.getElementById('lt-ci-btn'),pre=document.getElementById('lt-ci-pre'),done=document.getElementById('lt-ci-done');
+  function peep(){try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;var ctx=new AC();if(ctx.state==='suspended'&&ctx.resume){ctx.resume();}function tone(f,s,d){var osc=ctx.createOscillator(),g=ctx.createGain();osc.type='sine';osc.frequency.value=f;osc.connect(g);g.connect(ctx.destination);var t=ctx.currentTime+s;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.5,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d);osc.start(t);osc.stop(t+d+0.03);}tone(880,0,0.12);tone(1320,0.12,0.2);}catch(e){}}
+  function checkin(){peep();if(navigator.vibrate){try{navigator.vibrate([60,40,90]);}catch(e){}}if(pre){pre.style.display='none';}if(done){done.style.display='block';}}
+  if(btn){btn.addEventListener('click',checkin);}
+})();
+</script>

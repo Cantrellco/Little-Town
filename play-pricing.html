@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play &amp; Pricing — Little Town Playhouse</title>
-  <meta name="description" content="Open imaginative play through our little downtown storefronts. Day Pass and Play Pack pricing, age policies and play-floor rules.">
+  <meta name="description" content="Open imaginative play through our little downtown storefronts. Day Pass and Household Family Pass pricing, age policies and play-floor rules.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/img/logo.webp" type="image/webp" fetchpriority="high">
   <link rel="icon" href="assets/img/logo.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/pages/play-pricing.css">
@@ -30,7 +31,6 @@
         <a href="visit-us.html">Visit Us</a>
       </nav>
       <div class="header-cta">
-        <a class="header-phone" href="tel:+15550142025" aria-label="Call Little Town Playhouse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>(555) 014-2025</a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -55,7 +55,7 @@
     <section class="page-hero ph--play">
       <div class="container">
         <div class="reveal">
-          <span class="partner-tag"><img src="assets/img/icon-bricks.svg" alt="" width="18" height="18"> Open Play · Ages 0–8</span>
+          <span class="partner-tag"><img src="assets/img/icon-bricks.svg" alt="" width="18" height="18"> Open Play · Ages 2–7</span>
           <h1 style="margin-top:0.8rem">A whole little town to <span class="script" style="color:var(--accent)">explore</span></h1>
           <p class="lead"><strong class="hl--sky" style="color:var(--ink)">Wander Main Street and step inside.</strong> A grocery to stock, a clinic to run, a café to serve — soft, safe and endlessly re-imaginable.</p>
           <div class="flex-cta">
@@ -66,16 +66,18 @@
 
         <!-- Hero art: the wide Main Street (the page's identity) -->
         <div class="hero-art reveal" data-delay="1">
-          <img src="assets/img/logo.png" alt="The Little Town main street: grocery with a slide, café tower and clinic." width="875" height="422" fetchpriority="high" decoding="async">
+          <picture>
+            <source srcset="assets/img/logo.webp" type="image/webp">
+            <img src="assets/img/logo.png" alt="The Little Town main street: grocery with a slide, café tower and clinic." width="875" height="422" fetchpriority="high" decoding="async">
+          </picture>
         </div>
 
         <!-- Stat pill strip — spans full width beneath the copy + street -->
         <div class="stat-strip reveal" data-delay="2" aria-label="Quick facts">
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-baby.svg" alt="" width="18" height="18"></span> Ages 0–8</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-baby.svg" alt="" width="18" height="18"></span> Ages 2–7</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-socks.svg" alt="" width="18" height="18"></span> Socks only, no shoes</span>
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-ticket.svg" alt="" width="18" height="18"></span> 1 free grown-up per child</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-ticket.svg" alt="" width="18" height="18"></span> Grown-ups always free</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-refresh.svg" alt="" width="18" height="18"></span> Re-entry all day</span>
-          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="assets/img/icon-baby.svg" alt="" width="18" height="18"></span> Under-1s play free</span>
         </div>
       </div>
     </section>
@@ -87,7 +89,7 @@
         <div class="center reveal">
           <span class="eyebrow">Open-play pricing</span>
           <h2>Pay as you <span class="hl">play</span></h2>
-          <p class="section-lead">One paid child brings one free grown-up. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
+          <p class="section-lead">Grown-ups always play free — no limit per child. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
         <div class="cp-grid cp-grid--2">
@@ -105,32 +107,31 @@
             </div>
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play with re-entry</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One free grown-up per child</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Infants under 1 play free</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Extra siblings just $14 each</li>
             </ul>
             <button class="cp-cta" type="button" data-noop aria-label="Buy a Day Pass (demo button)">Buy Day Pass</button>
           </article>
 
-          <!-- Play Pack (featured) -->
-          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Play Pack pricing — best value">
+          <!-- Household Family Pass (featured) -->
+          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Household Family Pass pricing — best value">
             <span class="cp-popular" aria-label="Best value">Best value!</span>
             <span class="cp-icon" aria-hidden="true">
               <img src="assets/img/icon-star.svg" alt="" width="26" height="26">
             </span>
-            <h3 class="cp-name">Play Pack</h3>
-            <p class="cp-blurb">Five all-day passes — share them across the whole family.</p>
+            <h3 class="cp-name">Household Family Pass</h3>
+            <p class="cp-blurb">One pass that covers every kid in your household — made for families with 2+ siblings.</p>
             <div class="cp-price">
               <span class="cp-price-amount">$75</span>
-              <span class="cp-price-unit">/ 5 visits</span>
+              <span class="cp-price-unit">/ household</span>
             </div>
             <ul class="cp-list">
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Five all-day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Better value than day passes</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Shareable between siblings</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Never expires</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Good for 2 or more kids</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All siblings in one household</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the whole family</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Skip buying separate day passes</li>
             </ul>
-            <button class="cp-cta" type="button" data-noop aria-label="Buy a Play Pack (demo button)">Buy Play Pack</button>
+            <button class="cp-cta" type="button" data-noop aria-label="Buy a Household Family Pass (demo button)">Buy Household Family Pass</button>
           </article>
 
         </div>
@@ -257,9 +258,10 @@
               <h3>Ages &amp; supervision</h3>
             </div>
             <ul>
-              <li>Designed for ages 0–8; infant nook gated for under-2s.</li>
-              <li>A grown-up (16+) must stay on-site at all times.</li>
-              <li>One free adult per paid child; extra adults always free.</li>
+              <li>Designed for ages 2–7.</li>
+              <li>This is a watch-your-own-child space — a grown-up stays with their little one and keeps them in sight the whole visit.</li>
+              <li>You know your child best: please always know where they are and step in when they need you.</li>
+              <li>Grown-ups always play free — no limit per child.</li>
             </ul>
           </div>
 
@@ -326,11 +328,11 @@
 
           <div class="acc-item reveal" aria-expanded="false">
             <button class="acc-trigger" aria-expanded="false">
-              What's the age range — will my baby or my 8-year-old enjoy it?
+              What's the age range — is it a good fit for my child?
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>The town is built for 0–8. There's a gated infant nook for under-2s with soft shapes and mirrors, the storefronts are pitched at preschool/early-elementary imaginations, and the bigger kids love running the café register and "shopping" with play money. Over-8s are welcome if they're with a younger sibling.</p>
+              <p>The town is built for ages 2–7. The storefronts are pitched at preschool and early-elementary imaginations — the littler ones love the hands-on, soft-play corners, and the bigger kids love running the café register and "shopping" with play money.</p>
             </div></div>
           </div>
 
@@ -360,7 +362,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Play Packs never expire, so there's no rush.</p>
+              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Bought a Household Family Pass? Same deal — just reach out and we'll make it right.</p>
             </div></div>
           </div>
 
@@ -388,6 +390,10 @@
 
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-notice" role="note">
+        <span class="footer-notice__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <p>Little Town is a <strong>watch-your-own-child</strong> space — please stay with your little ones and always know where they are. Grown-ups are responsible for supervising their own children while they play.</p>
+      </div>
       <div class="footer-grid">
         <div class="footer-brand footer-col">
           <a class="brand" href="index.html" aria-label="Little Town Playhouse home">
@@ -397,26 +403,24 @@
           <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
           <div class="socials">
             <a href="#" data-noop aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-            <a href="#" data-noop aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>
-            <a href="#" data-noop aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.1 1.5 3.6 3.5 3.9V10c-1.3 0-2.5-.4-3.5-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
-          </div>
+            <a href="#" data-noop aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>          </div>
         </div>
         <div class="footer-col">
           <h4>Hours</h4>
-          <ul><li>Mon – Thu · 9am – 6pm</li><li>Fri – Sat · 9am – 8pm</li><li>Sunday · 10am – 5pm</li></ul>
+          <ul><li>Mon – Fri · 6am – 6pm</li><li>Saturday · 6am – 4pm</li><li>Sunday · Closed</li></ul>
         </div>
         <div class="footer-col">
           <h4>Visit Us</h4>
-          <ul><li>12 Main Street</li><li>Riverbend, CA 90210</li><li><a href="#" data-noop>(555) 014-2025</a></li><li><a href="#" data-noop>hello@littletownplay.com</a></li></ul>
+          <ul><li>205 East Main Street</li><li>Fairfield, IL 62837</li><li><a href="mailto:littletownplayhousellc@gmail.com">littletownplayhousellc@gmail.com</a></li></ul>
         </div>
         <div class="footer-col">
           <h4>Find Us</h4>
-          <div class="map-placeholder"><img src="assets/img/map-dark.svg" alt="Stylized map placeholder showing 12 Main Street." width="320" height="180" loading="lazy" decoding="async"></div>
+          <div class="map-placeholder"><img src="assets/img/map-dark.png" alt="Map of 205 East Main Street, Fairfield, IL — Little Town Playhouse, next door to Fusion Coffee." width="320" height="180" loading="lazy" decoding="async"></div>
         </div>
       </div>
       <div class="footer-bottom">
         <span>© 2026 Little Town Playhouse</span>
-        <span>Made with imagination in Riverbend</span>
+        <span>Made with imagination in Fairfield</span>
       </div>
     </div>
   </footer>
@@ -443,6 +447,6 @@
     });
   }());
   </script>
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
