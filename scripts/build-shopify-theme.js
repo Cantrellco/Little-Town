@@ -162,6 +162,12 @@ function wireCommerce(html, key) {
       .replace(
         /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Day Pass<\/button>/g,
         `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Buy Day Pass</a>`
+      )
+      // Newsletter: swap the prototype's noop demo form for a real Shopify
+      // customer signup that posts and shows a success note.
+      .replace(
+        /<form class="newsletter-form" onsubmit="return false">[\s\S]*?<\/form>/,
+        `{% form 'customer', class: 'newsletter-form' %}{%- if form.posted_successfully? -%}<p style="color:#fff;font-weight:600;margin:0">Thanks — you're on the list! 🎉</p>{%- else -%}<input type="hidden" name="contact[tags]" value="newsletter"><label for="nl-email" style="position:absolute;left:-9999px">Email address</label><input id="nl-email" type="email" name="contact[email]" placeholder="you@email.com" autocomplete="email" required><button class="btn" type="submit" style="background:#fff;color:var(--accent)">Subscribe</button>{%- endif -%}{% endform %}`
       );
   }
   if (key === "play-pricing") {
@@ -288,6 +294,7 @@ write(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F3EC">
   {%- liquid
     assign meta_key = template.suffix
     if template.name == 'index'
@@ -303,6 +310,11 @@ write(
 ${metaCase}
   <title>{{ meta_title }}</title>
   {%- if meta_desc != blank -%}<meta name="description" content="{{ meta_desc }}">{%- endif -%}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ meta_title }}">
+  {%- if meta_desc != blank -%}<meta property="og:description" content="{{ meta_desc }}">{%- endif -%}
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:image" content="https:{{ 'logo-full.png' | asset_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
@@ -393,11 +405,11 @@ write(
         </a>
         <p style="margin-top:1rem">A little town built for big imaginations. Family memberships, indoor imaginative play, and great coffee next door at Fusion.</p>
         <div class="socials">
-          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>        </div>
+          <a href="https://www.instagram.com/littletownplayhouse" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.facebook.com/people/Little-Town-Playhouse/61590424400382/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9.2c0-.9.3-1.5 1.6-1.5H16V5.1A21 21 0 0 0 13.9 5C11.7 5 10 6.3 10 9v2H7.5v3H10v8z"/></svg></a>        </div>
       </div>
       <div class="footer-col">
-        <h4>Hours</h4>
+        <h3>Hours</h3>
         <ul>
           <li>Mon – Fri · 6am – 6pm</li>
           <li>Saturday · 6am – 4pm</li>
@@ -405,7 +417,7 @@ write(
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Visit Us</h4>
+        <h3>Visit Us</h3>
         <ul>
           <li>205 East Main Street</li>
           <li>Fairfield, IL 62837</li>
@@ -413,8 +425,8 @@ write(
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Find Us</h4>
-        <div class="map-placeholder"><img src="{{ 'map-dark.png' | asset_url }}" alt="Map of 205 East Main Street, Fairfield, IL — Little Town Playhouse, next door to Fusion Coffee." width="320" height="180" loading="lazy" decoding="async"></div>
+        <h3>Find Us</h3>
+        <div class="map-placeholder"><a href="https://maps.google.com/?q=205+East+Main+Street+Fairfield+IL+62837" target="_blank" rel="noopener" style="display:block" aria-label="Open map and directions to 205 East Main Street"><img src="{{ 'map-dark.png' | asset_url }}" alt="Map of 205 East Main Street, Fairfield, IL — Little Town Playhouse, next door to Fusion Coffee." width="320" height="180" loading="lazy" decoding="async"></a></div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -492,6 +504,7 @@ write(
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3EC">
 <title>Check in &mdash; Little Town Playhouse</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
@@ -619,7 +632,7 @@ write(
       {%- for product in collection.products -%}
         <article class="card reveal">
           {%- if product.featured_image -%}<div class="card-art"><img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" width="400" loading="lazy"></div>{%- endif -%}
-          <h3>{{ product.title }}</h3>
+          <h2>{{ product.title }}</h2>
           <div class="price-tag">{{ product.price | money }}</div>
           <a class="btn btn--block btn--terracotta" href="{{ product.url }}">View</a>
         </article>
@@ -639,7 +652,7 @@ write(
     <div class="center reveal"><h1>Collections</h1></div>
     <div class="grid grid-3 mt-4">
       {%- for collection in collections -%}
-        <article class="card reveal"><h3>{{ collection.title }}</h3><a class="btn btn--block btn--terracotta" href="{{ collection.url }}">Browse</a></article>
+        <article class="card reveal"><h2>{{ collection.title }}</h2><a class="btn btn--block btn--terracotta" href="{{ collection.url }}">Browse</a></article>
       {%- endfor -%}
     </div>
 </div></main>
@@ -678,7 +691,7 @@ write(
     <div class="center reveal"><h1>{{ blog.title }}</h1></div>
     <div class="grid grid-3 mt-4">
       {%- for article in blog.articles -%}
-        <article class="card reveal"><h3><a href="{{ article.url }}">{{ article.title }}</a></h3><p>{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p></article>
+        <article class="card reveal"><h2><a href="{{ article.url }}">{{ article.title }}</a></h2><p>{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p></article>
       {%- endfor -%}
     </div>
 </div></main>
@@ -699,12 +712,12 @@ write(
   `<main class="section"><div class="container">
     <div class="center reveal"><h1>Search</h1></div>
     <form action="/search" method="get" role="search" class="center" style="margin-top:1rem">
-      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search…" style="padding:.6rem 1rem;border-radius:999px;border:1px solid rgba(0,0,0,.15)">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search…" aria-label="Search" style="padding:.6rem 1rem;border-radius:999px;border:1px solid rgba(0,0,0,.15)">
       <button class="btn btn--terracotta" type="submit">Go</button>
     </form>
     <div class="grid grid-3 mt-4">
       {%- for item in search.results -%}
-        <article class="card reveal"><h3><a href="{{ item.url }}">{{ item.title }}</a></h3></article>
+        <article class="card reveal"><h2><a href="{{ item.url }}">{{ item.title }}</a></h2></article>
       {%- endfor -%}
     </div>
 </div></main>
@@ -737,8 +750,8 @@ const cust = {
   "login.liquid": `<main class="section"><div class="container reveal" style="max-width:420px">
   <div class="center"><h1>Log in</h1></div>
   {%- form 'customer_login' -%}
-    <input type="email" name="customer[email]" placeholder="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="password" name="customer[password]" placeholder="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="email" name="customer[email]" placeholder="Email" aria-label="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="Password" aria-label="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
     <button class="btn btn--block btn--terracotta" type="submit">Log in</button>
   {%- endform -%}
   <p class="center" style="margin-top:1rem"><a href="/account/register">Create account</a></p>
@@ -746,10 +759,10 @@ const cust = {
   "register.liquid": `<main class="section"><div class="container reveal" style="max-width:420px">
   <div class="center"><h1>Create account</h1></div>
   {%- form 'create_customer' -%}
-    <input type="text" name="customer[first_name]" placeholder="First name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="text" name="customer[last_name]" placeholder="Last name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="email" name="customer[email]" placeholder="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="password" name="customer[password]" placeholder="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="text" name="customer[first_name]" placeholder="First name" aria-label="First name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="text" name="customer[last_name]" placeholder="Last name" aria-label="Last name" style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="email" name="customer[email]" placeholder="Email" aria-label="Email" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="Password" aria-label="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
     <button class="btn btn--block btn--terracotta" type="submit">Create</button>
   {%- endform -%}
 </div></main>`,
@@ -765,15 +778,15 @@ const cust = {
   "order.liquid": `<main class="section"><div class="container reveal"><div class="center"><h1>Order {{ order.name }}</h1></div><p class="center">{{ order.created_at | date: '%B %-d, %Y' }} — {{ order.total_price | money }}</p></div></main>`,
   "reset_password.liquid": `<main class="section"><div class="container reveal" style="max-width:420px"><div class="center"><h1>Reset password</h1></div>
   {%- form 'reset_customer_password' -%}
-    <input type="password" name="customer[password]" placeholder="New password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="password" name="customer[password_confirmation]" placeholder="Confirm" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="New password" aria-label="New password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password_confirmation]" placeholder="Confirm" aria-label="Confirm password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
     <button class="btn btn--block btn--terracotta" type="submit">Reset</button>
   {%- endform -%}
 </div></main>`,
   "activate_account.liquid": `<main class="section"><div class="container reveal" style="max-width:420px"><div class="center"><h1>Activate account</h1></div>
   {%- form 'activate_customer_password' -%}
-    <input type="password" name="customer[password]" placeholder="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
-    <input type="password" name="customer[password_confirmation]" placeholder="Confirm" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password]" placeholder="Password" aria-label="Password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
+    <input type="password" name="customer[password_confirmation]" placeholder="Confirm" aria-label="Confirm password" required style="display:block;width:100%;margin:.5rem 0;padding:.6rem">
     <button class="btn btn--block btn--terracotta" type="submit">Activate</button>
   {%- endform -%}
 </div></main>`,
@@ -788,6 +801,7 @@ write(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F3EC">
   <title>{{ shop.name }}</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
   {{ 'styles.css' | asset_url | stylesheet_tag }}
@@ -806,7 +820,7 @@ write(
   <h1>Opening soon</h1>
   <p>{{ shop.password_message }}</p>
   {%- form 'storefront_password' -%}
-    <input type="password" name="password" placeholder="Password" style="padding:.6rem 1rem;border-radius:999px;border:1px solid rgba(0,0,0,.15)">
+    <input type="password" name="password" placeholder="Password" aria-label="Password" style="padding:.6rem 1rem;border-radius:999px;border:1px solid rgba(0,0,0,.15)">
     <button class="btn btn--terracotta" type="submit">Enter</button>
   {%- endform -%}
 </div></main>

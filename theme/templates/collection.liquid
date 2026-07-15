@@ -5,7 +5,7 @@
       {%- for product in collection.products -%}
         <article class="card reveal">
           {%- if product.featured_image -%}<div class="card-art"><img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" width="400" loading="lazy"></div>{%- endif -%}
-          <h3>{{ product.title }}</h3>
+          <h2>{{ product.title }}</h2>
           <div class="price-tag">{{ product.price | money }}</div>
           <a class="btn btn--block btn--terracotta" href="{{ product.url }}">View</a>
         </article>

@@ -149,19 +149,58 @@ all-sales-final. Built + live; needs only the product published (done).
    that address; the party date/time is on the order. Customer also gets auto-confirmation.
 
 4. **Date-blocking (Shopify Flow + shop metafield, $0):** the calendar greys out booked dates
-   by reading a shop metafield. Set up once:
-   1. **Metafield:** Settings → Custom data → **Metafields → Shop** → Add definition.
-      Namespace+key `lt_booking.taken`, type **Single line text**. Leave value empty.
-   2. **Flow** (Shopify Flow → Create workflow):
-      - **Trigger:** Order created (or Order paid).
-      - *(optional)* Condition: order contains product `Private Buyout`.
-      - **Action: Update shop metafield** → `lt_booking` / `taken` / single line text.
-        Value appends the new booking to the existing list (entries `YYYY-MM-DD|slot`,
-        `;`-separated). Liquid sketch (finalize against your trigger's line-item vars):
+   by reading a shop metafield. Needs a paid plan (Basic+) for Flow. Set up once (verified
+   against Shopify's current Flow docs 2026-07):
+   1. **Metafield:** Settings → **Metafields and metaobjects** (older admin labels it
+      *Custom data*) → **Shop** → Add definition. Set **Name** to anything, then **click Edit
+      on the auto-generated Namespace and key and overwrite them to exactly `lt_booking` /
+      `taken`** (they default to a slug of the Name — if you skip this the theme path
+      `shop.metafields.lt_booking.taken` silently misses). Type **Single line text**. Save,
+      then open the metafield and set an initial value (empty string / placeholder) so it's
+      reliably selectable in Flow's pickers. Also enable **Storefronts** access in the
+      definition's Access section — *harmless belt-and-suspenders, not the actual gate:* per
+      Shopify's docs a **defined** metafield is readable in Online Store Liquid regardless of
+      that toggle (it only governs the headless Storefront API). So the real requirement is
+      that the definition exists; if the theme still reads blank, suspect a namespace/key typo
+      or that no value was ever written — not the Storefronts toggle.
+   2. **Flow** (Apps → Flow → Create workflow). NB the 2026 editor is a **vertical** canvas
+      (redesigned Dec 2025); add each step with the **+** icon under the previous block, not a
+      "Then" button:
+      - **Trigger:** `Order created` (abandoned checkouts never become orders, so this only
+        fires on completed/paid bookings).
+      - *(optional, recommended)* Condition: `Order` → line items → **Product / Handle**,
+        list operator **At least one of**, **is equal to** `private-buyout`. Skips
+        day-pass/membership orders. The Value Liquid below is self-guarding too (returns the
+        list unchanged when there's no `Party date`), so this only saves needless writes.
+      - **Action: `Update shop metafield`** (the SHOP one — 9 near-identical metafield actions
+        exist) → pick metafield `lt_booking.taken` from the dropdown (auto-fills
+        Namespace/Key/Type). Paste the **Value** below — it builds the whole new list in ONE
+        action (Flow can't chain appends reliably in a single run).
+      - **CRITICAL — read the existing value as a variable, NOT via dot-notation.** Flow does
+        **not** resolve `{{ shop.metafields.lt_booking.taken.value }}`; it returns blank and
+        every order would then *overwrite* instead of append. In the Value field click
+        **Add a variable** → **Shop** → **metafield** (singular, not "metafields") → select
+        `lt_booking.taken` → **Add**. Flow inserts a token like `{{ shop.XXXX.value }}` and
+        **auto-names the alias `XXXX` — you can't choose it**. Note that exact alias, then
+        paste this and replace `REPLACE_WITH_ALIAS` on line 1 with it:
+        ```liquid
+        {%- assign existing = shop.REPLACE_WITH_ALIAS.value -%}
+        {%- assign pdate = "" -%}
+        {%- assign ptime = "" -%}
+        {%- for lineItem in order.lineItems -%}
+          {%- for ca in lineItem.customAttributes -%}
+            {%- if ca.key == "Party date" -%}{%- assign pdate = ca.value -%}{%- endif -%}
+            {%- if ca.key == "Party time" -%}{%- assign ptime = ca.value -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        {%- if pdate == blank -%}{{ existing }}{%- elsif existing == blank -%}{{ pdate }}|{{ ptime }}{%- else -%}{{ existing }};{{ pdate }}|{{ ptime }}{%- endif -%}
         ```
-        {{ shop.metafields.lt_booking.taken.value }};{{ <Party date prop> }}|{{ <Party time prop> }}
-        ```
-        Target stored value, e.g.: `2026-06-13|4:30–6:30 PM;2026-06-14|1:00–3:00 PM`
+        Flow Liquid uses GraphQL camelCase: `order.lineItems` → `lineItem.customAttributes`
+        (`.key`/`.value`) — never theme-style `line_items`/`properties`, and no `[0]` indexing.
+        Target stored value, e.g.: `2026-06-13|4:30–6:30 PM;2026-06-14|1:00–3:00 PM`. The
+        `{%- -%}` trim tags are load-bearing (a Single line text metafield rejects newlines).
+        Don't retype the slot strings anywhere — they use an en-dash (`–`); the Liquid carries
+        the order's exact value through so it matches `SLOTS_BY_DOW`.
    3. The storefront reads `lt_booking.taken` on every load → `window.LT_BOOKED_RAW` →
       `partyBooking` greys out any date whose slots are all taken (partly-booked Sundays just
       hide the taken time). For multi-slot days (Sunday) the `Party time` string must match

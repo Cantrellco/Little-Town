@@ -41,15 +41,38 @@
   }
 
   /* ---- FAQ accordion ---- */
-  document.querySelectorAll(".acc-trigger").forEach(function (btn) {
+  document.querySelectorAll(".acc-trigger").forEach(function (btn, i) {
+    var item = btn.closest(".acc-item");
+    var panel = item && item.querySelector(".acc-panel");
+    if (panel) {
+      if (!panel.id) panel.id = "acc-panel-" + (i + 1);
+      btn.setAttribute("aria-controls", panel.id);
+    }
     btn.addEventListener("click", function () {
-      var item = btn.closest(".acc-item");
       if (!item) return;
       var expanded = item.getAttribute("aria-expanded") === "true";
       item.setAttribute("aria-expanded", expanded ? "false" : "true");
       btn.setAttribute("aria-expanded", expanded ? "false" : "true");
     });
   });
+
+  /* ---- Visit Us: highlight today's row in the hours card
+     (ported from a page inline script so it also runs in the Shopify theme) ---- */
+  var todayRows = document.querySelectorAll(".hours-row[data-days]");
+  if (todayRows.length) {
+    var todayDow = new Date().getDay(); // 0=Sun … 6=Sat
+    todayRows.forEach(function (row) {
+      var days = (row.getAttribute("data-days") || "").split(",").map(Number);
+      if (days.indexOf(todayDow) !== -1) row.classList.add("is-today");
+    });
+  }
+
+  /* ---- Play & Pricing: stagger the storefront cards' pop-in
+     (ported from a page inline script; self-guards to that page) ---- */
+  var sfCards = document.querySelectorAll(".storefront-card");
+  if (sfCards.length && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+    sfCards.forEach(function (card, i) { card.style.transitionDelay = (i * 0.07) + "s"; });
+  }
 
   /* ---- Fresh cart on every buy ----
      Buy buttons go straight to Shopify checkout, where there is no built-in
@@ -263,12 +286,12 @@
           return;
         }
         // Product not wired (static prototype, or product unpublished) ->
-        // don't fire a broken POST; tell them to call instead.
+        // don't fire a broken POST; tell them to email instead.
         if (!variant || !variant.value) {
           e.preventDefault();
           var step = form.closest(".bk-step");
           var note = step && step.querySelector(".bk-finenote");
-          if (note) note.textContent = "Online booking is switching on — please call us to reserve this slot.";
+          if (note) note.textContent = "Online booking is switching on — please email littletownplayhousellc@gmail.com to reserve this slot.";
           return;
         }
         // Date + time + variant present -> empty any stray cart items first so
@@ -520,9 +543,11 @@
     }
     return null;
   }
-  function telHref() {
-    var t = document.querySelector('a[href^="tel:"]');
-    return (t && t.getAttribute("href")) || "tel:+15550142025";
+  // No public phone number — contact is email only. Resolve the real mailto from
+  // the footer so the mobile action bar/drawer never advertise a fake number.
+  function contactHref() {
+    var m = document.querySelector('a[href^="mailto:"]');
+    return (m && m.getAttribute("href")) || "mailto:littletownplayhousellc@gmail.com";
   }
   // Which marketing page are we on? Read the active nav link, fall back to the
   // URL. Returns a short key like "memberships" / "visit-us" / "home".
@@ -543,6 +568,8 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>';
   var ICON_HEART =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  var ICON_MAIL =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
   var ICON_PIN =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
   var ICON_CALENDAR =
@@ -602,9 +629,9 @@
     bar.className = "m-actionbar";
     bar.setAttribute("aria-label", "Quick actions");
     bar.innerHTML =
-      '<a class="m-action m-action--call" href="' + telHref() + '">' +
-        '<span class="m-action-ic">' + ICON_PHONE + "</span>" +
-        "<span class=\"m-action-tx\">Call</span>" +
+      '<a class="m-action m-action--call" href="' + contactHref() + '">' +
+        '<span class="m-action-ic">' + ICON_MAIL + "</span>" +
+        "<span class=\"m-action-tx\">Email</span>" +
       "</a>" +
       '<a class="m-action m-action--primary" href="' + primary.href + '">' +
         '<span class="m-action-ic">' + primary.icon + "</span>" +
@@ -655,11 +682,11 @@
 
       var foot = document.createElement("div");
       foot.className = "m-drawer-foot";
-      // Just a tap-to-call link — gives an open-menu visitor a clear next step
+      // Just an email link — gives an open-menu visitor a clear next step
       // (the bottom Action Bar is hidden while the menu is open). No "convert"
       // CTA here on purpose; the membership button was removed from the drawer.
       foot.innerHTML =
-        '<a class="m-drawer-call" href="' + telHref() + '">' + ICON_PHONE + "<span>Call (555) 014-2025</span></a>";
+        '<a class="m-drawer-call" href="' + contactHref() + '">' + ICON_MAIL + "<span>Email us</span></a>";
       panel.appendChild(foot);
     }
 

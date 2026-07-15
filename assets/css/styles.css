@@ -212,6 +212,11 @@ main > .section--tight:last-child {
 /* Neobrutalist press — slide down-right onto the shadow as it shrinks away */
 .btn:hover  { transform: translate(2px, 2px); box-shadow: var(--btn-hard-hover); }
 .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 0 var(--btn-edge); }
+/* On phones, full-width / stacked CTAs can hold long labels (prices, "Buy
+   Household Family Pass") — let them wrap instead of overflowing the pill. */
+@media (max-width: 559px) {
+  .flex-cta .btn, .btn--block, .cp-cta, .bk-pkg-btn { white-space: normal; line-height: 1.25; }
+}
 
 .btn--red { --btn-bg: var(--red); }
 .btn--terracotta { --btn-bg: var(--terracotta); }
@@ -485,7 +490,6 @@ main > .section--tight:last-child {
   overflow: hidden;
 }
 .newsletter h2, .newsletter p { color: var(--ink); }
-.newsletter p { color: var(--ink-soft); }
 .newsletter-form {
   display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
   max-width: 30rem; margin: 1.4rem auto 0;
@@ -555,7 +559,7 @@ main > .section--tight:last-child {
   display: flex; align-items: center; gap: 0.7rem;
   font-size: 1.5rem; margin-bottom: 1.1rem;
 }
-.menu-group h3 svg, .menu-group h3 img { width: 38px; height: 38px; flex: none; }
+.menu-group h3 > svg, .menu-group h3 > img { width: 38px; height: 38px; flex: none; }
 .menu-list { list-style: none; margin: 0; padding: 0; }
 .menu-row {
   display: grid; grid-template-columns: 44px 1fr auto; gap: 0.9rem; align-items: center;
@@ -673,7 +677,7 @@ main > .section--tight:last-child {
 @media (min-width: 720px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
 .footer-brand .brand-name { color: #fff; }
 .footer-brand .brand-sub { color: var(--teal); }
-.footer-col h4 {
+.footer-col h3 {
   font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.12em;
   color: #fff; margin-bottom: 0.9rem;
 }
@@ -1960,11 +1964,11 @@ section.flow-top { overflow: visible; }
     radial-gradient(80% 60% at 100% 100%, rgba(63,114,104,0.10) 0%, rgba(63,114,104,0) 60%),
     #2a2620;
 }
-.footer-col h4 {
+.footer-col h3 {
   position: relative;
   padding-bottom: 0.6rem;
 }
-.footer-col h4::after {
+.footer-col h3::after {
   content: "";
   position: absolute;
   left: 0; bottom: 0;
@@ -2457,7 +2461,8 @@ section.flow-top { overflow: visible; }
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 50px;
+  min-height: 50px;
+  line-height: 1.2;
   padding: 0 1rem;
   font-family: var(--font-script);
   font-style: italic;

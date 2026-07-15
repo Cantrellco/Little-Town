@@ -12,7 +12,7 @@
            cloud layer below. -->
       <picture class="hero-bg">
         <source type="image/webp" srcset="{{ 'logo.webp' | asset_url }}">
-        <img src="{{ 'logo.png' | asset_url }}" alt="The Little Town mark — a play slide tunnel, market, café tower and clinic." fetchpriority="high" decoding="async">
+        <img src="{{ 'logo.png' | asset_url }}" alt="The Little Town mark — a grocery with a slide, café tower and clinic." fetchpriority="high" decoding="async">
       </picture>
       <div class="hero-scrim" aria-hidden="true"></div>
       <!-- Clouds: an endless left-to-right conveyor. The track holds one set of
@@ -124,7 +124,7 @@
             <a class="btn btn--ghost mt-1" href="/pages/play-pricing">Explore play</a>
           </article>
           <article class="card tilt-3d reveal pop-host" data-delay="1">
-            <span class="sticker sticker--coral home-card-sticker">Buy-outs</span>
+            <span class="sticker sticker--coral home-card-sticker">Buyouts</span>
             <span class="pop-bubble pop-bubble--coral" aria-hidden="true"><img src="{{ 'icon-balloon.svg' | asset_url }}" alt="" width="22" height="22"></span>
             <div class="card-art"><img src="{{ 'logo.png' | asset_url }}" alt="The whole Little Town — yours for a private party buyout." width="875" height="422" loading="lazy" decoding="async"></div>
             <h3>Private Parties</h3>
@@ -165,7 +165,7 @@
             <picture>
               <source type="image/avif" srcset="{{ 'photo-play-climb-600.avif' | asset_url }} 600w, {{ 'photo-play-climb-900.avif' | asset_url }} 900w, {{ 'photo-play-climb-1200.avif' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
               <source type="image/webp" srcset="{{ 'photo-play-climb-600.webp' | asset_url }} 600w, {{ 'photo-play-climb-900.webp' | asset_url }} 900w, {{ 'photo-play-climb-1200.webp' | asset_url }} 1200w" sizes="(min-width: 700px) 30vw, 92vw">
-              <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colourful rock wall." loading="lazy" decoding="async" style="object-position:center 35%">
+              <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colorful rock wall." loading="lazy" decoding="async" style="object-position:center 35%">
             </picture>
             <figcaption><span class="glimpse-cap">The climbing wall</span></figcaption>
           </figure>
@@ -245,7 +245,7 @@
             </ul>
           </div>
           <div class="lounge-feature-art" aria-hidden="true">
-            <svg class="lounge-card" viewBox="0 0 320 260" role="img" aria-label="A gated parent lounge at the entrance — a comfy armchair and a Fusion coffee, with a low gate separating it from the play floor." xmlns="http://www.w3.org/2000/svg">
+            <svg class="lounge-card" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
               <rect x="6" y="10" width="308" height="240" rx="22" fill="#ffffff" stroke="#e6dfd1" stroke-width="2"/>
               <clipPath id="loungeClip"><rect x="20" y="24" width="280" height="170" rx="14"/></clipPath>
               <g clip-path="url(#loungeClip)">
@@ -339,7 +339,7 @@
             </ul>
             <div class="flex-cta">
               <a class="btn btn--lg btn--pop btn--onfill" href="/pages/memberships">Join the club</a>
-              <a class="btn btn--lg btn--ghost" style="color:var(--ink);border-color:rgba(58,49,40,0.28)" href="/pages/memberships">Compare tiers</a>
+              <a class="btn btn--lg btn--ghost" style="color:var(--ink);border-color:rgba(58,49,40,0.28)" href="/pages/memberships#tiers">Compare tiers</a>
             </div>
           </div>
           <div class="member-art">
@@ -418,7 +418,7 @@
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Everyone in the same household</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the family</li>
             </ul>
-            <a class="cp-cta" href="/pages/play-pricing">Buy Family Pass</a>
+            <a class="cp-cta" href="/pages/play-pricing#pricing">Buy Family Pass</a>
           </article>
 
         </div>
@@ -433,13 +433,9 @@
       <div class="container">
         <div class="newsletter reveal anim-gradient">
           <span class="eyebrow" style="color:var(--accent)">Stay in the loop</span>
-          <h2>Little news for little town</h2>
+          <h2>Little news from the little town</h2>
           <p>Seasonal events, new arrivals and the odd free-play day — straight to your inbox.</p>
-          <form class="newsletter-form" onsubmit="return false">
-            <label for="nl-email" style="position:absolute;left:-9999px">Email address</label>
-            <input id="nl-email" type="email" placeholder="you@email.com" autocomplete="email">
-            <button class="btn" type="button" data-noop style="background:#fff;color:var(--accent)">Subscribe</button>
-          </form>
+          {% form 'customer', class: 'newsletter-form' %}{%- if form.posted_successfully? -%}<p style="color:#fff;font-weight:600;margin:0">Thanks — you're on the list! 🎉</p>{%- else -%}<input type="hidden" name="contact[tags]" value="newsletter"><label for="nl-email" style="position:absolute;left:-9999px">Email address</label><input id="nl-email" type="email" name="contact[email]" placeholder="you@email.com" autocomplete="email" required><button class="btn" type="submit" style="background:#fff;color:var(--accent)">Subscribe</button>{%- endif -%}{% endform %}
         </div>
       </div>
     </section>

@@ -325,13 +325,14 @@
 @media (min-width: 760px) {
   .visit-steps {
     position: relative;
+    grid-template-columns: repeat(4, 1fr);
   }
   .visit-steps::before {
     content: "";
     position: absolute;
     top: 32px;
-    left: calc(50% / 3 + 16.66%);
-    right: calc(50% / 3 + 16.66%);
+    left: 12.5%;
+    right: 12.5%;
     height: 2px;
     background: linear-gradient(90deg, var(--sky), var(--teal), var(--sage));
     opacity: 0.45;

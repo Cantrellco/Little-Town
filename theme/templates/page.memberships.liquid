@@ -84,7 +84,7 @@
               <ul class="cp-list">
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited open play, every day we're open</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
-                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
+                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
               {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
@@ -102,7 +102,7 @@
               <ul class="cp-list">
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited open play for both kids</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
-                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
+                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
               {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
@@ -119,7 +119,7 @@
               <ul class="cp-list">
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited open play for every child</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
-                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel any time</li>
+                <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
               {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
             </article>
@@ -208,14 +208,14 @@
       <div class="container">
         <div class="center reveal">
           <span class="eyebrow">Getting started</span>
-          <h2>How membership <span class="hl--sky">works</span></h2>
+          <h2>How membership <span class="hl hl--sky">works</span></h2>
           <p class="section-lead">Three easy steps and your family is in — no complicated forms, no long waits. Join online right here in a couple of taps, or pop next door to Fusion and they'll get you set up.</p>
         </div>
         <div class="steps mt-4">
           <div class="step reveal">
             <div class="step-no" aria-hidden="true"></div>
             <h3>Pick your plan</h3>
-            <p>Choose monthly for flexibility or annual for the best value. Switch or cancel at any time — no fuss.</p>
+            <p>Choose monthly for flexibility or annual for the best value. Switch or cancel anytime — no fuss.</p>
           </div>
           <div class="step reveal" data-delay="1">
             <div class="step-no" aria-hidden="true"></div>
@@ -224,7 +224,7 @@
           </div>
           <div class="step reveal" data-delay="2">
             <div class="step-no" aria-hidden="true"></div>
-            <h3>Play unlimited, all month long</h3>
+            <h3>Play unlimited, every day we're open</h3>
             <p>Walk straight in any day we're open, pop next door to Fusion for a coffee, and come as often as you like.</p>
           </div>
         </div>
@@ -251,7 +251,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>We don't offer a formal freeze — but you're never locked in. Monthly members can cancel any time and rejoin whenever you're ready, and annual members enjoy unlimited play for the full year they've paid for.</p>
+              <p>We don't offer a formal freeze — but you're never locked in. Monthly members can cancel anytime and rejoin whenever they're ready, and annual members enjoy unlimited play for the full year they've paid for.</p>
             </div></div>
           </div>
 
@@ -271,7 +271,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Monthly bills on the same day each month and you can cancel any time — your access continues through the end of the period you've paid for. Annual renews once a year on your join date, and you can cancel any time before then.</p>
+              <p>Monthly bills on the same day each month and you can cancel anytime — your access continues through the end of the period you've paid for. Annual renews once a year on your join date, and you can cancel anytime before then.</p>
             </div></div>
           </div>
 
@@ -306,7 +306,7 @@
       <div class="container">
         <div class="cta-band bg-meadow on-dark anim-gradient reveal">
           <div class="confetti-rain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem">&#10024; Join the town</span>
+          <span class="sticker anim-pulse" style="display:inline-flex;margin-bottom:0.6rem"><img src="{{ 'icon-sparkle.svg' | asset_url }}" alt="" width="18" height="18"> Join the town</span>
           <h2>Unlimited play is <span class="script">a tap away</span></h2>
           <p>Pick a plan, walk straight in any day we're open, and turn every rainy Tuesday into the easiest plan of the week.</p>
           <div class="flex-cta center">

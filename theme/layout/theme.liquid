@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F3EC">
   {%- liquid
     assign meta_key = template.suffix
     if template.name == 'index'
@@ -27,6 +28,11 @@
   {%- endcase -%}
   <title>{{ meta_title }}</title>
   {%- if meta_desc != blank -%}<meta name="description" content="{{ meta_desc }}">{%- endif -%}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ meta_title }}">
+  {%- if meta_desc != blank -%}<meta property="og:description" content="{{ meta_desc }}">{%- endif -%}
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:image" content="https:{{ 'logo-full.png' | asset_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
