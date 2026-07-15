@@ -1,16 +1,16 @@
 {%- assign daypass_prod = all_products['day-pass'] -%}
 {%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
-{%- assign familypass_prod = all_products['household-family-pass'] -%}
-{%- if familypass_prod == blank -%}{%- assign familypass_prod = all_products['play-pack'] -%}{%- endif -%}
-{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'family' and p.handle contains 'pass' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
-{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'play' and p.handle contains 'pack' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
-{%- if daypass_prod == blank or familypass_prod == blank -%}
+{%- assign dp_v1 = blank -%}{%- assign dp_v2 = blank -%}{%- assign dp_v3 = blank -%}
+{%- if daypass_prod != blank -%}
+{%- for v in daypass_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign dp_v1 = v -%}{%- elsif v.title contains '2 Child' -%}{%- assign dp_v2 = v -%}{%- elsif v.title contains '3' -%}{%- assign dp_v3 = v -%}{%- endif -%}{%- endfor -%}
+{%- if dp_v1 == blank -%}{%- assign dp_v1 = daypass_prod.variants[0] -%}{%- endif -%}
+{%- if dp_v2 == blank -%}{%- assign dp_v2 = daypass_prod.variants[1] -%}{%- endif -%}
+{%- if dp_v3 == blank -%}{%- assign dp_v3 = daypass_prod.variants[2] -%}{%- endif -%}
+{%- endif -%}
+{%- if daypass_prod == blank -%}
 <div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">
-  <strong>⚠ Setup needed.</strong> The storefront can't see 
-  {%- if daypass_prod == blank %} <em>Day Pass</em>{%- endif -%}
-  {%- if daypass_prod == blank and familypass_prod == blank %} +{%- endif -%}
-  {%- if familypass_prod == blank %} <em>Household Family Pass</em>{%- endif %}. 
-  Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.
+  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Day Pass</em> product, so its buy button can't reach checkout yet. 
+  Check its <strong>URL handle</strong> is <code>day-pass</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it carries the three child-count variants.
 </div>
 {%- endif -%}
 <main>
@@ -58,46 +58,34 @@
           <p class="section-lead">Grown-ups always play free — no limit per child. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
-        <div class="cp-grid cp-grid--2">
+        <div class="cp-grid cp-grid--1">
 
-          <!-- Day Pass -->
-          <article class="cp-card reveal" aria-label="Day Pass pricing">
+          <!-- Day Pass — one product, child-count tiers picked from the dropdown -->
+          <article class="cp-card cp-card--featured reveal" aria-label="Day Pass pricing">
             <span class="cp-icon cp-icon--sky" aria-hidden="true">
               <img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="26" height="26">
             </span>
             <h3 class="cp-name">Day Pass</h3>
-            <p class="cp-blurb">All-day play, walk in any time we're open.</p>
+            <p class="cp-blurb">All-day play, walk in any time we're open. Bringing the whole crew? Pick your group size — siblings share one pass.</p>
             <div class="cp-price">
-              <span class="cp-price-amount">$18</span>
-              <span class="cp-price-unit">/ child</span>
+              <span class="cp-price-amount" data-daypass-price>$10</span>
+              <span class="cp-price-unit" data-daypass-unit>for 1 child</span>
+            </div>
+            <div class="cp-tier">
+              <label class="cp-tier-label" for="daypass-tier">How many children?</label>
+              <select class="cp-tier-select" id="daypass-tier" data-daypass-select aria-label="Choose how many children">
+                <option value="1" data-daypass-opt="1" data-price="$10" data-unit="for 1 child" data-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- else -%}/products/day-pass{%- endif -%}">1 child — $10</option>
+                <option value="2" data-daypass-opt="2" data-price="$18" data-unit="for 2 children" data-href="{%- if dp_v2 != blank -%}/cart/{{ dp_v2.id }}:1{%- else -%}/products/day-pass{%- endif -%}">2 children — $18</option>
+                <option value="3" data-daypass-opt="3" data-price="$25" data-unit="for 3+ children" data-href="{%- if dp_v3 != blank -%}/cart/{{ dp_v3.id }}:1{%- else -%}/products/day-pass{%- endif -%}">3 or more children — $25</option>
+              </select>
             </div>
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play with re-entry</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One pass covers every sibling in your group</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>No booking — walk in any open day</li>
             </ul>
-            <a class="cp-cta" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/day-pass{%- endif -%}">Buy Day Pass</a>
-          </article>
-
-          <!-- Household Family Pass (featured) -->
-          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Household Family Pass pricing — best value">
-            <span class="cp-popular" aria-label="Best value">Best value!</span>
-            <span class="cp-icon" aria-hidden="true">
-              <img src="{{ 'icon-star.svg' | asset_url }}" alt="" width="26" height="26">
-            </span>
-            <h3 class="cp-name">Household Family Pass</h3>
-            <p class="cp-blurb">One pass that covers every kid in your household — made for families with 2+ siblings.</p>
-            <div class="cp-price">
-              <span class="cp-price-amount">$75</span>
-              <span class="cp-price-unit">/ household</span>
-            </div>
-            <ul class="cp-list">
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Good for 2 or more kids</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All siblings in one household</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the whole family</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Skip buying separate day passes</li>
-            </ul>
-            <a class="cp-cta" href="{%- if familypass_prod != blank -%}/cart/{{ familypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/household-family-pass{%- endif -%}">Buy Household Family Pass</a>
+            <a class="cp-cta" data-daypass-buy href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- else -%}/products/day-pass{%- endif -%}">Buy Day Pass</a>
           </article>
 
         </div>
@@ -328,7 +316,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Bought a Household Family Pass? Same deal — just reach out and we'll make it right.</p>
+              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day.</p>
             </div></div>
           </div>
 

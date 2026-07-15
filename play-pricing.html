@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play &amp; Pricing — Little Town Playhouse</title>
-  <meta name="description" content="Open imaginative play through our little downtown storefronts. Day Pass and Household Family Pass pricing, age policies and play-floor rules.">
+  <meta name="description" content="Open imaginative play through our little downtown storefronts. Day Pass pricing for 1, 2 or 3+ children, age policies and play-floor rules.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
@@ -93,46 +93,34 @@
           <p class="section-lead">Grown-ups always play free — no limit per child. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
-        <div class="cp-grid cp-grid--2">
+        <div class="cp-grid cp-grid--1">
 
-          <!-- Day Pass -->
-          <article class="cp-card reveal" aria-label="Day Pass pricing">
+          <!-- Day Pass — one product, child-count tiers picked from the dropdown -->
+          <article class="cp-card cp-card--featured reveal" aria-label="Day Pass pricing">
             <span class="cp-icon cp-icon--sky" aria-hidden="true">
               <img src="assets/img/icon-ticket.svg" alt="" width="26" height="26">
             </span>
             <h3 class="cp-name">Day Pass</h3>
-            <p class="cp-blurb">All-day play, walk in any time we're open.</p>
+            <p class="cp-blurb">All-day play, walk in any time we're open. Bringing the whole crew? Pick your group size — siblings share one pass.</p>
             <div class="cp-price">
-              <span class="cp-price-amount">$18</span>
-              <span class="cp-price-unit">/ child</span>
+              <span class="cp-price-amount" data-daypass-price>$10</span>
+              <span class="cp-price-unit" data-daypass-unit>for 1 child</span>
+            </div>
+            <div class="cp-tier">
+              <label class="cp-tier-label" for="daypass-tier">How many children?</label>
+              <select class="cp-tier-select" id="daypass-tier" data-daypass-select aria-label="Choose how many children">
+                <option value="1" data-daypass-opt="1" data-price="$10" data-unit="for 1 child">1 child — $10</option>
+                <option value="2" data-daypass-opt="2" data-price="$18" data-unit="for 2 children">2 children — $18</option>
+                <option value="3" data-daypass-opt="3" data-price="$25" data-unit="for 3+ children">3 or more children — $25</option>
+              </select>
             </div>
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play with re-entry</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One pass covers every sibling in your group</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>No booking — walk in any open day</li>
             </ul>
-            <button class="cp-cta" type="button" data-noop aria-label="Buy a Day Pass (demo button)">Buy Day Pass</button>
-          </article>
-
-          <!-- Household Family Pass (featured) -->
-          <article class="cp-card cp-card--featured reveal" data-delay="1" aria-label="Household Family Pass pricing — best value">
-            <span class="cp-popular" aria-label="Best value">Best value!</span>
-            <span class="cp-icon" aria-hidden="true">
-              <img src="assets/img/icon-star.svg" alt="" width="26" height="26">
-            </span>
-            <h3 class="cp-name">Household Family Pass</h3>
-            <p class="cp-blurb">One pass that covers every kid in your household — made for families with 2+ siblings.</p>
-            <div class="cp-price">
-              <span class="cp-price-amount">$75</span>
-              <span class="cp-price-unit">/ household</span>
-            </div>
-            <ul class="cp-list">
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Good for 2 or more kids</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All siblings in one household</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One simple price for the whole family</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Skip buying separate day passes</li>
-            </ul>
-            <button class="cp-cta" type="button" data-noop aria-label="Buy a Household Family Pass (demo button)">Buy Household Family Pass</button>
+            <button class="cp-cta" type="button" data-noop data-daypass-buy aria-label="Buy a Day Pass (demo button)">Buy Day Pass</button>
           </article>
 
         </div>
@@ -363,7 +351,7 @@
               <span class="acc-icon" aria-hidden="true">+</span>
             </button>
             <div class="acc-panel"><div>
-              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day. Bought a Household Family Pass? Same deal — just reach out and we'll make it right.</p>
+              <p>Day passes are valid the day they're issued. If something comes up — sick child, weather, traffic — just let us know and we'll happily transfer your pass to another day.</p>
             </div></div>
           </div>
 

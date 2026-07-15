@@ -103,6 +103,54 @@ function memberCta(prod, plan, label, idx, handle, text) {
   );
 }
 
+// The Day Pass is now a 3-tier product (1 / 2 / 3+ children) bought straight from
+// a dropdown on the card — no product page. Resolve the product (exact 'day-pass'
+// handle first, then any handle with 'day'+'pass'), then pin its three tier
+// variants by title ("1 Child" / "2 Children" / "3+ Children") with a positional
+// fallback, mirroring memberCta. Pass withBanner=true to surface a "Setup needed"
+// note when the product/variants aren't published yet (home page stays clean).
+function dayPassPrelude(withBanner) {
+  const lines = [
+    "{%- assign daypass_prod = all_products['day-pass'] -%}",
+    "{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+    "{%- assign dp_v1 = blank -%}{%- assign dp_v2 = blank -%}{%- assign dp_v3 = blank -%}",
+    "{%- if daypass_prod != blank -%}",
+    "{%- for v in daypass_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign dp_v1 = v -%}{%- elsif v.title contains '2 Child' -%}{%- assign dp_v2 = v -%}{%- elsif v.title contains '3' -%}{%- assign dp_v3 = v -%}{%- endif -%}{%- endfor -%}",
+    "{%- if dp_v1 == blank -%}{%- assign dp_v1 = daypass_prod.variants[0] -%}{%- endif -%}",
+    "{%- if dp_v2 == blank -%}{%- assign dp_v2 = daypass_prod.variants[1] -%}{%- endif -%}",
+    "{%- if dp_v3 == blank -%}{%- assign dp_v3 = daypass_prod.variants[2] -%}{%- endif -%}",
+    "{%- endif -%}",
+  ];
+  if (withBanner) {
+    lines.push(
+      "{%- if daypass_prod == blank -%}",
+      '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
+      "  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Day Pass</em> product, so its buy button can't reach checkout yet. ",
+      '  Check its <strong>URL handle</strong> is <code>day-pass</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it carries the three child-count variants.',
+      "</div>",
+      "{%- endif -%}"
+    );
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+
+// Point the Day Pass tier <option>s + buy button at real checkout permalinks.
+// Each option carries data-daypass-opt="1|2|3"; we add data-href for its tier
+// variant (falling back to the product page). The buy button defaults to tier 1;
+// dayPassPicker() in main.js swaps the href to match the dropdown selection.
+function wireDayPass(html) {
+  const href = (v) => `{%- if ${v} != blank -%}/cart/{{ ${v}.id }}:1{%- else -%}/products/day-pass{%- endif -%}`;
+  return html
+    .replace(/(<option [^>]*\bdata-daypass-opt="1"[^>]*)>/g, `$1 data-href="${href("dp_v1")}">`)
+    .replace(/(<option [^>]*\bdata-daypass-opt="2"[^>]*)>/g, `$1 data-href="${href("dp_v2")}">`)
+    .replace(/(<option [^>]*\bdata-daypass-opt="3"[^>]*)>/g, `$1 data-href="${href("dp_v3")}">`)
+    .replace(
+      /<button class="([^"]*)" type="button" data-noop data-daypass-buy[^>]*>Buy Day Pass<\/button>/g,
+      `<a class="$1" data-daypass-buy href="${href("dp_v1")}">Buy Day Pass</a>`
+    );
+}
+
 // Commerce wiring: turn placeholder "buy" buttons into one-tap checkout links.
 // Every buy button skips the product page AND the cart, landing the customer
 // straight on Shopify checkout via a cart permalink. Handles below must match the
@@ -143,26 +191,11 @@ function wireCommerce(html, key) {
       .replace(/<button class="([^"]*)" type="button" data-noop data-tier="3">Join Annual<\/button>/g, memberCta("annual_prod", "a_plan", "3+ Children", 2, "annual-membership", "Join Annual"));
   }
   if (key === "index") {
-    // Home hero's secondary button: send visitors straight to Shopify checkout
-    // for a single Day Pass via a cart permalink, exactly like the one-tap buy
-    // buttons elsewhere. Resolve the product resiliently (exact 'day-pass' handle
-    // first, then any handle containing both 'day' and 'pass'). No setup banner
-    // here — the hero stays clean — so if the product isn't published yet the
-    // button just falls back to the Play & Pricing page.
-    const prelude = [
-      "{%- assign daypass_prod = all_products['day-pass'] -%}",
-      "{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
-      "",
-    ].join("\n");
-    html = prelude + html
-      .replace(
-        /<a class="([^"]*)" href="\/pages\/play-pricing" data-daypass-cta>Day Pass<\/a>/,
-        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Day Pass</a>`
-      )
-      .replace(
-        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Day Pass<\/button>/g,
-        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/pages/play-pricing{%- endif -%}">Buy Day Pass</a>`
-      )
+    // Day Pass card carries the tier dropdown (wireDayPass); the hero's secondary
+    // "Day Pass" button just links to the pricing section so visitors pick their
+    // group size there. No setup banner on the home page — it stays clean; the
+    // buy button falls back to the product page until the product is published.
+    html = dayPassPrelude(false) + wireDayPass(html)
       // Newsletter: swap the prototype's noop demo form for a real Shopify
       // customer signup that posts and shows a success note.
       .replace(
@@ -171,38 +204,11 @@ function wireCommerce(html, key) {
       );
   }
   if (key === "play-pricing") {
-    // Day Pass + Household Family Pass are single-variant, so the card already
-    // holds every choice — link straight to checkout, falling back to the product
-    // page (and a setup banner) until the products exist + are published. The
-    // family pass resolves by its new 'household-family-pass' handle first, then
-    // the legacy 'play-pack' handle, so an existing/renamed product still works.
-    const prelude = [
-      "{%- assign daypass_prod = all_products['day-pass'] -%}",
-      "{%- if daypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'day' and p.handle contains 'pass' -%}{%- assign daypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
-      "{%- assign familypass_prod = all_products['household-family-pass'] -%}",
-      "{%- if familypass_prod == blank -%}{%- assign familypass_prod = all_products['play-pack'] -%}{%- endif -%}",
-      "{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'family' and p.handle contains 'pass' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
-      "{%- if familypass_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'play' and p.handle contains 'pack' -%}{%- assign familypass_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
-      "{%- if daypass_prod == blank or familypass_prod == blank -%}",
-      '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
-      "  <strong>⚠ Setup needed.</strong> The storefront can't see ",
-      "  {%- if daypass_prod == blank %} <em>Day Pass</em>{%- endif -%}",
-      "  {%- if daypass_prod == blank and familypass_prod == blank %} +{%- endif -%}",
-      "  {%- if familypass_prod == blank %} <em>Household Family Pass</em>{%- endif %}. ",
-      '  Check the product’s <strong>URL handle</strong> (Search engine listing) and that it’s <strong>published to Online Store</strong> under Sales channels.',
-      "</div>",
-      "{%- endif -%}",
-      "",
-    ].join("\n");
-    html = prelude + html
-      .replace(
-        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Day Pass<\/button>/g,
-        `<a class="$1" href="{%- if daypass_prod != blank -%}/cart/{{ daypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/day-pass{%- endif -%}">Buy Day Pass</a>`
-      )
-      .replace(
-        /<button class="([^"]*)" type="button" data-noop[^>]*>Buy Household Family Pass<\/button>/g,
-        `<a class="$1" href="{%- if familypass_prod != blank -%}/cart/{{ familypass_prod.selected_or_first_available_variant.id }}:1{%- else -%}/products/household-family-pass{%- endif -%}">Buy Household Family Pass</a>`
-      );
+    // Day Pass is the one open-play product now (the Household Family Pass folded
+    // into its 2-/3+-child tiers). The dropdown holds the choice and the buy
+    // button goes straight to the selected tier's checkout; a setup banner shows
+    // until the product + its three variants exist and are published.
+    html = dayPassPrelude(true) + wireDayPass(html);
   }
   if (key === "parties") {
     // One bookable product `private-buyout` carries both prices as variants:

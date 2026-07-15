@@ -86,16 +86,22 @@ You just need to create the products with the exact handles below, and the butto
 The included `product.liquid` is subscription-aware: it shows a variant picker (the
 child-count tiers), a subscription plan selector, and a working Add-to-cart → Shopify checkout.
 
-### A. Day Pass + Household Family Pass → ordinary Products
-1. **Products → Add product**: create two products.
-   - **Day Pass** — price **$18**, URL handle **`day-pass`**.
-   - **Household Family Pass** — price **$75**, URL handle **`household-family-pass`**.
-     (Good for 2+ kids who live in the same household.)
-2. For each: turn **off** "Track quantity" (unlimited) and **uncheck** "This is a physical
-   product" (no shipping).
-3. ✅ Buttons already point at `/products/day-pass` and `/products/household-family-pass`
-   (on the home page and the Play & Pricing page). The theme also still recognizes a
-   legacy `play-pack` handle, so a renamed existing product keeps working.
+### A. Day Pass → one Product with child-count variants
+The Household Family Pass is **gone** — it's folded into the Day Pass as a size dropdown.
+Create **one** product:
+   - **Day Pass** — URL handle **`day-pass`**.
+   - Add an **option** named "Children" with **3 values**, then set each variant's price:
+     **1 Child $10 · 2 Children $18 · 3+ Children $25**. (Match the value labels closely —
+     the theme resolves each tier by title `1 Child` / `2 Children` / `3+ Children`, then
+     falls back to variant order, so keep them in that order.)
+   - Turn **off** "Track quantity" (unlimited) and **uncheck** "This is a physical product"
+     (no shipping).
+2. ✅ The Play & Pricing + home cards show a **How many children?** dropdown; picking a tier
+   updates the price and sends "Buy Day Pass" straight to that variant's checkout. Until the
+   product + its 3 variants exist and are **published to Online Store**, a "Setup needed"
+   banner shows on Play & Pricing and the button falls back to `/products/day-pass`.
+3. 🗑️ If you already created a separate **Household Family Pass** / `play-pack` product,
+   you can delete or unpublish it — nothing links to it anymore.
 
 ### B. Membership → Shopify Subscriptions (chosen)
 We're modelling the 6 tiers as **two subscription products**, each with **3 variants**
@@ -103,8 +109,8 @@ We're modelling the 6 tiers as **two subscription products**, each with **3 vari
 
 | Product | Handle (must match) | Billing | Variants → price |
 |---|---|---|---|
-| **Monthly Membership** | `monthly-membership` | every **1 month** | 1 Child $45 · 2 Children $70 · 3+ Children $95 |
-| **Annual Membership** | `annual-membership` | every **12 months** | 1 Child $450 · 2 Children $700 · 3+ Children $950 |
+| **Monthly Membership** | `monthly-membership` | every **1 month** | 1 Child $40 · 2 Children $60 · 3+ Children $75 |
+| **Annual Membership** | `annual-membership` | every **12 months** | 1 Child $350 · 2 Children $550 · 3+ Children $675 |
 
 Setup steps:
 1. **Apps → Shopify App Store → install "Shopify Subscriptions"** (free, first-party).
@@ -222,7 +228,7 @@ The footer/newsletter signup should post to your email tool:
 ## Post-purchase email (order confirmation)
 
 A branded order-confirmation email lives in [`notifications/order-confirmation.liquid`](notifications/order-confirmation.liquid).
-It fires automatically after **every** checkout (day pass, household pass, membership,
+It fires automatically after **every** checkout (day pass, membership,
 party buyout) and includes a thank-you, a "Check-In Pass" QR, a "questions? see Fusion"
 block, and a before-you-visit checklist. Install it once via **Settings → Notifications
 → Order confirmation → Edit code → paste**. Full steps + the QR explanation are in

@@ -2,7 +2,7 @@
 
 A branded, on-brand **Order confirmation** email for Little Town Playhouse.
 It replaces Shopify's plain default and fires **automatically after every checkout** —
-day pass, household pass, membership, or party buyout. No app, no extra cost.
+day pass, membership, or party buyout. No app, no extra cost.
 
 Source of truth: [`order-confirmation.liquid`](order-confirmation.liquid).
 

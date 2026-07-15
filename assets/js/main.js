@@ -304,8 +304,8 @@
   })();
 
   /* ---- Wire every "buy" entry point through the fresh-cart clear ----
-     (1) one-tap buy links  /cart/{variantId}:{qty}  (memberships, day pass,
-     household family pass); (2) the product-page fallback form. The party
+     (1) one-tap buy links  /cart/{variantId}:{qty}  (memberships, day-pass
+     tiers); (2) the product-page fallback form. The party
      booking forms clear inside their own submit handler above. We deliberately
      leave the cart page's own form alone — managing items there is the point,
      and its remove links (/cart/change?...) aren't buy permalinks anyway. */
@@ -329,6 +329,31 @@
         clearCartThenGo(function () { pdp.submit(); });
       });
     }
+  })();
+
+  /* ---- Day Pass tier picker: the dropdown drives the visible price + unit and,
+     on Shopify, the buy button's checkout href (the build injects each option's
+     data-href for its variant permalink). Scoped per card so the home + Play &
+     Pricing cards each work independently. On the static preview there's no
+     data-href, so the button stays inert (data-noop) and only the price preview
+     moves. freshCartOnBuy binds the initial tier-1 href and reads a.href live at
+     click, so swapping the href here still routes to the chosen tier. ---- */
+  (function dayPassPicker() {
+    document.querySelectorAll("[data-daypass-select]").forEach(function (sel) {
+      var card = sel.closest(".cp-card") || document;
+      var priceEl = card.querySelector("[data-daypass-price]");
+      var unitEl = card.querySelector("[data-daypass-unit]");
+      var buyEl = card.querySelector("[data-daypass-buy]");
+      function sync() {
+        var opt = sel.options[sel.selectedIndex];
+        if (!opt) return;
+        if (priceEl && opt.dataset.price) priceEl.textContent = opt.dataset.price;
+        if (unitEl && opt.dataset.unit) unitEl.textContent = opt.dataset.unit;
+        if (buyEl && opt.dataset.href) buyEl.setAttribute("href", opt.dataset.href);
+      }
+      sel.addEventListener("change", sync);
+      sync();
+    });
   })();
 
   /* ---- Newsletter (static prototype only): the Shopify build swaps this form

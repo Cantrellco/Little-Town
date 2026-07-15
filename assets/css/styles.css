@@ -2295,6 +2295,9 @@ section.flow-top { overflow: visible; }
      against the section edge on small viewports. */
   padding: 1rem 0.5rem 1.6rem;
 }
+/* Single-card layout (the lone Day Pass card) — stays centered and card-width
+   instead of stretching the full grid. */
+.cp-grid--1 { max-width: 440px; }
 @media (min-width: 720px) {
   .cp-grid--2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
   .cp-grid--3 { grid-template-columns: repeat(3, 1fr); }
@@ -2484,6 +2487,44 @@ section.flow-top { overflow: visible; }
   color: #4a3208;
 }
 .cp-card--featured .cp-cta:hover { background: #f9e1a7; }
+
+/* Day Pass child-count picker — sits between the price and the feature list.
+   Styled to match the sticker-card language (ink border + offset shadow). */
+.cp-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0 0 1.2rem;
+}
+.cp-tier-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.cp-tier-select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 2.5rem 0.7rem 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  background-color: var(--white);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233a3128' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 16px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  box-shadow: 3px 3px 0 0 var(--ink);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.cp-tier-select:hover { box-shadow: 4px 4px 0 0 var(--ink); transform: translate(-1px, -1px); }
+.cp-tier-select:focus-visible { outline: 3px solid var(--accent-sky); outline-offset: 2px; }
 
 /* Eyebrow tag above the section title — small, rotated, script */
 .cp-eyebrow {
