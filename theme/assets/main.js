@@ -331,6 +331,25 @@
     }
   })();
 
+  /* ---- Newsletter (static prototype only): the Shopify build swaps this form
+     for a real {% form 'customer' %} POST. On the static preview there's no
+     backend, so just confirm the signup instead of leaving a dead button. The
+     real Shopify form's email input has name="contact[email]"; the prototype's
+     has none — so we only enhance when there's no name, never the live form. ---- */
+  (function newsletterDemo() {
+    document.querySelectorAll("form.newsletter-form").forEach(function (form) {
+      var email = form.querySelector('input[type="email"]');
+      if (!email || email.name) return;  // real Shopify form → let it post natively
+      function confirm() {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value || "")) { email.focus(); return; }
+        form.innerHTML = '<p style="color:#fff;font-weight:600;margin:0">Thanks — you\'re on the list! 🎉</p>';
+      }
+      form.addEventListener("submit", function (e) { e.preventDefault(); confirm(); });
+      var btn = form.querySelector("button");
+      if (btn) btn.addEventListener("click", confirm);
+    });
+  })();
+
   /* ---- Non-functional buttons: prevent any accidental navigation ---- */
   document.querySelectorAll('[data-noop]').forEach(function (el) {
     el.addEventListener("click", function (e) { e.preventDefault(); });
