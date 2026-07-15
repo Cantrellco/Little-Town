@@ -558,149 +558,32 @@
    v13 — Mobile experience layer
    Everything here is phone-first and self-injecting, so it works
    identically on the static site and the built Shopify theme with
-   no per-page markup. Three parts:
-     1. a persistent bottom Action Bar (tap-to-call + convert),
-     2. hardened mobile-menu behaviour (Esc / outside-tap / resize
+   no per-page markup. Two parts:
+     1. hardened mobile-menu behaviour (Esc / outside-tap / resize
         close, focus + inert a11y, body scroll-lock),
-     3. small touch-feel niceties.
+     2. small touch-feel niceties.
    All of it bails out cleanly on desktop and respects the user's
    reduced-motion / reduced-data preferences.
    ============================================================ */
 (function () {
   "use strict";
 
-  var MOBILE_BP = 760; // must match the CSS action-bar / menu breakpoint
   var header = document.querySelector(".site-header");
 
   /* ---------- shared helpers ---------- */
-  // Find an existing in-page link whose href contains a keyword. Reusing the
-  // real nav/footer hrefs means the Action Bar resolves correctly on BOTH the
-  // static site (memberships.html) and Shopify (/pages/memberships) without
-  // knowing which platform it is running on.
-  function findHref(keyword) {
-    var links = document.querySelectorAll(
-      ".site-header a[href], .site-footer a[href]"
-    );
-    for (var i = 0; i < links.length; i++) {
-      var h = links[i].getAttribute("href") || "";
-      if (h && h !== "#" && h.toLowerCase().indexOf(keyword) !== -1) return h;
-    }
-    return null;
-  }
   // No public phone number — contact is email only. Resolve the real mailto from
-  // the footer so the mobile action bar/drawer never advertise a fake number.
+  // the footer so the mobile drawer never advertises a fake number.
   function contactHref() {
     var m = document.querySelector('a[href^="mailto:"]');
     return (m && m.getAttribute("href")) || "mailto:littletownplayhousellc@gmail.com";
   }
-  // Which marketing page are we on? Read the active nav link, fall back to the
-  // URL. Returns a short key like "memberships" / "visit-us" / "home".
-  function currentPageKey() {
-    var active = document.querySelector(
-      ".site-header .nav a.active, .site-header .mobile-menu a.active"
-    );
-    var ref = (active && active.getAttribute("href")) || location.pathname || "";
-    ref = ref.toLowerCase();
-    var keys = ["play-pricing", "memberships", "parties", "fusion", "photo-gallery", "visit-us"];
-    for (var i = 0; i < keys.length; i++) {
-      if (ref.indexOf(keys[i]) !== -1) return keys[i];
-    }
-    return "home";
-  }
 
-  var ICON_PHONE =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.08 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.96.72 2.87a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.21-1.21a2 2 0 0 1 2.11-.45c.91.35 1.87.59 2.87.72A2 2 0 0 1 22 16.92z"/></svg>';
-  var ICON_HEART =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
   var ICON_MAIL =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
-  var ICON_PIN =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
-  var ICON_CALENDAR =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
-  var ICON_CUP =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a3 3 0 0 1 0 6h-1"/><path d="M3 8h15v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M7 1v2M11 1v2M15 1v2"/></svg>';
   var ICON_X =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
-  /* ---------- shared: the page's forward "convert" action ----------
-     Used by BOTH the bottom Action Bar and the drawer footer so the two never
-     disagree. Always points the visitor forward and never to the page they are
-     already on. On the memberships page (whose whole job IS converting) it
-     points at the in-page plans — mirroring that page's hero + closing-band
-     "Choose your plan" → #tiers — rather than pulling the visitor off to
-     Visit Us, which the persistent thumb CTA used to do. */
-  function computePrimary() {
-    var page = currentPageKey();
-    var membersHref = findHref("membership");
-    var visitHref = findHref("visit");
-    var primary;
-    switch (page) {
-      case "memberships":
-        primary = { label: "Choose your plan", href: "#tiers", icon: ICON_HEART, key: "member" };
-        break;
-      case "parties":
-        // The parties page's own goal is the booking flow, so jump straight to
-        // the slot picker.
-        primary = { label: "Book a party", href: "#booking", icon: ICON_CALENDAR, key: "book" };
-        break;
-      case "fusion":
-        primary = { label: "Plan a Visit", href: visitHref, icon: ICON_PIN, key: "visit" };
-        break;
-      case "visit-us":
-      case "photo-gallery":
-      case "play-pricing":
-        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
-        break;
-      default: // home
-        primary = { label: "Become a Member", href: membersHref, icon: ICON_HEART, key: "member" };
-    }
-    // Safety: if a target couldn't be resolved from the DOM, fall back sensibly.
-    if (!primary.href) primary = { label: "Plan a Visit", href: visitHref || "#", icon: ICON_PIN, key: "visit" };
-    return primary;
-  }
-
-  /* ---------- 1. Persistent bottom Action Bar ----------
-     Two thumb-reach actions pinned to the bottom of every page on phones:
-     a real tap-to-call, plus a context-aware "convert" button that adapts
-     to the page you are on (and never links to the page you are already on). */
-  (function buildActionBar() {
-    if (!document.body || document.querySelector(".m-actionbar")) return;
-
-    var primary = computePrimary();
-
-    var bar = document.createElement("nav");
-    bar.className = "m-actionbar";
-    bar.setAttribute("aria-label", "Quick actions");
-    bar.innerHTML =
-      '<a class="m-action m-action--call" href="' + contactHref() + '">' +
-        '<span class="m-action-ic">' + ICON_MAIL + "</span>" +
-        "<span class=\"m-action-tx\">Email</span>" +
-      "</a>" +
-      '<a class="m-action m-action--primary" href="' + primary.href + '">' +
-        '<span class="m-action-ic">' + primary.icon + "</span>" +
-        '<span class="m-action-tx">' + primary.label + "</span>" +
-      "</a>";
-    document.body.appendChild(bar);
-    // Lets the stylesheet reserve bottom space for the fixed bar (more widely
-    // supported than a :has() selector).
-    document.body.classList.add("has-actionbar");
-
-    // Keep the bar tucked away at the very top of the page so it never covers
-    // the hero or the section header sitting just beneath it (the hero already
-    // carries its own CTAs there); slide it up the moment the visitor scrolls
-    // into the content. Set the initial state synchronously so there's no flash.
-    var SHOW_AFTER = 150; // px scrolled before the bar reveals
-    function syncBarReveal() { bar.classList.toggle("is-attop", window.scrollY <= SHOW_AFTER); }
-    syncBarReveal();
-    window.addEventListener("scroll", syncBarReveal, { passive: true });
-
-    // Hide the bar while the mobile menu is open (the menu already offers the
-    // same destinations), and reveal it again on close. Driven by a class the
-    // menu logic below toggles on <html>.
-  })();
-
-  /* ---------- 2. Hardened mobile menu ---------- */
+  /* ---------- 1. Hardened mobile menu ---------- */
   (function hardenMenu() {
     if (!header) return;
     var toggle = header.querySelector(".nav-toggle");
@@ -726,9 +609,9 @@
 
       var foot = document.createElement("div");
       foot.className = "m-drawer-foot";
-      // Just an email link — gives an open-menu visitor a clear next step
-      // (the bottom Action Bar is hidden while the menu is open). No "convert"
-      // CTA here on purpose; the membership button was removed from the drawer.
+      // Just an email link — gives an open-menu visitor a clear next step.
+      // No "convert" CTA here on purpose; the membership button was removed
+      // from the drawer.
       foot.innerHTML =
         '<a class="m-drawer-call" href="' + contactHref() + '">' + ICON_MAIL + "<span>Email us</span></a>";
       panel.appendChild(foot);

@@ -2572,14 +2572,11 @@ section.flow-top { overflow: visible; }
 /* ============================================================
    v13 — Mobile experience layer
    A phone-first refinement pass that makes the small-screen view
-   the strongest version of the site. The centrepiece is a
-   persistent bottom Action Bar (tap-to-call + a context-aware
-   "convert" button) injected by main.js; around it we tighten the
-   hero crop, enlarge every touch target to a comfortable minimum,
-   stack CTAs for the thumb, harden the menu, balance headline wrap
-   and trim the motion/battery budget. Desktop is untouched —
-   everything is gated behind a max-width query or the .m-actionbar
-   element, which is display:none from 760px up.
+   the strongest version of the site: tighten the hero crop,
+   enlarge every touch target to a comfortable minimum, stack CTAs
+   for the thumb, harden the menu, balance headline wrap and trim
+   the motion/battery budget. Desktop is untouched — everything is
+   gated behind a max-width query.
    ============================================================ */
 
 /* iOS text-inflation guard + nicer wrapping everywhere (progressive) */
@@ -2587,104 +2584,17 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 h1, h2, h3, .cp-name { text-wrap: balance; }
 p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
 
-/* ---------- Persistent bottom Action Bar (mobile only) ---------- */
-.m-actionbar { display: none; }
-
-@media (max-width: 759px) {
-  .m-actionbar {
-    position: fixed;
-    z-index: 60;
-    left: 0; right: 0; bottom: 0;
-    display: grid;
-    /* Call hugs its content; the convert CTA takes the rest. minmax(0,1fr)
-       lets that track shrink instead of overflowing the bar on the very
-       narrowest phones — no more buttons spilling past / overlapping. */
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.55rem 0.7rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
-    background: rgba(248, 244, 237, 0.85);
-    backdrop-filter: saturate(180%) blur(18px);
-    -webkit-backdrop-filter: saturate(180%) blur(18px);
-    border-top: 1px solid rgba(255, 255, 255, 0.75);
-    box-shadow:
-      0 -1px 0 var(--hairline-soft),
-      0 -16px 34px -20px rgba(58, 49, 40, 0.42);
-    transition: transform 0.42s cubic-bezier(0.22,1,0.36,1);
-  }
-  /* Tucked away while the page is at the very top: keeps the bar from ever
-     covering the hero or the section header sitting right beneath it. main.js
-     adds .is-attop near scrollY 0 and removes it once you scroll into the
-     content, so the bar slides up exactly when it becomes useful. */
-  .m-actionbar.is-attop { transform: translateY(125%); pointer-events: none; }
-  .m-action {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 0.5rem;
-    min-width: 0;                 /* allow the primary track to shrink cleanly */
-    min-height: 54px;
-    padding: 0 1.15rem;
-    border-radius: var(--r-pill);
-    font-family: var(--font-head); font-weight: 700;
-    font-size: clamp(0.9rem, 3.4vw, 1rem);
-    line-height: 1; text-decoration: none;
-    border: 1.5px solid transparent;
-    box-shadow:
-      var(--gloss-top),
-      0 1px 2px rgba(80,60,30,0.12),
-      0 10px 20px -10px rgba(80,60,30,0.28);
-    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, filter 0.16s ease;
-  }
-  .m-action-ic { display: inline-flex; flex: none; }
-  .m-action-ic svg { width: 20px; height: 20px; display: block; }
-  /* Label never wraps; if a future CTA is ever too long it ellipsizes
-     gracefully rather than spilling over or overlapping the Call button. */
-  .m-action-tx { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .m-action--call {
-    background: var(--white);
-    color: var(--accent-teal);
-    border-color: rgba(63,114,104,0.18);
-    padding-inline: 1.3rem;
-  }
-  .m-action--primary {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 42%),
-      var(--terracotta);
-    color: var(--ink);
-    border-color: rgba(179,90,55,0.18);
-  }
-  .m-action:active { transform: translateY(1px) scale(0.985); box-shadow: var(--gloss-top), 0 1px 2px rgba(80,60,30,0.12), 0 4px 10px -6px rgba(80,60,30,0.22); }
-
-  /* Slide the bar out of the way while the full menu is open. */
-  html.nav-open .m-actionbar { transform: translateY(125%); pointer-events: none; }
-
-  /* Reserve space so the fixed bar never sits over footer content. */
-  body.has-actionbar { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
-}
-
-/* Tighten the action buttons on the smallest phones so the longest CTA
-   ("Become a Member") fits in full rather than ellipsizing. */
-@media (max-width: 400px) {
-  .m-actionbar { gap: 0.45rem; }
-  .m-action { font-size: 0.86rem; gap: 0.4rem; padding-inline: 0.95rem; }
-  .m-action--call { padding-inline: 1.05rem; }
-  .m-action-ic svg { width: 18px; height: 18px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .m-actionbar { transition: none; }
-}
-
 /* ---------- Buttery scroll on phones: drop the live backdrop blur ----------
    This is the real "the hero isn't smooth when I scroll" fix. The sticky
-   header AND the fixed bottom Action Bar both used `backdrop-filter: blur()`.
-   On a phone, that forces the browser to RE-BLUR the busy, animated hero
-   (drifting clouds + town) behind both bars on every single scroll frame —
-   two live blurs per frame over moving content. That's what tanks the frame
-   rate and makes the hero look like it smears / "drags" as it passes under
-   the header. Desktop keeps the glass (cheap there, no per-frame scrolling
-   blur cost on a pointer device); on touch we swap the live blur for a frosted
-   *solid* fill that reads almost identically but costs the GPU nothing while
-   scrolling. Scoped to the touch-nav range so it also covers tablets. */
+   header used `backdrop-filter: blur()`. On a phone, that forces the browser
+   to RE-BLUR the busy, animated hero (drifting clouds + town) behind it on
+   every single scroll frame — a live blur per frame over moving content.
+   That's what tanks the frame rate and makes the hero look like it smears /
+   "drags" as it passes under the header. Desktop keeps the glass (cheap
+   there, no per-frame scrolling blur cost on a pointer device); on touch we
+   swap the live blur for a frosted *solid* fill that reads almost identically
+   but costs the GPU nothing while scrolling. Scoped to the touch-nav range so
+   it also covers tablets. */
 @media (max-width: 959px) {
   .site-header,
   .site-header.is-stuck {
@@ -2698,14 +2608,6 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
   .site-header        { background: rgba(247, 243, 236, 0.92); }
   .site-header.is-stuck { background: rgba(247, 243, 236, 0.985); }
 }
-@media (max-width: 759px) {
-  .m-actionbar {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    background: rgba(248, 244, 237, 0.97);
-  }
-}
-
 /* ---------- Scroll-lock behind the open menu (no layout shift) ---------- */
 @media (max-width: 959px) {
   html.nav-open, html.nav-open body { overflow: hidden; }
