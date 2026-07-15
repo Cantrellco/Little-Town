@@ -20,7 +20,7 @@
     {%- when 'play-pricing' -%}{%- assign meta_title = "Play &amp; Pricing — Little Town Playhouse" -%}{%- assign meta_desc = "Open imaginative play through our little downtown storefronts. Day Pass and Household Family Pass pricing, age policies and play-floor rules." -%}{%- assign page_css = "play-pricing.css" -%}
     {%- when 'parties' -%}{%- assign meta_title = "Parties — Rent the whole town | Little Town Playhouse" -%}{%- assign meta_desc = "Book a private buyout of Little Town Playhouse — exclusive use for two hours. Pick your date and time, pay online, and your slot is confirmed on the spot. Pricing, cancellation policy and FAQ." -%}{%- assign page_css = "parties.css" -%}
     {%- when 'memberships' -%}{%- assign meta_title = "Memberships — Little Town Playhouse" -%}{%- assign meta_desc = "Monthly and Annual memberships for unlimited imaginative play at Little Town Playhouse — grown-ups always play free, cancel anytime." -%}{%- assign page_css = "memberships.css" -%}
-    {%- when 'fusion' -%}{%- assign meta_title = "Fusion — Coffee next door | Little Town Playhouse" -%}{%- assign meta_desc = "Fusion is the sister café next door to Little Town Playhouse — locally roasted coffee, fresh snacks and little treats, served all day." -%}{%- assign page_css = "fusion.css" -%}
+    {%- when 'fusion' -%}{%- assign meta_title = "Fusion — Coffee next door | Little Town Playhouse" -%}{%- assign meta_desc = "Fusion is the sister café next door to Little Town Playhouse — coffee, fresh snacks and little treats, served all day." -%}{%- assign page_css = "fusion.css" -%}
     {%- when 'photo-gallery' -%}{%- assign meta_title = "Photo Gallery — Little Town Playhouse" -%}{%- assign meta_desc = "A peek inside Little Town Playhouse — a gallery of the play floor, the storefronts and the little ones who run the show." -%}{%- assign page_css = "photo-gallery.css" -%}
     {%- when 'visit-us' -%}{%- assign meta_title = "Visit Us — Little Town Playhouse" -%}{%- assign meta_desc = "Hours, address and directions for Little Town Playhouse on East Main Street, Fairfield. Get in touch and find answers to common visitor questions." -%}{%- assign page_css = "visit-us.css" -%}
     {%- else -%}{%- assign meta_title = page_title -%}{%- assign meta_desc = page_description -%}{%- assign page_css = blank -%}
@@ -31,6 +31,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ 'logo.png' | asset_url }}" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch-icon.png' | asset_url }}">
   {{ 'styles.css' | asset_url | stylesheet_tag }}
   {%- if page_css != blank -%}{{ page_css | asset_url | stylesheet_tag }}{%- endif -%}
   {%- if meta_key == 'index' or meta_key == 'play-pricing' -%}<link rel="preload" as="image" href="{{ 'logo.webp' | asset_url }}" type="image/webp" fetchpriority="high">{%- endif -%}

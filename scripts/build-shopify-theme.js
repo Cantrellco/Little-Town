@@ -307,6 +307,7 @@ ${metaCase}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ 'logo.png' | asset_url }}" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch-icon.png' | asset_url }}">
   {{ 'styles.css' | asset_url | stylesheet_tag }}
   {%- if page_css != blank -%}{{ page_css | asset_url | stylesheet_tag }}{%- endif -%}
   {%- if meta_key == 'index' or meta_key == 'play-pricing' -%}<link rel="preload" as="image" href="{{ 'logo.webp' | asset_url }}" type="image/webp" fetchpriority="high">{%- endif -%}

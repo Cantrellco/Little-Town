@@ -49,6 +49,10 @@
 
   /* Radii */
   --r-sm: 0.6rem;
+  /* Button corner — a touch softer than --r-sm so the bold neobrutalist edge
+     reads as "warm neobrutalist" rather than fighting the rounded pastel UI
+     around it. Keeps the 4px hard shadow; only the corner relaxes. */
+  --r-btn: 0.9rem;
   --r-md: 1rem;
   --r-lg: 1.5rem;
   --r-xl: 2rem;
@@ -195,7 +199,7 @@ main > .section--tight:last-child {
   font-size: 0.98rem;
   line-height: 1;
   padding: 0.95rem 1.6rem;
-  border-radius: var(--r-sm); /* crisp rounded-rect — reads neobrutalist, not a pill */
+  border-radius: var(--r-btn); /* softened rounded-rect — warm neobrutalist, not a pill */
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: 2px solid var(--btn-edge);
@@ -718,7 +722,7 @@ main > .section--tight:last-child {
 
 /* ---------- Page hero (interior pages) — echoes the home sky + clouds ---------- */
 .page-hero {
-  background: linear-gradient(180deg, #c5e2ec 0%, #d6eaef 33%, var(--base) 100%);
+  background: linear-gradient(180deg, #aedaea 0%, #cce5ec 30%, var(--base) 100%);
   /* Shared interior-hero footprint: every interior page's hero takes the same
      slice of the screen and vertically centres its content, so the whole site
      reads as one consistent design even though each hero is its own world.
@@ -786,7 +790,7 @@ main > .section--tight:last-child {
 /* Play & Pricing keeps the open-town sky + drifting clouds (the base look). */
 
 /* Parties — a festive blush with confetti & balloons */
-.page-hero.ph--party { background: linear-gradient(180deg, #f8dee0 0%, #fbe7d6 46%, var(--base) 100%); }
+.page-hero.ph--party { background: linear-gradient(180deg, #f6cdd2 0%, #fadfca 44%, var(--base) 100%); }
 .ph--party .confetti i:nth-child(1) { background: var(--terracotta); transform: rotate(-16deg); }
 .ph--party .confetti i:nth-child(2) { background: var(--wood);       transform: rotate(10deg); }
 .ph--party .confetti i:nth-child(3) { background: var(--teal);       transform: rotate(-8deg); }
@@ -794,28 +798,29 @@ main > .section--tight:last-child {
 .ph--party .confetti i:nth-child(5) { background: var(--sage);       transform: rotate(-12deg); }
 
 /* Memberships — calm, natural sage echoing the home membership band */
-.page-hero.ph--member { background: linear-gradient(180deg, #e6ecdd 0%, #e0e9d8 48%, var(--base) 100%); }
+.page-hero.ph--member { background: linear-gradient(180deg, #d6e2c4 0%, #dde7d0 46%, var(--base) 100%); }
 
 /* Fusion — warm coffee cream with floating café treats */
-.page-hero.ph--cafe { background: linear-gradient(180deg, #f3e3cb 0%, #f7ecd9 46%, var(--base) 100%); }
+.page-hero.ph--cafe { background: linear-gradient(180deg, #efd8b6 0%, #f4e6cd 44%, var(--base) 100%); }
 
 /* Photo Gallery — quiet, warm paper; restrained and a touch more editorial.
    (Background is themed further in photo-gallery.css; padding/height come from
    the shared .page-hero model so it matches the other interior heroes.) */
 .page-hero.ph--gallery {
-  background: linear-gradient(180deg, #efe7d8 0%, #f4eee2 52%, var(--base) 100%);
+  background: linear-gradient(180deg, #e6dac3 0%, #f0e8d8 50%, var(--base) 100%);
 }
 
 /* Visit Us — cooler daylight teal, a wayfinding mood */
-.page-hero.ph--visit { background: linear-gradient(180deg, #d6e6e6 0%, #e4eef0 46%, var(--base) 100%); }
+.page-hero.ph--visit { background: linear-gradient(180deg, #c2dede 0%, #dbeaeb 44%, var(--base) 100%); }
 
 /* ---------- Pills / tags ---------- */
 .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
 .pill {
-  background: var(--white); border: 1px solid rgba(80,60,30,0.1);
-  border-radius: var(--r-pill); padding: 0.45rem 1rem;
-  font-family: var(--font-head); font-weight: 500; font-size: 0.85rem; color: var(--ink-soft);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(180deg, #ffffff 0%, #fbf6ec 100%);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-pill); padding: 0.48rem 1.05rem;
+  font-family: var(--font-head); font-weight: 500; font-size: 0.85rem; color: var(--ink);
+  box-shadow: var(--gloss-top), var(--shadow-soft);
 }
 
 /* ---------- Scroll reveal animations ---------- */
@@ -1370,7 +1375,7 @@ section.flow-top { overflow: visible; }
   top: calc(-1 * var(--flow-h) - 18px + 1px);
   height: calc(var(--flow-h) + 18px);
   background: var(--flow-accent, linear-gradient(90deg, var(--sun) 0%, var(--coral) 36%, var(--sky) 68%, var(--sage) 100%));
-  opacity: 0.85;
+  opacity: 0.92;
   -webkit-mask-size: 300px 100%;                 mask-size: 300px 100%;
   /* drift sideways + a gentle vertical wobble so the ribbon undulates */
   animation: flowDriftB 17s linear infinite, rimWobble 6.5s ease-in-out infinite;
@@ -1823,6 +1828,59 @@ section.flow-top { overflow: visible; }
 .trust svg { width: 24px; height: 24px; color: var(--accent-teal); }
 .trust:nth-child(2) svg { color: var(--accent-coral); }
 .trust:nth-child(3) svg { color: var(--accent-sage); }
+.trust:nth-child(4) svg { color: var(--accent-sun); }
+
+/* ---- Trust strip as a finished badge card (home hero) ----
+   The base .trust-bar is a flex strip with vertical dividers — fine for 3 even
+   items, but 4 orphan-wraps (a lone item + a stray divider) on desktop and
+   ragged-left-stacks on phones. This modifier lays the claims out in an even
+   grid (2x2 on phones, 4-up from 720px), aligns each as a centered badge with a
+   soft tinted icon chip, and drops the dividers so nothing can orphan. */
+.trust-bar--grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3rem 0.2rem;
+  padding: 1rem 0.8rem;
+}
+@media (min-width: 720px) {
+  .trust-bar--grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+    padding: 1.15rem 0.9rem;
+  }
+}
+.trust-bar--grid .trust {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.5rem;
+  font-size: 0.86rem;
+  line-height: 1.3;
+  color: var(--ink);
+  border: 0;            /* cancel the base/v11 vertical dividers */
+  padding-left: 0.5rem; /* and the divider's left padding */
+}
+/* Each icon becomes a soft, tinted round chip — a real trust badge. */
+.trust-bar--grid .trust svg {
+  width: 46px;
+  height: 46px;
+  padding: 11px;
+  border-radius: 50%;
+  background: var(--teal-tint);
+  border: 1px solid rgba(255,255,255,0.75);
+  box-shadow: var(--gloss-top), 0 5px 13px -6px rgba(80,60,30,0.28);
+}
+.trust-bar--grid .trust:nth-child(1) svg { background: var(--teal-tint);  color: var(--accent-teal); }
+.trust-bar--grid .trust:nth-child(2) svg { background: var(--coral-tint); color: var(--accent-coral); }
+.trust-bar--grid .trust:nth-child(3) svg { background: var(--sage-tint);  color: var(--accent-sage); }
+.trust-bar--grid .trust:nth-child(4) svg { background: var(--sun-tint);   color: var(--accent-sun); }
+/* On phones, hairlines between the 2x2 cells give the card quiet structure. */
+@media (max-width: 719px) {
+  .trust-bar--grid .trust:nth-child(odd) { border-right: 1px solid var(--hairline-soft); }
+  .trust-bar--grid .trust:nth-child(1),
+  .trust-bar--grid .trust:nth-child(2) { border-bottom: 1px solid var(--hairline-soft); }
+}
 @media (min-width: 760px) {
   .trust + .trust { border-left-color: var(--hairline-soft); }
 }
