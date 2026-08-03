@@ -54,7 +54,7 @@ This uploads it as a **draft** so nothing changes. Preview from
 
 ### Then, in the Shopify admin (required for the pages to render):
 
-Each of the 6 sub-pages needs a Page record pointing at its template:
+Each of the 7 sub-pages needs a Page record pointing at its template:
 
 1. **Online Store → Pages → Add page** — create one page per row below.
    Set the **title**, then under **Theme template** pick the matching suffix, and make
@@ -68,8 +68,13 @@ Each of the 6 sub-pages needs a Page record pointing at its template:
    | Fusion | `page.fusion` | `fusion` |
    | Photo Gallery | `page.photo-gallery` | `photo-gallery` |
    | Visit Us | `page.visit-us` | `visit-us` |
+   | Visitor Agreement & Waiver | `page.terms` | `terms` |
 
    (Page body content can stay empty — the design is baked into the template.)
+
+   ⚠ **`terms` is not optional.** The agreement box that gates every buy button
+   links to `/pages/terms`, as does the footer. If that Page record doesn't exist,
+   customers get a 404 when they try to read what they're agreeing to.
 
 2. The homepage (`index.liquid`) is automatic — no Page record needed.
 3. **Online Store → Navigation** — the theme links to `/pages/<handle>` directly, so the
@@ -241,6 +246,58 @@ when the customer taps it on arrival. That page *is* in the theme
 add one more Page: title *Check in*, handle **`check-in`**, template **`page.check-in`**
 (same Add-page flow as the table above). Preview locally via
 [`notifications/check-in-preview.html`](notifications/check-in-preview.html).
+
+---
+
+## Purchase agreement gate (customers must accept before they can buy)
+
+Every buy button on the site is gated: clicking **Buy Day Pass**, any **Join
+Monthly/Annual**, either **Book …** party button, the product-page Add-to-cart
+fallback, or the cart's **Checkout** opens a small box with a summary of the
+agreement, a link to the full text, and a checkbox. The **Agree & continue**
+button stays disabled until the box is ticked — there is no path to Shopify
+checkout on this site that skips it.
+
+**Where the wording lives — edit both, together:**
+
+| What | File | Notes |
+|---|---|---|
+| The short summary in the box | `assets/js/main.js` → `var AGREEMENT` | 4 bullets + the checkbox label |
+| The full agreement | `terms.html` | The real Participant Agreement, 21 sections |
+| Version stamp | `assets/js/main.js` → `AGREEMENT_VERSION` | Bump on **every** wording change |
+
+**The agreement was adapted for one-checkbox acceptance.** It arrived written as a
+paper form with blanks, so four things changed and nothing else:
+
+1. Every *"listed below"* / *"identified below"* → *"in my care"* / *"I bring to
+   the facility"*, since there is no place online to list children.
+2. §16 photography: the two *"select one"* boxes are gone. It now says plainly
+   that accepting **does not** give photo authorization, and that it's given or
+   withdrawn in person or by email — so the single checkbox never bundles an
+   optional consent that §16 says is not a condition of admission.
+3. §17 and §21: *"signature"* / *"BY SIGNING BELOW"* → checkbox acceptance
+   wording. §17 already treated a checkbox as a valid electronic signature.
+4. §9: *"signing this Agreement"* → *"accepting this Agreement"*.
+
+Every substantive clause — the release (§10), indemnification (§11), assumption
+of risk (§9), medical authorization (§12), Illinois law and Wayne County venue
+(§18) — is unchanged. Worth an attorney or insurer pass before it goes live.
+
+**Proof of acceptance lands on the order.** When a customer agrees, the acceptance
+is written as an `Agreement` **cart attribute** (`Accepted <ISO timestamp>
+(v<version>)`), and — for the party and product forms — additionally as an
+`Agreement` **line-item property**. Both are visible on the order in the Shopify
+admin, so every order carries a record of which version of the agreement was
+accepted and when. Bumping `AGREEMENT_VERSION` is what keeps old acceptances
+distinguishable from new ones.
+
+**Limits, stated plainly.** This is a front-of-site gate. It stops customers
+using the site normally, and it records their acceptance — but it is enforced in
+the browser, so someone who deliberately disables JavaScript or pastes a
+`/cart/…` permalink straight into the address bar can still reach checkout.
+Closing that off completely would need a Shopify checkout UI extension, which
+requires Shopify Plus. For a play café this front-of-site gate plus the on-order
+record is the normal, proportionate setup.
 
 ## Notes / gotchas
 - **Images / performance.** Run `npm install` once, then `npm run build` (which runs

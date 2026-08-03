@@ -7,6 +7,10 @@ scripts/.img-cache.json
 # Screenshot / design scratch artifacts
 _shot/
 
+# Live-store scratch: curl cookie jars hold real Shopify SESSION COOKIES, plus
+# saved page dumps. Treat like credentials — never commit.
+_live/
+
 # Built theme artifact (regenerate with: node scripts/make-theme-zip.js)
 theme.zip
 

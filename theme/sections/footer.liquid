@@ -21,8 +21,8 @@
       <div class="footer-col">
         <h3>Hours</h3>
         <ul>
-          <li>Mon – Fri · 6am – 6pm</li>
-          <li>Saturday · 6am – 4pm</li>
+          <li>Mon – Fri · 8am – 6pm</li>
+          <li>Saturday · 8am – 4pm</li>
           <li>Sunday · Closed</li>
         </ul>
       </div>
@@ -41,6 +41,8 @@
     </div>
     <div class="footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} Little Town Playhouse</span>
+      {%- comment -%} main.js reads this link's href to point the buy-time agreement box at the full terms. {%- endcomment -%}
+      <span><a href="/pages/terms" data-terms-link>Terms &amp; Waiver</a></span>
       <span>Made with imagination in Fairfield</span>
     </div>
   </div>

@@ -77,7 +77,10 @@
 /* ---------- Reset / base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+/* scroll-padding-top keeps every in-page jump (#pricing, #tiers, #booking,
+   #faq, #menu, #gallery, #contact) clear of the sticky header — without it the
+   section heading lands underneath the bar the moment the header actually pins. */
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 1rem); }
 
 body {
   margin: 0;
@@ -187,6 +190,17 @@ main > .section--tight:last-child {
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Buy committed: main.js latches a single purchase in flight and marks the buy
+   controls, so the pending tap looks pending instead of looking ignored. Without
+   this the button stays fully lit for up to ~2s while the cart clear + agreement
+   stamp settle, which is what invites the second tap. */
+.is-buying,
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  pointer-events: none;
+}
+
 /* ---------- Buttons (all visual-only / non-functional) ---------- */
 .btn {
   --btn-bg: var(--terracotta);
@@ -246,6 +260,14 @@ main > .section--tight:last-child {
   transition: box-shadow 0.25s ease, background 0.25s ease;
 }
 .site-header.is-stuck { box-shadow: var(--shadow-sm); background: rgba(247,243,236,0.95); }
+
+/* Shopify wraps `{% section 'header' %}` in <div id="shopify-section-header">,
+   which is `position: static` and exactly as tall as the header itself. A sticky
+   child can't travel outside its parent's box, so .site-header above had zero
+   room to stick and scrolled away on every live page (the static preview pins
+   fine, because there <header> is a direct child of <body>). Sticking the
+   wrapper too gives it the whole page to travel. No-op off Shopify. */
+#shopify-section-header { position: sticky; top: 0; z-index: 50; }
 
 .header-inner {
   display: flex;
@@ -701,6 +723,14 @@ main > .section--tight:last-child {
   display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between;
   font-size: 0.84rem; color: #9b948a;
 }
+/* The Terms link sits between two plain spans — underline it so it reads as
+   the one thing down here you can actually click. */
+.footer-bottom a {
+  color: #cfc7bb;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.footer-bottom a:hover { color: var(--white); }
 
 /* Site-wide "watch your own child" reminder — sits atop every footer */
 .footer-notice {
@@ -2845,4 +2875,236 @@ p, .lead, .section-lead, .cp-blurb, li { text-wrap: pretty; }
 @media (max-width: 480px) {
   .cp-popular { right: -0.15rem; top: -0.8rem; font-size: 0.85rem; padding: 0.45rem 0.8rem; }
   .cp-grid { padding-inline: 0.25rem; }
+}
+
+/* ============================================================
+   Purchase agreement gate
+   The box that opens on every buy button: summary, link to the full
+   agreement, required checkbox. Built and injected by main.js, so there's
+   no markup for it in any page — it exists identically on the static
+   preview and in the Shopify theme.
+   Phone-first: on a small screen it's a near-full-width sheet that scrolls
+   inside itself, with the tick + CTA always reachable at the bottom.
+   ============================================================ */
+.lt-agree {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;             /* above the sticky header and the mobile drawer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Keep clear of the notch / home indicator / curved corners on phones. */
+  padding: calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-top))
+           calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-right))
+           calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-bottom))
+           calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-left));
+}
+.lt-agree[hidden] { display: none; }
+
+/* Scroll-lock the page behind the box — at every width, unlike the mobile
+   drawer's lock, since this one opens on desktop too. */
+html.agree-open, html.agree-open body { overflow: hidden; }
+
+.lt-agree__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(48, 38, 28, 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.lt-agree.is-open .lt-agree__backdrop { opacity: 1; }
+
+.lt-agree__box {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  /* 100% of the flex container's content box — i.e. the viewport minus the
+     safe-area padding above, so the box never runs under a notch. */
+  max-height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  box-shadow: 5px 5px 0 0 var(--ink), var(--shadow-lg);
+  padding: clamp(1.4rem, 4.5vw, 2rem);
+  padding-top: clamp(1.6rem, 5vw, 2rem);
+  opacity: 0;
+  transform: translateY(14px) scale(0.98);
+  transition: opacity 0.24s ease, transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lt-agree.is-open .lt-agree__box { opacity: 1; transform: none; }
+.lt-agree__box:focus { outline: none; }
+.lt-agree__box:focus-visible { outline: none; }
+
+/* Corner close — a quiet secondary out; the labelled Cancel below is the
+   primary one, so this stays small and low-contrast. */
+.lt-agree__x {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.lt-agree__x svg { width: 1.05rem; height: 1.05rem; }
+.lt-agree__x:hover { background: var(--base-deep); color: var(--ink); }
+
+.lt-agree__title {
+  font-family: var(--font-head);
+  font-size: clamp(1.25rem, 4.6vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 2rem 0.4rem 0;   /* clear of the corner close */
+  color: var(--ink);
+}
+.lt-agree__intro {
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.lt-agree__points {
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.lt-agree__points li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+/* The copy sits in its own span so bold runs inside it can't become sibling
+   flex items; min-width:0 lets long words wrap instead of pushing the row wide. */
+.lt-agree__points li > span:last-child,
+.lt-agree__check > span:last-child { flex: 1 1 auto; min-width: 0; }
+.lt-agree__tick {
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-top: 0.08rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--sage-tint);
+  color: var(--accent-sage);
+}
+.lt-agree__tick svg { width: 0.8rem; height: 0.8rem; }
+
+.lt-agree__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-bottom: 1.15rem;
+}
+.lt-agree__link svg { width: 0.9rem; height: 0.9rem; }
+/* Announced by screen readers, invisible on screen. */
+.lt-agree__sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The tick itself. A real checkbox stays in the DOM for keyboard + forms;
+   the visible box is the span beside it. The whole row is the tap target. */
+.lt-agree__check {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.95rem;
+  border: 2px solid rgba(58, 49, 40, 0.2);
+  border-radius: var(--r-md);
+  background: var(--base);
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--ink);
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.lt-agree.is-ready .lt-agree__check {
+  border-color: var(--accent-sage);
+  background: var(--sage-tint);
+}
+.lt-agree__check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+.lt-agree__box-ui {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 0.45rem;
+  background: var(--white);
+  color: var(--white);
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+.lt-agree__box-ui svg { width: 0.95rem; height: 0.95rem; opacity: 0; transform: scale(0.6); transition: opacity 0.14s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.lt-agree__check input:checked + .lt-agree__box-ui { background: var(--accent-sage); border-color: var(--accent-sage); }
+.lt-agree__check input:checked + .lt-agree__box-ui svg { opacity: 1; transform: none; }
+.lt-agree__check input:focus-visible + .lt-agree__box-ui { outline: 3px solid var(--accent-sky); outline-offset: 2px; }
+
+.lt-agree__actions { margin-top: 1.1rem; }
+.lt-agree__go[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--btn-hard);
+  filter: saturate(0.6);
+}
+.lt-agree__cancel {
+  display: block;
+  width: 100%;
+  margin-top: 0.65rem;
+  padding: 0.6rem;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.lt-agree__cancel:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-agree__backdrop,
+  .lt-agree__box,
+  .lt-agree__box-ui svg { transition: none; }
+  .lt-agree__box { transform: none; }
 }

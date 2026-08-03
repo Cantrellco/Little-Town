@@ -94,6 +94,279 @@
     } catch (e) { once(); }
   }
 
+  /* ============================================================
+     Purchase agreement gate
+     ------------------------------------------------------------
+     Nothing can be bought until the customer ticks the legal agreement.
+     EVERY buy path is gated — the one-tap membership and day-pass permalinks,
+     the two party booking forms, the product-page fallback (all via gatedBuy),
+     and the cart page's own Checkout button (which gates without clearing; see
+     there). Clicking any of them opens a small modal: a short summary, a link
+     to the full agreement, and a required checkbox. Only "Agree & continue"
+     proceeds to Shopify checkout.
+
+     Unlike clearCartThenGo this fails CLOSED — no tick, no purchase. Only the
+     *stamping* below fails open, so a flaky network can never block a sale the
+     customer already agreed to.
+
+     The acceptance is then recorded ON THE ORDER, which is the part that makes
+     the tick worth anything later:
+       - forms  -> a hidden properties[Agreement] line-item property
+       - always -> an "Agreement" cart attribute via /cart/update.js
+     Both carry AGREEMENT_VERSION + an ISO timestamp, and show up in the Shopify
+     admin on the order. Bump AGREEMENT_VERSION whenever the wording changes so
+     acceptances of the old text stay distinguishable from the new.
+
+     Acceptance is deliberately NOT remembered between purchases: it's a
+     per-order acceptance, so it's asked every time. One tap, and the record on
+     each order stands on its own.
+     ============================================================ */
+
+  var AGREEMENT_VERSION = "1.0";
+
+  /* >>> EDIT THE WORDING HERE <<<
+     This is the summary shown in the box at the moment of purchase. The FULL
+     agreement lives on terms.html (Shopify: /pages/terms) — edit both, then
+     bump AGREEMENT_VERSION above. Keep the summary short; the full text is one
+     tap away and is what the checkbox actually binds the customer to. */
+  var AGREEMENT = {
+    title: "Before you check out",
+    intro: "Please read and accept our Participant Agreement. It affects important legal rights.",
+    points: [
+      "A responsible adult must stay in the building and <strong>actively supervise their own children</strong> the whole visit. We're not a drop-off facility.",
+      "Play carries real risks — including falls, collisions, choking, serious injury and death. You accept those risks for yourself and the children in your care.",
+      "You <strong>release Little Town Playhouse from liability</strong> for ordinary negligence, and agree to indemnify us for harm caused by your party, to the extent Illinois law allows.",
+      "You authorize emergency medical care if it's ever needed, and accept responsibility for the cost."
+    ],
+    linkText: "Read the full agreement",
+    checkbox: "I have read and accept the Participant Agreement, Acknowledgment of Risk, Release, Indemnification and Medical Authorization.",
+    cta: "Accept &amp; continue",
+    cancel: "Cancel"
+  };
+
+  /* The full-agreement URL. Read off the footer link so the same JS works on
+     the static preview (terms.html) and on Shopify (/pages/terms). */
+  function agreementHref() {
+    var link = document.querySelector("[data-terms-link]");
+    return (link && link.getAttribute("href")) || "/pages/terms";
+  }
+
+  var agreeEl = null;        // the modal, built once on first use
+  var agreeAccept = null;    // what to run once they tick + confirm
+  var agreeLastFocus = null; // the buy button, so focus can go back on cancel
+
+  function buildAgreeModal() {
+    var el = document.createElement("div");
+    el.className = "lt-agree";
+    el.hidden = true;
+    el.innerHTML =
+      '<div class="lt-agree__backdrop" data-agree-cancel></div>' +
+      '<div class="lt-agree__box" role="dialog" aria-modal="true" aria-labelledby="lt-agree-title" tabindex="-1">' +
+        '<button type="button" class="lt-agree__x" data-agree-cancel aria-label="Close">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+        "</button>" +
+        '<h2 class="lt-agree__title" id="lt-agree-title">' + AGREEMENT.title + "</h2>" +
+        '<p class="lt-agree__intro">' + AGREEMENT.intro + "</p>" +
+        '<ul class="lt-agree__points">' +
+          AGREEMENT.points.map(function (p) {
+            // The text is wrapped in its own span on purpose: the <li> is a flex
+            // row, so a bare <strong> in the copy would become a second flex
+            // item and get squeezed into its own column.
+            return '<li><span class="lt-agree__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>' + p + "</span></li>";
+          }).join("") +
+        "</ul>" +
+        '<a class="lt-agree__link" href="' + agreementHref() + '" target="_blank" rel="noopener">' + AGREEMENT.linkText +
+          // The arrow icon signals "new tab" visually; say it out loud too, so
+          // screen-reader users aren't surprised by the context switch.
+          '<span class="lt-agree__sr"> (opens in a new tab)</span>' +
+          ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>' +
+        "</a>" +
+        '<label class="lt-agree__check">' +
+          '<input type="checkbox" data-agree-box>' +
+          '<span class="lt-agree__box-ui" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>' +
+          "<span>" + AGREEMENT.checkbox + "</span>" +
+        "</label>" +
+        '<div class="lt-agree__actions">' +
+          '<button type="button" class="btn btn--block btn--coral btn--pop lt-agree__go" data-agree-go disabled>' + AGREEMENT.cta + "</button>" +
+          '<button type="button" class="lt-agree__cancel" data-agree-cancel>' + AGREEMENT.cancel + "</button>" +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(el);
+
+    var box = el.querySelector("[data-agree-box]");
+    var go = el.querySelector("[data-agree-go]");
+
+    // The CTA only unlocks once the box is ticked — that IS the gate.
+    box.addEventListener("change", function () {
+      go.disabled = !box.checked;
+      el.classList.toggle("is-ready", box.checked);
+    });
+
+    el.querySelectorAll("[data-agree-cancel]").forEach(function (b) {
+      b.addEventListener("click", function () { closeAgree(true); });
+    });
+
+    go.addEventListener("click", function () {
+      if (!box.checked) return;          // belt-and-braces: never proceed unticked
+      var run = agreeAccept;
+      closeAgree(false);
+      if (run) run();
+    });
+
+    // Esc cancels; Tab is trapped inside the dialog while it's open.
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); closeAgree(true); return; }
+      if (e.key !== "Tab") return;
+      var f = el.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])');
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      var at = document.activeElement;
+      // Opening focuses the dialog box itself, which is tabindex="-1" and so
+      // isn't in the list above. Shift+Tab from there would walk out of the
+      // dialog — and since this listener lives on the dialog, Esc would stop
+      // working too. Treat "focus is on the box, not on a control" as being at
+      // the start: Tab goes to the first control, Shift+Tab wraps to the last.
+      var onAControl = Array.prototype.indexOf.call(f, at) !== -1;
+      if (!onAControl) { e.preventDefault(); (e.shiftKey ? last : first).focus(); return; }
+      if (e.shiftKey && at === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && at === last) { e.preventDefault(); first.focus(); }
+    });
+
+    return el;
+  }
+
+  /* Take the rest of the page out of the tab order + the a11y tree while the
+     dialog is open, so a screen reader can't wander behind it. Each sibling's
+     previous state is stashed and restored — the mobile drawer manages its own
+     aria-hidden/inert, and we must not stomp on it. */
+  function setBackgroundInert(on) {
+    Array.prototype.forEach.call(document.body.children, function (child) {
+      if (child === agreeEl) return;
+      if (on) {
+        child.__agreeAria = child.getAttribute("aria-hidden");
+        child.__agreeInert = !!child.inert;
+        child.setAttribute("aria-hidden", "true");
+        try { child.inert = true; } catch (e) {}
+      } else {
+        if (child.__agreeAria == null) child.removeAttribute("aria-hidden");
+        else child.setAttribute("aria-hidden", child.__agreeAria);
+        try { child.inert = !!child.__agreeInert; } catch (e) {}
+        delete child.__agreeAria;
+        delete child.__agreeInert;
+      }
+    });
+  }
+
+  function openAgree(onAccept) {
+    if (!agreeEl) agreeEl = buildAgreeModal();
+    agreeAccept = onAccept;
+    agreeLastFocus = document.activeElement;
+
+    // Always reopen unticked — every purchase gets its own acceptance.
+    var box = agreeEl.querySelector("[data-agree-box]");
+    var go = agreeEl.querySelector("[data-agree-go]");
+    box.checked = false;
+    go.disabled = true;
+    agreeEl.classList.remove("is-ready");
+    // The href is resolved lazily: on Shopify the footer link is the source of truth.
+    agreeEl.querySelector(".lt-agree__link").setAttribute("href", agreementHref());
+
+    agreeEl.hidden = false;
+    setBackgroundInert(true);
+    // Next frame, so the open transition actually runs.
+    requestAnimationFrame(function () { agreeEl.classList.add("is-open"); });
+    // Hiding the page's scrollbar would reflow everything a few px wider on
+    // desktop; pad the gap back so nothing visibly jumps.
+    var gap = window.innerWidth - document.documentElement.clientWidth;
+    if (gap > 0) document.documentElement.style.paddingRight = gap + "px";
+    document.documentElement.classList.add("agree-open");
+    var dialog = agreeEl.querySelector(".lt-agree__box");
+    try { dialog.focus({ preventScroll: true }); } catch (e) { dialog.focus(); }
+  }
+
+  function closeAgree(returnFocus) {
+    if (!agreeEl || agreeEl.hidden) return;
+    agreeAccept = null;
+    agreeEl.classList.remove("is-open");
+    document.documentElement.classList.remove("agree-open");
+    document.documentElement.style.paddingRight = "";
+    agreeEl.hidden = true;
+    setBackgroundInert(false);
+    if (returnFocus && agreeLastFocus && agreeLastFocus.focus) {
+      try { agreeLastFocus.focus({ preventScroll: true }); } catch (e) { agreeLastFocus.focus(); }
+    }
+    agreeLastFocus = null;
+  }
+
+  /* Write the acceptance onto the order, then continue. The line-item property
+     (forms only) is set synchronously and rides along with the POST; the cart
+     attribute is a separate AJAX write that covers the permalink buys too.
+     Fails OPEN on its own deadline — a stalled write must not eat the sale. */
+  function stampAgreementThenGo(form, go) {
+    var stamp = "Accepted " + new Date().toISOString() + " (v" + AGREEMENT_VERSION + ")";
+    if (form) {
+      var input = form.querySelector('input[name="properties[Agreement]"]');
+      if (!input) {
+        input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "properties[Agreement]";
+        form.appendChild(input);
+      }
+      input.value = stamp;
+    }
+    var done = false;
+    function once() { if (done) return; done = true; go(); }
+    setTimeout(once, 900);
+    try {
+      fetch("/cart/update.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ attributes: { Agreement: stamp } })
+      }).then(once, once);
+    } catch (e) { once(); }
+  }
+
+  /* The one entry point every buy path uses: agree -> empty the cart -> stamp
+     the acceptance -> go. `form` is the form being submitted, or null for the
+     one-tap permalink links. */
+  /* Single-flight latch. Between the tap and the browser actually leaving for
+     Shopify there is a real gap — clearCartThenGo alone waits up to 1200ms, and
+     stampAgreementThenGo another 900ms — during which nothing on screen changes.
+     On a slow phone that reads as "it didn't work", so people tap again. Each tap
+     used to run its own POST /cart/add, the line merged to quantity 2, and
+     checkout showed $370 for one party. Latch on first accept, and stay latched:
+     the page is on its way out, so there is no state to release. */
+  var buyInFlight = false;
+
+  /* Grey out every buy control once a purchase is committed, so the pending tap
+     is visible and the other package button can't be started alongside it.
+     Deliberately does NOT touch button[name="checkout"] on the cart page: that
+     path re-submits via requestSubmit(btn), which needs the button enabled to
+     carry its own name. Safe for the forms here — they submit programmatically,
+     which never serialises the submitter, and each carries its variant in a
+     hidden name="id" input. */
+  function lockBuyControls() {
+    document.querySelectorAll("[data-bk-form] button[type=submit], #pdp-form button[type=submit]").forEach(function (b) {
+      b.disabled = true;
+    });
+    document.querySelectorAll("[data-bk-form], #pdp-form, a[data-buy-href]").forEach(function (el) {
+      el.classList.add("is-buying");
+    });
+  }
+
+  /* The one entry point every buy path uses: agree -> empty the cart -> stamp
+     the acceptance -> go. `form` is the form being submitted, or null for the
+     one-tap permalink links. */
+  function gatedBuy(form, go) {
+    if (buyInFlight) return;
+    openAgree(function () {
+      if (buyInFlight) return;   // double-tap landed while the agreement was open
+      buyInFlight = true;
+      lockBuyControls();
+      clearCartThenGo(function () { stampAgreementThenGo(form, go); });
+    });
+  }
+
   /* ---- Party booking: a real calendar -> pick a weekend date -> pick a time
      -> pick a package -> Shopify checkout. Weekdays + past days are muted and
      non-selectable; weekends are tappable; fully-booked dates are greyed. The
@@ -294,31 +567,54 @@
           if (note) note.textContent = "Online booking is switching on — please email littletownplayhousellc@gmail.com to reserve this slot.";
           return;
         }
-        // Date + time + variant present -> empty any stray cart items first so
-        // the order is just this buyout, then POST it. (form.submit() doesn't
-        // re-fire this handler, so there's no loop.)
+        // Date + time + variant present -> take the legal agreement, empty any
+        // stray cart items so the order is just this buyout, then POST it.
+        // (form.submit() doesn't re-fire this handler, so there's no loop.)
         e.preventDefault();
-        clearCartThenGo(function () { form.submit(); });
+        gatedBuy(form, function () { form.submit(); });
       });
     });
   })();
 
-  /* ---- Wire every "buy" entry point through the fresh-cart clear ----
+  /* ---- Wire every "buy" entry point through the agreement gate + fresh cart ----
      (1) one-tap buy links  /cart/{variantId}:{qty}  (memberships, day-pass
-     tiers); (2) the product-page fallback form. The party
-     booking forms clear inside their own submit handler above. We deliberately
-     leave the cart page's own form alone — managing items there is the point,
-     and its remove links (/cart/change?...) aren't buy permalinks anyway. */
-  (function freshCartOnBuy() {
+     tiers); (2) the product-page fallback form; (3) the cart page's Checkout
+     button. The party booking forms go through gatedBuy in their own submit
+     handler above. The cart page's *other* controls are left alone — managing
+     items there is the point, and its remove links (/cart/change?...) and
+     quantity "Update" aren't purchases. */
+  (function gateEveryBuy() {
+    /* One-tap buys carry their checkout permalink in data-buy-href, never in
+       href (the build puts the product page there instead — see memberCta in
+       scripts/build-shopify-theme.js). That is what makes this gate hold:
+       ctrl/cmd-click, middle-click and right-click → "Open in new tab" all act
+       on href, and no amount of JS can gate them, so href must not be a
+       checkout URL. They land on the product page, whose add-to-cart form is
+       gated below. An empty data-buy-href means the variant didn't resolve —
+       let the product-page href through untouched. */
+    document.querySelectorAll("a[data-buy-href]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        if (e.defaultPrevented) return;
+        var href = a.getAttribute("data-buy-href");
+        if (!href) return;
+        e.preventDefault();
+        gatedBuy(null, function () { window.location.href = href; });
+      });
+    });
+
+    /* Safety net for any hand-written anchor that still points straight at a
+       cart permalink. Nothing the build emits does anymore, but if one ever
+       reappears it gets gated rather than silently skipping the agreement.
+       Modified clicks are deliberately NOT excused here — letting them through
+       would be exactly the bypass this guards against. */
     var PERMALINK = /\/cart\/\d+(?::\d+)/;  // /cart/{variantId}:{qty}[...]
-    document.querySelectorAll('a[href*="/cart/"]').forEach(function (a) {
+    document.querySelectorAll('a[href*="/cart/"]:not([data-buy-href])').forEach(function (a) {
       if (!PERMALINK.test(a.getAttribute("href") || "")) return;
       a.addEventListener("click", function (e) {
-        // Leave modified clicks (open-in-new-tab, middle-click) to the browser.
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (e.defaultPrevented) return;
         e.preventDefault();
         var href = a.href;
-        clearCartThenGo(function () { window.location.href = href; });
+        gatedBuy(null, function () { window.location.href = href; });
       });
     });
 
@@ -326,18 +622,63 @@
     if (pdp) {
       pdp.addEventListener("submit", function (e) {
         e.preventDefault();
-        clearCartThenGo(function () { pdp.submit(); });
+        gatedBuy(pdp, function () { pdp.submit(); });
       });
     }
+
+    /* Cart page: only the Checkout submit is a purchase.
+       This one gates WITHOUT clearing, so it can't use gatedBuy. Everywhere
+       else the item is added *after* the clear; here the line items already in
+       the cart ARE the purchase, so emptying it first would submit checkout
+       against an empty cart and Shopify would bounce straight back to /cart.
+       Stamp only. The form is passed as null because a bare properties[...]
+       field means nothing to a POST /cart update — for this path the
+       /cart/update.js attribute is the acceptance record.
+       form.submit() would also drop the button's own name, turning a checkout
+       into a quantity update, so re-submit through the button itself
+       (requestSubmit) and fall back to a hidden "checkout" field without it. */
+    document.querySelectorAll('button[name="checkout"]').forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        var form = btn.form || btn.closest("form");
+        if (!form) return;
+        if (buyInFlight) return;
+        e.preventDefault();
+        openAgree(function () {
+          if (buyInFlight) return;
+          buyInFlight = true;   // latch only; the button must stay enabled for requestSubmit
+          stampAgreementThenGo(null, function () {
+            if (form.requestSubmit) { form.requestSubmit(btn); return; }
+            var flag = document.createElement("input");
+            flag.type = "hidden";
+            flag.name = "checkout";
+            flag.value = btn.value || "";
+            form.appendChild(flag);
+            form.submit();
+          });
+        });
+      });
+    });
+
+    /* Static preview only: the buy buttons here are inert placeholders
+       (data-noop) because there's no Shopify behind them. Still open the gate
+       so the agreement box can be reviewed exactly as customers will see it.
+       Agreeing just closes the box — on the real site that's the moment the
+       browser leaves for Shopify checkout. openAgree (not gatedBuy) on purpose:
+       there's no cart to clear or stamp here. */
+    document.querySelectorAll("[data-noop][data-daypass-buy], [data-noop][data-tier]").forEach(function (btn) {
+      btn.addEventListener("click", function () { openAgree(function () {}); });
+    });
   })();
 
   /* ---- Day Pass tier picker: the dropdown drives the visible price + unit and,
-     on Shopify, the buy button's checkout href (the build injects each option's
-     data-href for its variant permalink). Scoped per card so the home + Play &
+     on Shopify, the buy button's checkout permalink (the build injects each
+     option's data-href for its variant). Scoped per card so the home + Play &
      Pricing cards each work independently. On the static preview there's no
      data-href, so the button stays inert (data-noop) and only the price preview
-     moves. freshCartOnBuy binds the initial tier-1 href and reads a.href live at
-     click, so swapping the href here still routes to the chosen tier. ---- */
+     moves. The permalink is written to data-buy-href — never href, which stays
+     on the product page so an open-in-new-tab can't skip the agreement gate.
+     gateEveryBuy binds the anchor once and reads data-buy-href live at click,
+     so swapping it here still routes to the chosen tier. ---- */
   (function dayPassPicker() {
     document.querySelectorAll("[data-daypass-select]").forEach(function (sel) {
       var card = sel.closest(".cp-card") || document;
@@ -349,7 +690,7 @@
         if (!opt) return;
         if (priceEl && opt.dataset.price) priceEl.textContent = opt.dataset.price;
         if (unitEl && opt.dataset.unit) unitEl.textContent = opt.dataset.unit;
-        if (buyEl && opt.dataset.href) buyEl.setAttribute("href", opt.dataset.href);
+        if (buyEl && opt.dataset.href) buyEl.setAttribute("data-buy-href", opt.dataset.href);
       }
       sel.addEventListener("change", sync);
       sync();

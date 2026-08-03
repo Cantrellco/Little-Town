@@ -1,0 +1,153 @@
+/* ============================================================
+   Terms & Waiver page
+   A legal document, styled to still feel like Little Town: warm paper,
+   generous measure, calm sage accent. Readability is the whole job here —
+   a comfortable line length, real spacing between clauses, and headings
+   you can scan on a phone.
+   ============================================================ */
+
+/* Calm sage/stone hero wash — the quietest of the per-page accents,
+   because this page shouldn't shout. */
+.page-hero.ph--terms {
+  background: linear-gradient(180deg, #d5dfc6 0%, #e7ecdd 46%, var(--base) 100%);
+}
+.terms-updated {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-top: 1.1rem;
+}
+
+.terms-wrap {
+  max-width: 46rem;
+}
+
+/* The "PLEASE READ CAREFULLY" line and the opening recital, above the
+   contents box. Set a little larger than the clause text — these are the two
+   things we most want actually read. */
+.terms-lede {
+  margin: 0 0 1.4rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+.terms-intro {
+  margin: 0 0 2rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ---------- Contents ---------- */
+.terms-toc {
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 2.6rem;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  box-shadow: 5px 5px 0 0 var(--ink);
+}
+.terms-toc h2 {
+  font-size: 0.78rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin: 0 0 0.7rem;
+}
+.terms-toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.94rem;
+}
+.terms-toc a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(58, 49, 40, 0.25);
+}
+.terms-toc a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+/* ---------- The agreement itself ---------- */
+.terms-body { color: var(--ink); }
+.terms-body h2 {
+  font-family: var(--font-head);
+  font-size: clamp(1.15rem, 3.6vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 2.6rem 0 0.7rem;
+  padding-top: 0.9rem;
+  border-top: 2px solid rgba(58, 49, 40, 0.12);
+  /* Land clear of the sticky header when jumped to from the contents. */
+  scroll-margin-top: 5.5rem;
+}
+.terms-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.terms-body p,
+.terms-body li {
+  font-size: 0.98rem;
+  line-height: 1.68;
+  color: var(--ink-soft);
+}
+.terms-body p { margin: 0 0 0.95rem; }
+.terms-body strong { color: var(--ink); }
+.terms-body ul {
+  margin: 0 0 0.95rem;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.terms-body a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Pulled-out warning for the clauses that genuinely need a professional. */
+.terms-callout {
+  padding: 0.9rem 1.1rem;
+  border-left: 4px solid var(--accent-sun);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--wood-tint);
+  color: var(--ink) !important;
+  font-weight: 600;
+}
+
+/* §21's all-caps confirmations. Caps at body size are hard going, so ease the
+   tracking and give each line room to breathe. */
+.terms-ack {
+  list-style: none;
+  padding-left: 0;
+  gap: 0.65rem;
+}
+.terms-ack li {
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  color: var(--ink);
+}
+.terms-ack li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 2px;
+  background: var(--accent-sage);
+}
+
+.terms-sig {
+  margin-top: 1.6rem;
+  padding-top: 1.1rem;
+  border-top: 2px solid rgba(58, 49, 40, 0.12);
+  font-size: 0.88rem;
+}
+
+@media (min-width: 760px) {
+  .terms-toc { padding: 1.5rem 1.8rem; }
+  .terms-body p, .terms-body li { font-size: 1rem; }
+}

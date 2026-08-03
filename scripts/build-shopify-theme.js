@@ -73,6 +73,7 @@ const LINKS = {
   "fusion.html": "/pages/fusion",
   "photo-gallery.html": "/pages/photo-gallery",
   "visit-us.html": "/pages/visit-us",
+  "terms.html": "/pages/terms",
 };
 
 function rewriteAssets(html) {
@@ -87,11 +88,26 @@ function rewriteLinks(html) {
 }
 const transformBody = (html) => rewriteLinks(rewriteAssets(html));
 
-// Build a one-tap "buy" link that goes straight to Shopify checkout for a single
-// membership tier, via a cart permalink (/cart/{variant}:1?selling_plan={id}, which
-// adds the item and redirects to checkout). Resolves the tier's variant by title
-// first (e.g. "2 Children"), then by position, then falls back to the product page
-// if the product/variant can't be found yet.
+// Build a one-tap "buy" link for a single membership tier.
+//
+// The checkout URL goes in **data-buy-href**, NOT href. href points at the
+// product page. That split matters: every purchase has to pass the agreement gate,
+// and a live checkout URL sitting in href would walk straight past it via
+// ctrl/cmd-click, middle-click, or right-click → "Open in new tab" — none of which
+// JavaScript can gate. With the permalink in a data attribute, those all land on the
+// product page instead, where the add-to-cart form is itself gated.
+//
+// It also degrades safely: if main.js never runs, the button is still a working link
+// to the product page rather than a dead one — a JS hiccup must never cost a sale.
+//
+// Resolves the tier's variant by title first (e.g. "2 Children"), then by position;
+// if neither resolves, data-buy-href is empty and the plain product-page href is used.
+//
+// The URL is the /cart/add?items[][…] form, NOT the short /cart/{variant}:{qty}
+// permalink. The short form silently DROPS ?selling_plan= — verified against live
+// checkout, which returned "sellingPlan": null and billed the membership as a
+// one-time charge instead of a subscription. Only items[][selling_plan] attaches
+// the plan. return_to=/checkout keeps the one-tap, cart-free flow.
 function memberCta(prod, plan, label, idx, handle, text) {
   return (
     `{%- assign _v = blank -%}` +
@@ -99,7 +115,7 @@ function memberCta(prod, plan, label, idx, handle, text) {
     `{%- for v in ${prod}.variants -%}{%- if v.title contains '${label}' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}` +
     `{%- if _v == blank -%}{%- assign _v = ${prod}.variants[${idx}] -%}{%- endif -%}` +
     `{%- endif -%}` +
-    `<a class="$1" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if ${plan} != blank %}?selling_plan={{ ${plan} }}{%- endif -%}{%- else -%}/products/${handle}{%- endif -%}">${text}</a>`
+    `<a class="$1" href="/products/${handle}" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if ${plan} != blank %}&amp;items[][selling_plan]={{ ${plan} }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">${text}</a>`
   );
 }
 
@@ -137,17 +153,23 @@ function dayPassPrelude(withBanner) {
 
 // Point the Day Pass tier <option>s + buy button at real checkout permalinks.
 // Each option carries data-daypass-opt="1|2|3"; we add data-href for its tier
-// variant (falling back to the product page). The buy button defaults to tier 1;
-// dayPassPicker() in main.js swaps the href to match the dropdown selection.
+// variant. The buy button defaults to tier 1; dayPassPicker() in main.js copies
+// the selected option's data-href onto the button as the dropdown changes.
+//
+// Same href / data-buy-href split as memberCta above: the permalink never sits in
+// href, so ctrl/middle/right-click "open in new tab" can't skip the agreement gate,
+// and a JS failure leaves a working product-page link rather than a dead button.
+// When the variant can't be resolved the permalink is empty and the plain
+// product-page href takes over.
 function wireDayPass(html) {
-  const href = (v) => `{%- if ${v} != blank -%}/cart/{{ ${v}.id }}:1{%- else -%}/products/day-pass{%- endif -%}`;
+  const buy = (v) => `{%- if ${v} != blank -%}/cart/{{ ${v}.id }}:1{%- endif -%}`;
   return html
-    .replace(/(<option [^>]*\bdata-daypass-opt="1"[^>]*)>/g, `$1 data-href="${href("dp_v1")}">`)
-    .replace(/(<option [^>]*\bdata-daypass-opt="2"[^>]*)>/g, `$1 data-href="${href("dp_v2")}">`)
-    .replace(/(<option [^>]*\bdata-daypass-opt="3"[^>]*)>/g, `$1 data-href="${href("dp_v3")}">`)
+    .replace(/(<option [^>]*\bdata-daypass-opt="1"[^>]*)>/g, `$1 data-href="${buy("dp_v1")}">`)
+    .replace(/(<option [^>]*\bdata-daypass-opt="2"[^>]*)>/g, `$1 data-href="${buy("dp_v2")}">`)
+    .replace(/(<option [^>]*\bdata-daypass-opt="3"[^>]*)>/g, `$1 data-href="${buy("dp_v3")}">`)
     .replace(
       /<button class="([^"]*)" type="button" data-noop data-daypass-buy[^>]*>Buy Day Pass<\/button>/g,
-      `<a class="$1" data-daypass-buy href="${href("dp_v1")}">Buy Day Pass</a>`
+      `<a class="$1" data-daypass-buy href="/products/day-pass" data-buy-href="${buy("dp_v1")}">Buy Day Pass</a>`
     );
 }
 
@@ -250,7 +272,9 @@ function head(html, re) {
   return m ? m[1].trim() : "";
 }
 
-// ---- 4. the 7 marketing pages -----------------------------------------
+// ---- 4. the marketing pages (+ the legal one) -------------------------
+// terms is not in the nav — it's reached from the footer and from the
+// agreement box that gates every buy button.
 const PAGES = [
   { file: "index.html",        tmpl: "index.liquid",            key: "index" },
   { file: "play-pricing.html", tmpl: "page.play-pricing.liquid", key: "play-pricing" },
@@ -259,6 +283,7 @@ const PAGES = [
   { file: "fusion.html",       tmpl: "page.fusion.liquid",       key: "fusion" },
   { file: "photo-gallery.html", tmpl: "page.photo-gallery.liquid", key: "photo-gallery" },
   { file: "visit-us.html",      tmpl: "page.visit-us.liquid",      key: "visit-us" },
+  { file: "terms.html",         tmpl: "page.terms.liquid",         key: "terms" },
 ];
 
 const meta = {}; // key -> { title, desc, css }
@@ -417,8 +442,8 @@ write(
       <div class="footer-col">
         <h3>Hours</h3>
         <ul>
-          <li>Mon – Fri · 6am – 6pm</li>
-          <li>Saturday · 6am – 4pm</li>
+          <li>Mon – Fri · 8am – 6pm</li>
+          <li>Saturday · 8am – 4pm</li>
           <li>Sunday · Closed</li>
         </ul>
       </div>
@@ -437,6 +462,8 @@ write(
     </div>
     <div class="footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} Little Town Playhouse</span>
+      {%- comment -%} main.js reads this link's href to point the buy-time agreement box at the full terms. {%- endcomment -%}
+      <span><a href="/pages/terms" data-terms-link>Terms &amp; Waiver</a></span>
       <span>Made with imagination in Fairfield</span>
     </div>
   </div>
@@ -533,6 +560,7 @@ write(
   .selling-plans{border:0;padding:0;margin:0 0 1.1rem}
   .selling-plan{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border:2px solid rgba(58,49,40,.14);border-radius:var(--r-md,14px);margin-bottom:.5rem;max-width:380px;cursor:pointer}
   .selling-plan:has(input:checked){border-color:var(--accent,#d9774e);background:var(--terra-tint,#fbeee7)}
+  .pdp-booknote{margin:0 0 1.1rem;max-width:420px}
 </style>
 {%- assign cv = product.selected_or_first_available_variant -%}
 <main class="section">
@@ -548,6 +576,19 @@ write(
         <h1>{{ product.title }}</h1>
         <div class="price-tag" id="pdp-price">{{ cv.price | money }}</div>
         <div class="rte" style="margin:1rem 0">{{ product.description }}</div>
+        {%- comment -%}
+          Private Buyout is date-bound: a party is only real once a weekend slot is
+          attached to the order as the properties[Party date and time] line-item
+          property, which ONLY the calendar on /pages/parties writes. This PDP is
+          publicly reachable (product sitemap, /search, /collections/all), so left
+          as a generic add-to-cart it sells a $185/$295 party — paid in full, all
+          sales final — against no date at all, and never checks the Sat / Sun
+          availability windows. Send buyers to the calendar instead of selling here.
+        {%- endcomment -%}
+        {%- if product.handle == 'private-buyout' -%}
+          <p class="pdp-booknote">Buyouts are booked by date and time. Pick your weekend slot on the Parties page — you'll go straight to checkout from there.</p>
+          <a class="btn btn--lg btn--terracotta btn--pop" href="/pages/parties#booking">Check availability</a>
+        {%- else -%}
         {%- form 'product', product, id: 'pdp-form' -%}
           {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
           <input type="hidden" name="return_to" value="/checkout">
@@ -583,6 +624,7 @@ write(
             {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Buy now{% endif %}{% else %}Sold out{% endif %}
           </button>
         {%- endform -%}
+        {%- endif -%}
       </div>
     </div>
   </div>

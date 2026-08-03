@@ -86,7 +86,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
-              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/monthly-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if m_plan != blank %}&amp;items[][selling_plan]={{ m_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Monthly</a>
             </article>
 
             <!-- 2 Children Monthly — MOST POPULAR -->
@@ -104,7 +104,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
-              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/monthly-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if m_plan != blank %}&amp;items[][selling_plan]={{ m_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Monthly</a>
             </article>
 
             <!-- 3+ Children Monthly -->
@@ -121,7 +121,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Cancel anytime</li>
               </ul>
-              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if m_plan != blank %}?selling_plan={{ m_plan }}{%- endif -%}{%- else -%}/products/monthly-membership{%- endif -%}">Join Monthly</a>
+              {%- assign _v = blank -%}{%- if monthly_prod != blank -%}{%- for v in monthly_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = monthly_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/monthly-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if m_plan != blank %}&amp;items[][selling_plan]={{ m_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Monthly</a>
             </article>
 
           </div>
@@ -156,7 +156,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Same-day re-entry — come &amp; go all day</li>
               </ul>
-              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '1 Child' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[0] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/annual-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if a_plan != blank %}&amp;items[][selling_plan]={{ a_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Annual</a>
             </article>
 
             <!-- 2 Children Annual — MOST POPULAR + FEATURED -->
@@ -174,7 +174,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Same-day re-entry — come &amp; go all day</li>
               </ul>
-              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '2 Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[1] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/annual-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if a_plan != blank %}&amp;items[][selling_plan]={{ a_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Annual</a>
             </article>
 
             <!-- 3+ Children Annual -->
@@ -191,7 +191,7 @@
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
                 <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Same-day re-entry — come &amp; go all day</li>
               </ul>
-              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="{%- if _v != blank -%}/cart/{{ _v.id }}:1{%- if a_plan != blank %}?selling_plan={{ a_plan }}{%- endif -%}{%- else -%}/products/annual-membership{%- endif -%}">Join Annual</a>
+              {%- assign _v = blank -%}{%- if annual_prod != blank -%}{%- for v in annual_prod.variants -%}{%- if v.title contains '3+ Children' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- if _v == blank -%}{%- assign _v = annual_prod.variants[2] -%}{%- endif -%}{%- endif -%}<a class="cp-cta" href="/products/annual-membership" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if a_plan != blank %}&amp;items[][selling_plan]={{ a_plan }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">Join Annual</a>
             </article>
 
           </div>

@@ -5,6 +5,7 @@
   .selling-plans{border:0;padding:0;margin:0 0 1.1rem}
   .selling-plan{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border:2px solid rgba(58,49,40,.14);border-radius:var(--r-md,14px);margin-bottom:.5rem;max-width:380px;cursor:pointer}
   .selling-plan:has(input:checked){border-color:var(--accent,#d9774e);background:var(--terra-tint,#fbeee7)}
+  .pdp-booknote{margin:0 0 1.1rem;max-width:420px}
 </style>
 {%- assign cv = product.selected_or_first_available_variant -%}
 <main class="section">
@@ -20,6 +21,19 @@
         <h1>{{ product.title }}</h1>
         <div class="price-tag" id="pdp-price">{{ cv.price | money }}</div>
         <div class="rte" style="margin:1rem 0">{{ product.description }}</div>
+        {%- comment -%}
+          Private Buyout is date-bound: a party is only real once a weekend slot is
+          attached to the order as the properties[Party date and time] line-item
+          property, which ONLY the calendar on /pages/parties writes. This PDP is
+          publicly reachable (product sitemap, /search, /collections/all), so left
+          as a generic add-to-cart it sells a $185/$295 party — paid in full, all
+          sales final — against no date at all, and never checks the Sat / Sun
+          availability windows. Send buyers to the calendar instead of selling here.
+        {%- endcomment -%}
+        {%- if product.handle == 'private-buyout' -%}
+          <p class="pdp-booknote">Buyouts are booked by date and time. Pick your weekend slot on the Parties page — you'll go straight to checkout from there.</p>
+          <a class="btn btn--lg btn--terracotta btn--pop" href="/pages/parties#booking">Check availability</a>
+        {%- else -%}
         {%- form 'product', product, id: 'pdp-form' -%}
           {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
           <input type="hidden" name="return_to" value="/checkout">
@@ -55,6 +69,7 @@
             {% if product.available %}{% if product.selling_plan_groups.size > 0 %}Become a Member{% else %}Buy now{% endif %}{% else %}Sold out{% endif %}
           </button>
         {%- endform -%}
+        {%- endif -%}
       </div>
     </div>
   </div>

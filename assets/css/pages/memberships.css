@@ -151,8 +151,10 @@
 .plan-jump:hover  { transform: translate(2px, 2px); box-shadow: var(--btn-hard-hover); color: var(--accent); }
 .plan-jump:active { transform: translate(4px, 4px); box-shadow: 0 0 0 0 var(--btn-edge); }
 
-/* Land the group heading clear of the sticky header when jumped to */
-.plan-group { scroll-margin-top: calc(var(--header-h) + 1rem); }
+/* Header clearance for #group-monthly / #group-annual now comes from the global
+   `html { scroll-padding-top }` in styles.css. Keeping a scroll-margin-top here
+   too would stack on top of it and drop these two groups ~76px lower than every
+   other jump target on the site. */
 
 /* Annual badge on toggle button */
 .toggle-annual-badge {
