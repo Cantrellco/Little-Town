@@ -155,13 +155,31 @@ all-sales-final. Built + live; needs only the product published (done).
    (`wireCommerce` `parties`). Slots are hard-coded (`SLOTS_BY_DOW` in `main.js`): Sat 4:30–6:30,
    Sun 1–3, Sun 4–6.
 
-3. **Email on booking (Shopify-native):** Settings → Notifications → **Staff order
-   notifications** → Add recipient → `littletownplayhousellc@gmail.com`. Every order emails
-   that address; the party date/time is on the order. Customer also gets auto-confirmation.
+3. **Email on booking (Shopify-native):** Settings → Notifications → **Staff notifications**
+   → Add recipient → `littletownplayhousellc@gmail.com`. Every order emails that address.
+   Shopify's *default* staff template buries the line-item properties, so also paste
+   `notifications/staff-order-notification.liquid` into the **New order** template — it
+   leads with the party date/time in large type and puts it in the inbox preview line.
+   Customer also gets auto-confirmation (`notifications/order-confirmation.liquid`).
 
-4. **Date-blocking (Shopify Flow + shop metafield, $0):** the calendar greys out booked dates
-   by reading a shop metafield. Needs a paid plan (Basic+) for Flow. Set up once (verified
-   against Shopify's current Flow docs 2026-07):
+4. **Date-blocking (Shopify Flow + shop metafield, $0) — ✅ BUILT AND CONFIRMED LIVE
+   (2026-08-09).** The calendar greys out booked dates by reading a shop metafield. Needs a
+   paid plan (Basic+) for Flow.
+
+   > **Verified working**, so don't rebuild this — the live parties page was serving a
+   > populated `lt_booking.taken` on 2026-08-09 with 6 real bookings in it, which is only
+   > possible if the metafield exists, the `Order created` workflow fires, and the line-item
+   > properties are landing on orders. Flow is therefore already on the plan.
+   >
+   > **To re-check at any time without an admin login** (reads the public storefront):
+   > ```powershell
+   > (Invoke-WebRequest 'https://thelittletownplayhouse.com/pages/parties' -UseBasicParsing).Content |
+   >   Select-String 'LT_BOOKED_RAW\s*=\s*"([^"]*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value -split ';' }
+   > ```
+   > Entries are in **order-placed** sequence, not date order — don't read it as a schedule.
+
+   Setup steps kept below for reference / disaster recovery (verified against Shopify's
+   current Flow docs 2026-07):
    1. **Metafield:** Settings → **Metafields and metaobjects** (older admin labels it
       *Custom data*) → **Shop** → Add definition. Set **Name** to anything, then **click Edit
       on the auto-generated Namespace and key and overwrite them to exactly `lt_booking` /
@@ -222,6 +240,164 @@ all-sales-final. Built + live; needs only the product published (done).
 > both pay (Flow writes *after* the order). Near-zero at ~3 slots/week; all-sales-final +
 > watching orders covers it. Only a booking app's slot-holds (or the date-as-inventory model)
 > fully prevents it.
+
+5. **"Unfulfilled" on every order — expected, and optional to change.** Shopify tracks a
+   fulfillment state on *every* order even when nothing ships, so buyouts, day passes and
+   memberships all land as **Unfulfilled**. It's cosmetic — the customer was charged and got
+   their confirmation either way. Three ways to play it:
+   - **Leave it.** "Unfulfilled" then doubles as the upcoming-bookings list: mark each party
+     fulfilled after it happens and the Orders page becomes a de-facto calendar. Given there
+     is no owner-facing booking calendar, this is the useful default.
+   - **Auto-fulfill store-wide.** **Settings → General → *Order processing*** (verified
+     2026-08 — this section used to live under Settings → Checkout, older guides still say
+     that) → tick **"Automatically fulfill the order's line items."** Safe here because
+     nothing in this store ships. **Leave "Notify customers of their shipment" UNTICKED** —
+     it sends a *shipping* email, which is nonsense for a party booking. The
+     "even those with a high risk of fraud" sub-option should also stay off.
+   - **Mark fulfilled by hand** on each order.
+
+   Also confirm `private-buyout` has **"This is a physical product" unchecked** in the
+   product's Shipping section. If it's checked, Shopify collects a shipping address at
+   checkout and may apply shipping rates — a separate bug from the fulfillment status.
+
+6. **Reminder emails 5 days + 1 day before each party (Shopify Flow, $0, no app).**
+   ⛔ **SUPERSEDED — build [`integrations/party-calendar`](integrations/party-calendar/README.md) instead.**
+
+   > 👉 **Do not build the three workflows below.** Each party now becomes a **Google Calendar
+   > event** in the owner's own account, and Google does the reminders natively — so the tag
+   > stamping, both scheduled robots and the manual tag backfill are all unnecessary. It also
+   > finally answers the "no owner-facing booking calendar" gap noted in step 5: he gets a real
+   > month view on his phone, with the customer's name, phone and package on each entry.
+   >
+   > That guide also adds the piece this section never had — an **`Order cancelled`** workflow
+   > that removes the booking from `lt_booking.taken`, so a killed party frees its slot on the
+   > website again instead of burning it permanently.
+   >
+   > **Everything below stays** as the fallback and as the reference for Flow's Liquid quirks
+   > (the auto-named metafield alias, `getOrderDataForeachitem`, camelCase GraphQL paths) —
+   > all still accurate, and the calendar integration's HTTP action is built on the same rules.
+
+   > 👉 The plain-English walkthrough for the superseded approach is
+   > [`FLOW-REMINDERS-SETUP.md`](FLOW-REMINDERS-SETUP.md). The notes below are the reasoning and
+   > the reference copy of the Liquid.
+
+   Shopify has no native "email me X days before a date on an order" trigger, so this is
+   three Flow workflows. Verified against Flow docs 2026-08. Requires Basic plan+ (same
+   requirement as the date-blocking Flow above).
+
+   **Why a tag is needed.** The party date lives in a *line-item property*, and Shopify's
+   order search **cannot** query line-item properties. So the booking date is copied onto
+   the order as a **tag** at checkout, and the scheduled reminders search by that tag.
+
+   **Workflow 1 — stamp the date as a tag (`Order created`).** Add this to the *existing*
+   Order-created workflow from step 4 (it already has the right trigger — just add another
+   action underneath the metafield write), or build it standalone.
+   - Trigger: **Order created**
+   - Condition (recommended): `Order` → line items → **Product / Handle**, **At least one
+     of**, **is equal to** `private-buyout`. Without it, every day-pass order runs this.
+   - Action: **Add order tags** → Tags value:
+     ```liquid
+     {%- assign pdate = "" -%}
+     {%- for lineItem in order.lineItems -%}
+       {%- for ca in lineItem.customAttributes -%}
+         {%- if ca.key == "Party date" -%}{%- assign pdate = ca.value -%}{%- endif -%}
+       {%- endfor -%}
+     {%- endfor -%}
+     {%- if pdate != blank -%}party-{{ pdate }}{%- endif -%}
+     ```
+     Produces a tag like `party-2026-06-13`. Same camelCase Flow-Liquid rules as step 4
+     (`order.lineItems` / `customAttributes`, never `line_items` / `properties`).
+
+   **Workflows 2 & 3 — the reminders (`Scheduled time`).** Build these as **two separate
+   workflows**, identical except for the interval and wording. Two workflows rather than one
+   with two branches: each gets its own subject line and run history, so when one misfires
+   you can see which.
+   - Trigger: **Scheduled time** → **Daily**, around **8:00 AM** store time (it's a
+     business-hours heads-up, not a 3 AM one). `scheduledAt` resolves in the store's timezone.
+   - Action: **Get order data** → Query:
+     ```
+     tag:'party-{{ scheduledAt | date_plus: "5 days" | date: "%Y-%m-%d" }}' AND NOT status:cancelled
+     ```
+     For the 1-day workflow use `date_plus: "1 day"`. `date_plus` is a Flow-specific Liquid
+     tag; `scheduledAt` only exists on Scheduled-time workflows.
+   - Action: **For each** over the returned order list → inside the loop, **Send internal
+     email**:
+     - **Email address:** `littletownplayhousellc@gmail.com` (comma-separate for more —
+       this field does **not** accept variables, it must be a literal address)
+     - **Subject:** `Party in 5 days — {{ order.name }}` *(→ "Party TOMORROW —" on the 1-day one)*
+     - **Message:** pull the human-readable slot back off the line item. Note the loop
+       variable is **`getOrderDataForeachitem`**, not `order` — Flow auto-names it and won't
+       let you choose (confirmed on this store 2026-08-09):
+       ```liquid
+       {%- assign pwhen = "" -%}
+       {%- for lineItem in getOrderDataForeachitem.lineItems -%}
+         {%- for ca in lineItem.customAttributes -%}
+           {%- if ca.key == "Party date and time" -%}{%- assign pwhen = ca.value -%}{%- endif -%}
+         {%- endfor -%}
+       {%- endfor -%}
+       {%- if pwhen != blank -%}
+       Party coming up: {{ pwhen }}
+       {%- else -%}
+       Party coming up — date is in the tags: {{ getOrderDataForeachitem.tags }}
+       {%- endif %}
+       Order {{ getOrderDataForeachitem.name }}
+       ```
+       ⚠️ The picker also offers **`getOrderData`** — that's the whole *list*, not one order.
+       Picking it fails silently.
+
+   **Gotchas — read before trusting it:**
+   - **Flow auto-names loop/step variables and you can't choose them** (same trap as the
+     metafield alias in step 4). Inside the **For each**, the order may be exposed under a
+     Flow-assigned name rather than `order` — build the Message with Flow's **variable
+     picker** instead of pasting `order.` blind, then check a real run.
+   - **Verify with run history, not the editor.** Apps → Flow → the workflow → **Runs** shows
+     the *resolved* query string. If it reads `tag:'party-'` with no date, the
+     `| date: "%Y-%m-%d"` format step is the thing to fix — that's the one piece of syntax
+     most likely to need adjusting.
+   - **Only tags orders placed after Workflow 1 is switched on.** Any party already booked
+     will never fire a reminder. Tag those by hand: open the order → Tags → add
+     `party-YYYY-MM-DD` matching its date. See the backfill checklist below — this is not
+     hypothetical, there are already bookings on the books.
+   - **A refund alone doesn't stop the reminder** — the tag survives. `NOT status:cancelled`
+     only filters properly *cancelled* orders, so cancel (don't just refund) a killed booking.
+   - **Get order data caps at 100 orders per run.** Irrelevant at ~3 slots/week — one date
+     returns one or two orders.
+   - Internal emails send from your store's sender address and may show as
+     `store+<shop-id>@shopifyemail.com` until the sending domain is authenticated.
+
+   > Flow is confirmed on the plan (see step 4), so the plan-tier fallback isn't needed.
+   >
+   > The "month view the owner can actually look at" this note used to describe as a manual
+   > alternative is now **built and automatic** —
+   > [`integrations/party-calendar`](integrations/party-calendar/README.md). A Google Calendar
+   > event per booking, created at checkout, with the reminders set on the event. That's the
+   > reason this whole section is superseded.
+
+   #### ⚠️ Backfill checklist — tag the 6 existing bookings
+   Snapshot of `lt_booking.taken` taken **2026-08-09**. These orders predate the tagging
+   action, so **none of them will fire a reminder until tagged by hand.** For each: Orders →
+   open it → **Tags** → add the tag → Save.
+
+   **Hard deadline: 2026-08-18** — that's the 5-day ping for the Aug 23 party. Everything
+   below must be tagged, and both scheduled workflows live, before that date.
+
+   | ☐ | Party date | Day | Tag to add | 5-day ping | 1-day ping |
+   | --- | --- | --- | --- | --- | --- |
+   | ☐ | 2026-08-23 | Sunday | `party-2026-08-23` | **Aug 18** | Aug 22 |
+   | ☐ | 2026-09-13 | Sunday | `party-2026-09-13` | Sep 08 | Sep 12 |
+   | ☐ | 2026-09-20 | Sunday | `party-2026-09-20` | Sep 15 | Sep 19 |
+   | ☐ | 2026-09-27 | Sunday | `party-2026-09-27` | Sep 22 | Sep 26 |
+   | ☐ | 2026-10-10 | Saturday | `party-2026-10-10` | Oct 05 | Oct 09 |
+   | ☐ | 2026-10-11 | Sunday | `party-2026-10-11` | Oct 06 | Oct 10 |
+
+   Finding each order: the metafield stores only date + slot, not the order number. Search
+   Orders for the `Private Buyout` product and match on the **Party date** line-item property
+   shown under the line item. All 6 slot times above are valid `SLOTS_BY_DOW` values, so if
+   an order's property doesn't match one of these rows, flag it rather than guessing.
+
+   Re-run the PowerShell one-liner in step 4 before starting — if the list has grown since
+   2026-08-09, the newer bookings need tagging too (and any placed *after* the tagging action
+   goes live will already be tagged, so check before double-tagging).
 
 ### D. Newsletter → email capture
 The footer/newsletter signup should post to your email tool:
