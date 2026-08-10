@@ -529,10 +529,15 @@ function backfillExistingBookings() {
         package: 'see Shopify order'
       });
       done++;
+      Logger.log('✓ ' + date + '  ' + time);
     } catch (err) {
+      // Logged as well as emailed: when this is run by hand from the editor the
+      // alert goes to the SHOP's inbox, not the person sitting there running it.
+      Logger.log('✗ ' + date + '  ' + time + '  — ' + ((err && err.message) || err));
       alertOwner_(err, 'backfill ' + date + ' ' + time);
     }
   }
+  Logger.log('Backfilled ' + done + ' of ' + entries.length + ' booking(s) onto "' + CALENDAR_NAME + '".');
   return done;
 }
 
