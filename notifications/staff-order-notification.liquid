@@ -1,0 +1,209 @@
+<!-- ============================================================
+     Little Town Playhouse — STAFF order notification ("New order")
+     Paste into: Shopify admin → Settings → Notifications →
+                 Staff notifications → New order → (edit code) → replace ALL.
+
+     This is the email the SHOP receives, not the customer. Its whole job is
+     to answer one question at a glance on a phone: "when is this party?"
+     So the date/time is the biggest thing in the email, above everything.
+
+     The date comes off the order's line-item properties, written by the
+     booking calendar on /pages/parties (see SHOPIFY-MIGRATION.md §C):
+       Party date and time  ->  "Saturday, June 13, 2026 · 4:30–6:30 PM"
+       Party date           ->  "2026-06-13"
+       Party time           ->  "4:30–6:30 PM"
+     ============================================================ -->
+{%- comment -%} ---- pull the booking off the line items ---- {%- endcomment -%}
+{%- assign is_party = false -%}
+{%- assign is_fusion_party = false -%}
+{%- assign party_when = '' -%}
+{%- assign party_date = '' -%}
+{%- assign party_time = '' -%}
+{%- assign package_name = '' -%}
+{%- for line in subtotal_line_items -%}
+  {%- assign t = line.title | downcase -%}
+  {%- if t contains 'buyout' -%}
+    {%- assign is_party = true -%}
+    {%- assign package_name = line.title -%}
+    {%- if t contains 'fusion' -%}{%- assign is_fusion_party = true -%}{%- endif -%}
+  {%- endif -%}
+  {%- for p in line.properties -%}
+    {%- if p.first == 'Party date and time' and p.last != blank -%}{%- assign party_when = p.last -%}{%- endif -%}
+    {%- if p.first == 'Party date' and p.last != blank -%}{%- assign party_date = p.last -%}{%- endif -%}
+    {%- if p.first == 'Party time' and p.last != blank -%}{%- assign party_time = p.last -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- comment -%} Fall back to date + time if the combined string is ever missing. {%- endcomment -%}
+{%- if party_when == blank and party_date != blank -%}
+  {%- capture party_when -%}{{ party_date }}{% if party_time != blank %} · {{ party_time }}{% endif %}{%- endcapture -%}
+{%- endif -%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>New order {{ order_name }}</title>
+  <style type="text/css">
+    body { margin:0; padding:0; width:100% !important; background:#EFE7D8; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+    table { border-collapse:collapse !important; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+    a { color:#B35A37; }
+    .lt-sans { font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif; }
+    @media only screen and (max-width:620px) {
+      .lt-container { width:100% !important; }
+      .lt-pad { padding-left:20px !important; padding-right:20px !important; }
+      .lt-when { font-size:26px !important; line-height:32px !important; }
+    }
+  </style>
+</head>
+<body class="lt-sans" style="margin:0; padding:0; background:#EFE7D8; font-family:'Quicksand','Trebuchet MS','Segoe UI',Verdana,Arial,sans-serif; color:#333333;">
+
+  <!-- preview text (hidden) — the date shows in the inbox list, before opening -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EFE7D8;">
+    {% if is_party %}PARTY — {{ party_when }}{% else %}New order {{ order_name }} · {{ total_price | money }}{% endif %}&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFE7D8;">
+    <tr>
+      <td align="center" style="padding:22px 12px 34px 12px;">
+
+        <table role="presentation" class="lt-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background:#F7F3EC; border:3px solid #333333; border-radius:20px; overflow:hidden;">
+
+          <tr><td style="height:8px; background:#F4AE92; line-height:8px; font-size:8px;">&nbsp;</td></tr>
+
+          <!-- header -->
+          <tr>
+            <td class="lt-pad" style="padding:20px 32px 4px 32px;">
+              <div style="font-size:12px; letter-spacing:3px; font-weight:700; color:#B35A37; text-transform:uppercase;">Little Town Playhouse</div>
+              <div style="font-size:22px; line-height:28px; font-weight:700; color:#333333; margin-top:4px;">
+                {% if is_party %}🎉 New party booking{% else %}New order{% endif %} — {{ order_name }}
+              </div>
+            </td>
+          </tr>
+
+          {%- if is_party %}
+          <!-- ===== THE DATE — the whole point of this email ===== -->
+          <tr>
+            <td class="lt-pad" style="padding:16px 32px 0 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fce6db; border:3px solid #333333; border-radius:16px;">
+                <tr>
+                  <td align="center" style="padding:20px 18px;">
+                    <div style="font-size:12px; letter-spacing:2.5px; font-weight:700; color:#B35A37; text-transform:uppercase;">Party date &amp; time</div>
+                    <div class="lt-when" style="font-size:29px; line-height:36px; font-weight:700; color:#333333; margin-top:8px;">
+                      {% if party_when != blank %}{{ party_when }}{% else %}⚠️ NOT ON THIS ORDER — call the customer{% endif %}
+                    </div>
+                    {%- if package_name != blank %}
+                    <div style="font-size:15px; line-height:22px; color:#5b5750; margin-top:10px;">
+                      {{ package_name }}{% if is_fusion_party %} · Fusion opens too, barista needed{% endif %}
+                    </div>
+                    {%- endif %}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {%- endif %}
+
+          <!-- customer -->
+          <tr>
+            <td class="lt-pad" style="padding:20px 32px 0 32px;">
+              <div style="font-size:12px; letter-spacing:2.5px; font-weight:700; color:#B35A37; text-transform:uppercase; margin-bottom:8px;">Who booked</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFE7D8; border:2px solid #333333; border-radius:14px;">
+                <tr>
+                  <td style="padding:14px 18px; font-size:15px; line-height:24px; color:#333333;">
+                    <strong>{{ billing_address.name | default: customer.name | default: 'Guest' }}</strong><br>
+                    {%- if email != blank %}<a href="mailto:{{ email }}" style="color:#B35A37;">{{ email }}</a><br>{%- endif %}
+                    {%- if billing_address.phone != blank %}<a href="tel:{{ billing_address.phone }}" style="color:#B35A37;">{{ billing_address.phone }}</a>
+                    {%- elsif customer.phone != blank %}<a href="tel:{{ customer.phone }}" style="color:#B35A37;">{{ customer.phone }}</a>{%- endif %}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- what they bought, with every line-item property spelled out -->
+          <tr>
+            <td class="lt-pad" style="padding:20px 32px 0 32px;">
+              <div style="font-size:12px; letter-spacing:2.5px; font-weight:700; color:#B35A37; text-transform:uppercase; margin-bottom:8px;">Order</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                {%- for line in subtotal_line_items %}
+                <tr>
+                  <td style="padding:8px 0; border-bottom:1px solid #e7dcc7; vertical-align:top;">
+                    <span style="font-size:15px; font-weight:600; color:#333333;">{{ line.title }}</span>
+                    <span style="font-size:14px; color:#6f675b;">&nbsp;× {{ line.quantity }}</span>
+                    {%- for p in line.properties -%}
+                      {%- assign p_key = p.first | slice: 0 -%}
+                      {%- unless p.last == blank or p.first == blank or p_key == '_' %}
+                      <div style="font-size:13px; line-height:19px; color:#5b5750; margin-top:3px;">{{ p.first }}: <strong>{{ p.last }}</strong></div>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </td>
+                  <td align="right" style="padding:8px 0; border-bottom:1px solid #e7dcc7; vertical-align:top; font-size:15px; font-weight:600; color:#333333; white-space:nowrap;">
+                    {{ line.final_line_price | money }}
+                  </td>
+                </tr>
+                {%- endfor %}
+                <tr>
+                  <td style="padding:12px 0 0 0; font-size:16px; font-weight:700; color:#333333;">Total paid</td>
+                  <td align="right" style="padding:12px 0 0 0; font-size:16px; font-weight:700; color:#333333;">{{ total_price | money }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- view in admin -->
+          <tr>
+            <td align="center" class="lt-pad" style="padding:22px 32px 6px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td style="background:#F4AE92; border:2px solid #333333; border-radius:999px;">
+                    <a href="{{ shop.url }}/admin/orders/{{ id }}" style="display:inline-block; padding:12px 26px; font-size:15px; font-weight:700; color:#333333; text-decoration:none;">View order in admin</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" class="lt-pad" style="padding:10px 32px 26px 32px;">
+              <p style="margin:0; font-size:12px; line-height:18px; color:#8a8175;">
+                {% if is_party %}This party is added to your Little Town Parties calendar automatically, usually within 15 minutes.{% else %}Sent automatically by your Shopify store.{% endif %}
+              </p>
+            </td>
+          </tr>
+
+          <tr><td style="height:8px; background:#F4AE92; line-height:8px; font-size:8px;">&nbsp;</td></tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+{%- comment -%}
+  ---- Calendar sync line — do not delete ----
+  The Google Apps Script in integrations/party-calendar reads this one line out
+  of this email to build the calendar event. Everything it needs is here, so it
+  never has to guess at the pretty HTML above.
+
+  Deliberately VISIBLE (tiny + grey) rather than display:none — Gmail does not
+  reliably index or return hidden text, and the script finds this email by
+  searching for "LTPCAL1". It's an internal staff email, so a small reference
+  line at the bottom costs nothing.
+
+  Pipes are the separator, so any pipe inside a name or package is swapped for
+  a slash first. Keep this on ONE line — the script matches to end-of-line.
+{%- endcomment -%}
+{%- if is_party -%}
+  {%- assign f_name = customer.name | default: billing_address.name | replace: '|', '/' | strip_newlines -%}
+  {%- assign f_phone = billing_address.phone | default: customer.phone | replace: '|', '/' | strip_newlines -%}
+  {%- assign f_pkg = package_name | replace: '|', '/' | strip_newlines -%}
+  <p style="margin:0; padding:0 32px 18px 32px; font-size:10px; line-height:14px; color:#c9c2b8; font-family:monospace;">
+    LTPCAL1|{{ id }}|{{ name }}|{{ party_date }}|{{ party_time }}|{{ f_name }}|{{ f_phone }}|{{ email }}|{{ f_pkg }}|{{ total_price | money_without_currency }}
+  </p>
+{%- endif -%}
+</body>
+</html>

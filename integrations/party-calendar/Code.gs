@@ -1,113 +1,290 @@
 /**
  * Little Town Playhouse — party bookings → Google Calendar
  * ---------------------------------------------------------------------------
- * Runs as a Google Apps Script web app inside the OWNER'S Google account, so it
- * writes to the owner's calendar with no OAuth tokens, no service account and
- * nothing that expires. (The store runs on a consumer @gmail address, which
- * rules out Workspace domain-wide delegation — see README.)
+ * Lives inside a Google Sheet, in the OWNER'S account. He gets it by clicking a
+ * "Make a copy" link, which makes him the owner of both the sheet and this
+ * script. Then one menu click runs setup(), which is also the moment Google
+ * asks him to Allow. Four clicks total, no code editor, nothing to deploy.
  *
- * Shopify Flow POSTs a small JSON blob here on "Order created" and
- * "Order cancelled". This script turns that into a calendar event on a
- * dedicated "Little Town Parties" calendar, with its own reminders.
+ * How a booking gets here:
+ *   Shopify emails him the staff "new order" notification on every sale. That
+ *   template (notifications/staff-order-notification.liquid) carries one
+ *   machine-readable line starting "LTPCAL1|". This script wakes up every 15
+ *   minutes, finds those lines in Gmail, and makes a calendar event from each.
  *
- * Because each event is tagged with the Shopify order id, a re-send updates the
- * same event instead of duplicating it — so reschedules move and cancellations
- * delete.
+ * Why polling and not a webhook: receiving a webhook needs a deployed web app,
+ * and deploying is the step that forced him into the script editor. Polling is
+ * also self-healing — a failed run just gets retried 15 minutes later, whereas
+ * a missed webhook is gone for good.
  *
- * Setup + the exact Flow config: see README.md next to this file.
+ * Cancellations are handled off the storefront's own availability list, which
+ * Shopify Flow maintains. See pruneCancelled_().
  */
 
-// ─── SETTINGS — the only part you edit ──────────────────────────────────────
+// ─── SETTINGS ───────────────────────────────────────────────────────────────
 
-/**
- * Must match the "secret" value in the Flow request body. Already generated and
- * already pasted into the Flow snippets in README Parts 2 and 3 — you do not
- * need to change it or copy it anywhere. (Only worth regenerating if it leaks;
- * if you do, change it in all three places.)
- */
-var SHARED_SECRET = 'o4vRjv-awzhGIgQ2VwqLxNuo7zQNyEr7';
-
-/**
- * Everything is calculated in this timezone explicitly, so it does NOT matter
- * what timezone the Apps Script project itself is set to. Fairfield IL is
- * Central; daylight saving is worked out per-party, never assumed.
- */
-var TIMEZONE = 'America/Chicago';
-
-/** Created automatically on first run if it doesn't exist yet. */
 var CALENDAR_NAME = 'Little Town Parties';
-
-/** Where error alerts and cancellation notices go. */
 var OWNER_EMAIL = 'littletownplayhousellc@gmail.com';
-
-/** Printed on every event so map/directions work from the calendar entry. */
 var VENUE_ADDRESS = '205 East Main Street, Fairfield, IL 62837';
+var PARTIES_URL = 'https://thelittletownplayhouse.com/pages/parties';
 
-/**
- * Shopify store handle, for the "open this order" link in the event.
- * From your admin URL: admin.shopify.com/store/THIS-BIT/orders
- * Leave '' and the link is simply omitted — nothing breaks.
- */
-var STORE_HANDLE = '';
+/** How often to check for new bookings, in minutes. 15 is the practical floor. */
+var CHECK_EVERY_MINUTES = 15;
 
 /** Popup reminders, in minutes before the party. 7200 = 5 days, 1440 = 1 day. */
 var POPUP_REMINDERS_MIN = [7200, 1440, 120];
 
-/** Also send one email reminder this far ahead. Set to 0 to turn off. */
+/** Also send one email reminder this far ahead. 0 turns it off. */
 var EMAIL_REMINDER_MIN = 7200;
 
 /**
- * true  → a cancelled order removes the event outright.
- * false → the event stays and is retitled "CANCELLED — ...", reminders stripped.
+ * Everything is calculated in this timezone explicitly, so it does not matter
+ * what timezone the script or the sheet happens to be set to.
  */
-var DELETE_ON_CANCEL = true;
+var TIMEZONE = 'America/Chicago';
 
-var VERSION = '1.0.0';
+/** How far back in Gmail to look. Parties are booked months ahead. */
+var MAIL_LOOKBACK = '1y';
 
-// ─── WEB APP ENTRY POINTS ───────────────────────────────────────────────────
+var VERSION = '2.0.0';
+
+// ─── THE MENU (this is his entire interface) ────────────────────────────────
 
 /**
- * Health check. Open the web app URL in a browser — if you see JSON with
- * "ok": true, the deployment is live and serving THIS version of the code.
- * (Apps Script keeps serving old code until you publish a new version, so this
- * is the fastest way to catch the classic redeploy mistake.)
+ * Runs automatically whenever he opens the sheet. Simple triggers like this one
+ * are allowed to run before authorization, which is what lets the menu appear
+ * on a freshly copied sheet — the Allow prompt comes later, when he uses it.
  */
-function doGet() {
-  return jsonOut_({ ok: true, service: 'little-town-party-calendar', version: VERSION });
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('🎉 Little Town')
+    .addItem('Set up my party calendar', 'setup')
+    .addSeparator()
+    .addItem('Check for new bookings now', 'syncNow')
+    .addItem('Is it working?', 'showStatus')
+    .addToUi();
 }
 
-/** Called by Shopify Flow. */
-function doPost(e) {
-  var payload = null;
+/**
+ * The one thing he clicks. Creates the calendar, schedules the automatic
+ * checks, and pulls in every booking it can already see.
+ */
+function setup() {
+  var ui = SpreadsheetApp.getUi();
   try {
-    if (!e || !e.postData || !e.postData.contents) {
-      throw new Error('Empty request body — Flow sent nothing.');
+    getCalendar_();
+
+    // Clear ours out first so running setup twice doesn't stack up triggers.
+    var existing = ScriptApp.getProjectTriggers();
+    for (var i = 0; i < existing.length; i++) {
+      if (existing[i].getHandlerFunction() === 'syncNow') ScriptApp.deleteTrigger(existing[i]);
     }
-    payload = JSON.parse(e.postData.contents);
+    ScriptApp.newTrigger('syncNow').timeBased().everyMinutes(CHECK_EVERY_MINUTES).create();
 
-    if (!secretOk_(payload.secret)) {
-      // Not an error worth emailing about — this is what a stray bot request
-      // looks like. Just refuse it.
-      return jsonOut_({ ok: false, error: 'bad secret' });
-    }
+    var result = syncNow_();
 
-    var action = String(payload.action || 'upsert').toLowerCase();
-    if (action === 'cancel') return jsonOut_(cancelEvent_(payload));
-
-    // Day passes and memberships come through the same trigger. No party date
-    // means it isn't a booking — say so plainly rather than failing.
-    if (!payload.partyDate) return jsonOut_({ ok: true, skipped: 'no party date on this order' });
-
-    return jsonOut_(upsertEvent_(payload));
+    ui.alert(
+      '✅ All set',
+      'Your "' + CALENDAR_NAME + '" calendar is ready, and it will check for new ' +
+      'bookings by itself every ' + CHECK_EVERY_MINUTES + ' minutes.\n\n' +
+      'Parties found just now: ' + result.added + '\n\n' +
+      'Open Google Calendar on your phone and you\'ll see them. You can close ' +
+      'this sheet — you never need to open it again.',
+      ui.ButtonSet.OK
+    );
   } catch (err) {
-    // A web app can only ever answer 200, so Flow's run log won't show this as
-    // a failure. The email IS the alarm bell — without it this fails silently.
-    alertOwner_(err, payload);
-    return jsonOut_({ ok: false, error: String((err && err.message) || err) });
+    ui.alert('Something went wrong', String((err && err.message) || err), ui.ButtonSet.OK);
+    throw err;
   }
 }
 
-// ─── CREATE / UPDATE / CANCEL ───────────────────────────────────────────────
+/** Menu version of the sync — same job, but tells him what it did. */
+function syncNow() {
+  var ui = SpreadsheetApp.getUi();
+  var r = syncNow_();
+  ui.alert(
+    'Checked for bookings',
+    'New parties added: ' + r.added + '\n' +
+    'Already on the calendar: ' + r.unchanged + '\n' +
+    'Cancelled and removed: ' + r.removed +
+    (r.problems ? '\n\nCouldn\'t read: ' + r.problems + ' (you were emailed about it)' : ''),
+    ui.ButtonSet.OK
+  );
+}
+
+/** A plain-English "is this thing on?" for when he wonders. */
+function showStatus() {
+  var props = PropertiesService.getScriptProperties();
+  var last = props.getProperty('lastRun');
+  var running = false;
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'syncNow') running = true;
+  }
+
+  var cal = CalendarApp.getCalendarsByName(CALENDAR_NAME)[0];
+  var upcoming = 0;
+  if (cal) {
+    var now = new Date();
+    upcoming = cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1)).length;
+  }
+
+  SpreadsheetApp.getUi().alert(
+    running ? '✅ Yes, it\'s working' : '⚠️ Not switched on',
+    (running
+      ? 'Checking for new bookings every ' + CHECK_EVERY_MINUTES + ' minutes.'
+      : 'The automatic check isn\'t running. Click "Set up my party calendar" to start it.') +
+    '\n\nLast checked: ' + (last || 'never') +
+    '\nParties on the calendar: ' + upcoming,
+    SpreadsheetApp.getUi().ButtonSet.OK
+  );
+}
+
+// ─── THE SYNC ───────────────────────────────────────────────────────────────
+
+/** Runs on the timer. Never shows a dialog — nobody is watching. */
+function syncNow_() {
+  var out = { added: 0, unchanged: 0, removed: 0, problems: 0 };
+  var seen = {};
+
+  var threads = GmailApp.search('"LTPCAL1" newer_than:' + MAIL_LOOKBACK, 0, 200);
+  for (var t = 0; t < threads.length; t++) {
+    var messages = threads[t].getMessages();
+    for (var m = 0; m < messages.length; m++) {
+      var booking;
+      try {
+        booking = readBookingFromMessage_(messages[m]);
+      } catch (err) {
+        out.problems++;
+        alertOwner_(err, messages[m].getSubject());
+        continue;
+      }
+      if (!booking) continue;
+
+      seen[booking.partyDate + '|' + booking.partyTime] = true;
+      try {
+        var r = upsertEvent_(booking);
+        if (r.action === 'created') out.added++; else out.unchanged++;
+      } catch (err2) {
+        out.problems++;
+        alertOwner_(err2, booking.orderName);
+      }
+    }
+  }
+
+  out.removed = pruneCancelled_();
+
+  PropertiesService.getScriptProperties().setProperty(
+    'lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a')
+  );
+  return out;
+}
+
+/**
+ * Reads the booking out of one email, trying the HTML body and the plain-text
+ * body and keeping whichever came through complete.
+ *
+ * Both are checked because Gmail hard-wraps long lines when it generates the
+ * plain-text version, and the booking line is longer than its wrap width — so
+ * the plain-text copy can arrive chopped in half, losing the trailing fields.
+ * The HTML body keeps it on one line. Taking the version with more fields means
+ * it doesn't matter which one a given mail client produced.
+ */
+function readBookingFromMessage_(msg) {
+  var best = null;
+  var bestCount = 0;
+  var sources = [msg.getBody(), msg.getPlainBody()];
+
+  for (var i = 0; i < sources.length; i++) {
+    var m = String(sources[i] || '').match(/LTPCAL1\|([^\n\r<]+)/);
+    if (!m) continue;
+    var count = m[1].split('|').length;
+    if (count > bestCount) { bestCount = count; best = m[1]; }
+  }
+
+  return best === null ? null : readBookingLine_(best);
+}
+
+/**
+ * Pulls the booking out of a "LTPCAL1|" line. Returns null for anything that
+ * isn't a party order.
+ *
+ * Reading a purpose-built line rather than scraping the pretty HTML means a
+ * redesign of that email can't quietly break the calendar.
+ */
+function readBookingLine_(line) {
+  var f = String(line || '').split('|');
+  if (f.length < 5) throw new Error('Booking line is too short to use: "' + line + '"');
+
+  var booking = {
+    orderId: (f[0] || '').trim(),
+    orderName: (f[1] || '').trim(),
+    partyDate: (f[2] || '').trim(),
+    partyTime: (f[3] || '').trim(),
+    customerName: (f[4] || '').trim(),
+    customerPhone: (f[5] || '').trim(),
+    customerEmail: (f[6] || '').trim(),
+    package: (f[7] || '').trim(),
+    total: (f[8] || '').trim()
+  };
+  if (!booking.partyDate) return null; // not a party order
+  return booking;
+}
+
+/**
+ * Removes events for parties that were cancelled.
+ *
+ * The storefront publishes the live list of booked slots (it's how the booking
+ * calendar greys dates out), and Shopify Flow takes an entry out of that list
+ * when an order is cancelled. So: anything on our calendar in the FUTURE whose
+ * slot is no longer on that list has been cancelled.
+ *
+ * Deliberately cautious — it only ever touches future events, and if the page
+ * can't be read or comes back empty it does nothing at all. A false deletion
+ * here would silently lose a real party, which is far worse than a stale event.
+ */
+function pruneCancelled_() {
+  var live;
+  try {
+    var html = UrlFetchApp.fetch(PARTIES_URL, { muteHttpExceptions: true }).getContentText();
+    var m = html.match(/LT_BOOKED_RAW\s*=\s*"([^"]*)"/);
+    if (!m) return 0;
+    live = m[1];
+  } catch (err) {
+    return 0; // site down or blocked — try again next run
+  }
+  if (!live) return 0;
+
+  var stillBooked = {};
+  var entries = live.split(';');
+  for (var i = 0; i < entries.length; i++) {
+    if (entries[i]) stillBooked[entries[i].trim()] = true;
+  }
+
+  var cal = getCalendar_();
+  var now = new Date();
+  var events = cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1));
+  var removed = 0;
+
+  for (var e = 0; e < events.length; e++) {
+    var slot = events[e].getTag('ltSlot');
+    if (!slot) continue;             // not one of ours, or too old to have a tag
+    if (stillBooked[slot]) continue; // still a live booking
+
+    var when = Utilities.formatDate(events[e].getStartTime(), TIMEZONE, "EEEE, MMMM d 'at' h:mm a");
+    events[e].deleteEvent();
+    removed++;
+    notify_(
+      'Party cancelled — ' + when,
+      'That booking is no longer on the website\'s list, so it has been removed ' +
+      'from your "' + CALENDAR_NAME + '" calendar.\n\nThe slot was: ' + when +
+      '\n\nThat date should be bookable again now.'
+    );
+  }
+  return removed;
+}
+
+// ─── CREATING THE EVENT ─────────────────────────────────────────────────────
 
 function upsertEvent_(p) {
   var cal = getCalendar_();
@@ -118,7 +295,6 @@ function upsertEvent_(p) {
   var created;
 
   if (existing) {
-    // Reschedule or edited details — move the event we already made.
     existing.setTime(slot.start, slot.end);
     existing.setTitle(title);
     existing.setDescription(description);
@@ -129,71 +305,53 @@ function upsertEvent_(p) {
       description: description,
       location: VENUE_ADDRESS
     });
-    // The tag is what makes this whole thing idempotent. Without it, a resend
-    // would pile up duplicate parties.
-    existing.setTag('ltOrderId', String(p.orderId || ''));
     created = true;
   }
 
-  applyReminders_(existing);
+  // ltOrderId keeps re-runs from duplicating; ltSlot is what pruneCancelled_
+  // matches against the storefront's list.
+  existing.setTag('ltOrderId', String(p.orderId || ''));
+  existing.setTag('ltSlot', p.partyDate + '|' + p.partyTime);
 
-  return {
-    ok: true,
-    action: created ? 'created' : 'updated',
-    order: p.orderName || p.orderId || '',
-    start: existing.getStartTime().toISOString(),
-    eventId: existing.getId()
-  };
-}
+  if (created) applyReminders_(existing);
 
-function cancelEvent_(p) {
-  var cal = getCalendar_();
-  var ev = findEventByOrderId_(cal, p.orderId);
-
-  if (!ev) {
-    return { ok: true, action: 'nothing-to-cancel', order: p.orderName || p.orderId || '' };
-  }
-
-  var when = Utilities.formatDate(ev.getStartTime(), scriptTz_(), "EEEE, MMMM d, yyyy 'at' h:mm a");
-
-  if (DELETE_ON_CANCEL) {
-    ev.deleteEvent();
-  } else {
-    ev.removeAllReminders();
-    if (ev.getTitle().indexOf('CANCELLED') !== 0) ev.setTitle('CANCELLED — ' + ev.getTitle());
-  }
-
-  // A party vanishing off the calendar with no explanation is alarming. Say why.
-  // Freeing the slot on the website is a SEPARATE Flow action (README Part 3b) —
-  // don't promise it here, just point at the page so it gets eyeballed either way.
-  notify_(
-    'Party cancelled — ' + when,
-    'Order ' + (p.orderName || p.orderId || '(unknown)') + ' was cancelled in Shopify, so ' +
-    (DELETE_ON_CANCEL ? 'its event has been removed from' : 'its event has been marked cancelled on') +
-    ' the "' + CALENDAR_NAME + '" calendar.\n\nThe slot was: ' + when +
-    '\n\nWorth a quick check: thelittletownplayhouse.com/pages/parties should now offer ' +
-    'that date again. If it still looks booked, the slot needs clearing in Shopify.'
-  );
-
-  return { ok: true, action: DELETE_ON_CANCEL ? 'deleted' : 'marked-cancelled', when: when };
+  return { action: created ? 'created' : 'unchanged', order: p.orderName || '' };
 }
 
 function applyReminders_(ev) {
   ev.removeAllReminders();
-  for (var i = 0; i < POPUP_REMINDERS_MIN.length; i++) {
-    ev.addPopupReminder(POPUP_REMINDERS_MIN[i]);
-  }
+  for (var i = 0; i < POPUP_REMINDERS_MIN.length; i++) ev.addPopupReminder(POPUP_REMINDERS_MIN[i]);
   if (EMAIL_REMINDER_MIN > 0) ev.addEmailReminder(EMAIL_REMINDER_MIN);
 }
 
-// ─── READING THE BOOKING ────────────────────────────────────────────────────
+function buildTitle_(p) {
+  var who = (p.customerName || '').trim();
+  var pkg = /fusion/i.test(String(p.package || '')) ? ' +Fusion' : '';
+  return '🎉 Party' + pkg + (who ? ' — ' + who : '');
+}
+
+function buildDescription_(p) {
+  var lines = [];
+  if (p.package) lines.push('Package: ' + p.package);
+  lines.push('');
+  if (p.customerName) lines.push('Name:  ' + p.customerName);
+  if (p.customerPhone) lines.push('Phone: ' + p.customerPhone);
+  if (p.customerEmail) lines.push('Email: ' + p.customerEmail);
+  lines.push('');
+  if (p.orderName) lines.push('Order ' + p.orderName + (p.total ? '  ·  $' + p.total : ''));
+  lines.push('');
+  lines.push('— added automatically from your Shopify order email');
+  return lines.join('\n');
+}
+
+// ─── READING THE SLOT ───────────────────────────────────────────────────────
 
 /**
  * "2026-06-13" + "4:30–6:30 PM"  →  { start: Date, end: Date }
  *
- * The slot strings are written by SLOTS_BY_DOW in the theme's main.js and use
- * an EN DASH, with AM/PM only on the second half. Both are handled, along with
- * plain hyphens and em dashes in case the source ever changes.
+ * The slot strings come from SLOTS_BY_DOW in the theme's main.js and use an EN
+ * DASH, with AM/PM only on the second half. Plain hyphens and em dashes are
+ * handled too, in case that ever changes.
  */
 function parseSlot_(dateStr, timeStr) {
   var d = String(dateStr || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -217,34 +375,6 @@ function parseSlot_(dateStr, timeStr) {
   return { start: start, end: end };
 }
 
-/**
- * Builds the exact instant that is <h:mi> WALL-CLOCK TIME in Fairfield on the
- * given day, whatever timezone this script happens to be set to.
- *
- * Doing it this way instead of `new Date(y, m, d, h, mi)` matters: that
- * constructor silently uses the project's timezone, so a project left on the
- * default would put every party on the calendar at the wrong hour, and a
- * hardcoded -5/-6 offset would be wrong for half the year. Here we ask what
- * offset Central *actually had* on that date and correct for it — so CDT and
- * CST are both right, with no setup step to forget.
- *
- * The second pass catches the case where the first guess lands on the other
- * side of a daylight-saving switch.
- */
-function ctDate_(y, mo, d, h, mi) {
-  var wall = Date.UTC(y, mo - 1, d, h, mi, 0);
-  var ms = wall;
-  for (var i = 0; i < 2; i++) ms = wall - tzOffsetMs_(new Date(ms));
-  return new Date(ms);
-}
-
-/** How far ahead of UTC Fairfield was at that instant, in milliseconds. */
-function tzOffsetMs_(dt) {
-  var z = Utilities.formatDate(dt, TIMEZONE, 'Z'); // e.g. "-0500" (CDT) / "-0600" (CST)
-  var sign = z.charAt(0) === '-' ? -1 : 1;
-  return sign * ((parseInt(z.substr(1, 2), 10) * 60 + parseInt(z.substr(3, 2), 10)) * 60000);
-}
-
 function readClock_(s) {
   var m = String(s).match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/i);
   if (!m) return null;
@@ -256,43 +386,31 @@ function to24_(h, mer) {
   return h === 12 ? 12 : h + 12;
 }
 
-// ─── EVENT TEXT ─────────────────────────────────────────────────────────────
-
-function buildTitle_(p) {
-  var who = (p.customerName || '').trim();
-  var pkg = /fusion/i.test(String(p.package || '')) ? ' +Fusion' : '';
-  return '🎉 Party' + pkg + (who ? ' — ' + who : '');
+/**
+ * The exact instant that is <h:mi> WALL-CLOCK TIME in Fairfield on that day,
+ * whatever timezone this script is set to.
+ *
+ * `new Date(y, m, d, h, mi)` would silently use the project's timezone, so a
+ * copied sheet on someone else's default would put every party on at the wrong
+ * hour. A hardcoded -5/-6 would be wrong half the year. So: ask what offset
+ * Central actually had on that date and correct for it. The second pass catches
+ * a first guess that landed the other side of a daylight-saving switch.
+ */
+function ctDate_(y, mo, d, h, mi) {
+  var wall = Date.UTC(y, mo - 1, d, h, mi, 0);
+  var ms = wall;
+  for (var i = 0; i < 2; i++) ms = wall - tzOffsetMs_(new Date(ms));
+  return new Date(ms);
 }
 
-/** Everything he'd otherwise have to open Shopify to find. */
-function buildDescription_(p) {
-  var lines = [];
-  if (p.partyWhen) lines.push(p.partyWhen);
-  if (p.package) lines.push('Package: ' + p.package);
-  lines.push('');
-  if (p.customerName) lines.push('Name:  ' + p.customerName);
-  if (p.customerPhone) lines.push('Phone: ' + p.customerPhone);
-  if (p.customerEmail) lines.push('Email: ' + p.customerEmail);
-  lines.push('');
-  if (p.orderName) lines.push('Order ' + p.orderName + (p.total ? '  ·  $' + p.total : ''));
-
-  var url = adminOrderUrl_(p);
-  if (url) lines.push(url);
-
-  lines.push('');
-  lines.push('— added automatically when the booking was paid for');
-  return lines.join('\n');
-}
-
-function adminOrderUrl_(p) {
-  if (p.orderUrl) return p.orderUrl;
-  if (!STORE_HANDLE || !p.orderId) return '';
-  return 'https://admin.shopify.com/store/' + STORE_HANDLE + '/orders/' + p.orderId;
+function tzOffsetMs_(dt) {
+  var z = Utilities.formatDate(dt, TIMEZONE, 'Z'); // "-0500" (CDT) / "-0600" (CST)
+  var sign = z.charAt(0) === '-' ? -1 : 1;
+  return sign * ((parseInt(z.substr(1, 2), 10) * 60 + parseInt(z.substr(3, 2), 10)) * 60000);
 }
 
 // ─── CALENDAR PLUMBING ──────────────────────────────────────────────────────
 
-/** Finds the parties calendar, creating it the first time. Id is cached. */
 function getCalendar_() {
   var props = PropertiesService.getScriptProperties();
   var cached = props.getProperty('calendarId');
@@ -306,7 +424,7 @@ function getCalendar_() {
     ? found[0]
     : CalendarApp.createCalendar(CALENDAR_NAME, {
         summary: 'Private buyouts booked on thelittletownplayhouse.com',
-        timeZone: scriptTz_(),
+        timeZone: TIMEZONE,
         color: CalendarApp.Color.PINK
       });
 
@@ -316,7 +434,7 @@ function getCalendar_() {
 
 /**
  * Scans a wide window rather than just the party's own day — a rescheduled
- * booking has already moved, so searching the new date would miss it and we'd
+ * booking has already moved, so looking only at the new date would miss it and
  * create a duplicate instead of moving the original.
  */
 function findEventByOrderId_(cal, orderId) {
@@ -333,44 +451,30 @@ function findEventByOrderId_(cal, orderId) {
   return null;
 }
 
-function scriptTz_() {
-  // Always Fairfield's timezone, never the project's — see ctDate_.
-  return TIMEZONE;
-}
-
 // ─── SAFETY NET ─────────────────────────────────────────────────────────────
 
-function secretOk_(given) {
-  var a = String(given || '');
-  var b = String(SHARED_SECRET || '');
-  if (!b || b === 'PASTE_A_LONG_RANDOM_STRING_HERE') {
-    throw new Error('SHARED_SECRET has not been set in Code.gs.');
-  }
-  if (a.length !== b.length) return false;
-  var diff = 0;
-  for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
-/** Emails the owner when a booking fails to land, throttled so it can't spam. */
-function alertOwner_(err, payload) {
+/**
+ * Emails him when a booking can't be read, throttled so a recurring problem
+ * can't flood his inbox every 15 minutes. Without this the sync could fail
+ * quietly forever, which is the worst outcome for a booking system.
+ */
+function alertOwner_(err, context) {
   try {
     var msg = String((err && err.message) || err);
     var props = PropertiesService.getScriptProperties();
-    var stamp = 'lastAlert:' + msg.slice(0, 60);
-    var last = Number(props.getProperty(stamp) || 0);
-    if (Date.now() - last < 30 * 60 * 1000) return; // same error within 30 min
-    props.setProperty(stamp, String(Date.now()));
+    var key = 'lastAlert:' + msg.slice(0, 60);
+    if (Date.now() - Number(props.getProperty(key) || 0) < 6 * 60 * 60 * 1000) return;
+    props.setProperty(key, String(Date.now()));
 
     notify_(
       '⚠️ A party did NOT reach the calendar',
-      'A booking came through but could not be added to the "' + CALENDAR_NAME + '" calendar.\n\n' +
-      'Add it by hand, then tell whoever set this up.\n\n' +
-      'What went wrong:\n' + msg + '\n\n' +
-      'What Shopify sent:\n' + JSON.stringify(payload || {}, null, 2)
+      'A booking came through but could not be added to your "' + CALENDAR_NAME + '" ' +
+      'calendar. Please add it by hand, then forward this to whoever set this up.\n\n' +
+      'Order/email: ' + (context || 'unknown') + '\n' +
+      'Problem: ' + msg
     );
   } catch (ignored) {
-    // Never let the alarm bell itself throw.
+    // The alarm bell must never be the thing that throws.
   }
 }
 
@@ -378,84 +482,20 @@ function notify_(subject, body) {
   MailApp.sendEmail(OWNER_EMAIL, 'Little Town — ' + subject, body);
 }
 
-function jsonOut_(obj) {
-  return ContentService
-    .createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-// ─── RUN THESE BY HAND (Apps Script editor → pick function → Run) ───────────
+// ─── RUN BY HAND IF EVER NEEDED ─────────────────────────────────────────────
 
 /**
- * Proves the whole thing works WITHOUT placing a real Shopify order.
- * Creates a fake party two weeks out, checks it can be found again, then
- * deletes it. Watch the Execution log for the result.
+ * Puts parties booked BEFORE this existed onto the calendar. Their order emails
+ * are usually still in Gmail and get picked up by the normal sync, so this is
+ * only for ones that predate the LTPCAL1 line in the email template.
  *
- * Worth having because Shopify's own "Send test" button sends a sample order
- * with no line-item properties, so it can never exercise this path.
- */
-function runSelfTest() {
-  var d = new Date();
-  d.setDate(d.getDate() + 14);
-  var dateStr = Utilities.formatDate(d, scriptTz_(), 'yyyy-MM-dd');
-
-  var fake = {
-    secret: SHARED_SECRET,
-    action: 'upsert',
-    orderId: 'SELFTEST-' + dateStr,
-    orderName: '#SELFTEST',
-    partyDate: dateStr,
-    partyTime: '4:00–6:00 PM',
-    partyWhen: 'Self test · 4:00–6:00 PM',
-    customerName: 'Test Booking (safe to ignore)',
-    customerPhone: '555-0100',
-    customerEmail: 'test@example.com',
-    package: 'Little Town',
-    total: '185.00'
-  };
-
-  var made = upsertEvent_(fake);
-  Logger.log('created: ' + JSON.stringify(made));
-
-  var again = upsertEvent_(fake);
-  Logger.log('second send (should say "updated", NOT "created"): ' + JSON.stringify(again));
-
-  var gone = cancelEvent_({ orderId: fake.orderId, orderName: fake.orderName });
-  Logger.log('cleanup: ' + JSON.stringify(gone));
-
-  Logger.log(
-    made.action === 'created' && again.action === 'updated'
-      ? '✅ PASS — create, update-in-place and delete all work.'
-      : '❌ FAIL — check the log above.'
-  );
-}
-
-/**
- * One-time: puts parties that were booked BEFORE this existed onto the calendar.
- * Just run it — RAW below was read off the live site on 2026-08-09 and every
- * entry was checked against SLOTS_BY_DOW for its day of the week.
- *
- * Safe to run twice: the ids are derived from the date + time, so a second run
- * updates the same events rather than duplicating them.
- *
- * If bookings have come in since, refresh RAW from the live site first (no admin
- * login needed) and paste the result in:
- *
- *   (Invoke-WebRequest 'https://thelittletownplayhouse.com/pages/parties' -UseBasicParsing).Content |
- *     Select-String 'LT_BOOKED_RAW\s*=\s*"([^"]*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value }
- *
- * NB the list is in order-placed sequence, not date order. Don't read it as a
- * schedule — the calendar is the schedule now.
+ * Read off the live site on 2026-08-09, each checked against SLOTS_BY_DOW for
+ * its day of week. Safe to run twice — ids are derived from date + time, so a
+ * second run updates the same events rather than duplicating them.
  */
 function backfillExistingBookings() {
-  // Sun 8/23 1–3 · Sun 9/13 1–3 · Sun 9/20 1–3 · Sun 9/27 4–6 · Sat 10/10 4:30–6:30 · Sun 10/11 1–3
   var RAW = '2026-10-11|1:00–3:00 PM;2026-10-10|4:30–6:30 PM;2026-09-27|4:00–6:00 PM;' +
             '2026-09-20|1:00–3:00 PM;2026-09-13|1:00–3:00 PM;2026-08-23|1:00–3:00 PM';
-
-  if (!RAW) {
-    Logger.log('Paste the LT_BOOKED_RAW value into RAW first — see the comment above.');
-    return;
-  }
 
   var entries = RAW.split(';');
   var done = 0;
@@ -463,23 +503,55 @@ function backfillExistingBookings() {
   for (var i = 0; i < entries.length; i++) {
     var bits = entries[i].split('|');
     if (bits.length !== 2 || !bits[0]) continue;
-
     var date = bits[0].trim();
     var time = bits[1].trim();
 
     upsertEvent_({
-      // Deterministic id → re-running this updates rather than duplicates.
       orderId: 'backfill-' + date + '-' + time.replace(/[^0-9]/g, ''),
       orderName: '(booked before calendar sync)',
       partyDate: date,
       partyTime: time,
-      partyWhen: date + ' · ' + time,
       customerName: '',
       package: 'see Shopify order'
     });
     done++;
-    Logger.log('added ' + date + ' ' + time);
   }
+  Logger.log('Backfilled ' + done + ' booking(s).');
+}
 
-  Logger.log('✅ Backfilled ' + done + ' booking(s). Check the "' + CALENDAR_NAME + '" calendar.');
+/**
+ * Proves the date maths and the calendar work, without needing a real order.
+ * Creates a fake party two weeks out, re-sends it to check it updates rather
+ * than duplicates, then deletes it.
+ */
+function runSelfTest() {
+  var d = new Date();
+  d.setDate(d.getDate() + 14);
+  var dateStr = Utilities.formatDate(d, TIMEZONE, 'yyyy-MM-dd');
+
+  var fake = {
+    orderId: 'SELFTEST-' + dateStr,
+    orderName: '#SELFTEST',
+    partyDate: dateStr,
+    partyTime: '4:00–6:00 PM',
+    customerName: 'Test Booking (safe to ignore)',
+    customerPhone: '555-0100',
+    customerEmail: 'test@example.com',
+    package: 'Little Town',
+    total: '185.00'
+  };
+
+  var a = upsertEvent_(fake);
+  var b = upsertEvent_(fake);
+  Logger.log('first: ' + a.action + ' / second: ' + b.action);
+
+  var cal = getCalendar_();
+  var ev = findEventByOrderId_(cal, fake.orderId);
+  if (ev) ev.deleteEvent();
+
+  Logger.log(
+    a.action === 'created' && b.action === 'unchanged'
+      ? '✅ PASS — create, update-in-place and delete all work.'
+      : '❌ FAIL — check the log above.'
+  );
 }
