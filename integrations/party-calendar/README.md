@@ -56,11 +56,21 @@ Flow only ever *appended* to `lt_booking.taken`, so a cancelled party used to bu
 permanently. New workflow, trigger **`Order cancelled`**, one action:
 
 **`Update shop metafield`** (the **Shop** one) → metafield `lt_booking.taken`. Read the
-current value with **Add a variable → Shop → metafield** (Flow names the alias itself and
-won't let you choose — note it), then paste as the **Value**, replacing `REPLACE_WITH_ALIAS`:
+current value with **Add a variable → Shop → metafield**.
+
+> **On this store the alias is `bookedPartySlots`** (confirmed 2026-08-10 off the live
+> `Order created` workflow). Flow derives it from the metafield definition's *name*, not at
+> random, so it's the same token in every workflow — the Liquid below can be pasted as-is.
+> Still check what Flow inserts and match it if it ever differs.
+>
+> The variable picker can be unhelpful here: search `metafield` under an `Order` trigger and
+> every result is `order / …`. Add the **action** first and pick `lt_booking.taken` in the
+> action's own dropdown, *then* use Add a variable in the Value field. If it offers to **add a
+> definition**, don't — the definition already exists (the storefront serves it), and a second
+> one with the same name would leave the theme reading the wrong metafield.
 
 ```liquid
-{%- assign existing = shop.REPLACE_WITH_ALIAS.value -%}
+{%- assign existing = shop.bookedPartySlots.value -%}
 {%- assign pdate = "" -%}
 {%- assign ptime = "" -%}
 {%- for lineItem in order.lineItems -%}
