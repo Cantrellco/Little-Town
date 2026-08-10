@@ -46,6 +46,20 @@ var TIMEZONE = 'America/Chicago';
 /** How far back in Gmail to look. Parties are booked months ahead. */
 var MAIL_LOOKBACK = '1y';
 
+/**
+ * A second Google account that should also SEE this calendar — e.g. the
+ * personal address he actually keeps his diary in. Shared automatically during
+ * setup, so nobody has to work out Google's calendar-sharing screens.
+ *
+ * Read-only, and it only shows the dates. Reminders will NOT follow: Google
+ * keeps reminders private to the account that owns the calendar, and they
+ * can't be set on someone else's behalf. The 5-day / 1-day / 2-hour alerts
+ * fire in whichever account runs this script.
+ *
+ * Leave '' to skip sharing entirely.
+ */
+var SHARE_CALENDAR_WITH = '';
+
 var VERSION = '2.0.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
@@ -72,7 +86,8 @@ function onOpen() {
 function setup() {
   var ui = SpreadsheetApp.getUi();
   try {
-    getCalendar_();
+    var cal = getCalendar_();
+    var sharedWith = shareCalendarWith_(cal);
 
     // Clear ours out first so running setup twice doesn't stack up triggers.
     var existing = ScriptApp.getProjectTriggers();
@@ -94,6 +109,10 @@ function setup() {
       'Your "' + CALENDAR_NAME + '" calendar is ready, and it will check for new ' +
       'bookings by itself every ' + CHECK_EVERY_MINUTES + ' minutes.\n\n' +
       'Parties found just now: ' + (result.added + seeded) + '\n\n' +
+      (sharedWith
+        ? 'It has also been shared with ' + sharedWith + ' — look for "' +
+          CALENDAR_NAME + '" under "Other calendars" there.\n\n'
+        : '') +
       'Open Google Calendar on your phone and you\'ll see them. You can close ' +
       'this sheet — you never need to open it again.',
       ui.ButtonSet.OK
@@ -423,6 +442,8 @@ function getCalendar_() {
   if (cached) {
     var hit = CalendarApp.getCalendarById(cached);
     if (hit) return hit;
+    // Falls through when the id belongs to another account — which is exactly
+    // what happens if Script Properties ride along with a copied sheet.
   }
 
   var found = CalendarApp.getCalendarsByName(CALENDAR_NAME);
@@ -486,6 +507,47 @@ function alertOwner_(err, context) {
 
 function notify_(subject, body) {
   MailApp.sendEmail(OWNER_EMAIL, 'Little Town — ' + subject, body);
+}
+
+/**
+ * Gives a second Google account read access to the calendar, so the parties
+ * show up in the diary he actually looks at.
+ *
+ * Done with a direct Calendar API call rather than CalendarApp, which has no
+ * sharing methods at all, and rather than the advanced Calendar service, which
+ * would need an extra manifest step during setup. The OAuth token from the
+ * calendar permission he's already granted is enough.
+ *
+ * Never allowed to break setup — a failed share is worth a log line, not a
+ * dead calendar. Re-running is harmless; the API just overwrites the rule.
+ */
+function shareCalendarWith_(cal) {
+  if (!SHARE_CALENDAR_WITH) return '';
+  try {
+    var res = UrlFetchApp.fetch(
+      'https://www.googleapis.com/calendar/v3/calendars/' +
+        encodeURIComponent(cal.getId()) + '/acl',
+      {
+        method: 'post',
+        contentType: 'application/json',
+        headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+        payload: JSON.stringify({
+          role: 'reader',
+          scope: { type: 'user', value: SHARE_CALENDAR_WITH }
+        }),
+        muteHttpExceptions: true
+      }
+    );
+    var code = res.getResponseCode();
+    if (code >= 200 && code < 300) {
+      Logger.log('Calendar shared with ' + SHARE_CALENDAR_WITH);
+      return SHARE_CALENDAR_WITH;
+    }
+    Logger.log('Could not share calendar (' + code + '): ' + res.getContentText());
+  } catch (err) {
+    Logger.log('Could not share calendar: ' + ((err && err.message) || err));
+  }
+  return '';
 }
 
 // ─── RUN BY HAND IF EVER NEEDED ─────────────────────────────────────────────
