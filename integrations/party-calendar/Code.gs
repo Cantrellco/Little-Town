@@ -47,12 +47,17 @@ var TIMEZONE = 'America/Chicago';
 var MAIL_LOOKBACK = '1y';
 
 /**
- * Other Google accounts that should also SEE this calendar. Shared
- * automatically during setup, so nobody has to work out Google's
- * calendar-sharing screens. Add or remove addresses freely.
+ * Other Google accounts that should also SEE this calendar. Granted access
+ * during setup, so nobody has to work out Google's calendar-sharing screens.
+ * Add or remove addresses freely.
  *
  * The account that RUNS this script owns the calendar and doesn't need to be
  * listed — it already has it.
+ *
+ * ⚠️ Granting access is NOT the same as it appearing for them. Google stopped
+ * auto-adding shared calendars to the recipient's list: they get an email and
+ * must click through it once to add it. One click, one time — but it does have
+ * to happen, or they'll wonder where the calendar is.
  *
  * Read-only, and dates only. Reminders will NOT follow: Google keeps reminders
  * private to the account that owns the calendar and they can't be set on
