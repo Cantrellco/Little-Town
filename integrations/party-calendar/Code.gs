@@ -47,18 +47,19 @@ var TIMEZONE = 'America/Chicago';
 var MAIL_LOOKBACK = '1y';
 
 /**
- * A second Google account that should also SEE this calendar — e.g. the
- * personal address he actually keeps his diary in. Shared automatically during
- * setup, so nobody has to work out Google's calendar-sharing screens.
+ * Other Google accounts that should also SEE this calendar. Shared
+ * automatically during setup, so nobody has to work out Google's
+ * calendar-sharing screens. Add or remove addresses freely.
  *
- * Read-only, and it only shows the dates. Reminders will NOT follow: Google
- * keeps reminders private to the account that owns the calendar, and they
- * can't be set on someone else's behalf. The 5-day / 1-day / 2-hour alerts
- * fire in whichever account runs this script.
+ * The account that RUNS this script owns the calendar and doesn't need to be
+ * listed — it already has it.
  *
- * Leave '' to skip sharing entirely.
+ * Read-only, and dates only. Reminders will NOT follow: Google keeps reminders
+ * private to the account that owns the calendar and they can't be set on
+ * someone else's behalf. The 5-day / 1-day / 2-hour alerts fire only in the
+ * account running this script.
  */
-var SHARE_CALENDAR_WITH = '';
+var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
 
 var VERSION = '2.0.0';
 
@@ -109,8 +110,8 @@ function setup() {
       'Your "' + CALENDAR_NAME + '" calendar is ready, and it will check for new ' +
       'bookings by itself every ' + CHECK_EVERY_MINUTES + ' minutes.\n\n' +
       'Parties found just now: ' + (result.added + seeded) + '\n\n' +
-      (sharedWith
-        ? 'It has also been shared with ' + sharedWith + ' — look for "' +
+      (sharedWith.length
+        ? 'It has also been shared with ' + sharedWith.join(', ') + ' — look for "' +
           CALENDAR_NAME + '" under "Other calendars" there.\n\n'
         : '') +
       'Open Google Calendar on your phone and you\'ll see them. You can close ' +
@@ -522,32 +523,39 @@ function notify_(subject, body) {
  * dead calendar. Re-running is harmless; the API just overwrites the rule.
  */
 function shareCalendarWith_(cal) {
-  if (!SHARE_CALENDAR_WITH) return '';
-  try {
-    var res = UrlFetchApp.fetch(
-      'https://www.googleapis.com/calendar/v3/calendars/' +
-        encodeURIComponent(cal.getId()) + '/acl',
-      {
-        method: 'post',
-        contentType: 'application/json',
-        headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-        payload: JSON.stringify({
-          role: 'reader',
-          scope: { type: 'user', value: SHARE_CALENDAR_WITH }
-        }),
-        muteHttpExceptions: true
+  var shared = [];
+  var list = SHARE_CALENDAR_WITH || [];
+
+  for (var i = 0; i < list.length; i++) {
+    var who = String(list[i] || '').trim();
+    if (!who) continue;
+    try {
+      var res = UrlFetchApp.fetch(
+        'https://www.googleapis.com/calendar/v3/calendars/' +
+          encodeURIComponent(cal.getId()) + '/acl',
+        {
+          method: 'post',
+          contentType: 'application/json',
+          headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+          payload: JSON.stringify({
+            role: 'reader',
+            scope: { type: 'user', value: who }
+          }),
+          muteHttpExceptions: true
+        }
+      );
+      var code = res.getResponseCode();
+      if (code >= 200 && code < 300) {
+        Logger.log('Calendar shared with ' + who);
+        shared.push(who);
+      } else {
+        Logger.log('Could not share with ' + who + ' (' + code + '): ' + res.getContentText());
       }
-    );
-    var code = res.getResponseCode();
-    if (code >= 200 && code < 300) {
-      Logger.log('Calendar shared with ' + SHARE_CALENDAR_WITH);
-      return SHARE_CALENDAR_WITH;
+    } catch (err) {
+      Logger.log('Could not share with ' + who + ': ' + ((err && err.message) || err));
     }
-    Logger.log('Could not share calendar (' + code + '): ' + res.getContentText());
-  } catch (err) {
-    Logger.log('Could not share calendar: ' + ((err && err.message) || err));
   }
-  return '';
+  return shared;
 }
 
 // ─── RUN BY HAND IF EVER NEEDED ─────────────────────────────────────────────
