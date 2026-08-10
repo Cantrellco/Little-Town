@@ -19,8 +19,20 @@
 
 // ─── SETTINGS — the only part you edit ──────────────────────────────────────
 
-/** Must match the "secret" value in the Flow request body. Long + random. */
-var SHARED_SECRET = 'PASTE_A_LONG_RANDOM_STRING_HERE';
+/**
+ * Must match the "secret" value in the Flow request body. Already generated and
+ * already pasted into the Flow snippets in README Parts 2 and 3 — you do not
+ * need to change it or copy it anywhere. (Only worth regenerating if it leaks;
+ * if you do, change it in all three places.)
+ */
+var SHARED_SECRET = 'o4vRjv-awzhGIgQ2VwqLxNuo7zQNyEr7';
+
+/**
+ * Everything is calculated in this timezone explicitly, so it does NOT matter
+ * what timezone the Apps Script project itself is set to. Fairfield IL is
+ * Central; daylight saving is worked out per-party, never assumed.
+ */
+var TIMEZONE = 'America/Chicago';
 
 /** Created automatically on first run if it doesn't exist yet. */
 var CALENDAR_NAME = 'Little Town Parties';
@@ -182,10 +194,6 @@ function applyReminders_(ev) {
  * The slot strings are written by SLOTS_BY_DOW in the theme's main.js and use
  * an EN DASH, with AM/PM only on the second half. Both are handled, along with
  * plain hyphens and em dashes in case the source ever changes.
- *
- * Dates are built with the script's timezone (America/Chicago, set in
- * appsscript.json), so daylight saving is handled for us — never hardcode a
- * UTC offset here.
  */
 function parseSlot_(dateStr, timeStr) {
   var d = String(dateStr || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -202,11 +210,39 @@ function parseSlot_(dateStr, timeStr) {
   if (b.mer === null) b.mer = a.mer;
   if (a.mer === null || b.mer === null) throw new Error('No AM/PM found in Party time: "' + timeStr + '"');
 
-  var start = new Date(+d[1], +d[2] - 1, +d[3], to24_(a.h, a.mer), a.m, 0);
-  var end = new Date(+d[1], +d[2] - 1, +d[3], to24_(b.h, b.mer), b.m, 0);
+  var start = ctDate_(+d[1], +d[2], +d[3], to24_(a.h, a.mer), a.m);
+  var end = ctDate_(+d[1], +d[2], +d[3], to24_(b.h, b.mer), b.m);
 
   if (end <= start) throw new Error('Party ends before it starts: "' + timeStr + '"');
   return { start: start, end: end };
+}
+
+/**
+ * Builds the exact instant that is <h:mi> WALL-CLOCK TIME in Fairfield on the
+ * given day, whatever timezone this script happens to be set to.
+ *
+ * Doing it this way instead of `new Date(y, m, d, h, mi)` matters: that
+ * constructor silently uses the project's timezone, so a project left on the
+ * default would put every party on the calendar at the wrong hour, and a
+ * hardcoded -5/-6 offset would be wrong for half the year. Here we ask what
+ * offset Central *actually had* on that date and correct for it — so CDT and
+ * CST are both right, with no setup step to forget.
+ *
+ * The second pass catches the case where the first guess lands on the other
+ * side of a daylight-saving switch.
+ */
+function ctDate_(y, mo, d, h, mi) {
+  var wall = Date.UTC(y, mo - 1, d, h, mi, 0);
+  var ms = wall;
+  for (var i = 0; i < 2; i++) ms = wall - tzOffsetMs_(new Date(ms));
+  return new Date(ms);
+}
+
+/** How far ahead of UTC Fairfield was at that instant, in milliseconds. */
+function tzOffsetMs_(dt) {
+  var z = Utilities.formatDate(dt, TIMEZONE, 'Z'); // e.g. "-0500" (CDT) / "-0600" (CST)
+  var sign = z.charAt(0) === '-' ? -1 : 1;
+  return sign * ((parseInt(z.substr(1, 2), 10) * 60 + parseInt(z.substr(3, 2), 10)) * 60000);
 }
 
 function readClock_(s) {
@@ -298,7 +334,8 @@ function findEventByOrderId_(cal, orderId) {
 }
 
 function scriptTz_() {
-  return Session.getScriptTimeZone() || 'America/Chicago';
+  // Always Fairfield's timezone, never the project's — see ctDate_.
+  return TIMEZONE;
 }
 
 // ─── SAFETY NET ─────────────────────────────────────────────────────────────

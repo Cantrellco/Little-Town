@@ -9,10 +9,14 @@ is cancelled, the event removes itself.
 
 | | Who | How long |
 | --- | --- | --- |
-| Google side (Part 1) | **you**, signed into his Google account | ~15 min |
-| Shopify side (Parts 2–3) | **you**, in the Shopify admin | ~10 min |
-| Existing bookings (Part 4) | **you** | ~2 min |
-| **The owner** | clicks **Allow** twice, once, ever | ~60 sec |
+| Google side (Part 1) | **you**, signed into his Google account | ~10 min |
+| Shopify side (Parts 2–3b) | **you**, in the Shopify admin | ~10 min |
+| Existing bookings (Part 4) | **you** — one click, already filled in | ~1 min |
+| **The owner** | clicks **Allow**, once, ever | ~60 sec |
+
+There is nothing to invent, choose or make up anywhere in this guide. Every value is already
+filled in — paste the files, paste the snippets, click through. The only thing you supply is
+the web app URL Google gives you in Part 1, which goes into Parts 2 and 3.
 
 If you can borrow his Google login for twenty minutes, he does nothing at all.
 
@@ -32,33 +36,25 @@ Signed in as **littletownplayhousellc@gmail.com**:
 2. Rename it (top left) to **Little Town — Party Calendar**.
 3. Delete the sample `myFunction` code. Paste in the entire contents of
    [`Code.gs`](Code.gs).
-4. **Show the manifest:** ⚙️ **Project Settings** → tick **"Show `appsscript.json` manifest
-   file in editor"**. Go back to the editor, open `appsscript.json`, and replace it with the
-   contents of [`appsscript.json`](appsscript.json).
+4. *(optional)* Fill in `STORE_HANDLE` near the top — it's the bit in the middle of your
+   admin URL, `admin.shopify.com/store/`**`this-part`**`/orders`. It adds a tap-through link
+   to the Shopify order on every calendar entry. Leave it blank and everything still works.
+5. **Save** (💾).
 
-   *This is what sets the timezone to Central. Skip it and every party lands on the calendar
-   at the wrong hour.*
-
-5. **Make up a password** — long and random, e.g. from a password manager. In `Code.gs`,
-   put it on the `SHARED_SECRET` line:
-
-   ```javascript
-   var SHARED_SECRET = 'the-long-random-thing-you-just-made';
-   ```
-
-   Keep it somewhere — you'll paste it into Shopify in Part 2.
-
-6. *(optional)* Fill in `STORE_HANDLE` — it's the bit in the middle of your admin URL,
-   `admin.shopify.com/store/`**`this-part`**`/orders`. It adds a tap-through link to the
-   Shopify order on every calendar entry. Leave it blank and everything still works.
-
-7. **Save** (💾).
+> **Nothing else to fill in.** The shared password is already generated and already sitting in
+> the file, and the same one is already in the Shopify snippets in Parts 2 and 3 — so there is
+> nothing to invent, copy or keep in sync.
+>
+> **Timezone needs no setting either.** The script works out Central time per party, so it's
+> right in summer and winter no matter what timezone the project is on. (There's an
+> [`appsscript.json`](appsscript.json) in this folder if you ever want the project tidy, but
+> it changes nothing and you can ignore it.)
 
 ### Test it before going anywhere near Shopify
 
-8. In the function dropdown at the top, choose **`runSelfTest`** → **Run**.
+6. In the function dropdown at the top, choose **`runSelfTest`** → **Run**.
 
-9. **This is the moment the owner clicks Allow.** Google will ask permission for the script
+7. **This is the moment the owner clicks Allow.** Google will ask permission for the script
    to use Calendar and to send mail. You'll see a scary-looking **"Google hasn't verified this
    app"** screen — that's normal and expected for a private script. Click **Advanced** →
    **Go to Little Town — Party Calendar (unsafe)** → **Allow**.
@@ -66,30 +62,29 @@ Signed in as **littletownplayhousellc@gmail.com**:
    *It says "unsafe" because the script isn't published to the world. It's his own script, in
    his own account, doing exactly what's in the file above.*
 
-10. Look at the **Execution log** at the bottom. You want the last line to read:
+8. Look at the **Execution log** at the bottom. You want the last line to read:
 
-    > ✅ PASS — create, update-in-place and delete all work.
+   > ✅ PASS — create, update-in-place and delete all work.
 
-    Open Google Calendar and you'll see a new **Little Town Parties** calendar in the
-    sidebar. The test party created and deleted itself, so it should be empty.
+   Open Google Calendar and you'll see a new **Little Town Parties** calendar in the
+   sidebar. The test party created and deleted itself, so it should be empty.
 
-    ❌ If it fails, the log says why. Almost always it's the `SHARED_SECRET` line still
-    holding the placeholder text.
+   ❌ If it fails, the log says exactly what went wrong — it's written to be read.
 
 ### Publish it so Shopify can reach it
 
-11. Top right → **Deploy** → **New deployment**.
-12. Click the ⚙️ next to "Select type" → choose **Web app**.
-13. Set:
+9. Top right → **Deploy** → **New deployment**.
+10. Click the ⚙️ next to "Select type" → choose **Web app**.
+11. Set:
     - **Execute as:** **Me** (`littletownplayhousellc@gmail.com`)
     - **Who has access:** **Anyone**
-14. **Deploy**. Copy the **Web app URL** — it ends in `/exec`. You need it in Part 2.
+12. **Deploy**. Copy the **Web app URL** — it ends in `/exec`. You need it in Part 2.
 
 > **"Anyone" sounds alarming — it isn't.** It means Shopify can reach the URL without logging
-> in. The script refuses any request that doesn't carry your secret from step 5. That's the
-> lock; the URL is just the door.
+> in. The script refuses any request that doesn't carry the password baked into the file.
+> That's the lock; the URL is just the door.
 
-15. **Check the deployment is live:** paste the `/exec` URL into a browser. You should see:
+13. **Check the deployment is live:** paste the `/exec` URL into a browser. You should see:
     ```json
     {"ok":true,"service":"little-town-party-calendar","version":"1.0.0"}
     ```
@@ -106,10 +101,11 @@ that writes `lt_booking.taken`. Don't build a new workflow.
 3. Find the **last box** in the chain → click the **＋** under it → **Action**.
 4. Search for **`Send HTTP request`**. Click it.
 5. Fill it in:
-   - **URL:** your `/exec` URL from Part 1 step 14
+   - **URL:** your `/exec` URL from Part 1 step 12
    - **Method:** **POST**
    - **Headers:** name `Content-Type`, value `application/json`
-   - **Body:** paste this, then replace `YOUR_SECRET_HERE` with your secret:
+   - **Body:** paste this exactly as it is — the password is already in it, nothing to
+     substitute:
 
    ```liquid
    {%- assign pdate = "" -%}
@@ -124,7 +120,7 @@ that writes `lt_booking.taken`. Don't build a new workflow.
      {%- endfor -%}
    {%- endfor -%}
    {
-     "secret": "YOUR_SECRET_HERE",
+     "secret": "o4vRjv-awzhGIgQ2VwqLxNuo7zQNyEr7",
      "action": "upsert",
      "orderId": {{ order.id | split: "/" | last | json }},
      "orderName": {{ order.name | json }},
@@ -169,7 +165,7 @@ A brand-new, very short workflow.
 
    ```liquid
    {
-     "secret": "YOUR_SECRET_HERE",
+     "secret": "o4vRjv-awzhGIgQ2VwqLxNuo7zQNyEr7",
      "action": "cancel",
      "orderId": {{ order.id | split: "/" | last | json }},
      "orderName": {{ order.name | json }}
