@@ -81,13 +81,19 @@ function setup() {
     }
     ScriptApp.newTrigger('syncNow').timeBased().everyMinutes(CHECK_EVERY_MINUTES).create();
 
+    // Parties booked before the order email carried a LTPCAL1 line can never be
+    // found in Gmail, so they're seeded here. Doing it inside setup() is what
+    // keeps him out of the script editor entirely — it's the last thing that
+    // would otherwise have needed a by-hand function run in his copy.
+    var seeded = backfillExistingBookings();
+
     var result = syncNow_();
 
     ui.alert(
       '✅ All set',
       'Your "' + CALENDAR_NAME + '" calendar is ready, and it will check for new ' +
       'bookings by itself every ' + CHECK_EVERY_MINUTES + ' minutes.\n\n' +
-      'Parties found just now: ' + result.added + '\n\n' +
+      'Parties found just now: ' + (result.added + seeded) + '\n\n' +
       'Open Google Calendar on your phone and you\'ll see them. You can close ' +
       'this sheet — you never need to open it again.',
       ui.ButtonSet.OK
@@ -485,19 +491,22 @@ function notify_(subject, body) {
 // ─── RUN BY HAND IF EVER NEEDED ─────────────────────────────────────────────
 
 /**
- * Puts parties booked BEFORE this existed onto the calendar. Their order emails
- * are usually still in Gmail and get picked up by the normal sync, so this is
- * only for ones that predate the LTPCAL1 line in the email template.
+ * Seeds parties booked BEFORE the order email carried a LTPCAL1 line. Those
+ * emails have no data line, so the Gmail sync can never find them — this is the
+ * only way they reach the calendar. Called automatically by setup().
  *
- * Read off the live site on 2026-08-09, each checked against SLOTS_BY_DOW for
- * its day of week. Safe to run twice — ids are derived from date + time, so a
- * second run updates the same events rather than duplicating them.
+ * Read off the live site on 2026-08-09 and each entry checked against
+ * SLOTS_BY_DOW for its day of week. Safe to run repeatedly: the ids come from
+ * date + time, so a second run updates the same events rather than duplicating.
+ *
+ * Returns how many it added.
  */
 function backfillExistingBookings() {
   var RAW = '2026-10-11|1:00–3:00 PM;2026-10-10|4:30–6:30 PM;2026-09-27|4:00–6:00 PM;' +
             '2026-09-20|1:00–3:00 PM;2026-09-13|1:00–3:00 PM;2026-08-23|1:00–3:00 PM';
 
   var entries = RAW.split(';');
+  var today = Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd');
   var done = 0;
 
   for (var i = 0; i < entries.length; i++) {
@@ -506,17 +515,25 @@ function backfillExistingBookings() {
     var date = bits[0].trim();
     var time = bits[1].trim();
 
-    upsertEvent_({
-      orderId: 'backfill-' + date + '-' + time.replace(/[^0-9]/g, ''),
-      orderName: '(booked before calendar sync)',
-      partyDate: date,
-      partyTime: time,
-      customerName: '',
-      package: 'see Shopify order'
-    });
-    done++;
+    // These dates are fixed in the file, so once they're in the past this would
+    // keep re-creating dead events every time setup() is run. Skip them.
+    if (date < today) continue;
+
+    try {
+      upsertEvent_({
+        orderId: 'backfill-' + date + '-' + time.replace(/[^0-9]/g, ''),
+        orderName: '(booked before calendar sync)',
+        partyDate: date,
+        partyTime: time,
+        customerName: '',
+        package: 'see Shopify order'
+      });
+      done++;
+    } catch (err) {
+      alertOwner_(err, 'backfill ' + date + ' ' + time);
+    }
   }
-  Logger.log('Backfilled ' + done + ' booking(s).');
+  return done;
 }
 
 /**
