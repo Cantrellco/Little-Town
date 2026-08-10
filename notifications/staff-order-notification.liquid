@@ -196,13 +196,17 @@
 
   Pipes are the separator, so any pipe inside a name or package is swapped for
   a slash first. Keep this on ONE line — the script matches to end-of-line.
+
+  Every variable here is one this template already uses elsewhere and is known
+  to render on this store — order_name (not `name`), id, total_price, email,
+  customer/billing_address. Don't swap in an untested equivalent.
 {%- endcomment -%}
 {%- if is_party -%}
   {%- assign f_name = customer.name | default: billing_address.name | replace: '|', '/' | strip_newlines -%}
   {%- assign f_phone = billing_address.phone | default: customer.phone | replace: '|', '/' | strip_newlines -%}
   {%- assign f_pkg = package_name | replace: '|', '/' | strip_newlines -%}
   <p style="margin:0; padding:0 32px 18px 32px; font-size:10px; line-height:14px; color:#c9c2b8; font-family:monospace;">
-    LTPCAL1|{{ id }}|{{ name }}|{{ party_date }}|{{ party_time }}|{{ f_name }}|{{ f_phone }}|{{ email }}|{{ f_pkg }}|{{ total_price | money_without_currency }}
+    LTPCAL1|{{ id }}|{{ order_name }}|{{ party_date }}|{{ party_time }}|{{ f_name }}|{{ f_phone }}|{{ email }}|{{ f_pkg }}|{{ total_price | money_without_currency }}
   </p>
 {%- endif -%}
 </body>
