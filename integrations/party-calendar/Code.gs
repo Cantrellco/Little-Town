@@ -31,6 +31,22 @@ var PARTIES_URL = 'https://thelittletownplayhouse.com/pages/parties';
 /** How often to check for new bookings, in minutes. 15 is the practical floor. */
 var CHECK_EVERY_MINUTES = 15;
 
+/**
+ * Event colours, so the two packages are tellable apart in the month view
+ * without opening anything.
+ *
+ * Plain strings rather than CalendarApp.EventColor.X on purpose: these are
+ * evaluated when the script loads, including for onOpen, which runs BEFORE
+ * authorization. Touching the Calendar service up here could stop the menu
+ * appearing at all on a fresh sheet.
+ *
+ * Google's palette: 1 Lavender · 2 Sage · 3 Grape · 4 Flamingo · 5 Banana
+ * 6 Tangerine · 7 Peacock · 8 Graphite · 9 Blueberry · 10 Basil · 11 Tomato
+ */
+var COLOR_LITTLE_TOWN = '7';  // Peacock — the ordinary buyout
+var COLOR_WITH_FUSION = '6';  // Tangerine — needs Fusion open and a barista
+var COLOR_UNKNOWN     = '8';  // Graphite — package not known, check Shopify
+
 /** Popup reminders, in minutes before the party. 7200 = 5 days, 1440 = 1 day. */
 var POPUP_REMINDERS_MIN = [7200, 1440, 120];
 
@@ -344,6 +360,10 @@ function upsertEvent_(p) {
   existing.setTag('ltOrderId', String(p.orderId || ''));
   existing.setTag('ltSlot', p.partyDate + '|' + p.partyTime);
 
+  // Set on updates too, not just creates, so re-running setup recolours the
+  // parties that were already on the calendar.
+  existing.setColor(colorFor_(p));
+
   if (created) applyReminders_(existing);
 
   return { action: created ? 'created' : 'unchanged', order: p.orderName || '' };
@@ -355,9 +375,26 @@ function applyReminders_(ev) {
   if (EMAIL_REMINDER_MIN > 0) ev.addEmailReminder(EMAIL_REMINDER_MIN);
 }
 
+/** True when the booking includes Fusion — i.e. the café opens and needs staff. */
+function isFusion_(p) {
+  return /fusion/i.test(String(p.package || ''));
+}
+
+/**
+ * Which colour this party gets. The seeded pre-sync bookings have no package
+ * recorded anywhere, so they go grey rather than being guessed at as plain
+ * Little Town — grey means "look this one up in Shopify".
+ */
+function colorFor_(p) {
+  var pkg = String(p.package || '');
+  if (isFusion_(p)) return COLOR_WITH_FUSION;
+  if (!pkg || /see shopify/i.test(pkg)) return COLOR_UNKNOWN;
+  return COLOR_LITTLE_TOWN;
+}
+
 function buildTitle_(p) {
   var who = (p.customerName || '').trim();
-  var pkg = /fusion/i.test(String(p.package || '')) ? ' +Fusion' : '';
+  var pkg = isFusion_(p) ? ' +Fusion' : '';
   return '🎉 Party' + pkg + (who ? ' — ' + who : '');
 }
 
