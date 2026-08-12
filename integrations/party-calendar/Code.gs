@@ -43,8 +43,8 @@ var CHECK_EVERY_MINUTES = 15;
  * Google's palette: 1 Lavender · 2 Sage · 3 Grape · 4 Flamingo · 5 Banana
  * 6 Tangerine · 7 Peacock · 8 Graphite · 9 Blueberry · 10 Basil · 11 Tomato
  */
-var COLOR_LITTLE_TOWN = '7';  // Peacock — the ordinary buyout
-var COLOR_WITH_FUSION = '6';  // Tangerine — needs Fusion open and a barista
+var COLOR_LITTLE_TOWN = '4';  // Flamingo — pink, the ordinary buyout
+var COLOR_WITH_FUSION = '9';  // Blueberry — blue, Fusion opens and needs a barista
 var COLOR_UNKNOWN     = '8';  // Graphite — package not known, check Shopify
 
 /** Popup reminders, in minutes before the party. 7200 = 5 days, 1440 = 1 day. */
@@ -672,7 +672,7 @@ function runSelfTest() {
     customerPhone: '555-0100',
     customerEmail: 'test@example.com',
     package: 'Little Town',
-    total: '185.00'
+    total: '195.00'
   };
 
   var a = upsertEvent_(fake);
