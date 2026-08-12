@@ -614,42 +614,51 @@ function shareCalendarWith_(cal) {
  * Returns how many it added.
  */
 function backfillExistingBookings() {
-  var RAW = '2026-10-11|1:00–3:00 PM;2026-10-10|4:30–6:30 PM;2026-09-27|4:00–6:00 PM;' +
-            '2026-09-20|1:00–3:00 PM;2026-09-13|1:00–3:00 PM;2026-08-23|1:00–3:00 PM';
+  // Slots read off the live availability list, everything else off the Shopify
+  // orders screen, both on 2026-08-10. Package is derived from what was paid:
+  // $185 = Little Town, $295 = Little Town + Fusion.
+  var SEED = [
+    { date: '2026-08-23', time: '1:00–3:00 PM', name: '#1008', who: 'Ruth Kissner',      pkg: 'Little Town',          total: '185.00' },
+    { date: '2026-09-13', time: '1:00–3:00 PM', name: '#1007', who: 'Megan Lentz',       pkg: 'Little Town',          total: '185.00' },
+    { date: '2026-09-20', time: '1:00–3:00 PM', name: '#1005', who: 'Michaela Harrison', pkg: 'Little Town + Fusion', total: '295.00' },
+    { date: '2026-09-27', time: '4:00–6:00 PM', name: '#1004', who: 'Chloe Wells',       pkg: 'Little Town',          total: '185.00' },
+    { date: '2026-10-10', time: '4:30–6:30 PM', name: '#1003', who: 'Sheila Kinney',     pkg: 'Little Town + Fusion', total: '295.00' },
+    { date: '2026-10-11', time: '1:00–3:00 PM', name: '#1002', who: 'Jasmine Downen',    pkg: 'Little Town',          total: '185.00' }
+  ];
 
-  var entries = RAW.split(';');
   var today = Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd');
   var done = 0;
 
-  for (var i = 0; i < entries.length; i++) {
-    var bits = entries[i].split('|');
-    if (bits.length !== 2 || !bits[0]) continue;
-    var date = bits[0].trim();
-    var time = bits[1].trim();
+  for (var i = 0; i < SEED.length; i++) {
+    var s = SEED[i];
 
     // These dates are fixed in the file, so once they're in the past this would
     // keep re-creating dead events every time setup() is run. Skip them.
-    if (date < today) continue;
+    if (s.date < today) continue;
 
     try {
       upsertEvent_({
-        orderId: 'backfill-' + date + '-' + time.replace(/[^0-9]/g, ''),
-        orderName: '(booked before calendar sync)',
-        partyDate: date,
-        partyTime: time,
-        customerName: '',
-        package: 'see Shopify order'
+        // Deliberately NOT the real Shopify order id. An earlier run already
+        // created these events tagged this way, and changing the id would make
+        // the next run add duplicates instead of updating them in place.
+        orderId: 'backfill-' + s.date + '-' + s.time.replace(/[^0-9]/g, ''),
+        orderName: s.name,
+        partyDate: s.date,
+        partyTime: s.time,
+        customerName: s.who,
+        package: s.pkg,
+        total: s.total
       });
       done++;
-      Logger.log('✓ ' + date + '  ' + time);
+      Logger.log('✓ ' + s.date + '  ' + s.time + '  ' + s.who + '  (' + s.pkg + ')');
     } catch (err) {
       // Logged as well as emailed: when this is run by hand from the editor the
       // alert goes to the SHOP's inbox, not the person sitting there running it.
-      Logger.log('✗ ' + date + '  ' + time + '  — ' + ((err && err.message) || err));
-      alertOwner_(err, 'backfill ' + date + ' ' + time);
+      Logger.log('✗ ' + s.date + '  ' + s.time + '  — ' + ((err && err.message) || err));
+      alertOwner_(err, 'backfill ' + s.date + ' ' + s.time);
     }
   }
-  Logger.log('Backfilled ' + done + ' of ' + entries.length + ' booking(s) onto "' + CALENDAR_NAME + '".');
+  Logger.log('Backfilled ' + done + ' of ' + SEED.length + ' booking(s) onto "' + CALENDAR_NAME + '".');
   return done;
 }
 
