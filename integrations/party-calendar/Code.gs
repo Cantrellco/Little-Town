@@ -82,7 +82,17 @@ var MAIL_LOOKBACK = '1y';
  */
 var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
 
-var VERSION = '2.2.0';
+/**
+ * Bump this whenever the SEED list at the bottom changes.
+ *
+ * The 15-minute sync compares it against what it last applied and re-seeds if
+ * they differ — so edits to those older bookings reach the calendar on their
+ * own, without anyone being asked to click "Set up" again. Editing the script
+ * is enough.
+ */
+var SEED_VERSION = '2026-08-10a';
+
+var VERSION = '2.3.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -161,7 +171,7 @@ function syncNow() {
 
 /** A plain-English "is this thing on?" for when he wonders. */
 function showStatus() {
-  var props = PropertiesService.getScriptProperties();
+  var props = PropertiesService.getUserProperties();
   var last = props.getProperty('lastRun');
   var running = false;
   var triggers = ScriptApp.getProjectTriggers();
@@ -192,6 +202,17 @@ function showStatus() {
 /** Runs on the timer. Never shows a dialog — nobody is watching. */
 function syncNow_() {
   var out = { added: 0, unchanged: 0, removed: 0, problems: 0 };
+  var props = PropertiesService.getUserProperties();
+
+  // Re-seed the older bookings whenever the SEED list has been edited since
+  // this account last applied it. Without this, a correction to those six only
+  // lands if someone clicks "Set up" again — and the person editing the script
+  // usually isn't the person whose calendar needs it.
+  if (props.getProperty('seedVersion') !== SEED_VERSION) {
+    Logger.log('Seed list changed (' + SEED_VERSION + ') — re-applying.');
+    backfillExistingBookings();
+    props.setProperty('seedVersion', SEED_VERSION);
+  }
 
   var threads = GmailApp.search('"LTPCAL1" newer_than:' + MAIL_LOOKBACK, 0, 200);
   Logger.log('Order emails found: ' + threads.length);
@@ -223,9 +244,7 @@ function syncNow_() {
 
   out.removed = pruneCancelled_();
 
-  PropertiesService.getScriptProperties().setProperty(
-    'lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a')
-  );
+  props.setProperty('lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a'));
   Logger.log('Sync: ' + out.added + ' added, ' + out.unchanged + ' already there, ' +
              out.removed + ' removed, ' + out.problems + ' problems.');
   return out;
@@ -484,7 +503,7 @@ function tzOffsetMs_(dt) {
 // ─── CALENDAR PLUMBING ──────────────────────────────────────────────────────
 
 function getCalendar_() {
-  var props = PropertiesService.getScriptProperties();
+  var props = PropertiesService.getUserProperties();
   var cached = props.getProperty('calendarId');
   if (cached) {
     var hit = CalendarApp.getCalendarById(cached);
@@ -535,7 +554,7 @@ function findEventByOrderId_(cal, orderId) {
 function alertOwner_(err, context) {
   try {
     var msg = String((err && err.message) || err);
-    var props = PropertiesService.getScriptProperties();
+    var props = PropertiesService.getUserProperties();
     var key = 'lastAlert:' + msg.slice(0, 60);
     if (Date.now() - Number(props.getProperty(key) || 0) < 6 * 60 * 60 * 1000) return;
     props.setProperty(key, String(Date.now()));
