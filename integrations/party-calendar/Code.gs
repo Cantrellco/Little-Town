@@ -82,7 +82,7 @@ var MAIL_LOOKBACK = '1y';
  */
 var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
 
-var VERSION = '2.0.0';
+var VERSION = '2.2.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -192,9 +192,10 @@ function showStatus() {
 /** Runs on the timer. Never shows a dialog — nobody is watching. */
 function syncNow_() {
   var out = { added: 0, unchanged: 0, removed: 0, problems: 0 };
-  var seen = {};
 
   var threads = GmailApp.search('"LTPCAL1" newer_than:' + MAIL_LOOKBACK, 0, 200);
+  Logger.log('Order emails found: ' + threads.length);
+
   for (var t = 0; t < threads.length; t++) {
     var messages = threads[t].getMessages();
     for (var m = 0; m < messages.length; m++) {
@@ -203,17 +204,18 @@ function syncNow_() {
         booking = readBookingFromMessage_(messages[m]);
       } catch (err) {
         out.problems++;
+        Logger.log('✗ could not read "' + messages[m].getSubject() + '" — ' + ((err && err.message) || err));
         alertOwner_(err, messages[m].getSubject());
         continue;
       }
       if (!booking) continue;
 
-      seen[booking.partyDate + '|' + booking.partyTime] = true;
       try {
         var r = upsertEvent_(booking);
         if (r.action === 'created') out.added++; else out.unchanged++;
       } catch (err2) {
         out.problems++;
+        Logger.log('✗ ' + booking.partyDate + ' ' + booking.partyTime + ' — ' + ((err2 && err2.message) || err2));
         alertOwner_(err2, booking.orderName);
       }
     }
@@ -224,6 +226,8 @@ function syncNow_() {
   PropertiesService.getScriptProperties().setProperty(
     'lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a')
   );
+  Logger.log('Sync: ' + out.added + ' added, ' + out.unchanged + ' already there, ' +
+             out.removed + ' removed, ' + out.problems + ' problems.');
   return out;
 }
 
