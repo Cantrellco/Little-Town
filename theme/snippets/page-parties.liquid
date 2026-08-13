@@ -9,6 +9,7 @@
 </div>
 {%- endif -%}
 <script>window.LT_BOOKED_RAW = {%- if shop.metafields.lt_booking.taken.value != blank -%}{{ shop.metafields.lt_booking.taken.value | json }}{%- else -%}""{%- endif -%};</script>
+<script>window.LT_FUSION_TAKEN = {%- if shop.metafields.lt_booking.fusion_taken.value != blank -%}{{ shop.metafields.lt_booking.fusion_taken.value | json }}{%- else -%}""{%- endif -%};</script>
 <main>
 
     <!-- =====================================================
@@ -213,7 +214,7 @@
                 <h4 class="cp-name">Little Town</h4>
                 <p class="cp-blurb">The whole playhouse to yourselves — just your crew, no sharing.</p>
                 <div class="cp-price">
-                  <span class="cp-price-amount">$185</span>
+                  <span class="cp-price-amount">$195</span>
                   <span class="cp-price-unit">/ 2-hour buyout</span>
                 </div>
                 <ul class="cp-list">
@@ -221,7 +222,7 @@
                   <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Two hours of private play</li>
                   <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Weekend slots — Saturday &amp; Sunday</li>
                 </ul>
-                <button class="btn btn--block btn--coral btn--pop bk-pkg-btn" type="submit">Book Little Town · $185</button>
+                <button class="btn btn--block btn--coral btn--pop bk-pkg-btn" type="submit">Book Little Town · $195</button>
               </form>
 
               <form class="cp-card cp-card--featured bk-pkg" method="post" action="/cart/add" data-bk-form aria-label="Book the Little Town plus Fusion buyout">
@@ -243,6 +244,7 @@
                   <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fusion café next door, all yours</li>
                   <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>A Fusion barista pouring coffee &amp; drinks</li>
                 </ul>
+                <p class="bk-pkg-note" data-bk-fusion-note hidden>Fusion is already booked on this date — the Little Town buyout is still available.</p>
                 <button class="btn btn--block btn--sun btn--pop bk-pkg-btn" type="submit">Book + Fusion · $295</button>
               </form>
 

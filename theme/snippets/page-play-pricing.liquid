@@ -43,6 +43,7 @@
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-baby.svg' | asset_url }}" alt="" width="18" height="18"></span> Ages 2–7</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="18" height="18"></span> Socks only, no shoes</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="18" height="18"></span> Grown-ups always free</span>
+          <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-heart.svg' | asset_url }}" alt="" width="18" height="18"></span> Infants free entry</span>
           <span class="stat-pill"><span class="sp-icon" aria-hidden="true"><img src="{{ 'icon-refresh.svg' | asset_url }}" alt="" width="18" height="18"></span> Re-entry all day</span>
         </div>
       </div>
@@ -55,7 +56,7 @@
         <div class="center reveal">
           <span class="eyebrow">Open-play pricing</span>
           <h2>Pay as you <span class="hl">play</span></h2>
-          <p class="section-lead">Grown-ups always play free — no limit per child. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
+          <p class="section-lead">You pay for the children who are playing. Grown-ups always play free — no limit per child — and infants get free entry. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
         <div class="cp-grid cp-grid--1">
@@ -66,14 +67,14 @@
               <img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="26" height="26">
             </span>
             <h3 class="cp-name">Day Pass</h3>
-            <p class="cp-blurb">All-day play, walk in any time we're open. Bringing the whole crew? Pick your group size — siblings share one pass.</p>
+            <p class="cp-blurb">All-day play, walk in any time we're open. Choose how many children are playing and the price updates — each child playing needs a pass.</p>
             <div class="cp-price">
               <span class="cp-price-amount" data-daypass-price>$10</span>
               <span class="cp-price-unit" data-daypass-unit>for 1 child</span>
             </div>
             <div class="cp-tier">
-              <label class="cp-tier-label" for="daypass-tier">How many children?</label>
-              <select class="cp-tier-select" id="daypass-tier" data-daypass-select aria-label="Choose how many children">
+              <label class="cp-tier-label" for="daypass-tier">How many children are playing?</label>
+              <select class="cp-tier-select" id="daypass-tier" data-daypass-select aria-label="Choose how many children are playing">
                 <option value="1" data-daypass-opt="1" data-price="$10" data-unit="for 1 child" data-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- endif -%}">1 child — $10</option>
                 <option value="2" data-daypass-opt="2" data-price="$18" data-unit="for 2 children" data-href="{%- if dp_v2 != blank -%}/cart/{{ dp_v2.id }}:1{%- endif -%}">2 children — $18</option>
                 <option value="3" data-daypass-opt="3" data-price="$25" data-unit="for 3+ children" data-href="{%- if dp_v3 != blank -%}/cart/{{ dp_v3.id }}:1{%- endif -%}">3 or more children — $25</option>
@@ -82,7 +83,8 @@
             <ul class="cp-list">
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>All-day open play with re-entry</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
-              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One pass covers every sibling in your group</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Priced per child playing — pick your number above</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Infants free entry — no pass needed</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>No booking — walk in any open day</li>
             </ul>
             <a class="cp-cta" data-daypass-buy href="/products/day-pass" data-buy-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- endif -%}">Buy Day Pass</a>
@@ -216,6 +218,7 @@
               <li>This is a watch-your-own-child space — a grown-up stays with their little one and keeps them in sight the whole visit.</li>
               <li>You know your child best: please always know where they are and step in when they need you.</li>
               <li>Grown-ups always play free — no limit per child.</li>
+              <li>Infants get free entry. You only pay for the children who are playing.</li>
             </ul>
           </div>
 
@@ -287,6 +290,16 @@
             </button>
             <div class="acc-panel"><div>
               <p>The town is built for ages 2–7. The storefronts are pitched at preschool and early-elementary imaginations — the littler ones love the hands-on, soft-play corners, and the bigger kids love running the café register and "shopping" with play money.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item reveal" aria-expanded="false">
+            <button class="acc-trigger" aria-expanded="false">
+              Do I have to pay for my baby?
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-panel"><div>
+              <p>No — infants get free entry and don't need a pass at all. A Day Pass is only for the children who are playing, so if you're bringing a 4-year-old and a baby, you just buy the 1-child pass. The same goes for memberships: infants don't count toward your plan.</p>
             </div></div>
           </div>
 
