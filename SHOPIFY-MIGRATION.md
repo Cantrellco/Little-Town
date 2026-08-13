@@ -223,6 +223,92 @@ all-sales-final. Built + live; needs only the product published (done).
 > watching orders covers it. Only a booking app's slot-holds (or the date-as-inventory model)
 > fully prevents it.
 
+### E. Fusion next door → the shared café ledger
+
+Fusion Coffee sells the **same café** from its own site (`fusioncoffeeshop.com/party`,
+$165 for a two-hour buyout). The `Little Town + Fusion` $295 package needs that room
+free, so the two storefronts share a second shop metafield:
+
+| Metafield | Means | Written by | Read by |
+|---|---|---|---|
+| `lt_booking.taken` | **playhouse** occupied | our Flow, every buyout order | our calendar (greys the date) |
+| `lt_booking.fusion_taken` | **café** occupied | Fusion's checkout **and** our Flow | both sites |
+
+**Why a second metafield and not just `taken`.** `taken` records date + slot but not
+which variant was bought, so a $185 playhouse-only party and a $295 combo look identical
+in it. If Fusion read `taken`, every playhouse booking would black out a Fusion date for
+no reason. And if Fusion wrote *into* `taken`, our calendar would grey out a date where
+the playhouse is perfectly free. They have to stay separate.
+
+**What this does on our side.** `main.js` reads `window.LT_FUSION_TAKEN` and disables
+**only the "+ Fusion" card** on those dates — dimmed, button disabled, with a line saying
+the Little Town buyout is still available. The date is never greyed out and the $185 card
+is never touched.
+
+**Granularity is the whole DAY, not the slot.** Fusion's windows and ours don't line up
+(their Sat 3–5 PM overlaps our 4:30–6:30 PM by thirty minutes), so a slot-string compare
+would leave the combo on sale for a room that is already committed. Over-blocking the
+date is deliberate.
+
+#### 1. Metafield definition (one-time)
+
+Settings → **Metafields and metaobjects** → **Shop** → Add definition. Same trap as §C:
+the namespace and key **default to a slug of the Name**, so click **Edit** on them and
+overwrite to exactly `lt_booking` / `fusion_taken`. Type **Single line text**. Save, open
+it, set an initial value (empty string is fine), and enable **Storefronts** access.
+
+If the definition is missing the theme reads blank and nothing is ever disabled — the
+same fail-open `taken` already has.
+
+#### 2. Flow: mark the café taken when someone buys the combo
+
+Add a SECOND workflow (or a second branch on the existing one). Everything in §C about
+the 2026 vertical editor, the `Update shop metafield` action, and reading the existing
+value **as a variable rather than by dot-notation** applies here identically.
+
+- **Trigger:** `Order created`
+- **Condition:** `Order` → line items → **Variant / Title**, `contains` → `Fusion`.
+  This is what separates a $295 combo from a $185 playhouse-only order. Get it wrong and
+  every playhouse party blocks the café next door.
+- **Action:** `Update shop metafield` → pick `lt_booking.fusion_taken`.
+
+Value — note the **`|lt` third field**, which is what tells Fusion the booking came from
+here rather than from their own checkout. Fusion blocks its whole day on our entries but
+only one window on its own, so the marker is load-bearing. Replace `REPLACE_WITH_ALIAS`
+with the alias Flow generates when you insert the variable:
+
+```liquid
+{%- assign existing = shop.REPLACE_WITH_ALIAS.value -%}
+{%- assign pdate = "" -%}
+{%- assign ptime = "" -%}
+{%- for lineItem in order.lineItems -%}
+  {%- for ca in lineItem.customAttributes -%}
+    {%- if ca.key == "Party date" -%}{%- assign pdate = ca.value -%}{%- endif -%}
+    {%- if ca.key == "Party time" -%}{%- assign ptime = ca.value -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- if pdate == blank -%}{{ existing }}{%- elsif existing == blank -%}{{ pdate }}|{{ ptime }}|lt{%- else -%}{{ existing }};{{ pdate }}|{{ ptime }}|lt{%- endif -%}
+```
+
+Target stored value, e.g. `2026-09-13|1:00–3:00 PM|lt;2026-10-11|4:00–6:00 PM|lt`.
+
+Same rules as §C: Flow Liquid is GraphQL camelCase (`order.lineItems` →
+`lineItem.customAttributes`), the `{%- -%}` trim tags are load-bearing because a Single
+line text metafield rejects newlines, and never retype the slot strings — they use an
+en-dash (`–`) and the Liquid carries the order's exact value through.
+
+#### 3. Backfill
+
+Orders placed before this workflow existed are not in `fusion_taken`. Check the orders
+list for any **$295 combo** already on the books and add those dates by hand, in the same
+`YYYY-MM-DD|slot|lt` format — otherwise Fusion will happily sell a room we have already
+committed.
+
+> **Residual race, unchanged:** Flow writes *after* the order, so two people checking out
+> the same slot on the two sites inside the same ~2-minute window could both pay. Same
+> exposure §C already documents, now across two storefronts instead of one. All bookings
+> final plus watching orders covers it.
+
 ### D. Newsletter → email capture
 The footer/newsletter signup should post to your email tool:
 - **Shopify Email** (built-in) via a customer-signup form, or

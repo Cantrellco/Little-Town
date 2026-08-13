@@ -253,6 +253,18 @@ function wireCommerce(html, key) {
       // Shopify Flow appends "YYYY-MM-DD|slot;" to lt_booking.taken on each order;
       // main.js (partyBooking) reads window.LT_BOOKED_RAW and greys those out.
       '<script>window.LT_BOOKED_RAW = {%- if shop.metafields.lt_booking.taken.value != blank -%}{{ shop.metafields.lt_booking.taken.value | json }}{%- else -%}""{%- endif -%};</script>',
+      // The café next door, which the "+ Fusion" package needs. Second metafield,
+      // written by BOTH sides: Fusion's own checkout on fusioncoffeeshop.com, and
+      // our Flow when an order contains the Fusion variant (those entries carry a
+      // third "|lt" field so Fusion can tell whose booking it was — see
+      // SHOPIFY-MIGRATION.md §E). main.js reads window.LT_FUSION_TAKEN and
+      // disables ONLY the "+ Fusion" card on those dates; the Little Town-only
+      // buyout is never affected, so the date itself is never blocked.
+      //
+      // Needs a Shop metafield definition at lt_booking / fusion_taken
+      // (Single line text). Missing definition = blank = nothing disabled,
+      // which is the same fail-open the taken ledger already has.
+      '<script>window.LT_FUSION_TAKEN = {%- if shop.metafields.lt_booking.fusion_taken.value != blank -%}{{ shop.metafields.lt_booking.fusion_taken.value | json }}{%- else -%}""{%- endif -%};</script>',
       "",
     ].join("\n");
     html = prelude + html
