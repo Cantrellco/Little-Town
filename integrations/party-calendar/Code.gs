@@ -90,9 +90,9 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  * own, without anyone being asked to click "Set up" again. Editing the script
  * is enough.
  */
-var SEED_VERSION = '2026-08-10a';
+var SEED_VERSION = '2026-08-16a';
 
-var VERSION = '2.3.0';
+var VERSION = '2.4.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -423,6 +423,13 @@ function buildTitle_(p) {
 
 function buildDescription_(p) {
   var lines = [];
+
+  // Spelled out because Google shows every event in the VIEWER's timezone, not
+  // the venue's. An account left on Eastern displays a 1pm party as 2pm with no
+  // hint anything is off — and someone turns up an hour late to a building
+  // that's been booked out. Writing the real local time onto the event means
+  // the truth survives a wrong timezone setting.
+  if (p.partyTime) lines.push('⏰ ' + p.partyTime + ' Central (venue local time)');
   if (p.package) lines.push('Package: ' + p.package);
   lines.push('');
   if (p.customerName) lines.push('Name:  ' + p.customerName);
