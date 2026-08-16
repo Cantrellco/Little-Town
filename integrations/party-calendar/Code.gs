@@ -1,21 +1,25 @@
 /**
  * Little Town Playhouse — party bookings → Google Calendar
  * ---------------------------------------------------------------------------
- * Lives inside a Google Sheet, in the OWNER'S account. He gets it by clicking a
- * "Make a copy" link, which makes him the owner of both the sheet and this
- * script. Then one menu click runs setup(), which is also the moment Google
- * asks him to Allow. Four clicks total, no code editor, nothing to deploy.
+ * Lives inside a Google Sheet in the littletown account. One menu click runs
+ * setup(), which is also the moment Google asks to Allow — so installing and
+ * authorising are a single action. No code editor, nothing to deploy.
  *
  * How a booking gets here:
- *   Shopify emails him the staff "new order" notification on every sale. That
- *   template (notifications/staff-order-notification.liquid) carries one
- *   machine-readable line starting "LTPCAL1|". This script wakes up every 15
- *   minutes, finds those lines in Gmail, and makes a calendar event from each.
+ *   Shopify emails the staff "new order" notification on every sale. That
+ *   template carries one machine-readable line starting "LTPCAL1|". This script
+ *   wakes up every 15 minutes, finds those lines in Gmail, and makes a calendar
+ *   event from each. It can only read the mailbox of the account it runs in,
+ *   which is why it must live where the order emails land.
+ *
+ *   Fusion's own bookings never touch Shopify, so they can't arrive that way.
+ *   They are pulled from fusioncoffeeshop.com in the same 15-minute run and
+ *   land on this same calendar in a third colour. See syncFusionBookings_().
  *
  * Why polling and not a webhook: receiving a webhook needs a deployed web app,
- * and deploying is the step that forced him into the script editor. Polling is
- * also self-healing — a failed run just gets retried 15 minutes later, whereas
- * a missed webhook is gone for good.
+ * and deploying is the step that forces someone into the script editor. Polling
+ * is also self-healing — a failed run gets retried 15 minutes later, whereas a
+ * missed webhook is gone for good.
  *
  * Cancellations are handled off the storefront's own availability list, which
  * Shopify Flow maintains. See pruneCancelled_().
@@ -32,7 +36,7 @@ var PARTIES_URL = 'https://thelittletownplayhouse.com/pages/parties';
 var CHECK_EVERY_MINUTES = 15;
 
 /**
- * Event colours, so the two packages are tellable apart in the month view
+ * Event colours, so the packages are tellable apart in the month view
  * without opening anything.
  *
  * Plain strings rather than CalendarApp.EventColor.X on purpose: these are
@@ -45,13 +49,34 @@ var CHECK_EVERY_MINUTES = 15;
  */
 var COLOR_LITTLE_TOWN = '4';  // Flamingo — pink, the ordinary buyout
 var COLOR_WITH_FUSION = '9';  // Blueberry — blue, Fusion opens and needs a barista
-var COLOR_UNKNOWN     = '8';  // Graphite — package not known, check Shopify
+var COLOR_FUSION_ONLY = '8';  // Graphite — near-black, the café only, playhouse free
+var COLOR_UNKNOWN     = '11'; // Tomato — red, package not known, check Shopify
+
+// Graphite was COLOR_UNKNOWN until Fusion-only claimed it: Google's palette has
+// no black and Graphite is the closest thing to it. Unknown moved to Tomato
+// rather than sharing — two meanings on one colour defeats the point of
+// colouring them, and red suits "something needs looking at" better than the
+// grey it had, which read as "nothing much".
 
 /** Popup reminders, in minutes before the party. 7200 = 5 days, 1440 = 1 day. */
 var POPUP_REMINDERS_MIN = [7200, 1440, 120];
 
 /** Also send one email reminder this far ahead. 0 turns it off. */
 var EMAIL_REMINDER_MIN = 7200;
+
+/**
+ * Fusion's private booking feed — parties sold on fusioncoffeeshop.com, which
+ * take the café but not the playhouse.
+ *
+ * ⚠️ The secret is a CREDENTIAL: the feed returns customer names and phone
+ * numbers. It is deliberately NOT in this file, because this file lives in a
+ * public repo and gets pasted between machines. It is read at run time from
+ * Script Properties instead — see fusionSecret_() for the one-time setup.
+ *
+ * With no secret set, the Fusion half quietly does nothing and everything
+ * Little Town does carries on untouched.
+ */
+var FUSION_FEED_URL = 'https://www.fusioncoffeeshop.com/api/party-bookings';
 
 /**
  * Everything is calculated in this timezone explicitly, so it does not matter
@@ -65,10 +90,8 @@ var MAIL_LOOKBACK = '1y';
 /**
  * Other Google accounts that should also SEE this calendar. Granted access
  * during setup, so nobody has to work out Google's calendar-sharing screens.
- * Add or remove addresses freely.
  *
- * The account that RUNS this script owns the calendar and doesn't need to be
- * listed — it already has it.
+ * The account that RUNS this script owns the calendar and doesn't need listing.
  *
  * ⚠️ Granting access is NOT the same as it appearing for them. Google stopped
  * auto-adding shared calendars to the recipient's list: they get an email and
@@ -77,8 +100,7 @@ var MAIL_LOOKBACK = '1y';
  *
  * Read-only, and dates only. Reminders will NOT follow: Google keeps reminders
  * private to the account that owns the calendar and they can't be set on
- * someone else's behalf. The 5-day / 1-day / 2-hour alerts fire only in the
- * account running this script.
+ * someone else's behalf.
  */
 var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
 
@@ -92,14 +114,14 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  */
 var SEED_VERSION = '2026-08-16a';
 
-var VERSION = '2.4.0';
+var VERSION = '2.5.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
 /**
  * Runs automatically whenever he opens the sheet. Simple triggers like this one
  * are allowed to run before authorization, which is what lets the menu appear
- * on a freshly copied sheet — the Allow prompt comes later, when he uses it.
+ * on a fresh sheet — the Allow prompt comes later, when he uses it.
  */
 function onOpen() {
   SpreadsheetApp.getUi()
@@ -112,8 +134,8 @@ function onOpen() {
 }
 
 /**
- * The one thing he clicks. Creates the calendar, schedules the automatic
- * checks, and pulls in every booking it can already see.
+ * The one thing he clicks. Creates the calendar, shares it across, schedules
+ * the automatic checks, and pulls in every booking it can already see.
  */
 function setup() {
   var ui = SpreadsheetApp.getUi();
@@ -129,10 +151,9 @@ function setup() {
     ScriptApp.newTrigger('syncNow').timeBased().everyMinutes(CHECK_EVERY_MINUTES).create();
 
     // Parties booked before the order email carried a LTPCAL1 line can never be
-    // found in Gmail, so they're seeded here. Doing it inside setup() is what
-    // keeps him out of the script editor entirely — it's the last thing that
-    // would otherwise have needed a by-hand function run in his copy.
+    // found in Gmail, so they're seeded here.
     var seeded = backfillExistingBookings();
+    PropertiesService.getUserProperties().setProperty('seedVersion', SEED_VERSION);
 
     var result = syncNow_();
 
@@ -242,11 +263,119 @@ function syncNow_() {
     }
   }
 
+  // Fusion's own bookings, pulled rather than emailed. Kept after the Gmail
+  // loop and inside its own try so a Fusion outage can never stop Little Town's
+  // bookings reaching the calendar.
+  try {
+    var fusion = syncFusionBookings_();
+    out.added += fusion.added;
+    out.unchanged += fusion.unchanged;
+    out.problems += fusion.problems;
+  } catch (errF) {
+    Logger.log('✗ Fusion feed — ' + ((errF && errF.message) || errF));
+  }
+
   out.removed = pruneCancelled_();
 
   props.setProperty('lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a'));
   Logger.log('Sync: ' + out.added + ' added, ' + out.unchanged + ' already there, ' +
              out.removed + ' removed, ' + out.problems + ' problems.');
+  return out;
+}
+
+/**
+ * The Fusion feed secret, read at run time rather than written into this file.
+ *
+ * It's a real credential — the feed hands back customer names and phone
+ * numbers — and this file lives in a PUBLIC repo and gets pasted between
+ * machines, so anything hardcoded here is one careless copy away from being
+ * searchable. Script Properties stay inside the Apps Script project.
+ *
+ * One-time setup: Apps Script editor → ⚙️ Project Settings → Script Properties
+ * → Add script property → name it exactly FUSION_FEED_SECRET, paste the value
+ * from Cloudflare Pages → fusion-coffee → Settings → Environment variables
+ * (PARTY_FEED_SECRET) → Save.
+ *
+ * Lazily read, never at load time: this file's globals are evaluated for
+ * onOpen too, which runs BEFORE authorization, and touching a service up there
+ * can stop the menu appearing at all.
+ */
+function fusionSecret_() {
+  return PropertiesService.getScriptProperties().getProperty('FUSION_FEED_SECRET') || '';
+}
+
+/**
+ * Pulls parties booked on fusioncoffeeshop.com and puts them on this calendar.
+ *
+ * These take the CAFÉ, not the playhouse — the two venues are next door and
+ * share the café between them. A Fusion booking blocks Little Town's "+ Fusion"
+ * package for that window, but the plain playhouse buyout stays on sale, which
+ * is why they earn a colour of their own rather than looking like a buyout.
+ *
+ * Pulled rather than pushed because this script already runs as the shop's own
+ * Google user. Having Fusion's server write the calendar instead would mean a
+ * Google service-account key living in Cloudflare and an OAuth dance, to do
+ * something CalendarApp already does for free right here.
+ */
+function syncFusionBookings_() {
+  var out = { added: 0, unchanged: 0, problems: 0 };
+  var secret = fusionSecret_();
+
+  if (!secret) {
+    Logger.log('Fusion feed secret not set — skipping Fusion bookings.');
+    return out;
+  }
+
+  var res = UrlFetchApp.fetch(FUSION_FEED_URL, {
+    headers: { Authorization: 'Bearer ' + secret },
+    muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) {
+    Logger.log('Fusion feed returned ' + res.getResponseCode() + ' — skipping this run.');
+    return out;
+  }
+
+  var bookings;
+  try {
+    bookings = JSON.parse(res.getContentText()).bookings || [];
+  } catch (err) {
+    Logger.log('Fusion feed did not return JSON — skipping this run.');
+    return out;
+  }
+  Logger.log('Fusion bookings in feed: ' + bookings.length);
+
+  for (var i = 0; i < bookings.length; i++) {
+    var b = bookings[i];
+    if (!b || !b.date || !b.slot) continue;
+
+    // Fall back to date+slot when the feed omits an id. Without this every
+    // such booking becomes "fusion-undefined", they all collide onto ONE
+    // event, and each new one overwrites the last — which looks exactly like
+    // a booking silently going missing.
+    var fusionId = b.orderId ? String(b.orderId) : (b.date + '-' + b.slot);
+
+    try {
+      var r = upsertEvent_({
+        // Prefixed so it can never collide with a Shopify order id or one of
+        // the backfill- ids.
+        orderId: 'fusion-' + fusionId,
+        orderName: 'Fusion booking',
+        partyDate: b.date,
+        partyTime: b.slot,
+        customerName: b.name || '',
+        customerPhone: b.phone || '',
+        package: 'Fusion café',
+        total: b.totalCents ? (b.totalCents / 100).toFixed(2) : '',
+        // The flag everything else branches on. See upsertEvent_.
+        venue: 'fusion'
+      });
+      if (r.action === 'created') out.added++; else out.unchanged++;
+    } catch (err2) {
+      out.problems++;
+      Logger.log('✗ Fusion ' + b.date + ' ' + b.slot + ' — ' + ((err2 && err2.message) || err2));
+      alertOwner_(err2, 'Fusion booking ' + b.date + ' ' + b.slot);
+    }
+  }
   return out;
 }
 
@@ -257,8 +386,7 @@ function syncNow_() {
  * Both are checked because Gmail hard-wraps long lines when it generates the
  * plain-text version, and the booking line is longer than its wrap width — so
  * the plain-text copy can arrive chopped in half, losing the trailing fields.
- * The HTML body keeps it on one line. Taking the version with more fields means
- * it doesn't matter which one a given mail client produced.
+ * The HTML body keeps it on one line.
  */
 function readBookingFromMessage_(msg) {
   var best = null;
@@ -304,14 +432,22 @@ function readBookingLine_(line) {
 /**
  * Removes events for parties that were cancelled.
  *
- * The storefront publishes the live list of booked slots (it's how the booking
- * calendar greys dates out), and Shopify Flow takes an entry out of that list
- * when an order is cancelled. So: anything on our calendar in the FUTURE whose
- * slot is no longer on that list has been cancelled.
+ * The storefront publishes the live list of booked slots, and Shopify Flow
+ * takes an entry out of that list when an order is cancelled. So: anything on
+ * our calendar in the FUTURE whose slot is no longer on that list was cancelled.
  *
- * Deliberately cautious — it only ever touches future events, and if the page
+ * Deliberately cautious — only ever touches future events, and if the page
  * can't be read or comes back empty it does nothing at all. A false deletion
- * here would silently lose a real party, which is far worse than a stale event.
+ * would silently lose a real party, far worse than a stale event.
+ *
+ * ⚠️ FUSION BOOKINGS ARE NOT ON THAT LIST. They live in a separate metafield
+ * (lt_booking.fusion_taken) because they take the café rather than the
+ * playhouse — so a Fusion event carrying an ltSlot tag would look exactly like
+ * a cancelled buyout and be deleted here, quietly, within 15 minutes. That is
+ * why upsertEvent_ withholds the tag for them and why the guard below is the
+ * thing keeping them alive. Fusion is all-sales-final, so nothing of theirs
+ * ever needs pruning anyway. If refunds are ever added, extend this to read
+ * LT_FUSION_TAKEN from the same page rather than tagging Fusion events.
  */
 function pruneCancelled_() {
   var live;
@@ -337,8 +473,9 @@ function pruneCancelled_() {
   var removed = 0;
 
   for (var e = 0; e < events.length; e++) {
+    if (events[e].getTag('ltVenue') === 'fusion') continue; // belt and braces
     var slot = events[e].getTag('ltSlot');
-    if (!slot) continue;             // not one of ours, or too old to have a tag
+    if (!slot) continue;             // not one of ours — includes every Fusion event
     if (stillBooked[slot]) continue; // still a live booking
 
     var when = Utilities.formatDate(events[e].getStartTime(), TIMEZONE, "EEEE, MMMM d 'at' h:mm a");
@@ -381,10 +518,20 @@ function upsertEvent_(p) {
   // ltOrderId keeps re-runs from duplicating; ltSlot is what pruneCancelled_
   // matches against the storefront's list.
   existing.setTag('ltOrderId', String(p.orderId || ''));
-  existing.setTag('ltSlot', p.partyDate + '|' + p.partyTime);
 
-  // Set on updates too, not just creates, so re-running setup recolours the
-  // parties that were already on the calendar.
+  // Fusion bookings deliberately get NO ltSlot. They are not on the playhouse's
+  // availability list, so tagging them would make pruneCancelled_ delete every
+  // one of them on its next run. See the warning on that function. The blank
+  // clears the tag on any Fusion event that predates this rule.
+  if (p.venue === 'fusion') {
+    existing.setTag('ltVenue', 'fusion');
+    existing.setTag('ltSlot', '');
+  } else {
+    existing.setTag('ltSlot', p.partyDate + '|' + p.partyTime);
+  }
+
+  // Set on updates too, not just creates, so re-seeding recolours the parties
+  // that were already on the calendar.
   existing.setColor(colorFor_(p));
 
   if (created) applyReminders_(existing);
@@ -404,11 +551,15 @@ function isFusion_(p) {
 }
 
 /**
- * Which colour this party gets. The seeded pre-sync bookings have no package
- * recorded anywhere, so they go grey rather than being guessed at as plain
- * Little Town — grey means "look this one up in Shopify".
+ * Which colour this party gets. A booking with no package recorded goes red
+ * rather than being guessed at as plain Little Town — red means "look this one
+ * up in Shopify".
  */
 function colorFor_(p) {
+  // Checked first: a Fusion-only booking's package also contains the word
+  // "Fusion", so isFusion_ would otherwise claim it as the combo.
+  if (p.venue === 'fusion') return COLOR_FUSION_ONLY;
+
   var pkg = String(p.package || '');
   if (isFusion_(p)) return COLOR_WITH_FUSION;
   if (!pkg || /see shopify/i.test(pkg)) return COLOR_UNKNOWN;
@@ -417,6 +568,7 @@ function colorFor_(p) {
 
 function buildTitle_(p) {
   var who = (p.customerName || '').trim();
+  if (p.venue === 'fusion') return '☕ Fusion' + (who ? ' — ' + who : '');
   var pkg = isFusion_(p) ? ' +Fusion' : '';
   return '🎉 Party' + pkg + (who ? ' — ' + who : '');
 }
@@ -430,6 +582,10 @@ function buildDescription_(p) {
   // that's been booked out. Writing the real local time onto the event means
   // the truth survives a wrong timezone setting.
   if (p.partyTime) lines.push('⏰ ' + p.partyTime + ' Central (venue local time)');
+
+  if (p.venue === 'fusion') {
+    lines.push('Fusion café buyout — the playhouse is NOT booked.');
+  }
   if (p.package) lines.push('Package: ' + p.package);
   lines.push('');
   if (p.customerName) lines.push('Name:  ' + p.customerName);
@@ -438,7 +594,9 @@ function buildDescription_(p) {
   lines.push('');
   if (p.orderName) lines.push('Order ' + p.orderName + (p.total ? '  ·  $' + p.total : ''));
   lines.push('');
-  lines.push('— added automatically from your Shopify order email');
+  lines.push(p.venue === 'fusion'
+    ? '— added automatically from fusioncoffeeshop.com'
+    : '— added automatically from your Shopify order email');
   return lines.join('\n');
 }
 
@@ -449,7 +607,10 @@ function buildDescription_(p) {
  *
  * The slot strings come from SLOTS_BY_DOW in the theme's main.js and use an EN
  * DASH, with AM/PM only on the second half. Plain hyphens and em dashes are
- * handled too, in case that ever changes.
+ * handled too, in case a paste ever mangles them.
+ *
+ * Fusion sends the identical strings — the two venues were deliberately aligned
+ * onto the same three windows — so this needs nothing extra for them.
  */
 function parseSlot_(dateStr, timeStr) {
   var d = String(dateStr || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -489,10 +650,9 @@ function to24_(h, mer) {
  * whatever timezone this script is set to.
  *
  * `new Date(y, m, d, h, mi)` would silently use the project's timezone, so a
- * copied sheet on someone else's default would put every party on at the wrong
- * hour. A hardcoded -5/-6 would be wrong half the year. So: ask what offset
- * Central actually had on that date and correct for it. The second pass catches
- * a first guess that landed the other side of a daylight-saving switch.
+ * sheet on someone else's default would put every party on at the wrong hour.
+ * A hardcoded -5/-6 would be wrong half the year. So: ask what offset Central
+ * actually had on that date and correct for it.
  */
 function ctDate_(y, mo, d, h, mi) {
   var wall = Date.UTC(y, mo - 1, d, h, mi, 0);
@@ -516,7 +676,7 @@ function getCalendar_() {
     var hit = CalendarApp.getCalendarById(cached);
     if (hit) return hit;
     // Falls through when the id belongs to another account — which is exactly
-    // what happens if Script Properties ride along with a copied sheet.
+    // what happens if properties ride along with a shared or copied sheet.
   }
 
   var found = CalendarApp.getCalendarsByName(CALENDAR_NAME);
@@ -554,9 +714,9 @@ function findEventByOrderId_(cal, orderId) {
 // ─── SAFETY NET ─────────────────────────────────────────────────────────────
 
 /**
- * Emails him when a booking can't be read, throttled so a recurring problem
- * can't flood his inbox every 15 minutes. Without this the sync could fail
- * quietly forever, which is the worst outcome for a booking system.
+ * Emails the shop when a booking can't be read, throttled so a recurring
+ * problem can't flood the inbox every 15 minutes. Without this the sync could
+ * fail quietly forever, the worst outcome for a booking system.
  */
 function alertOwner_(err, context) {
   try {
@@ -583,13 +743,13 @@ function notify_(subject, body) {
 }
 
 /**
- * Gives a second Google account read access to the calendar, so the parties
- * show up in the diary he actually looks at.
+ * Gives other Google accounts read access to the calendar, so the parties show
+ * up in the diary he actually looks at.
  *
  * Done with a direct Calendar API call rather than CalendarApp, which has no
  * sharing methods at all, and rather than the advanced Calendar service, which
  * would need an extra manifest step during setup. The OAuth token from the
- * calendar permission he's already granted is enough.
+ * calendar permission he already grants covers this.
  *
  * Never allowed to break setup — a failed share is worth a log line, not a
  * dead calendar. Re-running is harmless; the API just overwrites the rule.
@@ -635,13 +795,11 @@ function shareCalendarWith_(cal) {
 /**
  * Seeds parties booked BEFORE the order email carried a LTPCAL1 line. Those
  * emails have no data line, so the Gmail sync can never find them — this is the
- * only way they reach the calendar. Called automatically by setup().
+ * only way they reach the calendar.
  *
- * Read off the live site on 2026-08-09 and each entry checked against
- * SLOTS_BY_DOW for its day of week. Safe to run repeatedly: the ids come from
- * date + time, so a second run updates the same events rather than duplicating.
- *
- * Returns how many it added.
+ * Called by setup(), and by the sync whenever SEED_VERSION has changed. Safe to
+ * run repeatedly: the ids come from date + time, so a second run updates the
+ * same events rather than duplicating.
  */
 function backfillExistingBookings() {
   // Slots read off the live availability list, everything else off the Shopify
@@ -663,7 +821,7 @@ function backfillExistingBookings() {
     var s = SEED[i];
 
     // These dates are fixed in the file, so once they're in the past this would
-    // keep re-creating dead events every time setup() is run. Skip them.
+    // keep re-creating dead events every time it runs. Skip them.
     if (s.date < today) continue;
 
     try {
@@ -711,7 +869,7 @@ function runSelfTest() {
     customerPhone: '555-0100',
     customerEmail: 'test@example.com',
     package: 'Little Town',
-    total: '195.00'
+    total: '185.00'
   };
 
   var a = upsertEvent_(fake);
@@ -726,5 +884,57 @@ function runSelfTest() {
     a.action === 'created' && b.action === 'unchanged'
       ? '✅ PASS — create, update-in-place and delete all work.'
       : '❌ FAIL — check the log above.'
+  );
+}
+
+/**
+ * Same idea for the Fusion half: proves the feed is reachable, the secret is
+ * right, and a Fusion booking becomes a correctly-coloured event that does NOT
+ * carry an ltSlot tag — the thing that would get it deleted by pruneCancelled_.
+ */
+function runFusionSelfTest() {
+  var secret = fusionSecret_();
+  if (!secret) {
+    Logger.log('❌ FUSION_FEED_SECRET is not set. Project Settings → Script Properties → add it.');
+    return;
+  }
+
+  var res = UrlFetchApp.fetch(FUSION_FEED_URL, {
+    headers: { Authorization: 'Bearer ' + secret },
+    muteHttpExceptions: true
+  });
+  Logger.log('Feed responded ' + res.getResponseCode());
+  if (res.getResponseCode() !== 200) {
+    Logger.log('❌ Check the secret matches PARTY_FEED_SECRET in Cloudflare.');
+    return;
+  }
+  Logger.log('Bookings in feed: ' + ((JSON.parse(res.getContentText()).bookings || []).length));
+
+  var d = new Date();
+  d.setDate(d.getDate() + 14);
+  var dateStr = Utilities.formatDate(d, TIMEZONE, 'yyyy-MM-dd');
+
+  var fake = {
+    orderId: 'FUSIONTEST-' + dateStr,
+    orderName: 'Fusion booking',
+    partyDate: dateStr,
+    partyTime: '1:00–3:00 PM',
+    customerName: 'Fusion Test (safe to ignore)',
+    customerPhone: '555-0100',
+    package: 'Fusion café',
+    total: '175.00',
+    venue: 'fusion'
+  };
+
+  upsertEvent_(fake);
+  var ev = findEventByOrderId_(getCalendar_(), fake.orderId);
+  var colourOk = ev && ev.getColor() === COLOR_FUSION_ONLY;
+  var noSlotTag = ev && !ev.getTag('ltSlot');
+  if (ev) ev.deleteEvent();
+
+  Logger.log(
+    colourOk && noSlotTag
+      ? '✅ PASS — feed reachable, event black, and no ltSlot tag so prune will leave it alone.'
+      : '❌ FAIL — colour ok: ' + colourOk + ', ltSlot withheld: ' + noSlotTag
   );
 }
