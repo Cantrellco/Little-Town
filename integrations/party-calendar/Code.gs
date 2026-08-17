@@ -669,24 +669,42 @@ function tzOffsetMs_(dt) {
 
 // ─── CALENDAR PLUMBING ──────────────────────────────────────────────────────
 
+/**
+ * The calendar this account WRITES to.
+ *
+ * ⚠️ Ownership is checked, not just the name. Once littletown's calendar has
+ * been shared into another account, that account's getCalendarsByName() and
+ * getCalendarById() both return it happily — read-only. The script would then
+ * spend every run failing to write to a calendar it doesn't own, and the errors
+ * wouldn't point anywhere near the real cause. isOwnedByMe() is the difference
+ * between "I can see this" and "I can write to this".
+ *
+ * So an account with the shared calendar visible still creates its own when it
+ * runs setup, which is the correct outcome: reminders only ever fire for the
+ * owner, so a second account wanting reminders needs a calendar of its own.
+ */
 function getCalendar_() {
   var props = PropertiesService.getUserProperties();
   var cached = props.getProperty('calendarId');
   if (cached) {
     var hit = CalendarApp.getCalendarById(cached);
-    if (hit) return hit;
-    // Falls through when the id belongs to another account — which is exactly
-    // what happens if properties ride along with a shared or copied sheet.
+    if (hit && hit.isOwnedByMe()) return hit;
+    // Falls through when the id belongs to another account, or resolves to one
+    // merely shared with us — exactly what happens once this calendar has been
+    // shared around, or if properties ride along with a copied sheet.
   }
 
-  var found = CalendarApp.getCalendarsByName(CALENDAR_NAME);
-  var cal = (found && found.length)
-    ? found[0]
-    : CalendarApp.createCalendar(CALENDAR_NAME, {
-        summary: 'Private buyouts booked on thelittletownplayhouse.com',
-        timeZone: TIMEZONE,
-        color: CalendarApp.Color.PINK
-      });
+  var found = CalendarApp.getCalendarsByName(CALENDAR_NAME) || [];
+  var mine = null;
+  for (var i = 0; i < found.length; i++) {
+    if (found[i].isOwnedByMe()) { mine = found[i]; break; }
+  }
+
+  var cal = mine || CalendarApp.createCalendar(CALENDAR_NAME, {
+    summary: 'Private buyouts booked on thelittletownplayhouse.com',
+    timeZone: TIMEZONE,
+    color: CalendarApp.Color.PINK
+  });
 
   props.setProperty('calendarId', cal.getId());
   return cal;
