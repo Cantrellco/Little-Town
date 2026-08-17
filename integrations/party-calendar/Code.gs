@@ -363,7 +363,11 @@ function syncNow_() {
     Logger.log('✗ Fusion feed — ' + ((errF && errF.message) || errF));
   }
 
-  out.removed = pruneCancelled_();
+  // Read once and share: the fill and the prune are two halves of the same
+  // comparison against the website's list.
+  var live = liveBookedSlots_();
+  out.added += fillGapsFromLiveList_(live);
+  out.removed = pruneCancelled_(live);
 
   props.setProperty('lastRun', Utilities.formatDate(new Date(), TIMEZONE, 'EEE d MMM, h:mm a'));
   Logger.log('Sync: ' + out.added + ' added, ' + out.unchanged + ' already there, ' +
@@ -537,23 +541,105 @@ function readBookingLine_(line) {
  * ever needs pruning anyway. If refunds are ever added, extend this to read
  * LT_FUSION_TAKEN from the same page rather than tagging Fusion events.
  */
-function pruneCancelled_() {
-  var live;
+/**
+ * Every slot the storefront currently shows as booked, as a map keyed
+ * "YYYY-MM-DD|H:MM–H:MM PM". Null when the page can't be read or holds nothing,
+ * which callers must treat as "don't know" rather than "nothing is booked".
+ */
+function liveBookedSlots_() {
   try {
     var html = UrlFetchApp.fetch(PARTIES_URL, { muteHttpExceptions: true }).getContentText();
     var m = html.match(/LT_BOOKED_RAW\s*=\s*"([^"]*)"/);
-    if (!m) return 0;
-    live = m[1];
+    if (!m || !m[1]) return null;
+
+    var map = {};
+    var entries = m[1].split(';');
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i]) map[entries[i].trim()] = true;
+    }
+    return map;
   } catch (err) {
-    return 0; // site down or blocked — try again next run
+    return null; // site down or blocked — try again next run
   }
+}
+
+/**
+ * Creates an event for any slot the website says is booked that has nothing on
+ * the calendar.
+ *
+ * This is the safety net that makes "auto add" actually mean it. Everything
+ * else depends on an order email arriving in the right mailbox — and that can
+ * fail for reasons nobody controls: the address wasn't a recipient yet, the
+ * mail went to spam, the template got reverted, the notification silently
+ * didn't send. When it does fail the booking is invisible, and the only person
+ * who finds out is whoever unlocks the door to a party nobody knew about.
+ *
+ * The storefront's own list can't have that failure mode — it IS the thing the
+ * website uses to stop double-bookings, so a paid booking is always on it. Any
+ * slot on that list with no event is a booking that went missing.
+ *
+ * Placeholders carry the date and time, which is the part that matters, and go
+ * red for "look this one up". When the order email does turn up, upsertEvent_
+ * finds this event by its slot and fills in the customer, package and colour.
+ */
+function fillGapsFromLiveList_(live) {
   if (!live) return 0;
 
-  var stillBooked = {};
-  var entries = live.split(';');
-  for (var i = 0; i < entries.length; i++) {
-    if (entries[i]) stillBooked[entries[i].trim()] = true;
+  var cal = getCalendar_();
+  var now = new Date();
+  var events = cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1));
+  var have = {};
+  for (var e = 0; e < events.length; e++) {
+    var tag = events[e].getTag('ltSlot');
+    if (tag) have[tag] = true;
   }
+
+  var added = 0;
+  for (var key in live) {
+    if (have[key]) continue;
+
+    var bits = key.split('|');
+    if (bits.length !== 2) continue;
+
+    // Past slots stay off: the list keeps old bookings forever and we'd be
+    // manufacturing history nobody needs.
+    var todayStr = Utilities.formatDate(now, TIMEZONE, 'yyyy-MM-dd');
+    if (bits[0] < todayStr) continue;
+
+    try {
+      upsertEvent_({
+        orderId: 'slot-' + bits[0] + '-' + bits[1].replace(/[^0-9]/g, ''),
+        orderName: '(details not received yet)',
+        partyDate: bits[0],
+        partyTime: bits[1],
+        customerName: '',
+        package: '',
+        silent: true // Fusion is told once the real package is known, not now
+      });
+      added++;
+      Logger.log('⚠ filled gap from website: ' + key + ' — no order email found for it');
+    } catch (err) {
+      Logger.log('✗ could not fill ' + key + ' — ' + ((err && err.message) || err));
+    }
+  }
+  if (added) {
+    notify_(
+      added + ' booking(s) added from the website',
+      'The website shows ' + added + ' booking(s) that never arrived by email, so ' +
+      'they have been put on the calendar from the website\'s own list instead.\n\n' +
+      'The date and time are right. The customer name and package are missing — ' +
+      'they show in red until the order email turns up.\n\n' +
+      'Worth checking why the email didn\'t arrive: look in Spam, and check that ' +
+      'the address is still listed under Shopify → Settings → Notifications → ' +
+      'Staff notifications.'
+    );
+  }
+  return added;
+}
+
+function pruneCancelled_(live) {
+  if (!live) return 0;
+  var stillBooked = live;
 
   var cal = getCalendar_();
   var now = new Date();
@@ -584,7 +670,7 @@ function pruneCancelled_() {
 function upsertEvent_(p) {
   var cal = getCalendar_();
   var slot = parseSlot_(p.partyDate, p.partyTime);
-  var existing = findEventByOrderId_(cal, p.orderId);
+  var existing = findEvent_(cal, p);
   var title = buildTitle_(p);
   var description = buildDescription_(p);
   var created;
@@ -834,22 +920,44 @@ function getCalendar_() {
 }
 
 /**
- * Scans a wide window rather than just the party's own day — a rescheduled
- * booking has already moved, so looking only at the new date would miss it and
- * create a duplicate instead of moving the original.
+ * Finds the event this booking already has, by id first and by slot second.
+ *
+ * The id match is what stops re-runs duplicating, and what lets a rescheduled
+ * booking move rather than clone itself — which is why the search covers a wide
+ * window instead of just the party's own day.
+ *
+ * The slot fallback is what joins the two halves of the same booking together.
+ * A placeholder created from the website's list has an id derived from the
+ * slot; the order email, when it eventually arrives, carries the real Shopify
+ * id. Without matching on the slot as well, that email would create a second
+ * event beside the placeholder and the day would show the party twice.
+ *
+ * Safe because a playhouse slot can only be sold once — that's the whole job of
+ * the availability list. Fusion is excluded from the fallback on both sides:
+ * they book the café, not the playhouse, so their bookings legitimately share a
+ * date and time with a Little Town party.
  */
-function findEventByOrderId_(cal, orderId) {
-  if (!orderId) return null;
-  var key = String(orderId);
+function findEvent_(cal, p) {
+  var id = String(p.orderId || '');
+  var slotKey = p.partyDate + '|' + p.partyTime;
+  var wantSlot = p.venue !== 'fusion';
   var now = new Date();
   var events = cal.getEvents(
     new Date(now.getFullYear() - 1, 0, 1),
     new Date(now.getFullYear() + 2, 0, 1)
   );
+
+  var slotMatch = null;
   for (var i = 0; i < events.length; i++) {
-    if (events[i].getTag('ltOrderId') === key) return events[i];
+    var ev = events[i];
+    if (id && ev.getTag('ltOrderId') === id) return ev; // exact wins outright
+    if (wantSlot && !slotMatch &&
+        ev.getTag('ltVenue') !== 'fusion' &&
+        ev.getTag('ltSlot') === slotKey) {
+      slotMatch = ev;
+    }
   }
-  return null;
+  return slotMatch;
 }
 
 // ─── SAFETY NET ─────────────────────────────────────────────────────────────
@@ -993,13 +1101,7 @@ function backfillExistingBookings() {
     { date: '2026-08-23', time: '1:00–3:00 PM', name: '#1008', who: 'Ruth Kissner',      pkg: 'Little Town',          total: '185.00' },
     { date: '2026-09-13', time: '1:00–3:00 PM', name: '#1007', who: 'Megan Lentz',       pkg: 'Little Town',          total: '185.00' },
     { date: '2026-09-20', time: '1:00–3:00 PM', name: '#1005', who: 'Michaela Harrison', pkg: 'Little Town + Fusion', total: '295.00' },
-    // Booked after the mailboxes were wired up as Shopify recipients, so her
-    // order email was never delivered to them and the sync can't ever find it.
-    // Seeded for the same reason the six above are. ⚠️ Package unconfirmed —
-    // set pkg to 'Little Town' ($195) or 'Little Town + Fusion' ($295) off the
-    // order and she turns pink or blue; until then she shows red, which is the
-    // honest colour for "look this one up".
-    { date: '2026-09-20', time: '4:00–6:00 PM', name: '(check Shopify)', who: 'Leah Marvel', pkg: '', total: '' },
+    { date: '2026-09-20', time: '4:00–6:00 PM', name: '#1009', who: 'Leah Marvel',       pkg: 'Little Town',          total: '195.00' },
     { date: '2026-09-27', time: '4:00–6:00 PM', name: '#1004', who: 'Chloe Wells',       pkg: 'Little Town',          total: '185.00' },
     { date: '2026-10-10', time: '4:30–6:30 PM', name: '#1003', who: 'Sheila Kinney',     pkg: 'Little Town + Fusion', total: '295.00' },
     { date: '2026-10-11', time: '1:00–3:00 PM', name: '#1002', who: 'Jasmine Downen',    pkg: 'Little Town',          total: '185.00' }
@@ -1071,7 +1173,7 @@ function runSelfTest() {
   Logger.log('first: ' + a.action + ' / second: ' + b.action);
 
   var cal = getCalendar_();
-  var ev = findEventByOrderId_(cal, fake.orderId);
+  var ev = findEvent_(cal, fake);
   if (ev) ev.deleteEvent();
 
   Logger.log(
@@ -1121,7 +1223,7 @@ function runFusionSelfTest() {
   };
 
   upsertEvent_(fake);
-  var ev = findEventByOrderId_(getCalendar_(), fake.orderId);
+  var ev = findEvent_(getCalendar_(), fake);
   var colourOk = ev && ev.getColor() === COLOR_FUSION_ONLY;
   var noSlotTag = ev && !ev.getTag('ltSlot');
   if (ev) ev.deleteEvent();
