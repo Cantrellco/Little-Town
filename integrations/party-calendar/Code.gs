@@ -94,6 +94,18 @@ var TIMEZONE = 'America/Chicago';
 var MAIL_LOOKBACK = '1y';
 
 /**
+ * `in:anywhere` matters: GmailApp.search skips Spam and Trash by default, and
+ * an automated shop notification is exactly the sort of mail a provider decides
+ * is spam. Without it a booking can be sitting in the mailbox, findable by hand,
+ * and still invisible to this script — which looks identical to it never having
+ * arrived, and is the worse failure because everything appears healthy.
+ */
+var MAIL_QUERY_ = 'in:anywhere "LTPCAL1" newer_than:' + MAIL_LOOKBACK;
+
+/** Told about bookings that need the café open. Blank to switch off. */
+var NOTIFY_FUSION_EMAIL = 'fusioncoffeellc@gmail.com';
+
+/**
  * Other Google accounts that should also SEE this calendar. Granted access
  * during setup, so nobody has to work out Google's calendar-sharing screens.
  *
@@ -136,6 +148,8 @@ function onOpen() {
     .addSeparator()
     .addItem('Check for new bookings now', 'syncNow')
     .addItem('Is it working?', 'showStatus')
+    .addSeparator()
+    .addItem('Show me what it can see', 'diagnose')
     .addToUi();
 }
 
@@ -227,6 +241,71 @@ function showStatus() {
   );
 }
 
+/**
+ * Lays out exactly what this account can and can't see, so "it isn't working"
+ * stops being a guess.
+ *
+ * The failure this is really for: the sync can only read the mailbox of the
+ * account running it, and a Shopify recipient added today receives nothing sent
+ * yesterday. An account can therefore be perfectly healthy and still show zero
+ * new bookings forever. Printing every booking email it can find, with dates,
+ * separates that from a real fault in one look.
+ */
+function diagnose() {
+  var lines = [];
+  lines.push('Signed in as: ' + Session.getEffectiveUser().getEmail());
+
+  var cal = findOwnedCalendar_();
+  lines.push('Calendar owned by this account: ' + (cal ? '"' + cal.getName() + '"' : 'NONE — run Set up first'));
+  if (cal) {
+    var now = new Date();
+    lines.push('Events on it from today: ' + cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1)).length);
+  }
+
+  var running = false;
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'syncNow') running = true;
+  }
+  lines.push('Automatic 15-minute check: ' + (running ? 'ON' : 'OFF'));
+  lines.push('');
+
+  var threads = GmailApp.search(MAIL_QUERY_, 0, 200);
+  lines.push('Booking emails in THIS mailbox: ' + threads.length);
+  lines.push('(searched: ' + MAIL_QUERY_ + ')');
+  lines.push('');
+
+  if (!threads.length) {
+    lines.push('None found. That is not necessarily a fault — this mailbox only');
+    lines.push('receives orders placed AFTER it was added as a Shopify recipient.');
+    lines.push('Forward an older order email here and it will be picked up.');
+  } else {
+    for (var t = 0; t < threads.length; t++) {
+      var msgs = threads[t].getMessages();
+      for (var m = 0; m < msgs.length; m++) {
+        var b = null;
+        try { b = readBookingFromMessage_(msgs[m]); } catch (err) {
+          lines.push('✗ UNREADABLE — ' + ((err && err.message) || err));
+          continue;
+        }
+        if (!b) continue;
+        lines.push('✓ ' + b.partyDate + '  ' + b.partyTime + '  ' +
+                   (b.customerName || '(no name)') + '  [' + (b.package || 'no package') + ']');
+      }
+    }
+  }
+
+  lines.push('');
+  lines.push('Fusion feed secret set: ' + (fusionSecret_() ? 'yes' : 'no'));
+
+  Logger.log(lines.join('\n'));
+  try {
+    SpreadsheetApp.getUi().alert('What this account can see', lines.join('\n'), SpreadsheetApp.getUi().ButtonSet.OK);
+  } catch (noUi) {
+    // Run from the editor rather than the menu — the log above is the output.
+  }
+}
+
 // ─── THE SYNC ───────────────────────────────────────────────────────────────
 
 /** Runs on the timer. Never shows a dialog — nobody is watching. */
@@ -244,7 +323,7 @@ function syncNow_() {
     props.setProperty('seedVersion', SEED_VERSION);
   }
 
-  var threads = GmailApp.search('"LTPCAL1" newer_than:' + MAIL_LOOKBACK, 0, 200);
+  var threads = GmailApp.search(MAIL_QUERY_, 0, 200);
   Logger.log('Order emails found: ' + threads.length);
 
   for (var t = 0; t < threads.length; t++) {
@@ -543,7 +622,13 @@ function upsertEvent_(p) {
   // that were already on the calendar.
   existing.setColor(colorFor_(p));
 
-  if (created) applyReminders_(existing);
+  if (created) {
+    applyReminders_(existing);
+    // Only on create, and only for bookings that need the café. An update
+    // would re-send on every correction, and a plain Little Town buyout
+    // doesn't involve Fusion at all.
+    if (!p.silent) notifyFusionIfTheirs_(p);
+  }
 
   return { action: created ? 'created' : 'unchanged', order: p.orderName || '' };
 }
@@ -799,6 +884,49 @@ function notify_(subject, body) {
 }
 
 /**
+ * Emails Fusion about a new booking that needs the café — the "+ Fusion"
+ * buyouts and Fusion's own bookings. A plain Little Town party never involves
+ * them, so they never hear about it.
+ *
+ * This exists because Google refuses to do it: reminders are private to the
+ * account that owns a calendar and cannot be set for anyone else, so a shared
+ * calendar shows Fusion the dates but will never alert them. Sending mail from
+ * here is the only way they find out without configuring anything themselves.
+ *
+ * Never allowed to break a booking — a failed email is worth a log line, not a
+ * missing calendar event.
+ */
+function notifyFusionIfTheirs_(p) {
+  if (!NOTIFY_FUSION_EMAIL) return;
+  var theirs = (p.venue === 'fusion') || isFusion_(p);
+  if (!theirs) return;
+
+  try {
+    var when = Utilities.formatDate(parseSlot_(p.partyDate, p.partyTime).start,
+                                    TIMEZONE, 'EEEE, MMMM d');
+    var isCafeOnly = p.venue === 'fusion';
+
+    MailApp.sendEmail(
+      NOTIFY_FUSION_EMAIL,
+      (isCafeOnly ? '☕ Fusion booked — ' : '☕ Barista needed — ') + when,
+      (isCafeOnly
+        ? 'A Fusion café booking has come in. The playhouse is NOT booked.\n\n'
+        : 'A Little Town party has booked the + Fusion package, so the café ' +
+          'opens too and will need someone on.\n\n') +
+      when + '\n' +
+      p.partyTime + ' Central\n\n' +
+      (p.customerName ? 'Name:  ' + p.customerName + '\n' : '') +
+      (p.customerPhone ? 'Phone: ' + p.customerPhone + '\n' : '') +
+      (p.orderName ? '\nOrder ' + p.orderName + (p.total ? '  ·  $' + p.total : '') + '\n' : '') +
+      '\nIt is already on the "' + CALENDAR_NAME + '" calendar.'
+    );
+    Logger.log('Told Fusion about ' + p.partyDate + ' ' + p.partyTime);
+  } catch (err) {
+    Logger.log('Could not email Fusion: ' + ((err && err.message) || err));
+  }
+}
+
+/**
  * Gives other Google accounts read access to the calendar, so the parties show
  * up in the diary he actually looks at.
  *
@@ -891,7 +1019,10 @@ function backfillExistingBookings() {
         partyTime: s.time,
         customerName: s.who,
         package: s.pkg,
-        total: s.total
+        total: s.total,
+        // These are historical. Without this, a fresh account running setup
+        // would email Fusion about parties they already know about.
+        silent: true
       });
       done++;
       Logger.log('✓ ' + s.date + '  ' + s.time + '  ' + s.who + '  (' + s.pkg + ')');
