@@ -27,7 +27,13 @@
 
 // ─── SETTINGS ───────────────────────────────────────────────────────────────
 
-var CALENDAR_NAME = 'Little Town Parties';
+/**
+ * Renaming this is safe. getCalendar_ renames the existing calendar in place
+ * rather than matching on the new name and finding nothing — which would create
+ * a second, empty calendar and orphan the one holding every event, every
+ * reminder and every share.
+ */
+var CALENDAR_NAME = 'Little Town and Fusion Parties';
 var OWNER_EMAIL = 'littletownplayhousellc@gmail.com';
 var VENUE_ADDRESS = '205 East Main Street, Fairfield, IL 62837';
 var PARTIES_URL = 'https://thelittletownplayhouse.com/pages/parties';
@@ -200,7 +206,10 @@ function showStatus() {
     if (triggers[i].getHandlerFunction() === 'syncNow') running = true;
   }
 
-  var cal = CalendarApp.getCalendarsByName(CALENDAR_NAME)[0];
+  // findOwnedCalendar_ rather than a name lookup: it won't pick up a shared
+  // copy of someone else's, and it won't create one just because you asked
+  // whether things are working.
+  var cal = findOwnedCalendar_();
   var upcoming = 0;
   if (cal) {
     var now = new Date();
@@ -683,7 +692,15 @@ function tzOffsetMs_(dt) {
  * runs setup, which is the correct outcome: reminders only ever fire for the
  * owner, so a second account wanting reminders needs a calendar of its own.
  */
-function getCalendar_() {
+/**
+ * The one this account owns, or null. Never creates anything, so it's safe for
+ * read-only callers like showStatus.
+ *
+ * Checks the remembered id first, then falls back to matching by name — under
+ * BOTH the current name and any it used to have, so a rename doesn't lose an
+ * account that hasn't run since.
+ */
+function findOwnedCalendar_() {
   var props = PropertiesService.getUserProperties();
   var cached = props.getProperty('calendarId');
   if (cached) {
@@ -694,19 +711,40 @@ function getCalendar_() {
     // shared around, or if properties ride along with a copied sheet.
   }
 
-  var found = CalendarApp.getCalendarsByName(CALENDAR_NAME) || [];
-  var mine = null;
-  for (var i = 0; i < found.length; i++) {
-    if (found[i].isOwnedByMe()) { mine = found[i]; break; }
+  for (var n = 0; n < CALENDAR_NAMES_.length; n++) {
+    var found = CalendarApp.getCalendarsByName(CALENDAR_NAMES_[n]) || [];
+    for (var i = 0; i < found.length; i++) {
+      if (found[i].isOwnedByMe()) return found[i];
+    }
+  }
+  return null;
+}
+
+/**
+ * Every name this calendar has ever had, newest first. Old names stay listed
+ * so a rename finds and renames the existing calendar instead of matching
+ * nothing and creating a second, empty one beside it.
+ */
+var CALENDAR_NAMES_ = [CALENDAR_NAME, 'Little Town Parties'];
+
+/** The calendar this account WRITES to, creating or renaming it as needed. */
+function getCalendar_() {
+  var cal = findOwnedCalendar_();
+
+  if (!cal) {
+    cal = CalendarApp.createCalendar(CALENDAR_NAME, {
+      summary: 'Parties booked on thelittletownplayhouse.com and fusioncoffeeshop.com',
+      timeZone: TIMEZONE,
+      color: CalendarApp.Color.PINK
+    });
+  } else if (cal.getName() !== CALENDAR_NAME) {
+    // Rename in place: keeps every event, reminder and share intact. Creating a
+    // new one under the new name would silently strand all of it.
+    Logger.log('Renaming "' + cal.getName() + '" → "' + CALENDAR_NAME + '"');
+    cal.setName(CALENDAR_NAME);
   }
 
-  var cal = mine || CalendarApp.createCalendar(CALENDAR_NAME, {
-    summary: 'Private buyouts booked on thelittletownplayhouse.com',
-    timeZone: TIMEZONE,
-    color: CalendarApp.Color.PINK
-  });
-
-  props.setProperty('calendarId', cal.getId());
+  PropertiesService.getUserProperties().setProperty('calendarId', cal.getId());
   return cal;
 }
 
