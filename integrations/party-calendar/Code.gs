@@ -130,7 +130,7 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  * own, without anyone being asked to click "Set up" again. Editing the script
  * is enough.
  */
-var SEED_VERSION = '2026-08-16a';
+var SEED_VERSION = '2026-08-17a';
 
 var VERSION = '2.5.0';
 
@@ -993,6 +993,13 @@ function backfillExistingBookings() {
     { date: '2026-08-23', time: '1:00–3:00 PM', name: '#1008', who: 'Ruth Kissner',      pkg: 'Little Town',          total: '185.00' },
     { date: '2026-09-13', time: '1:00–3:00 PM', name: '#1007', who: 'Megan Lentz',       pkg: 'Little Town',          total: '185.00' },
     { date: '2026-09-20', time: '1:00–3:00 PM', name: '#1005', who: 'Michaela Harrison', pkg: 'Little Town + Fusion', total: '295.00' },
+    // Booked after the mailboxes were wired up as Shopify recipients, so her
+    // order email was never delivered to them and the sync can't ever find it.
+    // Seeded for the same reason the six above are. ⚠️ Package unconfirmed —
+    // set pkg to 'Little Town' ($195) or 'Little Town + Fusion' ($295) off the
+    // order and she turns pink or blue; until then she shows red, which is the
+    // honest colour for "look this one up".
+    { date: '2026-09-20', time: '4:00–6:00 PM', name: '(check Shopify)', who: 'Leah Marvel', pkg: '', total: '' },
     { date: '2026-09-27', time: '4:00–6:00 PM', name: '#1004', who: 'Chloe Wells',       pkg: 'Little Town',          total: '185.00' },
     { date: '2026-10-10', time: '4:30–6:30 PM', name: '#1003', who: 'Sheila Kinney',     pkg: 'Little Town + Fusion', total: '295.00' },
     { date: '2026-10-11', time: '1:00–3:00 PM', name: '#1002', who: 'Jasmine Downen',    pkg: 'Little Town',          total: '185.00' }
