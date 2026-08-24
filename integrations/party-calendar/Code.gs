@@ -587,7 +587,7 @@ function fillGapsFromLiveList_(live) {
 
   var cal = getCalendar_();
   var now = new Date();
-  var events = cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1));
+  var events = eventsInWindow_(cal);
   var have = {};
   for (var e = 0; e < events.length; e++) {
     var tag = events[e].getTag('ltSlot');
@@ -643,10 +643,14 @@ function pruneCancelled_(live) {
 
   var cal = getCalendar_();
   var now = new Date();
-  var events = cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1));
+  var events = eventsInWindow_(cal);
   var removed = 0;
 
-  for (var e = 0; e < events.length; e++) {
+  for (var e = events.length - 1; e >= 0; e--) {
+    // The shared cache reaches back a year; deletion must stay future-only, or
+    // finished parties would be swept away as "cancelled" the moment the
+    // storefront stopped listing them.
+    if (events[e].getStartTime() < now) continue;
     if (events[e].getTag('ltVenue') === 'fusion') continue; // belt and braces
     var slot = events[e].getTag('ltSlot');
     if (!slot) continue;             // not one of ours — includes every Fusion event
@@ -654,6 +658,7 @@ function pruneCancelled_(live) {
 
     var when = Utilities.formatDate(events[e].getStartTime(), TIMEZONE, "EEEE, MMMM d 'at' h:mm a");
     events[e].deleteEvent();
+    events.splice(e, 1); // keep the shared cache honest for anything after us
     removed++;
     notify_(
       'Party cancelled — ' + when,
@@ -687,6 +692,9 @@ function upsertEvent_(p) {
       location: VENUE_ADDRESS
     });
     created = true;
+    // Into the shared cache immediately, so a later step in this same run finds
+    // it by slot instead of creating a second one beside it.
+    if (EVENT_CACHE_) EVENT_CACHE_.push(existing);
   }
 
   // ltOrderId keeps re-runs from duplicating; ltSlot is what pruneCancelled_
@@ -864,6 +872,37 @@ function tzOffsetMs_(dt) {
  * owner, so a second account wanting reminders needs a calendar of its own.
  */
 /**
+ * Per-execution caches. Apps Script re-initialises globals on every run, so
+ * these are automatically scoped to a single sync and never go stale between
+ * them — no invalidation to get wrong.
+ *
+ * They exist because the calendar was being re-read once PER BOOKING: at 8
+ * bookings that's ~960 full Calendar round trips a day, and it grows with every
+ * party ever booked. A consumer account gets 90 minutes of trigger runtime a
+ * day in total, so left alone this quietly throttles itself somewhere around a
+ * year or two in — the worst kind of failure, because nothing is wrong with the
+ * logic and it degrades gradually.
+ */
+var CAL_CACHE_ = null;
+var EVENT_CACHE_ = null;
+
+/**
+ * Every event in the working window, read once. Callers must not hold on to the
+ * array across executions — they can't, but they also must keep it truthful:
+ * upsertEvent_ pushes what it creates and pruneCancelled_ removes what it
+ * deletes, so later steps in the same run see an accurate picture.
+ */
+function eventsInWindow_(cal) {
+  if (EVENT_CACHE_) return EVENT_CACHE_;
+  var now = new Date();
+  EVENT_CACHE_ = cal.getEvents(
+    new Date(now.getFullYear() - 1, 0, 1),
+    new Date(now.getFullYear() + 2, 0, 1)
+  );
+  return EVENT_CACHE_;
+}
+
+/**
  * The one this account owns, or null. Never creates anything, so it's safe for
  * read-only callers like showStatus.
  *
@@ -900,6 +939,7 @@ var CALENDAR_NAMES_ = [CALENDAR_NAME, 'Little Town Parties'];
 
 /** The calendar this account WRITES to, creating or renaming it as needed. */
 function getCalendar_() {
+  if (CAL_CACHE_) return CAL_CACHE_;
   var cal = findOwnedCalendar_();
 
   if (!cal) {
@@ -916,6 +956,7 @@ function getCalendar_() {
   }
 
   PropertiesService.getUserProperties().setProperty('calendarId', cal.getId());
+  CAL_CACHE_ = cal;
   return cal;
 }
 
@@ -941,11 +982,7 @@ function findEvent_(cal, p) {
   var id = String(p.orderId || '');
   var slotKey = p.partyDate + '|' + p.partyTime;
   var wantSlot = p.venue !== 'fusion';
-  var now = new Date();
-  var events = cal.getEvents(
-    new Date(now.getFullYear() - 1, 0, 1),
-    new Date(now.getFullYear() + 2, 0, 1)
-  );
+  var events = eventsInWindow_(cal);
 
   var slotMatch = null;
   for (var i = 0; i < events.length; i++) {
