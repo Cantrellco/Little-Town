@@ -1108,4 +1108,150 @@
 
     map.on("load", function () { c.classList.add("is-live"); });
   }
+
+})();
+
+/* ============================================================
+   Photo carousel — own IIFE so it runs on every page that has one.
+   ============================================================ */
+(function () {
+  "use strict";
+  /* ---- Photo carousel (photo gallery) ----
+     The scrolling itself is native CSS scroll-snap, so with JS disabled the
+     track is still swipeable and every photo is reachable. This module only
+     adds the niceties: active-slide styling, arrows, dots, keyboard and
+     mouse-drag. Active slide is derived from scroll position rather than an
+     index we mutate, so native swipes and JS jumps can never disagree. */
+  var carousels = document.querySelectorAll("[data-lt-carousel]");
+  Array.prototype.forEach.call(carousels, function (root) {
+    var track = root.querySelector(".lt-car-track");
+    if (!track) return;
+    var slides = Array.prototype.slice.call(root.querySelectorAll(".lt-car-slide"));
+    if (!slides.length) return;
+    var dots = Array.prototype.slice.call(root.querySelectorAll(".lt-car-dot"));
+    var arrows = Array.prototype.slice.call(root.querySelectorAll(".lt-car-arrow"));
+    var nowEl = root.querySelector("[data-lt-now]");
+    var liveEl = root.querySelector(".lt-car-live");
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var current = -1;
+
+    function centreOf(el) { return el.offsetLeft + el.offsetWidth / 2; }
+
+    /* Nearest slide to the track's viewport centre. */
+    /* Nearest slide to an arbitrary scroll position (used for drag throw). */
+    function nearestAt(scrollLeft) {
+      var mid = scrollLeft + track.clientWidth / 2;
+      var best = 0, bestD = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var d = Math.abs(centreOf(slides[i]) - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      return best;
+    }
+
+    function nearest() {
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var best = 0, bestD = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var d = Math.abs(centreOf(slides[i]) - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      return best;
+    }
+
+    function paint() {
+      var i = nearest();
+      if (i === current) return;
+      current = i;
+      for (var n = 0; n < slides.length; n++) slides[n].classList.toggle("is-active", n === i);
+      for (var d = 0; d < dots.length; d++) {
+        if (d === i) dots[d].setAttribute("aria-current", "true");
+        else dots[d].removeAttribute("aria-current");
+      }
+      if (nowEl) nowEl.textContent = String(i + 1);
+      arrows.forEach(function (b) {
+        var dir = Number(b.getAttribute("data-dir"));
+        b.disabled = (dir < 0 && i === 0) || (dir > 0 && i === slides.length - 1);
+      });
+      if (liveEl) {
+        var cap = slides[i].querySelector("figcaption");
+        liveEl.textContent = "Photo " + (i + 1) + " of " + slides.length + (cap ? ": " + cap.textContent.trim() : "");
+      }
+    }
+
+    function goTo(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      var left = centreOf(slides[i]) - track.clientWidth / 2;
+      try { track.scrollTo({ left: left, behavior: reduce ? "auto" : "smooth" }); }
+      catch (e) { track.scrollLeft = left; }
+    }
+
+    /* scroll -> repaint, rAF-throttled */
+    var ticking = false;
+    track.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () { ticking = false; paint(); });
+    }, { passive: true });
+
+    arrows.forEach(function (b) {
+      b.addEventListener("click", function () { goTo(nearest() + Number(b.getAttribute("data-dir"))); });
+    });
+    dots.forEach(function (b) {
+      b.addEventListener("click", function () { goTo(Number(b.getAttribute("data-go"))); });
+    });
+
+    track.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { e.preventDefault(); goTo(nearest() + 1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(nearest() - 1); }
+      else if (e.key === "Home") { e.preventDefault(); goTo(0); }
+      else if (e.key === "End") { e.preventDefault(); goTo(slides.length - 1); }
+    });
+
+    /* Mouse drag-to-scroll. Touch is left to native scrolling. */
+    var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (fine) {
+      var dragging = false, startX = 0, startLeft = 0, moved = 0, lastX = 0, lastT = 0, vel = 0;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        dragging = true; moved = 0;
+        startX = lastX = e.clientX; startLeft = track.scrollLeft;
+        lastT = e.timeStamp || Date.now(); vel = 0;
+        track.classList.add("is-dragging");
+      });
+      track.addEventListener("pointermove", function (e) {
+        if (!dragging) return;
+        var dx = e.clientX - startX;
+        moved = Math.max(moved, Math.abs(dx));
+        var t = e.timeStamp || Date.now();
+        var dt = Math.max(t - lastT, 1);
+        /* px/ms the pointer is travelling; sign follows the pointer, so a
+           leftward flick (negative) means "go forward". Smoothed so one
+           jittery frame cannot dominate the throw. */
+        vel = 0.7 * ((e.clientX - lastX) / dt) + 0.3 * vel;
+        lastX = e.clientX; lastT = t;
+        track.scrollLeft = startLeft - dx;
+      });
+      var endDrag = function () {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove("is-dragging");
+        /* Project where a short coast would land, so a quick flick advances
+           instead of snapping back. Capped at two slides per throw. */
+        var step = slides.length > 1 ? (centreOf(slides[1]) - centreOf(slides[0])) : track.clientWidth;
+        var coast = Math.max(-2 * step, Math.min(2 * step, -vel * 160));
+        goTo(nearestAt(track.scrollLeft + coast));
+        vel = 0;
+      };
+      track.addEventListener("pointerup", endDrag);
+      track.addEventListener("pointercancel", endDrag);
+      track.addEventListener("pointerleave", endDrag);
+      /* Swallow the click that ends a real drag so it can't act as a tap. */
+      track.addEventListener("click", function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+    }
+
+    window.addEventListener("resize", function () { current = -1; paint(); }, { passive: true });
+    paint();
+  });
+
 })();

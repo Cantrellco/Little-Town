@@ -234,7 +234,7 @@ function wireCommerce(html, key) {
   }
   if (key === "parties") {
     // One bookable product `private-buyout` carries both prices as variants:
-    // "Little Town" ($185) and "Little Town + Fusion" ($295). Resolve it, split
+    // "Little Town" ($195) and "Little Town + Fusion" ($295). Resolve it, split
     // the two variants by title (the Fusion one contains "Fusion"), and inject
     // their ids into the booking forms' hidden id inputs so each form POSTs the
     // right variant to /cart/add -> checkout. Setup banner until it's published.
@@ -581,7 +581,7 @@ write(
           attached to the order as the properties[Party date and time] line-item
           property, which ONLY the calendar on /pages/parties writes. This PDP is
           publicly reachable (product sitemap, /search, /collections/all), so left
-          as a generic add-to-cart it sells a $185/$295 party — paid in full, all
+          as a generic add-to-cart it sells a $195/$295 party — paid in full, all
           sales final — against no date at all, and never checks the Sat / Sun
           availability windows. Send buyers to the calendar instead of selling here.
         {%- endcomment -%}

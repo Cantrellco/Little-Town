@@ -142,7 +142,7 @@ Books parties end-to-end with a **custom calendar** — no booking app. Flow: pi
 date on the calendar → pick a time → pick a package → Shopify checkout, paid in full,
 all-sales-final. Built + live; needs only the product published (done).
 
-1. **Product:** ONE `private-buyout` with variants **Little Town $185** / **Little Town +
+1. **Product:** ONE `private-buyout` with variants **Little Town $195** / **Little Town +
    Fusion $295** (track-quantity off, physical off, published to Online Store). The build
    script splits variants by title (Fusion → $295), so no IDs to paste.
 2. **How it works:** each package is a `<form>` POSTing to `/cart/add` (return_to=/checkout).

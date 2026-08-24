@@ -102,67 +102,149 @@
     <!-- ===================== GALLERY · beat 1 (colour wash) ===================== -->
     <section class="section flow-top sec-color gallery-section" id="gallery">
       <div class="container">
-        <div class="gallery-grid">
+        <div class="lt-car reveal" data-lt-carousel role="region" aria-roledescription="carousel" aria-label="Photos from inside Little Town">
 
-          <figure class="gallery-figure reveal">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-play-slide-600.avif' | asset_url }} 600w, {{ 'photo-play-slide-900.avif' | asset_url }} 900w, {{ 'photo-play-slide-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-play-slide-600.webp' | asset_url }} 600w, {{ 'photo-play-slide-900.webp' | asset_url }} 900w, {{ 'photo-play-slide-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="A row of bright soft slides above the ball pit at Little Town." decoding="async">
-            </picture>
-            <figcaption>The big slides</figcaption>
-            <span class="gallery-sticker" aria-hidden="true"><img src="{{ 'icon-slide.svg' | asset_url }}" alt="" width="18" height="18"> Hello!</span>
-          </figure>
+          <ul class="lt-car-track" tabindex="0">
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="1 of 11: The whole little town">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-town-shops-600.avif' | asset_url }} 600w, {{ 'photo-town-shops-900.avif' | asset_url }} 900w, {{ 'photo-town-shops-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-town-shops-600.webp' | asset_url }} 600w, {{ 'photo-town-shops-900.webp' | asset_url }} 900w, {{ 'photo-town-shops-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-town-shops.jpg' | asset_url }}" alt="The full play floor at Little Town, with the Fusion Coffee and grocery storefronts along the back wall." decoding="async" draggable="false" style="object-position:center 50%">
+                  </picture>
+                  <figcaption><span>The whole little town</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="2 of 11: The play castle">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-play-bridge-600.avif' | asset_url }} 600w, {{ 'photo-play-bridge-900.avif' | asset_url }} 900w, {{ 'photo-play-bridge-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-play-bridge-600.webp' | asset_url }} 600w, {{ 'photo-play-bridge-900.webp' | asset_url }} 900w, {{ 'photo-play-bridge-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="Kids peeking out of the portholes and sliding down the wooden play castle at Little Town." decoding="async" draggable="false" style="object-position:center 55%">
+                  </picture>
+                  <figcaption><span>The play castle</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="3 of 11: The big slides">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-play-slide-600.avif' | asset_url }} 600w, {{ 'photo-play-slide-900.avif' | asset_url }} 900w, {{ 'photo-play-slide-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-play-slide-600.webp' | asset_url }} 600w, {{ 'photo-play-slide-900.webp' | asset_url }} 900w, {{ 'photo-play-slide-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-play-slide.jpg' | asset_url }}" alt="Two kids racing down the slide beside the big blue tube slide." loading="lazy" decoding="async" draggable="false" style="object-position:center 55%">
+                  </picture>
+                  <figcaption><span>The big slides</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="4 of 11: Climbing the towers">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-play-climb-600.avif' | asset_url }} 600w, {{ 'photo-play-climb-900.avif' | asset_url }} 900w, {{ 'photo-play-climb-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-play-climb-600.webp' | asset_url }} 600w, {{ 'photo-play-climb-900.webp' | asset_url }} 900w, {{ 'photo-play-climb-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the wooden castle towers under the Little Town sign." loading="lazy" decoding="async" draggable="false" style="object-position:center 45%">
+                  </picture>
+                  <figcaption><span>Climbing the towers</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="5 of 11: The little clinic">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-clinic-600.avif' | asset_url }} 600w, {{ 'photo-clinic-900.avif' | asset_url }} 900w, {{ 'photo-clinic-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-clinic-600.webp' | asset_url }} 600w, {{ 'photo-clinic-900.webp' | asset_url }} 900w, {{ 'photo-clinic-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-clinic.jpg' | asset_url }}" alt="A grown-up and toddlers playing at the little clinic, with its first-aid cart and eye chart." loading="lazy" decoding="async" draggable="false" style="object-position:center 50%">
+                  </picture>
+                  <figcaption><span>The little clinic</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="6 of 11: The little grocery">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-grocery-600.avif' | asset_url }} 600w, {{ 'photo-grocery-900.avif' | asset_url }} 900w, {{ 'photo-grocery-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-grocery-600.webp' | asset_url }} 600w, {{ 'photo-grocery-900.webp' | asset_url }} 900w, {{ 'photo-grocery-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-grocery.jpg' | asset_url }}" alt="Two toddlers shopping the produce shelves at the little grocery." loading="lazy" decoding="async" draggable="false" style="object-position:center 42%">
+                  </picture>
+                  <figcaption><span>The little grocery</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="7 of 11: The little market">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-market-stall-600.avif' | asset_url }} 600w, {{ 'photo-market-stall-900.avif' | asset_url }} 900w, {{ 'photo-market-stall-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-market-stall-600.webp' | asset_url }} 600w, {{ 'photo-market-stall-900.webp' | asset_url }} 900w, {{ 'photo-market-stall-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-market-stall.jpg' | asset_url }}" alt="A toddler carrying a shopping basket past the little market stall." loading="lazy" decoding="async" draggable="false" style="object-position:center 45%">
+                  </picture>
+                  <figcaption><span>The little market</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="8 of 11: Behind the register">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-bigsmiles-600.avif' | asset_url }} 600w, {{ 'photo-bigsmiles-900.avif' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-bigsmiles-600.webp' | asset_url }} 600w, {{ 'photo-bigsmiles-900.webp' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="A toddler running the register at the little pretend market." loading="lazy" decoding="async" draggable="false" style="object-position:center 50%">
+                  </picture>
+                  <figcaption><span>Behind the register</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="9 of 11: Little chefs at work">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-play-blocks-600.avif' | asset_url }} 600w, {{ 'photo-play-blocks-900.avif' | asset_url }} 900w, {{ 'photo-play-blocks-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-play-blocks-600.webp' | asset_url }} 600w, {{ 'photo-play-blocks-900.webp' | asset_url }} 900w, {{ 'photo-play-blocks-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="Two toddlers cooking together in the pretend-play kitchen, seen through the brick window." loading="lazy" decoding="async" draggable="false" style="object-position:center 45%">
+                  </picture>
+                  <figcaption><span>Little chefs at work</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="10 of 11: The play kitchen">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-kitchen-window-600.avif' | asset_url }} 600w, {{ 'photo-kitchen-window-900.avif' | asset_url }} 900w, {{ 'photo-kitchen-window-1200.avif' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-kitchen-window-600.webp' | asset_url }} 600w, {{ 'photo-kitchen-window-900.webp' | asset_url }} 900w, {{ 'photo-kitchen-window-1200.webp' | asset_url }} 1200w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-kitchen-window.jpg' | asset_url }}" alt="A grown-up and two children at a pretend tea party in the play kitchen, seen through the brick window." loading="lazy" decoding="async" draggable="false" style="object-position:center 45%">
+                  </picture>
+                  <figcaption><span>The play kitchen</span></figcaption>
+                </figure>
+              </li>
+              <li class="lt-car-slide" role="group" aria-roledescription="slide" aria-label="11 of 11: Coffee with a view of play">
+                <figure class="lt-car-fig">
+                  <picture>
+                    <source type="image/avif" srcset="{{ 'photo-cafe-table-600.avif' | asset_url }} 600w, {{ 'photo-cafe-table-900.avif' | asset_url }} 900w, {{ 'photo-cafe-table-1000.avif' | asset_url }} 1000w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <source type="image/webp" srcset="{{ 'photo-cafe-table-600.webp' | asset_url }} 600w, {{ 'photo-cafe-table-900.webp' | asset_url }} 900w, {{ 'photo-cafe-table-1000.webp' | asset_url }} 1000w" sizes="(min-width: 900px) 62vw, 86vw">
+                    <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="The Fusion coffee counter and seating beside the Little Town play floor." loading="lazy" decoding="async" draggable="false" style="object-position:center 55%">
+                  </picture>
+                  <figcaption><span>Coffee with a view of play</span></figcaption>
+                </figure>
+              </li>
+          </ul>
 
-          <figure class="gallery-figure reveal" data-delay="1">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-bigsmiles-600.avif' | asset_url }} 600w, {{ 'photo-bigsmiles-900.avif' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-bigsmiles-600.webp' | asset_url }} 600w, {{ 'photo-bigsmiles-900.webp' | asset_url }} 900w, {{ 'photo-bigsmiles-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-bigsmiles.jpg' | asset_url }}" alt="A toddler grinning inside the playhouse." decoding="async" style="object-position:center 30%">
-            </picture>
-            <figcaption>Big smiles, all afternoon</figcaption>
-          </figure>
+          <button type="button" class="lt-car-arrow lt-car-arrow--prev" data-dir="-1" aria-label="Previous photo">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="lt-car-arrow lt-car-arrow--next" data-dir="1" aria-label="Next photo">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
 
-          <figure class="gallery-figure reveal" data-delay="2">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-play-climb-600.avif' | asset_url }} 600w, {{ 'photo-play-climb-900.avif' | asset_url }} 900w, {{ 'photo-play-climb-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-play-climb-600.webp' | asset_url }} 600w, {{ 'photo-play-climb-900.webp' | asset_url }} 900w, {{ 'photo-play-climb-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-play-climb.jpg' | asset_url }}" alt="A child climbing the colorful rock wall." decoding="async" style="object-position:center 35%">
-            </picture>
-            <figcaption>Up the climbing wall</figcaption>
-          </figure>
+          <div class="lt-car-foot">
+            <div class="lt-car-dots" role="tablist" aria-label="Choose a photo">
+                <button type="button" class="lt-car-dot" data-go="0" aria-label="Show photo 1: The whole little town" aria-current="true"></button>
+                <button type="button" class="lt-car-dot" data-go="1" aria-label="Show photo 2: The play castle"></button>
+                <button type="button" class="lt-car-dot" data-go="2" aria-label="Show photo 3: The big slides"></button>
+                <button type="button" class="lt-car-dot" data-go="3" aria-label="Show photo 4: Climbing the towers"></button>
+                <button type="button" class="lt-car-dot" data-go="4" aria-label="Show photo 5: The little clinic"></button>
+                <button type="button" class="lt-car-dot" data-go="5" aria-label="Show photo 6: The little grocery"></button>
+                <button type="button" class="lt-car-dot" data-go="6" aria-label="Show photo 7: The little market"></button>
+                <button type="button" class="lt-car-dot" data-go="7" aria-label="Show photo 8: Behind the register"></button>
+                <button type="button" class="lt-car-dot" data-go="8" aria-label="Show photo 9: Little chefs at work"></button>
+                <button type="button" class="lt-car-dot" data-go="9" aria-label="Show photo 10: The play kitchen"></button>
+                <button type="button" class="lt-car-dot" data-go="10" aria-label="Show photo 11: Coffee with a view of play"></button>
+            </div>
+            <p class="lt-car-count"><b data-lt-now>1</b> / 11</p>
+          </div>
 
-          <figure class="gallery-figure reveal">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-play-bridge-600.avif' | asset_url }} 600w, {{ 'photo-play-bridge-900.avif' | asset_url }} 900w, {{ 'photo-play-bridge-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-play-bridge-600.webp' | asset_url }} 600w, {{ 'photo-play-bridge-900.webp' | asset_url }} 900w, {{ 'photo-play-bridge-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-play-bridge.jpg' | asset_url }}" alt="A child balancing across the rope bridge." decoding="async" style="object-position:center 30%">
-            </picture>
-            <figcaption>Crossing the rope bridge</figcaption>
-          </figure>
-
-          <figure class="gallery-figure reveal" data-delay="1">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-play-blocks-600.avif' | asset_url }} 600w, {{ 'photo-play-blocks-900.avif' | asset_url }} 900w, {{ 'photo-play-blocks-1200.avif' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-play-blocks-600.webp' | asset_url }} 600w, {{ 'photo-play-blocks-900.webp' | asset_url }} 900w, {{ 'photo-play-blocks-1200.webp' | asset_url }} 1200w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-play-blocks.jpg' | asset_url }}" alt="A child building inside a fort of giant foam blocks." decoding="async">
-            </picture>
-            <figcaption>Block-tower architects</figcaption>
-            <span class="gallery-sticker gallery-sticker--sage" aria-hidden="true"><img src="{{ 'icon-bricks.svg' | asset_url }}" alt="" width="18" height="18"> Builders</span>
-          </figure>
-
-          <figure class="gallery-figure reveal" data-delay="2">
-            <picture>
-              <source type="image/avif" srcset="{{ 'photo-cafe-table-600.avif' | asset_url }} 600w, {{ 'photo-cafe-table-900.avif' | asset_url }} 900w, {{ 'photo-cafe-table-1000.avif' | asset_url }} 1000w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <source type="image/webp" srcset="{{ 'photo-cafe-table-600.webp' | asset_url }} 600w, {{ 'photo-cafe-table-900.webp' | asset_url }} 900w, {{ 'photo-cafe-table-1000.webp' | asset_url }} 1000w" sizes="(min-width: 881px) 30vw, (min-width: 541px) 47vw, 47vw">
-              <img src="{{ 'photo-cafe-table.jpg' | asset_url }}" alt="A latte and croissant on a wooden table at Fusion café." decoding="async">
-            </picture>
-            <figcaption>Snack break at Fusion</figcaption>
-          </figure>
-
+          <p class="lt-car-live" aria-live="polite"></p>
         </div>
 
-        <p class="gallery-note reveal">Every day at Little Town looks a little different.</p>
+        <p class="gallery-note reveal">Every day at Little Town looks a little different — swipe through and see.</p>
       </div>
     </section>
 

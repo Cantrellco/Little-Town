@@ -1,4 +1,47 @@
-# Post-purchase email — Order confirmation
+# Post-purchase emails
+
+Two templates, both pasted into the Shopify admin (neither is pushed by `shopify theme push`):
+
+| File | Goes to | Admin location |
+| --- | --- | --- |
+| [`order-confirmation.liquid`](order-confirmation.liquid) | the **customer** | Settings → Notifications → *Order confirmation* |
+| [`staff-order-notification.liquid`](staff-order-notification.liquid) | **Little Town** | Settings → Notifications → *Staff notifications* → **New order** |
+
+---
+
+# Staff notification — "there's a new party on <date>"
+
+Shopify's default staff email does not put the party date anywhere you can see it on a
+phone. This replacement leads with it: the **date & time is the biggest thing in the
+email**, in a bordered banner above the customer and order details, and it's also the
+hidden preview text — so the date shows in the inbox list *before* you even open it.
+
+It reads the booking off the order's line-item properties written by the calendar on
+`/pages/parties` (`Party date and time`, `Party date`, `Party time` — see
+[`../SHOPIFY-MIGRATION.md`](../SHOPIFY-MIGRATION.md) §C). Non-party orders (day passes,
+memberships) skip the banner and just render as a normal order summary.
+
+If a party order ever arrives with no date attached, the banner says **"⚠️ NOT ON THIS
+ORDER — call the customer"** rather than rendering blank, so it can't fail silently.
+
+## Install (2 minutes, one time)
+1. Shopify admin → **Settings → Notifications**.
+2. Scroll to **Staff notifications** → confirm `littletownplayhousellc@gmail.com` is a
+   recipient (**Add recipient** if not — without this, nobody gets order emails at all).
+3. Open the **New order** template → **Edit code** (`</>`) → select all → delete.
+4. Paste the entire contents of `staff-order-notification.liquid`. **Save**.
+
+> **Testing gotcha:** Shopify's **Send test** button sends a *fake sample order* that has
+> no line-item properties on it — so a test email will always show the ⚠️ fallback instead
+> of a date. That is not a bug. To verify for real, place a live party booking through
+> `/pages/parties` (refund it afterwards).
+
+The "View order in admin" button links to `{{ shop.url }}/admin/orders/{{ id }}`. If that
+ever bounces, delete that one table block — nothing else depends on it.
+
+---
+
+# Customer email — Order confirmation
 
 A branded, on-brand **Order confirmation** email for Little Town Playhouse.
 It replaces Shopify's plain default and fires **automatically after every checkout** —
@@ -80,8 +123,9 @@ lower chime. Rebuild with `node scripts/build-shopify-theme.js`.
 - **Subscriptions (memberships).** The initial purchase still triggers this Order
   confirmation. Monthly/annual *renewal* receipts are sent separately by the Shopify
   Subscriptions app and are not styled by this file.
-- **Staff copy.** Per `SHOPIFY-MIGRATION.md`, add `littletownplayhousellc@gmail.com`
-  under **Staff order notifications** so the shop is alerted on every order (the party
-  date/time rides along on the order).
+- **Staff copy.** Add `littletownplayhousellc@gmail.com` under **Staff notifications** so
+  the shop is alerted on every order, and install
+  [`staff-order-notification.liquid`](staff-order-notification.liquid) on the **New order**
+  template so the party date is actually legible in that email (see above).
 - This template lives in the **admin**, not the theme — it is *not* pushed by
   `shopify theme push`. Keep this repo copy in sync if you edit it in the admin.

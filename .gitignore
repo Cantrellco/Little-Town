@@ -19,3 +19,4 @@ theme.zip
 .env
 .env.*
 !.env.shopify.example
+_drop-photos/
