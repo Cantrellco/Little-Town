@@ -1441,23 +1441,29 @@
         var cap = fig && fig.querySelector("figcaption");
         var media = lb.querySelector(".lt-lb-media");
         media.innerHTML = "";
-        /* The ring only ever needs a small, square-cropped source. Build the
-           viewer its own picture from the full width ladder so the large
-           image is sharp instead of an upscaled thumbnail. */
-        var base = slides[i].getAttribute("data-base");
-        var widths = (slides[i].getAttribute("data-widths") || "").split(",").filter(Boolean);
+        /* The ring only ever needs a small, square-cropped source. Give the
+           viewer its own picture built from the full width ladder, so opening
+           a photo shows a sharp large image rather than an upscaled thumb.
+           The srcsets are carried as data attributes rather than assembled
+           from a base path, because the Shopify build rewrites each real
+           filename to an asset_url and cannot rewrite a path we concatenate
+           at runtime. */
+        var avif = slides[i].getAttribute("data-lb-avif");
+        var webp = slides[i].getAttribute("data-lb-webp");
+        var full = slides[i].getAttribute("data-lb-src");
         var alt = (fig && fig.querySelector("img")) ? fig.querySelector("img").getAttribute("alt") : "";
-        if (base && widths.length) {
+        if (full) {
           var pic2 = document.createElement("picture");
-          ["avif", "webp"].forEach(function (type) {
+          [["image/avif", avif], ["image/webp", webp]].forEach(function (pair) {
+            if (!pair[1]) return;
             var sc = document.createElement("source");
-            sc.type = "image/" + type;
-            sc.srcset = widths.map(function (w) { return base + "-" + w + "." + type + " " + w + "w"; }).join(", ");
+            sc.type = pair[0];
+            sc.srcset = pair[1];
             sc.sizes = "100vw";
             pic2.appendChild(sc);
           });
           var im = document.createElement("img");
-          im.src = base + ".jpg";
+          im.src = full;
           im.alt = alt;
           im.decoding = "async";
           im.draggable = false;
