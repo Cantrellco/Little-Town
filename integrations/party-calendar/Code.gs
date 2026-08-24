@@ -132,7 +132,7 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  */
 var SEED_VERSION = '2026-08-17a';
 
-var VERSION = '2.6.1';
+var VERSION = '2.6.2';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -158,7 +158,13 @@ function onOpen() {
  * the automatic checks, and pulls in every booking it can already see.
  */
 function setup() {
-  var ui = SpreadsheetApp.getUi();
+  // Optional, not assumed. getUi() throws anywhere there is no menu — from the
+  // script editor's Run button, from a trigger — and having that on the first
+  // line meant setup could only ever be run one way. It also mirrors the bug
+  // that kept the scheduled sync dead: do the work first, report if you can.
+  var ui = null;
+  try { ui = SpreadsheetApp.getUi(); } catch (noUi) {}
+
   try {
     var cal = getCalendar_();
     var sharedWith = shareCalendarWith_(cal);
@@ -182,8 +188,7 @@ function setup() {
 
     var result = syncNow_();
 
-    ui.alert(
-      '✅ All set',
+    var msg =
       'Your "' + CALENDAR_NAME + '" calendar is ready, and it will check for new ' +
       'bookings by itself every ' + CHECK_EVERY_MINUTES + ' minutes.\n\n' +
       'Parties found just now: ' + (result.added + seeded) + '\n\n' +
@@ -192,11 +197,15 @@ function setup() {
           CALENDAR_NAME + '" under "Other calendars" there.\n\n'
         : '') +
       'Open Google Calendar on your phone and you\'ll see them. You can close ' +
-      'this sheet — you never need to open it again.',
-      ui.ButtonSet.OK
-    );
+      'this sheet — you never need to open it again.';
+
+    // Logged as well as shown: run from the editor there is no dialog, and the
+    // log is then the only place the result exists.
+    Logger.log('✅ Set up complete. Trigger: ' + TRIGGER_FN_ + '\n' + msg);
+    if (ui) ui.alert('✅ All set', msg, ui.ButtonSet.OK);
   } catch (err) {
-    ui.alert('Something went wrong', String((err && err.message) || err), ui.ButtonSet.OK);
+    Logger.log('❌ Setup failed: ' + String((err && err.message) || err));
+    if (ui) ui.alert('Something went wrong', String((err && err.message) || err), ui.ButtonSet.OK);
     throw err;
   }
 }
