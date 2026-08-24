@@ -132,7 +132,7 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  */
 var SEED_VERSION = '2026-08-17a';
 
-var VERSION = '2.6.0';
+var VERSION = '2.6.1';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -299,8 +299,28 @@ function diagnose() {
     lines.push('Events on it from today: ' + cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1)).length);
   }
 
-  var running = triggerRunning_();
-  lines.push('Automatic 15-minute check: ' + (running ? 'ON' : 'OFF'));
+  // Listed by handler name, not just on/off. A legacy 'syncNow' trigger fails
+  // on its first line every 15 minutes, and only the account that created it
+  // can remove it — getProjectTriggers() is scoped to the current user, so a
+  // trigger installed by another account is invisible here and uncleanable
+  // from here. Naming what's actually installed is the only way to spot that.
+  var mine = ScriptApp.getProjectTriggers();
+  var legacy = 0;
+  lines.push('Scheduled triggers owned by THIS account: ' + mine.length);
+  for (var g = 0; g < mine.length; g++) {
+    var fn = mine[g].getHandlerFunction();
+    var bad = (fn !== TRIGGER_FN_);
+    if (bad) legacy++;
+    lines.push('  ' + (bad ? '✗ ' : '✓ ') + fn + (bad ? '  ← BROKEN, re-run Set up' : ''));
+  }
+  if (!mine.length) lines.push('  none — run "Set up my party calendar"');
+  if (legacy) {
+    lines.push('  (a "syncNow" trigger throws on its first line and never syncs)');
+  }
+  lines.push('');
+  lines.push('NOTE: failures in the Executions log for an account other than this');
+  lines.push('one cannot be fixed from here. Each account that ran Set up owns its');
+  lines.push('own trigger and must run Set up again itself.');
   lines.push('');
 
   var threads = GmailApp.search(MAIL_QUERY_, 0, 200);
