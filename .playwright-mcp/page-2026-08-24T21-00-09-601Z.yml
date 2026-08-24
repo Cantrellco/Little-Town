@@ -1,0 +1,170 @@
+- generic [ref=f36e1]:
+  - iframe [ref=f36e2]:
+    
+  - generic [ref=f36e3]:
+    - banner [ref=f36e5]:
+      - generic [ref=f36e6]:
+        - link "Google Apps Script" [ref=f36e10] [cursor=pointer]:
+          - /url: /home
+          - generic [ref=f36e12]: Apps Script
+        - generic [ref=f36e13]:
+          - generic [ref=f36e16]:
+            - button "Rename" [ref=f36e18] [cursor=pointer]: Little town and Fusion Parties
+            - generic [ref=f36e22]:
+              - generic [ref=f36e23]: cloud_done
+              - text: Saved to Drive
+          - generic [ref=f36e26]:
+            - button [ref=f36e31] [cursor=pointer]:
+              - generic [ref=f36e34]:
+                - text: Deploy
+                - generic [ref=f36e35]: 
+            - button "Support" [ref=f36e37] [cursor=pointer]:
+              - generic [ref=f36e38]: help_outline
+        - generic [ref=f36e42]:
+          - button "Google apps" [ref=f36e46] [cursor=pointer]
+          - 'button "Google Account: Cody Cantrell (cantrellco.13@gmail.com)" [ref=f36e52] [cursor=pointer]'
+    - generic [ref=f36e56]:
+      - navigation "Apps Script project pages" [ref=f36e58]:
+        - link "Overview" [ref=f36e59] [cursor=pointer]:
+          - generic [ref=f36e60]: info_outline
+        - link "Editor" [ref=f36e63] [cursor=pointer]:
+          - generic [ref=f36e64]: code
+        - link "Project History" [ref=f36e67] [cursor=pointer]:
+          - generic [ref=f36e68]: history
+        - link "Triggers" [ref=f36e71] [cursor=pointer]:
+          - generic [ref=f36e72]: alarm
+        - link "Executions" [ref=f36e75] [cursor=pointer]:
+          - generic [ref=f36e76]: playlist_play
+        - link "Project Settings" [ref=f36e79] [cursor=pointer]:
+          - generic [ref=f36e80]: settings
+      - generic [ref=f36e83]:
+        - heading "Editor" [level=1] [ref=f36e84]
+        - generic [ref=f36e85]:
+          - generic [ref=f36e87]:
+            - generic [ref=f36e88]:
+              - heading "Files" [level=2] [ref=f36e89]
+              - generic [ref=f36e91]:
+                - button "Sort files alphabetically" [disabled] [ref=f36e93]:
+                  - generic [ref=f36e94]: sort_by_alpha
+                - button "Add a file" [ref=f36e98] [cursor=pointer]:
+                  - generic [ref=f36e99]: add
+            - listbox "Project files" [ref=f36e103]:
+              - option "Code.gs" [ref=f36e104] [cursor=pointer]:
+                - button [ref=f36e106]:
+                  - button "File operations menu for Code.gs." [ref=f36e107]:
+                    - generic [ref=f36e108]: 
+            - generic [ref=f36e111]:
+              - heading "Libraries" [level=2] [ref=f36e112]
+              - button "Add a library" [ref=f36e115] [cursor=pointer]:
+                - generic [ref=f36e116]: add
+            - generic [ref=f36e119]:
+              - heading "Services" [level=2] [ref=f36e120]
+              - button "Add a service" [ref=f36e123] [cursor=pointer]:
+                - generic [ref=f36e124]: add
+          - separator "Resize panes" [ref=f36e127]
+          - generic [ref=f36e133]:
+            - region [ref=f36e134]:
+              - generic [ref=f36e135]:
+                - generic [ref=f36e136]:
+                  - generic [ref=f36e139]:
+                    - button "Undo code edit" [disabled]:
+                      - generic: undo
+                  - generic [ref=f36e142]:
+                    - button "Redo code edit" [disabled]:
+                      - generic: redo
+                - generic [ref=f36e146]:
+                  - button "Save project to Drive" [disabled]
+                - generic [ref=f36e147]:
+                  - button "Run the selected function" [ref=f36e151]:
+                    - generic [ref=f36e154]: play_arrow
+                    - generic [ref=f36e155]: Run
+                  - button "Debug the selected function" [ref=f36e159]:
+                    - generic [ref=f36e165]: Debug
+                  - listbox "Select function to run" [ref=f36e168] [cursor=pointer]:
+                    - option "onOpen" [selected] [ref=f36e169]
+                - button "Open the execution log panel" [ref=f36e174]:
+                  - generic [ref=f36e177]: Execution log
+            - generic [ref=f36e179]:
+              - main [ref=f36e183]:
+                - generic [ref=f36e184]: .
+                - generic [ref=f36e186]:
+                  - iframe [ref=f36e187]:
+                    
+                  - code [ref=f36e189]:
+                    - generic [ref=f36e190]:
+                      - generic [ref=f36e193]:
+                        - generic [ref=f36e194]: "1"
+                        - generic [ref=f36e197]: "2"
+                        - generic [ref=f36e199]: "3"
+                        - generic [ref=f36e203]: "4"
+                        - generic [ref=f36e206]: "5"
+                        - generic [ref=f36e209]: "6"
+                        - generic [ref=f36e211]: "7"
+                        - generic [ref=f36e213]: "8"
+                        - generic [ref=f36e215]: "9"
+                        - generic [ref=f36e218]: "10"
+                        - generic [ref=f36e221]: "11"
+                        - generic [ref=f36e224]: "12"
+                        - generic [ref=f36e227]: "13"
+                        - generic [ref=f36e229]: "14"
+                        - generic [ref=f36e231]: "15"
+                        - generic [ref=f36e234]: "16"
+                        - generic [ref=f36e237]: "17"
+                        - generic [ref=f36e240]: "18"
+                        - generic [ref=f36e242]: "19"
+                        - generic [ref=f36e245]: "20"
+                        - generic [ref=f36e248]: "21"
+                        - generic [ref=f36e251]: "22"
+                        - generic [ref=f36e253]: "23"
+                        - generic [ref=f36e255]: "24"
+                        - generic [ref=f36e258]: "25"
+                        - generic [ref=f36e260]: "26"
+                      - generic [ref=f36e346]:
+                        - generic [ref=f36e347]: /**
+                        - generic [ref=f36e349]: "* Little Town Playhouse — party bookings → Google Calendar"
+                        - generic [ref=f36e351]: "*"
+                        - generic [ref=f36e353]: "---------------------------------------------------------------------"
+                        - generic [ref=f36e355]: "------"
+                        - generic [ref=f36e357]: "* Lives inside a Google Sheet in the littletown account. One menu"
+                        - generic [ref=f36e359]: click runs
+                        - generic [ref=f36e361]: "* setup(), which is also the moment Google asks to Allow — so"
+                        - generic [ref=f36e363]: installing and
+                        - generic [ref=f36e365]: "* authorising are a single action. No code editor, nothing to deploy."
+                        - generic [ref=f36e367]: "*"
+                        - generic [ref=f36e369]: "* How a booking gets here:"
+                        - generic [ref=f36e371]: "* Shopify emails the staff \"new order\" notification on every sale."
+                        - generic [ref=f36e373]: That
+                        - generic [ref=f36e375]: "* template carries one machine-readable line starting \"LTPCAL1|\"."
+                        - generic [ref=f36e377]: This script
+                        - generic [ref=f36e379]: "* wakes up every 15 minutes, finds those lines in Gmail, and makes"
+                        - generic [ref=f36e381]: a calendar
+                        - generic [ref=f36e383]: "* event from each. It can only read the mailbox of the account it"
+                        - generic [ref=f36e385]: runs in,
+                        - generic [ref=f36e387]: "* which is why it must live where the order emails land."
+                        - generic [ref=f36e389]: "*"
+                        - generic [ref=f36e391]: "* Fusion's own bookings never touch Shopify, so they can't arrive"
+                        - generic [ref=f36e393]: that way.
+                        - generic [ref=f36e395]: "* They are pulled from fusioncoffeeshop.com in the same 15-minute"
+                        - generic [ref=f36e397]: run and
+                        - generic [ref=f36e399]: "* land on this same calendar in a third colour. See"
+                        - generic [ref=f36e401]: syncFusionBookings_().
+                        - generic [ref=f36e403]: "*"
+                        - generic [ref=f36e405]: "* Why polling and not a webhook: receiving a webhook needs a"
+                        - generic [ref=f36e407]: deployed web app,
+                        - generic [ref=f36e409]: "* and deploying is the step that forces someone into the script"
+                        - generic [ref=f36e411]: editor. Polling
+                        - generic [ref=f36e413]: "* is also self-healing — a failed run gets retried 15 minutes later,"
+                        - generic [ref=f36e415]: whereas a
+                        - generic [ref=f36e417]: "* missed webhook is gone for good."
+                        - generic [ref=f36e419]: "*"
+                        - generic [ref=f36e421]: "* Cancellations are handled off the storefront's own availability"
+                        - generic [ref=f36e423]: list, which
+                        - generic [ref=f36e425]: "* Shopify Flow maintains. See pruneCancelled_()."
+                        - generic [ref=f36e427]: "*/"
+                      - textbox "Editor content;Press Alt+F1 for Accessibility Options." [active] [ref=f36e433]: /** * Little Town Playhouse — party bookings → Google Calendar * --------------------------------------------------------------------------- * Lives inside a Google Sheet in the littletown account. One menu click runs * setup(), which is also the moment Google asks to Allow — so installing and * authorising are a single action. No code editor, nothing to deploy.
+              - tooltip [ref=f36e434]: Close execution log
+  - generic [ref=f36e435]:
+    - alert
+    - alert
+    - complementary
+    - complementary

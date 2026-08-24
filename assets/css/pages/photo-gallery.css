@@ -445,3 +445,188 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ============================================================
+   3D mode — the track becomes a rotating cylinder.
+   Only applied once JS confirms preserve-3d support and that the
+   visitor has not asked for reduced motion; otherwise the flat
+   scroll-snap rules above stay in charge.
+   ============================================================ */
+.lt-car--3d .lt-car-stage {
+  position: relative;
+  height: var(--lt-stage, 470px);
+  perspective: var(--lt-persp, 1000px);
+  transform-style: preserve-3d;
+  cursor: grab;
+  /* Let vertical page scrolling through; we only claim horizontal drags. */
+  touch-action: pan-y;
+  overflow: hidden;
+}
+.lt-car--3d .lt-car-stage.is-dragging { cursor: grabbing; }
+.lt-car--3d .lt-car-stage:focus-visible {
+  outline: 3px solid var(--accent, #d9774e);
+  outline-offset: 4px;
+  border-radius: 20px;
+}
+.lt-car--3d .lt-car-track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.lt-car--3d .lt-car-track::before,
+.lt-car--3d .lt-car-track::after { content: none; }
+
+.lt-car--3d .lt-car-slide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--lt-face, 290px);
+  height: var(--lt-face, 290px);
+  margin-left: calc(var(--lt-face, 290px) / -2);
+  margin-top: calc(var(--lt-face, 290px) / -2);
+  flex: none;
+  scroll-snap-align: none;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+.lt-car--3d .lt-car-fig {
+  height: 100%;
+  transform: none;
+  opacity: 1;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(58, 49, 40, 0.28);
+  transition: box-shadow 0.3s ease;
+}
+.lt-car--3d .lt-car-fig img {
+  aspect-ratio: 1 / 1;
+  height: 100%;
+}
+.lt-car--3d .lt-car-slide.is-active .lt-car-fig {
+  box-shadow: 0 22px 46px rgba(58, 49, 40, 0.38);
+}
+/* On a ring the faces are too small for their own captions; the front photo
+   is named once under the stage instead. */
+.lt-car--3d .lt-car-fig figcaption { display: none; }
+.lt-car-cap {
+  margin: 0.7rem 0 0;
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--ink, #3a3128);
+  min-height: 1.6em;
+}
+
+/* The click target that opens a face full size. */
+.lt-car-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: zoom-in;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.lt-car-open:focus-visible {
+  outline: 3px solid var(--accent, #d9774e);
+  outline-offset: 2px;
+}
+.lt-car--3d .lt-car-slide.is-back .lt-car-open { cursor: default; }
+
+/* Arrows sit clear of the ring in 3D mode. */
+.lt-car--3d .lt-car-arrow { top: calc(var(--lt-stage, 470px) / 2); }
+.lt-car--3d .lt-car-arrow[disabled] { opacity: 1; pointer-events: auto; cursor: pointer; }
+
+@media (max-width: 899px) {
+  .lt-car--3d .lt-car-arrow { display: grid; }
+}
+
+/* ---- lightbox ---- */
+html.lt-lb-open { overflow: hidden; }
+.lt-lb {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.9rem, 4vw, 3rem);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.lt-lb.is-open { opacity: 1; }
+.lt-lb[hidden] { display: none; }
+.lt-lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 22, 16, 0.72);
+  backdrop-filter: blur(3px);
+}
+.lt-lb-inner {
+  position: relative;
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  transform: scale(0.94);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lt-lb.is-open .lt-lb-inner { transform: scale(1); }
+.lt-lb-media {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.45);
+  background: #efe7db;
+  max-height: calc(100vh - 8rem);
+}
+.lt-lb-media img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 8rem);
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+.lt-lb-cap {
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+.lt-lb-close {
+  position: absolute;
+  top: -0.6rem;
+  right: -0.6rem;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #e6dfd1;
+  border-radius: 50%;
+  background: #fffdf9;
+  color: var(--ink, #3a3128);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.lt-lb-close svg { width: 22px; height: 22px; }
+.lt-lb-close:hover { background: var(--accent, #d9774e); color: #fff; }
+.lt-lb-close:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-lb, .lt-lb-inner { transition: none; }
+}

@@ -1113,145 +1113,398 @@
 
 /* ============================================================
    Photo carousel — own IIFE so it runs on every page that has one.
+
+   Two modes over the SAME markup:
+     flat  — native CSS scroll-snap. This is what the HTML is authored
+             as, so with JS off (or reduced motion, or no 3D support)
+             the gallery is still a swipeable, keyboard-reachable list.
+     3d    — a rotating cylinder: every slide becomes a face on a ring
+             you spin by dragging, and clicking the front face opens it
+             large. Ported from a React/framer-motion component; the
+             maths is the same (faceWidth = W / n, radius = W / 2pi,
+             face i at rotateY(i*step) translateZ(radius)), but driven
+             by rAF + Pointer Events so it needs no library.
    ============================================================ */
 (function () {
   "use strict";
-  /* ---- Photo carousel (photo gallery) ----
-     The scrolling itself is native CSS scroll-snap, so with JS disabled the
-     track is still swipeable and every photo is reachable. This module only
-     adds the niceties: active-slide styling, arrows, dots, keyboard and
-     mouse-drag. Active slide is derived from scroll position rather than an
-     index we mutate, so native swipes and JS jumps can never disagree. */
-  var carousels = document.querySelectorAll("[data-lt-carousel]");
-  Array.prototype.forEach.call(carousels, function (root) {
+
+  var roots = document.querySelectorAll("[data-lt-carousel]");
+  Array.prototype.forEach.call(roots, function (root) {
     var track = root.querySelector(".lt-car-track");
     if (!track) return;
     var slides = Array.prototype.slice.call(root.querySelectorAll(".lt-car-slide"));
     if (!slides.length) return;
+
     var dots = Array.prototype.slice.call(root.querySelectorAll(".lt-car-dot"));
     var arrows = Array.prototype.slice.call(root.querySelectorAll(".lt-car-arrow"));
     var nowEl = root.querySelector("[data-lt-now]");
     var liveEl = root.querySelector(".lt-car-live");
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var can3d = !!(window.CSS && CSS.supports && CSS.supports("transform-style", "preserve-3d")) &&
+                typeof window.requestAnimationFrame === "function";
+
+    /* Shared: keep dots, counter and the live region in step with whichever
+       mode is running. */
     var current = -1;
-
-    function centreOf(el) { return el.offsetLeft + el.offsetWidth / 2; }
-
-    /* Nearest slide to the track's viewport centre. */
-    /* Nearest slide to an arbitrary scroll position (used for drag throw). */
-    function nearestAt(scrollLeft) {
-      var mid = scrollLeft + track.clientWidth / 2;
-      var best = 0, bestD = Infinity;
-      for (var i = 0; i < slides.length; i++) {
-        var d = Math.abs(centreOf(slides[i]) - mid);
-        if (d < bestD) { bestD = d; best = i; }
-      }
-      return best;
-    }
-
-    function nearest() {
-      var mid = track.scrollLeft + track.clientWidth / 2;
-      var best = 0, bestD = Infinity;
-      for (var i = 0; i < slides.length; i++) {
-        var d = Math.abs(centreOf(slides[i]) - mid);
-        if (d < bestD) { bestD = d; best = i; }
-      }
-      return best;
-    }
-
-    function paint() {
-      var i = nearest();
+    function announce(i, total) {
       if (i === current) return;
       current = i;
-      for (var n = 0; n < slides.length; n++) slides[n].classList.toggle("is-active", n === i);
       for (var d = 0; d < dots.length; d++) {
         if (d === i) dots[d].setAttribute("aria-current", "true");
         else dots[d].removeAttribute("aria-current");
       }
       if (nowEl) nowEl.textContent = String(i + 1);
-      arrows.forEach(function (b) {
-        var dir = Number(b.getAttribute("data-dir"));
-        b.disabled = (dir < 0 && i === 0) || (dir > 0 && i === slides.length - 1);
-      });
       if (liveEl) {
-        var cap = slides[i].querySelector("figcaption");
-        liveEl.textContent = "Photo " + (i + 1) + " of " + slides.length + (cap ? ": " + cap.textContent.trim() : "");
+        var cap = slides[i] && slides[i].querySelector("figcaption");
+        liveEl.textContent = "Photo " + (i + 1) + " of " + total +
+          (cap ? ": " + cap.textContent.trim() : "");
       }
     }
 
-    function goTo(i) {
-      i = Math.max(0, Math.min(slides.length - 1, i));
-      var left = centreOf(slides[i]) - track.clientWidth / 2;
-      try { track.scrollTo({ left: left, behavior: reduce ? "auto" : "smooth" }); }
-      catch (e) { track.scrollLeft = left; }
+    if (reduce || !can3d || slides.length < 3) initFlat();
+    else init3d();
+
+    /* ==========================================================
+       FLAT — scroll-snap peek carousel
+       ========================================================== */
+    function initFlat() {
+      root.classList.add("lt-car--flat");
+
+      function centreOf(el) { return el.offsetLeft + el.offsetWidth / 2; }
+      function nearestAt(sl) {
+        var mid = sl + track.clientWidth / 2, best = 0, bestD = Infinity;
+        for (var i = 0; i < slides.length; i++) {
+          var d = Math.abs(centreOf(slides[i]) - mid);
+          if (d < bestD) { bestD = d; best = i; }
+        }
+        return best;
+      }
+      function nearest() { return nearestAt(track.scrollLeft); }
+
+      function paint() {
+        var i = nearest();
+        if (i === current) return;
+        for (var n = 0; n < slides.length; n++) slides[n].classList.toggle("is-active", n === i);
+        arrows.forEach(function (b) {
+          var dir = Number(b.getAttribute("data-dir"));
+          b.disabled = (dir < 0 && i === 0) || (dir > 0 && i === slides.length - 1);
+        });
+        announce(i, slides.length);
+      }
+      function goTo(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        var left = centreOf(slides[i]) - track.clientWidth / 2;
+        try { track.scrollTo({ left: left, behavior: reduce ? "auto" : "smooth" }); }
+        catch (e) { track.scrollLeft = left; }
+      }
+
+      var ticking = false;
+      track.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () { ticking = false; paint(); });
+      }, { passive: true });
+
+      arrows.forEach(function (b) {
+        b.addEventListener("click", function () { goTo(nearest() + Number(b.getAttribute("data-dir"))); });
+      });
+      dots.forEach(function (b) {
+        b.addEventListener("click", function () { goTo(Number(b.getAttribute("data-go"))); });
+      });
+      track.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight") { e.preventDefault(); goTo(nearest() + 1); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(nearest() - 1); }
+        else if (e.key === "Home") { e.preventDefault(); goTo(0); }
+        else if (e.key === "End") { e.preventDefault(); goTo(slides.length - 1); }
+      });
+
+      if (window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        var dragging = false, startX = 0, startLeft = 0, moved = 0, lastX = 0, lastT = 0, vel = 0;
+        track.addEventListener("pointerdown", function (e) {
+          if (e.pointerType !== "mouse" || e.button !== 0) return;
+          dragging = true; moved = 0;
+          startX = lastX = e.clientX; startLeft = track.scrollLeft;
+          lastT = e.timeStamp || Date.now(); vel = 0;
+          track.classList.add("is-dragging");
+        });
+        track.addEventListener("pointermove", function (e) {
+          if (!dragging) return;
+          var dx = e.clientX - startX;
+          moved = Math.max(moved, Math.abs(dx));
+          var t = e.timeStamp || Date.now(), dt = Math.max(t - lastT, 1);
+          vel = 0.7 * ((e.clientX - lastX) / dt) + 0.3 * vel;
+          lastX = e.clientX; lastT = t;
+          track.scrollLeft = startLeft - dx;
+        });
+        var endFlatDrag = function () {
+          if (!dragging) return;
+          dragging = false;
+          track.classList.remove("is-dragging");
+          var step = slides.length > 1 ? (centreOf(slides[1]) - centreOf(slides[0])) : track.clientWidth;
+          var coast = Math.max(-2 * step, Math.min(2 * step, -vel * 160));
+          goTo(nearestAt(track.scrollLeft + coast));
+          vel = 0;
+        };
+        track.addEventListener("pointerup", endFlatDrag);
+        track.addEventListener("pointercancel", endFlatDrag);
+        track.addEventListener("pointerleave", endFlatDrag);
+        track.addEventListener("click", function (e) {
+          if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
+        }, true);
+      }
+
+      window.addEventListener("resize", function () { current = -1; paint(); }, { passive: true });
+      paint();
     }
 
-    /* scroll -> repaint, rAF-throttled */
-    var ticking = false;
-    track.addEventListener("scroll", function () {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(function () { ticking = false; paint(); });
-    }, { passive: true });
+    /* ==========================================================
+       3D — rotating cylinder
+       ========================================================== */
+    function init3d() {
+      var N = slides.length;
+      var STEP = 360 / N;
 
-    arrows.forEach(function (b) {
-      b.addEventListener("click", function () { goTo(nearest() + Number(b.getAttribute("data-dir"))); });
-    });
-    dots.forEach(function (b) {
-      b.addEventListener("click", function () { goTo(Number(b.getAttribute("data-go"))); });
-    });
+      /* Wrap the list in a stage that owns the perspective, so the arrows,
+         dots and caption stay outside the 3D space. */
+      var stage = document.createElement("div");
+      stage.className = "lt-car-stage";
+      track.parentNode.insertBefore(stage, track);
+      stage.appendChild(track);
+      root.classList.add("lt-car--3d");
 
-    track.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowRight") { e.preventDefault(); goTo(nearest() + 1); }
-      else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(nearest() - 1); }
-      else if (e.key === "Home") { e.preventDefault(); goTo(0); }
-      else if (e.key === "End") { e.preventDefault(); goTo(slides.length - 1); }
-    });
+      /* The list stops being a scroll container, so its keyboard contract
+         moves to the stage. */
+      track.removeAttribute("tabindex");
+      stage.setAttribute("tabindex", "0");
 
-    /* Mouse drag-to-scroll. Touch is left to native scrolling. */
-    var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (fine) {
-      var dragging = false, startX = 0, startLeft = 0, moved = 0, lastX = 0, lastT = 0, vel = 0;
-      track.addEventListener("pointerdown", function (e) {
-        if (e.pointerType !== "mouse" || e.button !== 0) return;
-        dragging = true; moved = 0;
-        startX = lastX = e.clientX; startLeft = track.scrollLeft;
-        lastT = e.timeStamp || Date.now(); vel = 0;
-        track.classList.add("is-dragging");
+      /* On a ring the faces are too small to carry their own captions, so the
+         front photo names itself once, under the stage. */
+      var capEl = document.createElement("p");
+      capEl.className = "lt-car-cap";
+      capEl.setAttribute("aria-hidden", "true");
+      stage.parentNode.insertBefore(capEl, stage.nextSibling);
+      var capShown = -1;
+
+      var radius = 0;
+      function layout() {
+        var vw = root.clientWidth || window.innerWidth;
+        var face = vw < 560 ? 158 : vw < 900 ? 210 : 290;
+        var W = face * N;
+        radius = W / (2 * Math.PI);
+        root.style.setProperty("--lt-face", face + "px");
+        /* Perspective tracks the radius so the front face is magnified by
+           the same amount at every breakpoint. */
+        root.style.setProperty("--lt-persp", Math.round(radius * 3.5) + "px");
+        root.style.setProperty("--lt-stage", Math.round(face * 1.62) + "px");
+        for (var i = 0; i < N; i++) {
+          slides[i].style.transform =
+            "rotateY(" + (i * STEP) + "deg) translateZ(" + radius + "px)";
+        }
+        render();
+      }
+
+      var rot = 0, raf = 0;
+      function frontIndex() { return ((Math.round(-rot / STEP) % N) + N) % N; }
+
+      function render() {
+        track.style.transform = "rotateY(" + rot + "deg)";
+        var front = frontIndex();
+        for (var i = 0; i < N; i++) {
+          var c = Math.cos((rot + i * STEP) * Math.PI / 180);
+          var t = (c + 1) / 2;
+          var s = slides[i];
+          s.style.opacity = (0.22 + 0.78 * t * t).toFixed(3);
+          s.style.zIndex = String(Math.round(100 + c * 100));
+          /* Faces turned away must not swallow clicks or take tab stops. */
+          var back = c < 0.25;
+          s.style.pointerEvents = back ? "none" : "auto";
+          s.classList.toggle("is-back", back);
+          s.classList.toggle("is-active", i === front);
+          var btn = s.querySelector(".lt-car-open");
+          if (btn) btn.tabIndex = back ? -1 : 0;
+        }
+        if (front !== capShown) {
+          capShown = front;
+          var fc = slides[front].querySelector("figcaption");
+          capEl.textContent = fc ? fc.textContent.trim() : "";
+        }
+        announce(front, N);
+      }
+
+      function animateTo(target) {
+        if (raf) window.cancelAnimationFrame(raf);
+        (function step() {
+          var delta = target - rot;
+          if (Math.abs(delta) < 0.02) { rot = target; render(); raf = 0; return; }
+          rot += delta * 0.16;
+          render();
+          raf = window.requestAnimationFrame(step);
+        })();
+      }
+      function snap(r) { return Math.round(r / STEP) * STEP; }
+      function goTo(i) {
+        /* Take the short way round rather than unwinding the whole ring. */
+        var target = -i * STEP;
+        while (target - rot > 180) target -= 360;
+        while (target - rot < -180) target += 360;
+        animateTo(target);
+      }
+      function nudge(dir) { animateTo(snap(rot) - dir * STEP); }
+
+      arrows.forEach(function (b) {
+        b.disabled = false;
+        b.addEventListener("click", function () { nudge(Number(b.getAttribute("data-dir"))); });
       });
-      track.addEventListener("pointermove", function (e) {
-        if (!dragging) return;
-        var dx = e.clientX - startX;
-        moved = Math.max(moved, Math.abs(dx));
-        var t = e.timeStamp || Date.now();
-        var dt = Math.max(t - lastT, 1);
-        /* px/ms the pointer is travelling; sign follows the pointer, so a
-           leftward flick (negative) means "go forward". Smoothed so one
-           jittery frame cannot dominate the throw. */
-        vel = 0.7 * ((e.clientX - lastX) / dt) + 0.3 * vel;
-        lastX = e.clientX; lastT = t;
-        track.scrollLeft = startLeft - dx;
+      dots.forEach(function (b) {
+        b.addEventListener("click", function () { goTo(Number(b.getAttribute("data-go"))); });
       });
-      var endDrag = function () {
-        if (!dragging) return;
-        dragging = false;
-        track.classList.remove("is-dragging");
-        /* Project where a short coast would land, so a quick flick advances
-           instead of snapping back. Capped at two slides per throw. */
-        var step = slides.length > 1 ? (centreOf(slides[1]) - centreOf(slides[0])) : track.clientWidth;
-        var coast = Math.max(-2 * step, Math.min(2 * step, -vel * 160));
-        goTo(nearestAt(track.scrollLeft + coast));
-        vel = 0;
-      };
-      track.addEventListener("pointerup", endDrag);
-      track.addEventListener("pointercancel", endDrag);
-      track.addEventListener("pointerleave", endDrag);
-      /* Swallow the click that ends a real drag so it can't act as a tap. */
-      track.addEventListener("click", function (e) { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+      stage.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight") { e.preventDefault(); nudge(1); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); nudge(-1); }
+        else if (e.key === "Home") { e.preventDefault(); goTo(0); }
+        else if (e.key === "End") { e.preventDefault(); goTo(N - 1); }
+      });
+
+      /* ---- drag to spin (one Pointer Events path for mouse, touch, pen) ---- */
+      var drag = null, dragEndedAt = 0;
+      stage.addEventListener("pointerdown", function (e) {
+        if (e.button && e.button !== 0) return;
+        if (raf) { window.cancelAnimationFrame(raf); raf = 0; }
+        dragEndedAt = 0;
+        drag = { id: e.pointerId, x: e.clientX, rot: rot, v: 0, t: e.timeStamp || Date.now(), moved: 0, cap: false };
+      });
+      stage.addEventListener("pointermove", function (e) {
+        if (!drag || drag.id !== e.pointerId) return;
+        var dx = e.clientX - drag.x;
+        drag.moved = Math.max(drag.moved, Math.abs(dx));
+        if (!drag.cap && drag.moved > 4) {
+          drag.cap = true;
+          stage.classList.add("is-dragging");
+          try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+        }
+        if (!drag.cap) return;
+        var prev = rot;
+        /* One pixel of drag turns one pixel of the cylinder's surface. */
+        rot = drag.rot + dx / radius * (180 / Math.PI);
+        var t = e.timeStamp || Date.now(), dt = Math.max(t - drag.t, 1);
+        drag.v = 0.8 * ((rot - prev) / dt) + 0.2 * drag.v;
+        drag.t = t;
+        render();
+      });
+      function endDrag(e) {
+        if (!drag || (e && e.pointerId != null && drag.id !== e.pointerId)) return;
+        var v = drag.v, wasDrag = drag.cap;
+        /* Timestamp the end of a real spin so only the click it directly
+           produces is swallowed — a later, unrelated click must still work. */
+        dragEndedAt = drag.moved > 6 ? Date.now() : 0;
+        if (wasDrag) { try { stage.releasePointerCapture(drag.id); } catch (err) {} }
+        drag = null;
+        stage.classList.remove("is-dragging");
+        if (!wasDrag) return;
+        /* Throw, then settle on a face. Capped so a flick cannot spin forever. */
+        var coast = Math.max(-2.5 * STEP, Math.min(2.5 * STEP, v * 170));
+        animateTo(snap(rot + coast));
+      }
+      stage.addEventListener("pointerup", endDrag);
+      stage.addEventListener("pointercancel", endDrag);
+
+      /* ---- click a face to open it large ---- */
+      var lb = null, lastFocus = null, hideTimer = 0;
+      function buildLightbox() {
+        lb = document.createElement("div");
+        lb.className = "lt-lb";
+        lb.setAttribute("role", "dialog");
+        lb.setAttribute("aria-modal", "true");
+        lb.setAttribute("aria-label", "Photo viewer");
+        lb.hidden = true;
+        lb.innerHTML =
+          '<div class="lt-lb-backdrop" data-lb-close></div>' +
+          '<div class="lt-lb-inner">' +
+            '<div class="lt-lb-media"></div>' +
+            '<p class="lt-lb-cap"></p>' +
+            '<button type="button" class="lt-lb-close" data-lb-close aria-label="Close photo">' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+              '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>';
+        document.body.appendChild(lb);
+        lb.addEventListener("click", function (e) {
+          if (e.target.closest("[data-lb-close]")) closeLb();
+        });
+      }
+      function openLb(i) {
+        if (!lb) buildLightbox();
+        window.clearTimeout(hideTimer);
+        var fig = slides[i].querySelector("figure");
+        var pic = fig && fig.querySelector("picture");
+        var cap = fig && fig.querySelector("figcaption");
+        var media = lb.querySelector(".lt-lb-media");
+        media.innerHTML = "";
+        if (pic) {
+          var clone = pic.cloneNode(true);
+          var img = clone.querySelector("img");
+          if (img) {
+            img.removeAttribute("loading");
+            img.removeAttribute("style");
+            img.removeAttribute("sizes");
+            img.draggable = false;
+          }
+          Array.prototype.forEach.call(clone.querySelectorAll("source"), function (sc) {
+            sc.removeAttribute("sizes");
+          });
+          media.appendChild(clone);
+        }
+        lb.querySelector(".lt-lb-cap").textContent = cap ? cap.textContent.trim() : "";
+        lastFocus = document.activeElement;
+        lb.hidden = false;
+        document.documentElement.classList.add("lt-lb-open");
+        window.requestAnimationFrame(function () { lb.classList.add("is-open"); });
+        lb.querySelector(".lt-lb-close").focus();
+      }
+      function closeLb() {
+        if (!lb || lb.hidden) return;
+        lb.classList.remove("is-open");
+        document.documentElement.classList.remove("lt-lb-open");
+        hideTimer = window.setTimeout(function () { lb.hidden = true; }, 240);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      document.addEventListener("keydown", function (e) {
+        if (!lb || lb.hidden) return;
+        if (e.key === "Escape") { e.preventDefault(); closeLb(); }
+        else if (e.key === "Tab") {
+          /* Only one control lives inside, so keep focus parked on it. */
+          e.preventDefault();
+          lb.querySelector(".lt-lb-close").focus();
+        }
+      });
+
+      /* Every face gets a real button, so a face is clickable AND tabbable. */
+      slides.forEach(function (s, i) {
+        var fig = s.querySelector("figure");
+        if (!fig) return;
+        var cap = fig.querySelector("figcaption");
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "lt-car-open";
+        btn.setAttribute("aria-label",
+          "Open photo " + (i + 1) + (cap ? ": " + cap.textContent.trim() : "") + " larger");
+        fig.appendChild(btn);
+        btn.addEventListener("click", function (e) {
+          /* Swallow only the click that ends a spin. */
+          if (dragEndedAt && Date.now() - dragEndedAt < 350) { dragEndedAt = 0; e.preventDefault(); return; }
+          if (i !== frontIndex()) { goTo(i); return; }
+          openLb(i);
+        });
+      });
+
+      var rt;
+      window.addEventListener("resize", function () {
+        window.clearTimeout(rt);
+        rt = window.setTimeout(layout, 120);
+      }, { passive: true });
+
+      layout();
     }
-
-    window.addEventListener("resize", function () { current = -1; paint(); }, { passive: true });
-    paint();
   });
-
 })();

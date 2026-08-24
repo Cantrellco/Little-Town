@@ -1,0 +1,7 @@
+[     601ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[    2051ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://docs.google.com/drivesharing/clientmodel?id=1qO8l4mUtycuaaC5j3UJKic7Zl26u6qwyABF7H5o8c3o&foreignService=ritz&authuser=0&origin=https%3A%2F%2Fdocs.google.com:0
+[    2318ms] [WARNING] The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127 @ :0
+[    2917ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[    2961ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[    2966ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[    2969ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
