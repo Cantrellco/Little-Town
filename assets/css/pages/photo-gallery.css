@@ -329,228 +329,128 @@
 }
 
 /* ============================================================
-   Photo carousel — center-focused peek slider.
-   CSS scroll-snap does the moving; JS only syncs dots/arrows,
-   so with JS off it is still a fully usable swipe gallery.
+   Photo strip — one continuous line of photos, always moving.
+
+   No arrows, dots or paging: the row simply flows. JS clones the list
+   once and the track slides exactly one copy's width, so the seam
+   never shows. With JS off the same markup is a normal horizontally
+   scrollable row, which is also what reduced-motion visitors get.
+
+   Every photo keeps its own aspect ratio at a fixed row height —
+   nothing is cropped to a square and then magnified, which is what
+   made them look mangled before.
    ============================================================ */
-.lt-car { position: relative; --peek: 62vw; }
-.lt-car-track {
-  display: flex;
-  gap: clamp(0.7rem, 1.6vw, 1.15rem);
-  margin: 0;
-  padding: 0.4rem 0 1rem;
-  list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 50%;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+.container-wide {
+  width: 100%;
+  margin-inline: auto;
 }
-.lt-car-track::-webkit-scrollbar { display: none; }
-.lt-car-track:focus-visible { outline: 3px solid var(--accent, #d9774e); outline-offset: 4px; border-radius: 20px; }
-/* Half-slide spacers centre the first and last photos in the viewport. */
-.lt-car-track::before,
-.lt-car-track::after { content: ""; flex: 0 0 calc((100% - var(--peek)) / 2); }
-.lt-car-slide { flex: 0 0 var(--peek); scroll-snap-align: center; scroll-snap-stop: always; }
-.lt-car-fig {
+
+.lt-flow {
+  position: relative;
+  /* Until JS starts the flow this wrapper is the scroller, so the row is
+     usable with no JS and under reduced motion. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding-block: 0.5rem 1.4rem;
+  /* Fade the photos out at both edges so the strip reads as endless
+     rather than as a row that stops just off-screen. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.lt-flow::-webkit-scrollbar { display: none; }
+.lt-flow.is-live { overflow: hidden; }
+
+.lt-flow-track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.7rem, 1.4vw, 1.15rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: max-content;
+}
+
+.lt-flow-item { flex: none; }
+
+.lt-flow-fig {
   position: relative;
   margin: 0;
-  border-radius: 18px;
+  height: var(--lt-row, 380px);
+  border-radius: 16px;
   overflow: hidden;
   background: #efe7db;
-  box-shadow: 0 14px 32px rgba(58, 49, 40, 0.16);
-  transform: scale(0.9);
-  opacity: 0.55;
-  transition: transform 0.45s ease, opacity 0.45s ease, box-shadow 0.45s ease;
+  box-shadow: 0 14px 30px rgba(58, 49, 40, 0.18);
 }
-.lt-car-slide.is-active .lt-car-fig { transform: scale(1); opacity: 1; box-shadow: 0 22px 48px rgba(58, 49, 40, 0.26); }
-.lt-car-fig img {
-  display: block; width: 100%; height: 100%;
-  aspect-ratio: 3 / 2; object-fit: cover; user-select: none;
+.lt-flow-fig img {
+  display: block;
+  height: 100%;
+  /* width comes from the intrinsic ratio in the width/height attributes, so
+     the row measures correctly before a lazy image has loaded. */
+  width: auto;
+  max-width: none;
+  object-fit: cover;
+  user-select: none;
 }
-.lt-car-fig figcaption {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  padding: 2.6rem 1rem 0.85rem;
+.lt-flow-fig figcaption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 2.2rem 0.9rem 0.7rem;
   color: #fff;
   font-family: var(--font-head);
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-  background: linear-gradient(to top, rgba(38, 30, 22, 0.72), rgba(38, 30, 22, 0));
-  opacity: 0; transform: translateY(6px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.lt-car-slide.is-active .lt-car-fig figcaption { opacity: 1; transform: none; }
-
-/* ---- arrows ---- */
-.lt-car-arrow {
-  position: absolute; top: calc(50% - 1.1rem); transform: translateY(-50%); z-index: 3;
-  width: 46px; height: 46px; display: grid; place-items: center;
-  border: 2px solid #e6dfd1; border-radius: 50%;
-  background: #fffdf9; color: var(--ink, #3a3128); cursor: pointer;
-  box-shadow: 0 8px 20px rgba(58, 49, 40, 0.2);
-  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
-}
-.lt-car-arrow svg { width: 22px; height: 22px; }
-.lt-car-arrow--prev { left: clamp(0.15rem, 2vw, 1.1rem); }
-.lt-car-arrow--next { right: clamp(0.15rem, 2vw, 1.1rem); }
-.lt-car-arrow:hover { background: var(--accent, #d9774e); color: #fff; transform: translateY(-50%) scale(1.07); }
-.lt-car-arrow:focus-visible { outline: 3px solid var(--accent, #d9774e); outline-offset: 3px; }
-.lt-car-arrow[disabled] { opacity: 0.32; cursor: default; pointer-events: none; }
-
-/* ---- dots + counter ---- */
-.lt-car-foot {
-  display: flex; align-items: center; justify-content: center;
-  gap: clamp(0.6rem, 2vw, 1.1rem); flex-wrap: wrap; margin-top: 0.3rem;
-}
-.lt-car-dots { display: flex; align-items: center; gap: 0.42rem; }
-.lt-car-dot {
-  width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%;
-  background: #cdbfa9; cursor: pointer;
-  transition: background 0.25s ease, width 0.25s ease;
-}
-.lt-car-dot:hover { background: #a8957a; }
-.lt-car-dot[aria-current="true"] { background: var(--accent, #d9774e); width: 24px; border-radius: 999px; }
-.lt-car-dot:focus-visible { outline: 3px solid var(--accent, #d9774e); outline-offset: 3px; }
-.lt-car-count { margin: 0; font-size: 0.85rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.lt-car-count b { color: var(--ink, #3a3128); }
-
-/* ---- phones: bigger slide, no arrows (thumb-swipe is the gesture) ---- */
-@media (max-width: 899px) {
-  .lt-car { --peek: 84vw; }
-  .lt-car-fig img { aspect-ratio: 4 / 3; }
-  .lt-car-arrow { display: none; }
-  .lt-car-fig { transform: scale(0.94); opacity: 0.6; }
-}
-@media (min-width: 1400px) { .lt-car { --peek: 820px; } }
-
-/* ---- pointer-drag affordance (desktop mouse) ---- */
-.lt-car-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
-.lt-car-track.is-dragging .lt-car-fig { transition: none; }
-
-/* ---- reduced motion: no choreography, no smooth scroll ---- */
-@media (prefers-reduced-motion: reduce) {
-  .lt-car-fig, .lt-car-fig figcaption, .lt-car-arrow, .lt-car-dot { transition: none; }
-  .lt-car-fig { transform: none; opacity: 1; }
-  .lt-car-fig figcaption { opacity: 1; transform: none; }
+  font-size: 0.95rem;
+  background: linear-gradient(to top, rgba(38, 30, 22, 0.74), rgba(38, 30, 22, 0));
+  pointer-events: none;
 }
 
-/* Screen-reader-only announcement region for the carousel. */
-.lt-car-live {
-  position: absolute;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ============================================================
-   3D mode — the track becomes a rotating cylinder.
-   Only applied once JS confirms preserve-3d support and that the
-   visitor has not asked for reduced motion; otherwise the flat
-   scroll-snap rules above stay in charge.
-   ============================================================ */
-.lt-car--3d .lt-car-stage {
-  position: relative;
-  height: var(--lt-stage, 470px);
-  perspective: var(--lt-persp, 1000px);
-  transform-style: preserve-3d;
-  cursor: grab;
-  /* Let vertical page scrolling through; we only claim horizontal drags. */
-  touch-action: pan-y;
-  overflow: hidden;
-}
-.lt-car--3d .lt-car-stage.is-dragging { cursor: grabbing; }
-.lt-car--3d .lt-car-stage:focus-visible {
-  outline: 3px solid var(--accent, #d9774e);
-  outline-offset: 4px;
-  border-radius: 20px;
-}
-.lt-car--3d .lt-car-track {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  display: block;
-  width: 0;
-  height: 0;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
-  scroll-snap-type: none;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.lt-car--3d .lt-car-track::before,
-.lt-car--3d .lt-car-track::after { content: none; }
-
-.lt-car--3d .lt-car-slide {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: var(--lt-face, 290px);
-  height: var(--lt-face, 290px);
-  margin-left: calc(var(--lt-face, 290px) / -2);
-  margin-top: calc(var(--lt-face, 290px) / -2);
-  flex: none;
-  scroll-snap-align: none;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-}
-.lt-car--3d .lt-car-fig {
-  height: 100%;
-  transform: none;
-  opacity: 1;
-  border-radius: 14px;
-  box-shadow: 0 14px 30px rgba(58, 49, 40, 0.28);
-  transition: box-shadow 0.3s ease;
-}
-.lt-car--3d .lt-car-fig img {
-  aspect-ratio: 1 / 1;
-  height: 100%;
-}
-.lt-car--3d .lt-car-slide.is-active .lt-car-fig {
-  box-shadow: 0 22px 46px rgba(58, 49, 40, 0.38);
-}
-/* On a ring the faces are too small for their own captions; the front photo
-   is named once under the stage instead. */
-.lt-car--3d .lt-car-fig figcaption { display: none; }
-.lt-car-cap {
-  margin: 0.7rem 0 0;
-  text-align: center;
-  font-family: var(--font-head);
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--ink, #3a3128);
-  min-height: 1.6em;
-}
-
-/* The click target that opens a face full size. */
-.lt-car-open {
+/* The click target that opens a photo full size. Added by JS, so it never
+   appears as a dead button when the script has not run. */
+.lt-flow-open {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
+  width: 100%; height: 100%;
+  padding: 0; border: 0;
   border-radius: inherit;
   background: transparent;
   cursor: zoom-in;
   -webkit-appearance: none;
   appearance: none;
 }
-.lt-car-open:focus-visible {
-  outline: 3px solid var(--accent, #d9774e);
-  outline-offset: 2px;
+.lt-flow-open:focus-visible { outline: 3px solid var(--accent, #d9774e); outline-offset: -4px; }
+
+/* ---- the motion ---- */
+.lt-flow.is-live .lt-flow-track {
+  overflow: visible;
+  animation: lt-flow-slide var(--lt-flow-secs, 60s) linear infinite;
+  will-change: transform;
 }
-.lt-car--3d .lt-car-slide.is-back .lt-car-open { cursor: default; }
+@keyframes lt-flow-slide {
+  from { transform: translate3d(0, 0, 0); }
+  /* One full copy of the list. The clone that follows takes its place
+     at exactly the moment it resets, so the loop is seamless. */
+  to   { transform: translate3d(calc(-1 * var(--lt-flow-span, 50%)), 0, 0); }
+}
+/* Slow right down rather than stopping dead, so it never feels broken. */
+.lt-flow.is-live:hover .lt-flow-track,
+.lt-flow.is-live:focus-within .lt-flow-track {
+  animation-play-state: paused;
+}
 
-/* Arrows sit clear of the ring in 3D mode. */
-.lt-car--3d .lt-car-arrow { top: calc(var(--lt-stage, 470px) / 2); }
-.lt-car--3d .lt-car-arrow[disabled] { opacity: 1; pointer-events: auto; cursor: pointer; }
+@media (min-width: 1500px) { .lt-flow { --lt-row: 440px; } }
+@media (max-width: 899px)  { .lt-flow { --lt-row: 300px; } }
+@media (max-width: 599px)  {
+  .lt-flow { --lt-row: 230px; }
+  .lt-flow-fig figcaption { font-size: 0.85rem; padding: 1.7rem 0.7rem 0.55rem; }
+}
 
-@media (max-width: 899px) {
-  .lt-car--3d .lt-car-arrow { display: grid; }
+/* Reduced motion: no auto-scroll at all. The row stays a plain scrollable
+   strip the visitor moves themselves. */
+@media (prefers-reduced-motion: reduce) {
+  .lt-flow, .lt-flow.is-live { overflow-x: auto; }
+  .lt-flow.is-live .lt-flow-track { animation: none; }
+  .lt-flow { scroll-snap-type: x proximity; }
+  .lt-flow-item { scroll-snap-align: center; }
 }
 
 /* ---- lightbox ---- */
