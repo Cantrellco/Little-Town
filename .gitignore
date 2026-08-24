@@ -20,3 +20,4 @@ theme.zip
 .env.*
 !.env.shopify.example
 _drop-photos/
+.playwright-mcp/
