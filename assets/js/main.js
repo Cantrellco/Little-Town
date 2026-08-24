@@ -1151,7 +1151,6 @@
         '<div class="lt-lb-backdrop" data-lb-close></div>' +
         '<div class="lt-lb-inner">' +
           '<div class="lt-lb-media"></div>' +
-          '<p class="lt-lb-cap"></p>' +
           '<button type="button" class="lt-lb-close" data-lb-close aria-label="Close photo">' +
             '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
             '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' +
@@ -1199,8 +1198,6 @@
         media.appendChild(pic);
       }
 
-      var cap = fig.querySelector("figcaption");
-      lb.querySelector(".lt-lb-cap").textContent = cap ? cap.textContent.trim() : "";
       lastFocus = document.activeElement;
       lb.hidden = false;
       document.documentElement.classList.add("lt-lb-open");
@@ -1231,12 +1228,14 @@
     originals.forEach(function (li) {
       var fig = li.querySelector(".lt-flow-fig");
       if (!fig) return;
-      var cap = fig.querySelector("figcaption");
+      /* The photos carry no visible caption any more, so the button's
+         accessible name comes from the image's alt text. */
+      var im = fig.querySelector("img");
+      var label = im ? (im.getAttribute("alt") || "").trim() : "";
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "lt-flow-open";
-      btn.setAttribute("aria-label",
-        "Open photo" + (cap ? ": " + cap.textContent.trim() : "") + " larger");
+      btn.setAttribute("aria-label", label ? "See larger: " + label : "See this photo larger");
       fig.appendChild(btn);
       btn.addEventListener("click", function () { openLb(fig); });
     });

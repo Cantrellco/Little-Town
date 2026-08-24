@@ -393,16 +393,6 @@
   object-fit: cover;
   user-select: none;
 }
-.lt-flow-fig figcaption {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 2.2rem 0.9rem 0.7rem;
-  color: #fff;
-  font-family: var(--font-head);
-  font-size: 0.95rem;
-  background: linear-gradient(to top, rgba(38, 30, 22, 0.74), rgba(38, 30, 22, 0));
-  pointer-events: none;
-}
 
 /* The click target that opens a photo full size. Added by JS, so it never
    appears as a dead button when the script has not run. */
@@ -441,7 +431,6 @@
 @media (max-width: 899px)  { .lt-flow { --lt-row: 300px; } }
 @media (max-width: 599px)  {
   .lt-flow { --lt-row: 230px; }
-  .lt-flow-fig figcaption { font-size: 0.85rem; padding: 1.7rem 0.7rem 0.55rem; }
 }
 
 /* Reduced motion: no auto-scroll at all. The row stays a plain scrollable
@@ -499,14 +488,6 @@ html.lt-lb-open { overflow: hidden; }
   max-height: calc(100vh - 8rem);
   aspect-ratio: auto;
   object-fit: contain;
-}
-.lt-lb-cap {
-  margin: 0;
-  color: #fff;
-  font-family: var(--font-head);
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
-  text-align: center;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 .lt-lb-close {
   position: absolute;
