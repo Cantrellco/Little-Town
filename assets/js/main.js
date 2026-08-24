@@ -1441,18 +1441,32 @@
         var cap = fig && fig.querySelector("figcaption");
         var media = lb.querySelector(".lt-lb-media");
         media.innerHTML = "";
-        if (pic) {
+        /* The ring only ever needs a small, square-cropped source. Build the
+           viewer its own picture from the full width ladder so the large
+           image is sharp instead of an upscaled thumbnail. */
+        var base = slides[i].getAttribute("data-base");
+        var widths = (slides[i].getAttribute("data-widths") || "").split(",").filter(Boolean);
+        var alt = (fig && fig.querySelector("img")) ? fig.querySelector("img").getAttribute("alt") : "";
+        if (base && widths.length) {
+          var pic2 = document.createElement("picture");
+          ["avif", "webp"].forEach(function (type) {
+            var sc = document.createElement("source");
+            sc.type = "image/" + type;
+            sc.srcset = widths.map(function (w) { return base + "-" + w + "." + type + " " + w + "w"; }).join(", ");
+            sc.sizes = "100vw";
+            pic2.appendChild(sc);
+          });
+          var im = document.createElement("img");
+          im.src = base + ".jpg";
+          im.alt = alt;
+          im.decoding = "async";
+          im.draggable = false;
+          pic2.appendChild(im);
+          media.appendChild(pic2);
+        } else if (pic) {
           var clone = pic.cloneNode(true);
           var img = clone.querySelector("img");
-          if (img) {
-            img.removeAttribute("loading");
-            img.removeAttribute("style");
-            img.removeAttribute("sizes");
-            img.draggable = false;
-          }
-          Array.prototype.forEach.call(clone.querySelectorAll("source"), function (sc) {
-            sc.removeAttribute("sizes");
-          });
+          if (img) { img.removeAttribute("loading"); img.removeAttribute("style"); img.draggable = false; }
           media.appendChild(clone);
         }
         lb.querySelector(".lt-lb-cap").textContent = cap ? cap.textContent.trim() : "";
