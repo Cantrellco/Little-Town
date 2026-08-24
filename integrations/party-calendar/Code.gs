@@ -132,7 +132,7 @@ var SHARE_CALENDAR_WITH = ['fusioncoffeellc@gmail.com'];
  */
 var SEED_VERSION = '2026-08-17a';
 
-var VERSION = '2.5.0';
+var VERSION = '2.6.0';
 
 // ─── THE MENU (this is his entire interface) ────────────────────────────────
 
@@ -163,12 +163,17 @@ function setup() {
     var cal = getCalendar_();
     var sharedWith = shareCalendarWith_(cal);
 
-    // Clear ours out first so running setup twice doesn't stack up triggers.
+    // Clear ours out first so running setup twice doesn't stack up triggers —
+    // and so the old broken 'syncNow' trigger is removed, not left running
+    // alongside the new one failing every 15 minutes.
     var existing = ScriptApp.getProjectTriggers();
     for (var i = 0; i < existing.length; i++) {
-      if (existing[i].getHandlerFunction() === 'syncNow') ScriptApp.deleteTrigger(existing[i]);
+      var fn = existing[i].getHandlerFunction();
+      for (var k = 0; k < TRIGGER_FN_ALL_.length; k++) {
+        if (fn === TRIGGER_FN_ALL_[k]) { ScriptApp.deleteTrigger(existing[i]); break; }
+      }
     }
-    ScriptApp.newTrigger('syncNow').timeBased().everyMinutes(CHECK_EVERY_MINUTES).create();
+    ScriptApp.newTrigger(TRIGGER_FN_).timeBased().everyMinutes(CHECK_EVERY_MINUTES).create();
 
     // Parties booked before the order email carried a LTPCAL1 line can never be
     // found in Gmail, so they're seeded here.
@@ -196,10 +201,46 @@ function setup() {
   }
 }
 
+/**
+ * What the 15-minute trigger runs. Must stay free of any UI call.
+ *
+ * ⚠️ This exists because the trigger used to point at syncNow(), whose first
+ * line is SpreadsheetApp.getUi(). A time-driven trigger has no UI, so getUi()
+ * throws there — meaning every scheduled run died on its first line, before
+ * reaching Gmail or the website list. Manual clicks worked (they have a UI),
+ * setup() worked (it calls syncNow_ directly), and the automatic sync had
+ * never once succeeded. It looked healthy from every angle except the one that
+ * mattered.
+ *
+ * Named without a trailing underscore on purpose: Apps Script treats _-suffixed
+ * functions as private and will not accept them as trigger handlers.
+ */
+function syncScheduled() {
+  syncNow_();
+}
+
+/** The handler the trigger must use. Anything else silently does nothing. */
+var TRIGGER_FN_ = 'syncScheduled';
+
+/** Names this trigger has used, so setup() can clear out the broken old one. */
+var TRIGGER_FN_ALL_ = [TRIGGER_FN_, 'syncNow'];
+
+/** True if this account has a working scheduled sync installed. */
+function triggerRunning_() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === TRIGGER_FN_) return true;
+  }
+  return false;
+}
+
 /** Menu version of the sync — same job, but tells him what it did. */
 function syncNow() {
-  var ui = SpreadsheetApp.getUi();
   var r = syncNow_();
+  // Sync first, report second, and never let the reporting be what fails. If
+  // this is ever reached without a UI, the work is already done by here.
+  var ui;
+  try { ui = SpreadsheetApp.getUi(); } catch (noUi) { return; }
   ui.alert(
     'Checked for bookings',
     'New parties added: ' + r.added + '\n' +
@@ -214,11 +255,7 @@ function syncNow() {
 function showStatus() {
   var props = PropertiesService.getUserProperties();
   var last = props.getProperty('lastRun');
-  var running = false;
-  var triggers = ScriptApp.getProjectTriggers();
-  for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === 'syncNow') running = true;
-  }
+  var running = triggerRunning_();
 
   // findOwnedCalendar_ rather than a name lookup: it won't pick up a shared
   // copy of someone else's, and it won't create one just because you asked
@@ -262,11 +299,7 @@ function diagnose() {
     lines.push('Events on it from today: ' + cal.getEvents(now, new Date(now.getFullYear() + 2, 0, 1)).length);
   }
 
-  var running = false;
-  var triggers = ScriptApp.getProjectTriggers();
-  for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === 'syncNow') running = true;
-  }
+  var running = triggerRunning_();
   lines.push('Automatic 15-minute check: ' + (running ? 'ON' : 'OFF'));
   lines.push('');
 
