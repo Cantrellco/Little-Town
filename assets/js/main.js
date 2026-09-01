@@ -418,6 +418,33 @@
       return map;
     })();
 
+    // Fusion next door sells the SAME café from its own site
+    // (fusioncoffeeshop.com/party), so the "+ Fusion" package needs the room to
+    // still be free over there. That availability arrives as a second shop
+    // metafield, injected by the build script as:
+    //   window.LT_FUSION_TAKEN = "YYYY-MM-DD|slot;YYYY-MM-DD|slot|lt;..."
+    // Written by Fusion's checkout, and by our own Flow (whose entries carry a
+    // third "|lt" field so Fusion can tell them apart). We ignore the third
+    // field entirely: from this side, either source means the café is taken.
+    //
+    // DAY granularity, deliberately. Fusion's windows and ours don't line up
+    // (their Saturday 3–5 overlaps our 4:30–6:30 by half an hour), so matching
+    // on the exact slot string would leave the combo on sale for a room that is
+    // already committed. Blocking the whole date over-blocks by design.
+    //
+    // This ONLY ever disables the "+ Fusion" card. The Little Town-only buyout
+    // does not need the café and stays on sale — the date is never greyed out.
+    var FUSION_TAKEN = (function () {
+      var set = {}, raw = window.LT_FUSION_TAKEN;
+      if (typeof raw === "string" && raw) {
+        raw.split(/[;\n]+/).forEach(function (entry) {
+          var d = (entry.split("|")[0] || "").trim();
+          if (d) set[d] = true;
+        });
+      }
+      return set;
+    })();
+
     var today = new Date(); today.setHours(0, 0, 0, 0);
     var minDate = new Date(today); minDate.setDate(minDate.getDate() + 1); // earliest bookable = tomorrow
     // Cap forward paging to a sensible booking window so the next-month chevron
@@ -438,6 +465,25 @@
       if (all.length === 1) return taken.length ? [] : all;
       return all.filter(function (s) { return taken.indexOf(s) === -1; });
     }
+    // Enable or disable the "+ Fusion" card for the chosen date. Runs on every
+    // commit so paging to a different date can put it back on sale.
+    function applyFusionAvailability() {
+      var taken = Boolean(selKey && FUSION_TAKEN[selKey]);
+      document.querySelectorAll("[data-bk-form]").forEach(function (form) {
+        if (!form.querySelector('[data-bk-variant="fusion"]')) return; // LT-only card
+        form.classList.toggle("bk-pkg--unavailable", taken);
+        var btn = form.querySelector(".bk-pkg-btn");
+        if (btn) {
+          btn.disabled = taken;
+          // Keep the original label so re-enabling doesn't have to guess it.
+          if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+          btn.textContent = taken ? "Fusion is booked that day" : btn.dataset.label;
+        }
+        var note = form.querySelector("[data-bk-fusion-note]");
+        if (note) note.hidden = !taken;
+      });
+    }
+
     function lockPackages() {
       if (packages) packages.classList.add("is-locked");
       if (summary) summary.hidden = true;
@@ -452,6 +498,7 @@
         dateInputs.forEach(function (i) { i.value = selKey; });  // "YYYY-MM-DD", for Flow
         timeInputs.forEach(function (i) { i.value = chosenTime; }); // slot, for Flow
         if (packages) packages.classList.remove("is-locked");
+        applyFusionAvailability();
         if (summary && summaryText) { summaryText.textContent = value; summary.hidden = false; }
       } else { lockPackages(); }
     }
@@ -556,6 +603,16 @@
             timesGrid.classList.add("bk-nudge");
             if (timesWrap) timesWrap.scrollIntoView({ behavior: "smooth", block: "center" });
           }
+          return;
+        }
+        // The café next door is already taken that day, so the "+ Fusion"
+        // package cannot be honoured. The button is disabled and the card is
+        // dimmed, but a stale FUSION_TAKEN (page open while someone books over
+        // there) or a keyboard submit can still reach here — so it is checked
+        // again at the last moment rather than trusted to the disabled state.
+        if (form.querySelector('[data-bk-variant="fusion"]') && selKey && FUSION_TAKEN[selKey]) {
+          e.preventDefault();
+          applyFusionAvailability();
           return;
         }
         // Product not wired (static prototype, or product unpublished) ->

@@ -555,6 +555,29 @@
 .bk-packages:not(.is-locked) ~ .bk-lock-hint { display: none; }
 .bk-finenote { text-align: center; margin-top: 0.7rem; }
 
+/* Fusion already booked that day: the "+ Fusion" card only. Deliberately a
+   softer treatment than `is-locked` — this is not "not yet", it is "not this
+   date", and the Little Town card beside it stays completely untouched and
+   fully on sale. The card stays readable so the customer can see WHAT they are
+   missing and pick another date, rather than wondering why one card vanished. */
+.bk-pkg--unavailable {
+  opacity: 0.62;
+  filter: grayscale(0.65);
+}
+.bk-pkg--unavailable .bk-pkg-btn {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.bk-pkg-note {
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--terracotta, #c4633f);
+  margin: 0 0 0.7rem;
+}
+
 /* ---- Responsive ---- */
 @media (min-width: 520px) {
   .bk-times-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }

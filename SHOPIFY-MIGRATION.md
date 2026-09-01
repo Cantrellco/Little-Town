@@ -142,7 +142,7 @@ Books parties end-to-end with a **custom calendar** — no booking app. Flow: pi
 date on the calendar → pick a time → pick a package → Shopify checkout, paid in full,
 all-sales-final. Built + live; needs only the product published (done).
 
-1. **Product:** ONE `private-buyout` with variants **Little Town $195** / **Little Town +
+1. **Product:** ONE `private-buyout` with variants **Little Town $185** / **Little Town +
    Fusion $295** (track-quantity off, physical off, published to Online Store). The build
    script splits variants by title (Fusion → $295), so no IDs to paste.
 2. **How it works:** each package is a `<form>` POSTing to `/cart/add` (return_to=/checkout).
@@ -155,31 +155,13 @@ all-sales-final. Built + live; needs only the product published (done).
    (`wireCommerce` `parties`). Slots are hard-coded (`SLOTS_BY_DOW` in `main.js`): Sat 4:30–6:30,
    Sun 1–3, Sun 4–6.
 
-3. **Email on booking (Shopify-native):** Settings → Notifications → **Staff notifications**
-   → Add recipient → `littletownplayhousellc@gmail.com`. Every order emails that address.
-   Shopify's *default* staff template buries the line-item properties, so also paste
-   `notifications/staff-order-notification.liquid` into the **New order** template — it
-   leads with the party date/time in large type and puts it in the inbox preview line.
-   Customer also gets auto-confirmation (`notifications/order-confirmation.liquid`).
+3. **Email on booking (Shopify-native):** Settings → Notifications → **Staff order
+   notifications** → Add recipient → `littletownplayhousellc@gmail.com`. Every order emails
+   that address; the party date/time is on the order. Customer also gets auto-confirmation.
 
-4. **Date-blocking (Shopify Flow + shop metafield, $0) — ✅ BUILT AND CONFIRMED LIVE
-   (2026-08-09).** The calendar greys out booked dates by reading a shop metafield. Needs a
-   paid plan (Basic+) for Flow.
-
-   > **Verified working**, so don't rebuild this — the live parties page was serving a
-   > populated `lt_booking.taken` on 2026-08-09 with 6 real bookings in it, which is only
-   > possible if the metafield exists, the `Order created` workflow fires, and the line-item
-   > properties are landing on orders. Flow is therefore already on the plan.
-   >
-   > **To re-check at any time without an admin login** (reads the public storefront):
-   > ```powershell
-   > (Invoke-WebRequest 'https://thelittletownplayhouse.com/pages/parties' -UseBasicParsing).Content |
-   >   Select-String 'LT_BOOKED_RAW\s*=\s*"([^"]*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value -split ';' }
-   > ```
-   > Entries are in **order-placed** sequence, not date order — don't read it as a schedule.
-
-   Setup steps kept below for reference / disaster recovery (verified against Shopify's
-   current Flow docs 2026-07):
+4. **Date-blocking (Shopify Flow + shop metafield, $0):** the calendar greys out booked dates
+   by reading a shop metafield. Needs a paid plan (Basic+) for Flow. Set up once (verified
+   against Shopify's current Flow docs 2026-07):
    1. **Metafield:** Settings → **Metafields and metaobjects** (older admin labels it
       *Custom data*) → **Shop** → Add definition. Set **Name** to anything, then **click Edit
       on the auto-generated Namespace and key and overwrite them to exactly `lt_booking` /
@@ -241,163 +223,91 @@ all-sales-final. Built + live; needs only the product published (done).
 > watching orders covers it. Only a booking app's slot-holds (or the date-as-inventory model)
 > fully prevents it.
 
-5. **"Unfulfilled" on every order — expected, and optional to change.** Shopify tracks a
-   fulfillment state on *every* order even when nothing ships, so buyouts, day passes and
-   memberships all land as **Unfulfilled**. It's cosmetic — the customer was charged and got
-   their confirmation either way. Three ways to play it:
-   - **Leave it.** "Unfulfilled" then doubles as the upcoming-bookings list: mark each party
-     fulfilled after it happens and the Orders page becomes a de-facto calendar. Given there
-     is no owner-facing booking calendar, this is the useful default.
-   - **Auto-fulfill store-wide.** **Settings → General → *Order processing*** (verified
-     2026-08 — this section used to live under Settings → Checkout, older guides still say
-     that) → tick **"Automatically fulfill the order's line items."** Safe here because
-     nothing in this store ships. **Leave "Notify customers of their shipment" UNTICKED** —
-     it sends a *shipping* email, which is nonsense for a party booking. The
-     "even those with a high risk of fraud" sub-option should also stay off.
-   - **Mark fulfilled by hand** on each order.
+### E. Fusion next door → the shared café ledger
 
-   Also confirm `private-buyout` has **"This is a physical product" unchecked** in the
-   product's Shipping section. If it's checked, Shopify collects a shipping address at
-   checkout and may apply shipping rates — a separate bug from the fulfillment status.
+Fusion Coffee sells the **same café** from its own site (`fusioncoffeeshop.com/party`,
+$165 for a two-hour buyout). The `Little Town + Fusion` $295 package needs that room
+free, so the two storefronts share a second shop metafield:
 
-6. **Reminder emails 5 days + 1 day before each party (Shopify Flow, $0, no app).**
-   ⛔ **SUPERSEDED — build [`integrations/party-calendar`](integrations/party-calendar/README.md) instead.**
+| Metafield | Means | Written by | Read by |
+|---|---|---|---|
+| `lt_booking.taken` | **playhouse** occupied | our Flow, every buyout order | our calendar (greys the date) |
+| `lt_booking.fusion_taken` | **café** occupied | Fusion's checkout **and** our Flow | both sites |
 
-   > 👉 **Do not build the three workflows below.** Each party now becomes a **Google Calendar
-   > event** in the owner's own account, and Google does the reminders natively — so the tag
-   > stamping, both scheduled robots and the manual tag backfill are all unnecessary. It also
-   > finally answers the "no owner-facing booking calendar" gap noted in step 5: he gets a real
-   > month view on his phone, with the customer's name, phone and package on each entry.
-   >
-   > That guide also adds the piece this section never had — an **`Order cancelled`** workflow
-   > that removes the booking from `lt_booking.taken`, so a killed party frees its slot on the
-   > website again instead of burning it permanently.
-   >
-   > **Everything below stays** as the fallback and as the reference for Flow's Liquid quirks
-   > (the auto-named metafield alias, `getOrderDataForeachitem`, camelCase GraphQL paths) —
-   > all still accurate, and the calendar integration's HTTP action is built on the same rules.
+**Why a second metafield and not just `taken`.** `taken` records date + slot but not
+which variant was bought, so a $185 playhouse-only party and a $295 combo look identical
+in it. If Fusion read `taken`, every playhouse booking would black out a Fusion date for
+no reason. And if Fusion wrote *into* `taken`, our calendar would grey out a date where
+the playhouse is perfectly free. They have to stay separate.
 
-   > 👉 The plain-English walkthrough for the superseded approach is
-   > [`FLOW-REMINDERS-SETUP.md`](FLOW-REMINDERS-SETUP.md). The notes below are the reasoning and
-   > the reference copy of the Liquid.
+**What this does on our side.** `main.js` reads `window.LT_FUSION_TAKEN` and disables
+**only the "+ Fusion" card** on those dates — dimmed, button disabled, with a line saying
+the Little Town buyout is still available. The date is never greyed out and the $185 card
+is never touched.
 
-   Shopify has no native "email me X days before a date on an order" trigger, so this is
-   three Flow workflows. Verified against Flow docs 2026-08. Requires Basic plan+ (same
-   requirement as the date-blocking Flow above).
+**Granularity is the whole DAY, not the slot.** Fusion's windows and ours don't line up
+(their Sat 3–5 PM overlaps our 4:30–6:30 PM by thirty minutes), so a slot-string compare
+would leave the combo on sale for a room that is already committed. Over-blocking the
+date is deliberate.
 
-   **Why a tag is needed.** The party date lives in a *line-item property*, and Shopify's
-   order search **cannot** query line-item properties. So the booking date is copied onto
-   the order as a **tag** at checkout, and the scheduled reminders search by that tag.
+#### 1. Metafield definition (one-time)
 
-   **Workflow 1 — stamp the date as a tag (`Order created`).** Add this to the *existing*
-   Order-created workflow from step 4 (it already has the right trigger — just add another
-   action underneath the metafield write), or build it standalone.
-   - Trigger: **Order created**
-   - Condition (recommended): `Order` → line items → **Product / Handle**, **At least one
-     of**, **is equal to** `private-buyout`. Without it, every day-pass order runs this.
-   - Action: **Add order tags** → Tags value:
-     ```liquid
-     {%- assign pdate = "" -%}
-     {%- for lineItem in order.lineItems -%}
-       {%- for ca in lineItem.customAttributes -%}
-         {%- if ca.key == "Party date" -%}{%- assign pdate = ca.value -%}{%- endif -%}
-       {%- endfor -%}
-     {%- endfor -%}
-     {%- if pdate != blank -%}party-{{ pdate }}{%- endif -%}
-     ```
-     Produces a tag like `party-2026-06-13`. Same camelCase Flow-Liquid rules as step 4
-     (`order.lineItems` / `customAttributes`, never `line_items` / `properties`).
+Settings → **Metafields and metaobjects** → **Shop** → Add definition. Same trap as §C:
+the namespace and key **default to a slug of the Name**, so click **Edit** on them and
+overwrite to exactly `lt_booking` / `fusion_taken`. Type **Single line text**. Save, open
+it, set an initial value (empty string is fine), and enable **Storefronts** access.
 
-   **Workflows 2 & 3 — the reminders (`Scheduled time`).** Build these as **two separate
-   workflows**, identical except for the interval and wording. Two workflows rather than one
-   with two branches: each gets its own subject line and run history, so when one misfires
-   you can see which.
-   - Trigger: **Scheduled time** → **Daily**, around **8:00 AM** store time (it's a
-     business-hours heads-up, not a 3 AM one). `scheduledAt` resolves in the store's timezone.
-   - Action: **Get order data** → Query:
-     ```
-     tag:'party-{{ scheduledAt | date_plus: "5 days" | date: "%Y-%m-%d" }}' AND NOT status:cancelled
-     ```
-     For the 1-day workflow use `date_plus: "1 day"`. `date_plus` is a Flow-specific Liquid
-     tag; `scheduledAt` only exists on Scheduled-time workflows.
-   - Action: **For each** over the returned order list → inside the loop, **Send internal
-     email**:
-     - **Email address:** `littletownplayhousellc@gmail.com` (comma-separate for more —
-       this field does **not** accept variables, it must be a literal address)
-     - **Subject:** `Party in 5 days — {{ order.name }}` *(→ "Party TOMORROW —" on the 1-day one)*
-     - **Message:** pull the human-readable slot back off the line item. Note the loop
-       variable is **`getOrderDataForeachitem`**, not `order` — Flow auto-names it and won't
-       let you choose (confirmed on this store 2026-08-09):
-       ```liquid
-       {%- assign pwhen = "" -%}
-       {%- for lineItem in getOrderDataForeachitem.lineItems -%}
-         {%- for ca in lineItem.customAttributes -%}
-           {%- if ca.key == "Party date and time" -%}{%- assign pwhen = ca.value -%}{%- endif -%}
-         {%- endfor -%}
-       {%- endfor -%}
-       {%- if pwhen != blank -%}
-       Party coming up: {{ pwhen }}
-       {%- else -%}
-       Party coming up — date is in the tags: {{ getOrderDataForeachitem.tags }}
-       {%- endif %}
-       Order {{ getOrderDataForeachitem.name }}
-       ```
-       ⚠️ The picker also offers **`getOrderData`** — that's the whole *list*, not one order.
-       Picking it fails silently.
+If the definition is missing the theme reads blank and nothing is ever disabled — the
+same fail-open `taken` already has.
 
-   **Gotchas — read before trusting it:**
-   - **Flow auto-names loop/step variables and you can't choose them** (same trap as the
-     metafield alias in step 4). Inside the **For each**, the order may be exposed under a
-     Flow-assigned name rather than `order` — build the Message with Flow's **variable
-     picker** instead of pasting `order.` blind, then check a real run.
-   - **Verify with run history, not the editor.** Apps → Flow → the workflow → **Runs** shows
-     the *resolved* query string. If it reads `tag:'party-'` with no date, the
-     `| date: "%Y-%m-%d"` format step is the thing to fix — that's the one piece of syntax
-     most likely to need adjusting.
-   - **Only tags orders placed after Workflow 1 is switched on.** Any party already booked
-     will never fire a reminder. Tag those by hand: open the order → Tags → add
-     `party-YYYY-MM-DD` matching its date. See the backfill checklist below — this is not
-     hypothetical, there are already bookings on the books.
-   - **A refund alone doesn't stop the reminder** — the tag survives. `NOT status:cancelled`
-     only filters properly *cancelled* orders, so cancel (don't just refund) a killed booking.
-   - **Get order data caps at 100 orders per run.** Irrelevant at ~3 slots/week — one date
-     returns one or two orders.
-   - Internal emails send from your store's sender address and may show as
-     `store+<shop-id>@shopifyemail.com` until the sending domain is authenticated.
+#### 2. Flow: mark the café taken when someone buys the combo
 
-   > Flow is confirmed on the plan (see step 4), so the plan-tier fallback isn't needed.
-   >
-   > The "month view the owner can actually look at" this note used to describe as a manual
-   > alternative is now **built and automatic** —
-   > [`integrations/party-calendar`](integrations/party-calendar/README.md). A Google Calendar
-   > event per booking, created at checkout, with the reminders set on the event. That's the
-   > reason this whole section is superseded.
+Add a SECOND workflow (or a second branch on the existing one). Everything in §C about
+the 2026 vertical editor, the `Update shop metafield` action, and reading the existing
+value **as a variable rather than by dot-notation** applies here identically.
 
-   #### ⚠️ Backfill checklist — tag the 6 existing bookings
-   Snapshot of `lt_booking.taken` taken **2026-08-09**. These orders predate the tagging
-   action, so **none of them will fire a reminder until tagged by hand.** For each: Orders →
-   open it → **Tags** → add the tag → Save.
+- **Trigger:** `Order created`
+- **Condition:** `Order` → line items → **Variant / Title**, `contains` → `Fusion`.
+  This is what separates a $295 combo from a $185 playhouse-only order. Get it wrong and
+  every playhouse party blocks the café next door.
+- **Action:** `Update shop metafield` → pick `lt_booking.fusion_taken`.
 
-   **Hard deadline: 2026-08-18** — that's the 5-day ping for the Aug 23 party. Everything
-   below must be tagged, and both scheduled workflows live, before that date.
+Value — note the **`|lt` third field**, which is what tells Fusion the booking came from
+here rather than from their own checkout. Fusion blocks its whole day on our entries but
+only one window on its own, so the marker is load-bearing. Replace `REPLACE_WITH_ALIAS`
+with the alias Flow generates when you insert the variable:
 
-   | ☐ | Party date | Day | Tag to add | 5-day ping | 1-day ping |
-   | --- | --- | --- | --- | --- | --- |
-   | ☐ | 2026-08-23 | Sunday | `party-2026-08-23` | **Aug 18** | Aug 22 |
-   | ☐ | 2026-09-13 | Sunday | `party-2026-09-13` | Sep 08 | Sep 12 |
-   | ☐ | 2026-09-20 | Sunday | `party-2026-09-20` | Sep 15 | Sep 19 |
-   | ☐ | 2026-09-27 | Sunday | `party-2026-09-27` | Sep 22 | Sep 26 |
-   | ☐ | 2026-10-10 | Saturday | `party-2026-10-10` | Oct 05 | Oct 09 |
-   | ☐ | 2026-10-11 | Sunday | `party-2026-10-11` | Oct 06 | Oct 10 |
+```liquid
+{%- assign existing = shop.REPLACE_WITH_ALIAS.value -%}
+{%- assign pdate = "" -%}
+{%- assign ptime = "" -%}
+{%- for lineItem in order.lineItems -%}
+  {%- for ca in lineItem.customAttributes -%}
+    {%- if ca.key == "Party date" -%}{%- assign pdate = ca.value -%}{%- endif -%}
+    {%- if ca.key == "Party time" -%}{%- assign ptime = ca.value -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- if pdate == blank -%}{{ existing }}{%- elsif existing == blank -%}{{ pdate }}|{{ ptime }}|lt{%- else -%}{{ existing }};{{ pdate }}|{{ ptime }}|lt{%- endif -%}
+```
 
-   Finding each order: the metafield stores only date + slot, not the order number. Search
-   Orders for the `Private Buyout` product and match on the **Party date** line-item property
-   shown under the line item. All 6 slot times above are valid `SLOTS_BY_DOW` values, so if
-   an order's property doesn't match one of these rows, flag it rather than guessing.
+Target stored value, e.g. `2026-09-13|1:00–3:00 PM|lt;2026-10-11|4:00–6:00 PM|lt`.
 
-   Re-run the PowerShell one-liner in step 4 before starting — if the list has grown since
-   2026-08-09, the newer bookings need tagging too (and any placed *after* the tagging action
-   goes live will already be tagged, so check before double-tagging).
+Same rules as §C: Flow Liquid is GraphQL camelCase (`order.lineItems` →
+`lineItem.customAttributes`), the `{%- -%}` trim tags are load-bearing because a Single
+line text metafield rejects newlines, and never retype the slot strings — they use an
+en-dash (`–`) and the Liquid carries the order's exact value through.
+
+#### 3. Backfill
+
+Orders placed before this workflow existed are not in `fusion_taken`. Check the orders
+list for any **$295 combo** already on the books and add those dates by hand, in the same
+`YYYY-MM-DD|slot|lt` format — otherwise Fusion will happily sell a room we have already
+committed.
+
+> **Residual race, unchanged:** Flow writes *after* the order, so two people checking out
+> the same slot on the two sites inside the same ~2-minute window could both pay. Same
+> exposure §C already documents, now across two storefronts instead of one. All bookings
+> final plus watching orders covers it.
 
 ### D. Newsletter → email capture
 The footer/newsletter signup should post to your email tool:
