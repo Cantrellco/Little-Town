@@ -39,6 +39,8 @@
           <input type="hidden" name="return_to" value="/checkout">
           {%- comment -%} Mirrors data-daypass-buy / data-membership-buy on the one-tap buttons: only day passes and memberships get the socks upsell, not socks' own PDP or the buyout. {%- endcomment -%}
           {%- if product.handle == 'day-pass' or product.handle contains 'membership' -%}<input type="hidden" data-pdp-offer-socks value="1">{%- endif -%}
+          {%- comment -%} Mirrors data-socks-buy: socks skip the cart-clear so they add onto a Day Pass/membership already in the cart, rather than wiping it (see gatedBuy in main.js). {%- endcomment -%}
+          {%- if product.handle contains 'sock' -%}<input type="hidden" data-pdp-skip-clear value="1">{%- endif -%}
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">

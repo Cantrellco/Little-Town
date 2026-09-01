@@ -74,16 +74,22 @@
     sfCards.forEach(function (card, i) { card.style.transitionDelay = (i * 0.07) + "s"; });
   }
 
-  /* ---- Fresh cart on every buy ----
+  /* ---- Fresh cart on most buys ----
      Buy buttons go straight to Shopify checkout, where there is no built-in
      "remove item" control — and cart permalinks ADD to the cart rather than
      replace it, so a stray item from an earlier click would ride along to
-     checkout with no way to drop it. Before any buy we empty the cart via the
-     Shopify AJAX API, so the customer always lands on checkout with exactly the
+     checkout with no way to drop it. Before most buys we empty the cart via
+     the Shopify AJAX API, so the customer lands on checkout with exactly the
      one thing they just chose. Fails OPEN: if the request errors, stalls, or JS
      is off, the buy still goes through (the old add-and-go behaviour) — a hiccup
      must never block a sale. Shared by the buy links, the party booking forms,
-     and the product-page fallback below. */
+     and the product-page fallback below.
+
+     "Most" — socks is the deliberate exception (see gatedBuy's opts.skipClear):
+     it's meant to add onto a Day Pass or membership already sitting in the
+     cart, so it skips this and goes straight to addSocksThenGo/its own permalink
+     instead. Day Pass and membership still clear on every purchase, so any
+     staleness that leaves behind self-heals the next time either is bought. */
   function clearCartThenGo(go) {
     var done = false;
     function once() { if (done) return; done = true; go(); }
@@ -524,13 +530,26 @@
   });
 
   /* The one entry point every buy path uses: agree -> (Day Pass/membership
-     only: offer socks) -> empty the cart -> add any socks -> stamp the
-     acceptance -> go. `form` is the form being submitted, or null for the
-     one-tap permalink links. `offerSocks` gates the upsell dialog — only the
-     Day Pass and membership buy paths pass it true (see gateEveryBuy below);
-     everything else (parties, socks' own buy button, the safety-net permalink
-     handler) proceeds straight through as before. */
-  function gatedBuy(form, go, offerSocks) {
+     only: offer socks) -> empty the cart, unless told not to -> add any
+     socks -> stamp the acceptance -> go. `form` is the form being submitted,
+     or null for the one-tap permalink links. `opts.offerSocks` gates the
+     upsell dialog — only the Day Pass and membership buy paths pass it true
+     (see gateEveryBuy below).
+
+     `opts.skipClear` is for socks' own buy button ONLY. Every other buy path
+     clears the cart first on purpose (see clearCartThenGo above) — Shopify
+     checkout has no remove control, so that's what stops an old abandoned
+     item from silently riding along to checkout. Socks is the deliberate
+     exception: it's meant to add onto a Day Pass or membership that's already
+     sitting in the cart (e.g. someone backs out of that checkout to grab
+     socks too), and Day Pass/membership still clear on their own next use, so
+     any staleness from a truly abandoned cart self-heals on the next real
+     purchase. One consequence: clicking "Buy socks" more than once in the
+     same cart session (e.g. back button, click again) ADDS quantity rather
+     than resetting it — a property of the underlying cart permalink, same as
+     the Day Pass/membership permalinks would do if they didn't clear. */
+  function gatedBuy(form, go, opts) {
+    opts = opts || {};
     if (buyInFlight) return;
     openAgree(function () {
       if (buyInFlight) return;   // double-tap landed while the agreement was open
@@ -538,11 +557,13 @@
         if (buyInFlight) return;   // could also land while the upsell was open
         buyInFlight = true;
         lockBuyControls();
-        clearCartThenGo(function () {
+        function afterClear() {
           addSocksThenGo(sockQty, function () { stampAgreementThenGo(form, go); });
-        });
+        }
+        if (opts.skipClear) afterClear();
+        else clearCartThenGo(afterClear);
       }
-      if (offerSocks) openUpsell(proceed); else proceed(0);
+      if (opts.offerSocks) openUpsell(proceed); else proceed(0);
     });
   }
 
@@ -836,8 +857,11 @@
         e.preventDefault();
         // Day Pass and membership buys offer the socks upsell right after the
         // agreement; socks' own buy button obviously doesn't upsell itself.
+        // Socks also skips the cart-clear (see gatedBuy) so it adds onto
+        // whatever Day Pass/membership is already sitting in the cart.
         var offerSocks = a.hasAttribute("data-daypass-buy") || a.hasAttribute("data-membership-buy");
-        gatedBuy(null, function () { window.location.href = href; }, offerSocks);
+        var isSocks = a.hasAttribute("data-socks-buy");
+        gatedBuy(null, function () { window.location.href = href; }, { offerSocks: offerSocks, skipClear: isSocks });
       });
     });
 
@@ -853,7 +877,7 @@
         if (e.defaultPrevented) return;
         e.preventDefault();
         var href = a.href;
-        gatedBuy(null, function () { window.location.href = href; });
+        gatedBuy(null, function () { window.location.href = href; }, {});
       });
     });
 
@@ -861,10 +885,11 @@
     if (pdp) {
       pdp.addEventListener("submit", function (e) {
         e.preventDefault();
-        // data-pdp-offer-socks is only rendered for the day-pass/membership
-        // products (see product.liquid) — not socks' own PDP or the buyout.
+        // data-pdp-offer-socks / data-pdp-skip-clear are only rendered for
+        // their respective products (see product.liquid) — not for the buyout.
         var offerSocks = !!pdp.querySelector("[data-pdp-offer-socks]");
-        gatedBuy(pdp, function () { pdp.submit(); }, offerSocks);
+        var skipClear = !!pdp.querySelector("[data-pdp-skip-clear]");
+        gatedBuy(pdp, function () { pdp.submit(); }, { offerSocks: offerSocks, skipClear: skipClear });
       });
     }
 
