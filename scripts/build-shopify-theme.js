@@ -107,7 +107,14 @@ const transformBody = (html) => rewriteLinks(rewriteAssets(html));
 // permalink. The short form silently DROPS ?selling_plan= — verified against live
 // checkout, which returned "sellingPlan": null and billed the membership as a
 // one-time charge instead of a subscription. Only items[][selling_plan] attaches
-// the plan. return_to=/checkout keeps the one-tap, cart-free flow.
+// the plan.
+//
+// return_to=/cart (2026-09-01): buys land on the CART PAGE now, not straight on
+// checkout. The owner chose this after the straight-to-checkout flow made
+// "add socks to my day pass" impossible to recover once you'd left — Shopify's
+// checkout has no remove/add controls, so the cart page is the only place a
+// customer can review, combine, or drop items. The agreement gate rides on the
+// cart's Checkout button (see cart.liquid + main.js), so nothing skips it.
 function memberCta(prod, plan, label, idx, handle, text) {
   return (
     `{%- assign _v = blank -%}` +
@@ -115,7 +122,7 @@ function memberCta(prod, plan, label, idx, handle, text) {
     `{%- for v in ${prod}.variants -%}{%- if v.title contains '${label}' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}` +
     `{%- if _v == blank -%}{%- assign _v = ${prod}.variants[${idx}] -%}{%- endif -%}` +
     `{%- endif -%}` +
-    `<a class="$1" data-membership-buy href="/products/${handle}" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if ${plan} != blank %}&amp;items[][selling_plan]={{ ${plan} }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">${text}</a>`
+    `<a class="$1" data-membership-buy href="/products/${handle}" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if ${plan} != blank %}&amp;items[][selling_plan]={{ ${plan} }}{%- endif -%}&amp;return_to=/cart{%- endif -%}">${text}</a>`
   );
 }
 
@@ -151,18 +158,17 @@ function dayPassPrelude(withBanner) {
   return lines.join("\n");
 }
 
-// Point the Day Pass tier <option>s + buy button at real checkout permalinks.
+// Point the Day Pass tier <option>s + buy button at real add-to-cart URLs.
 // Each option carries data-daypass-opt="1|2|3"; we add data-href for its tier
-// variant. The buy button defaults to tier 1; dayPassPicker() in main.js copies
+// variant. The buy button defaults to tier 1; pricePickers() in main.js copies
 // the selected option's data-href onto the button as the dropdown changes.
 //
-// Same href / data-buy-href split as memberCta above: the permalink never sits in
-// href, so ctrl/middle/right-click "open in new tab" can't skip the agreement gate,
-// and a JS failure leaves a working product-page link rather than a dead button.
-// When the variant can't be resolved the permalink is empty and the plain
-// product-page href takes over.
+// return_to=/cart, same reasoning as memberCta: the buy lands on the cart page
+// for review, and the agreement gate rides on the cart's Checkout button.
+// (The old short /cart/{id}:1 permalink went straight to checkout — that's why
+// it's gone.) href still points at the product page as a JS-off fallback.
 function wireDayPass(html) {
-  const buy = (v) => `{%- if ${v} != blank -%}/cart/{{ ${v}.id }}:1{%- endif -%}`;
+  const buy = (v) => `{%- if ${v} != blank -%}/cart/add?items[][id]={{ ${v}.id }}&amp;items[][quantity]=1&amp;return_to=/cart{%- endif -%}`;
   return html
     .replace(/(<option [^>]*\bdata-daypass-opt="1"[^>]*)>/g, `$1 data-href="${buy("dp_v1")}">`)
     .replace(/(<option [^>]*\bdata-daypass-opt="2"[^>]*)>/g, `$1 data-href="${buy("dp_v2")}">`)
@@ -174,8 +180,8 @@ function wireDayPass(html) {
 }
 
 // Socks are one product, one variant, one price ($4.00 a pair). There are no
-// sizes, so the card's dropdown only chooses HOW MANY pairs — which the short
-// /cart/{variant}:{qty} permalink already carries. That keeps the Shopify side to
+// sizes, so the card's dropdown only chooses HOW MANY pairs — carried by the
+// quantity on the add-to-cart URL. That keeps the Shopify side to
 // a single product with no variants for the owner to maintain.
 //
 // Resolve 'socks' by exact handle first, then any handle containing 'sock', and
@@ -197,16 +203,16 @@ function socksPrelude() {
   ].join("\n");
 }
 
-// Point the socks quantity <option>s + buy button at real checkout permalinks.
+// Point the socks quantity <option>s + buy button at real add-to-cart URLs.
 // Each option carries data-socks-opt="1|2|3|4"; we add data-href with that many
 // pairs of the one variant. The button defaults to 1 pair; pricePickers() in
 // main.js copies the selected option's data-href onto it as the dropdown moves.
 //
-// Same href / data-buy-href split as the Day Pass: the permalink never sits in
-// href, so an open-in-new-tab can't walk past the agreement gate, and a JS
-// failure leaves a working product-page link rather than a dead button.
+// return_to=/cart like the Day Pass and memberships: socks ADD to whatever's
+// already in the cart (that's the whole point — a pair on top of the Day Pass)
+// and the customer reviews the combined order on the cart page.
 function wireSocks(html) {
-  const buy = (qty) => `{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:${qty}{%- endif -%}`;
+  const buy = (qty) => `{%- if socks_v != blank -%}/cart/add?items[][id]={{ socks_v.id }}&amp;items[][quantity]=${qty}&amp;return_to=/cart{%- endif -%}`;
   let out = html;
   for (const qty of [1, 2, 3, 4]) {
     out = out.replace(
@@ -220,11 +226,13 @@ function wireSocks(html) {
   );
 }
 
-// Commerce wiring: turn placeholder "buy" buttons into one-tap checkout links.
-// Every buy button skips the product page AND the cart, landing the customer
-// straight on Shopify checkout via a cart permalink. Handles below must match the
-// products you create; if a product/variant can't be resolved the link falls back
-// to its product page and a diagnostic banner appears, so nothing breaks pre-setup.
+// Commerce wiring: turn placeholder "buy" buttons into one-tap add-to-cart links.
+// Day Pass / membership / socks buys land on the CART PAGE to review + combine
+// (the agreement gate rides on its Checkout button); only the party buyout still
+// goes straight to checkout, because it's date-bound and single-purchase. Handles
+// below must match the products you create; if a product/variant can't be resolved
+// the link falls back to its product page and a diagnostic banner appears, so
+// nothing breaks pre-setup.
 function wireCommerce(html, key) {
   if (key === "memberships") {
     // Resilient lookup: try the exact handle first, then fall back to any
@@ -667,12 +675,10 @@ write(
           <a class="btn btn--lg btn--terracotta btn--pop" href="/pages/parties#booking">Check availability</a>
         {%- else -%}
         {%- form 'product', product, id: 'pdp-form' -%}
-          {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
-          <input type="hidden" name="return_to" value="/checkout">
+          {%- comment -%} Land on the cart page to review, matching the one-tap buy buttons; the agreement gate rides on the cart's Checkout button {%- endcomment -%}
+          <input type="hidden" name="return_to" value="/cart">
           {%- comment -%} Mirrors data-daypass-buy / data-membership-buy on the one-tap buttons: only day passes and memberships get the socks upsell, not socks' own PDP or the buyout. {%- endcomment -%}
           {%- if product.handle == 'day-pass' or product.handle contains 'membership' -%}<input type="hidden" data-pdp-offer-socks value="1">{%- endif -%}
-          {%- comment -%} Mirrors data-socks-buy: socks skip the cart-clear so they add onto a Day Pass/membership already in the cart, rather than wiping it (see gatedBuy in main.js). {%- endcomment -%}
-          {%- if product.handle contains 'sock' -%}<input type="hidden" data-pdp-skip-clear value="1">{%- endif -%}
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">
@@ -725,28 +731,144 @@ write(
 
 write(
   "templates/cart.liquid",
-  `<main class="section">
+  `{%- comment -%}
+  The order-review step. Day Pass / membership / socks buys all land here
+  (return_to=/cart on every buy URL) so a customer can combine items, fix
+  quantities, or drop something — Shopify's checkout itself has no cart
+  controls, which is why this page is in the flow at all. The Checkout button
+  carries name="checkout": main.js gates it behind the participant agreement
+  (stamp-without-clear path), so nothing reaches checkout ungated. Quantity
+  steppers and remove are plain /cart/change links — no JS required.
+{%- endcomment -%}
+<style>
+  .lt-cart{max-width:660px;margin:0 auto;padding:0 2px}
+  .lt-cart-card{background:var(--white,#fff);border:2px solid var(--ink,#3a3128);border-radius:var(--r-lg,20px);box-shadow:5px 5px 0 0 var(--ink,#3a3128);padding:clamp(1.1rem,3.5vw,1.7rem)}
+  .lt-cart-items{list-style:none;margin:1.6rem 0 0;padding:0}
+  .lt-cart-item{display:flex;gap:.95rem;align-items:center;padding:1.05rem 0;border-bottom:2px dashed rgba(58,49,40,.16)}
+  .lt-cart-item:first-child{padding-top:.2rem}
+  .lt-cart-item:last-child{border-bottom:0;padding-bottom:.2rem}
+  .lt-cart-thumb{width:60px;height:60px;flex:0 0 60px;border:2px solid var(--ink,#3a3128);border-radius:14px;background:var(--sun-tint,#fdf3dc);display:grid;place-items:center;overflow:hidden}
+  .lt-cart-thumb img{width:100%;height:100%;object-fit:cover}
+  .lt-cart-thumb img.lt-cart-ico{width:30px;height:30px;object-fit:contain}
+  .lt-cart-body{flex:1;min-width:0}
+  .lt-cart-name{font-weight:700;line-height:1.25}
+  .lt-cart-sub{display:block;font-size:.82rem;color:var(--ink-soft,#6f675b);margin-top:.15rem}
+  .lt-cart-line2{display:flex;align-items:center;gap:.8rem;margin-top:.55rem;flex-wrap:wrap}
+  .lt-cart-qty{display:inline-flex;align-items:center;gap:.15rem;border:2px solid var(--ink,#3a3128);border-radius:999px;padding:.1rem .3rem;background:var(--white,#fff)}
+  .lt-cart-step{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font-weight:700;font-size:1.05rem;color:var(--ink,#3a3128);text-decoration:none;line-height:1}
+  .lt-cart-step:hover{background:var(--sun-tint,#fdf3dc)}
+  .lt-cart-qty span{min-width:1.4ch;text-align:center;font-weight:700;font-size:.95rem}
+  .lt-cart-remove{font-size:.82rem;color:var(--ink-soft,#6f675b);text-decoration:underline;text-underline-offset:2px}
+  .lt-cart-remove:hover{color:var(--ink,#3a3128)}
+  .lt-cart-price{font-weight:700;white-space:nowrap;margin-left:auto;align-self:flex-start;padding-top:.15rem}
+  .lt-cart-addon{display:flex;gap:.9rem;align-items:center;margin-top:1.1rem;padding:.95rem 1.05rem;border:2px dashed var(--accent,#d9774e);border-radius:var(--r-md,16px);background:var(--terra-tint,#fbeee7)}
+  .lt-cart-addon-ic{width:44px;height:44px;flex:0 0 44px;border-radius:50%;background:var(--white,#fff);border:2px solid var(--ink,#3a3128);display:grid;place-items:center}
+  .lt-cart-addon-body{flex:1;min-width:0}
+  .lt-cart-addon-body strong{display:block;line-height:1.2}
+  .lt-cart-addon-body small{color:var(--ink-soft,#6f675b);line-height:1.35;display:block;margin-top:.1rem}
+  .lt-cart-addon .btn{padding:.55rem 1rem;font-size:.9rem;white-space:nowrap}
+  .lt-cart-summary{margin-top:1.4rem}
+  .lt-cart-total{display:flex;justify-content:space-between;align-items:baseline;font-size:1.05rem;padding-bottom:1rem;border-bottom:2px dashed rgba(58,49,40,.16);margin-bottom:1rem}
+  .lt-cart-total strong{font-size:1.45rem}
+  .lt-cart-note{font-size:.85rem;color:var(--ink-soft,#6f675b);margin:0 0 1rem;line-height:1.45}
+  .lt-cart-back{display:block;text-align:center;margin-top:1.3rem;font-weight:600;color:var(--ink-soft,#6f675b);text-decoration:none}
+  .lt-cart-back:hover{color:var(--ink,#3a3128);text-decoration:underline;text-underline-offset:3px}
+  .lt-cart-empty{text-align:center;padding:clamp(1.8rem,5vw,2.6rem)}
+  .lt-cart-empty-ic{width:72px;height:72px;border-radius:50%;background:var(--sun-tint,#fdf3dc);border:2px solid var(--ink,#3a3128);display:grid;place-items:center;margin:0 auto 1rem}
+  .lt-cart-empty h2{margin:0 0 .4rem}
+  .lt-cart-empty p{color:var(--ink-soft,#6f675b);margin:0 auto 1.3rem;max-width:34ch}
+  @media (max-width:430px){
+    .lt-cart-addon{flex-wrap:wrap}
+    .lt-cart-addon .btn{flex:1 1 100%}
+  }
+</style>
+<main class="section">
   <div class="container">
-    <div class="center reveal"><span class="eyebrow">Almost there</span><h1>Your cart</h1></div>
-    {%- if cart.item_count == 0 -%}
-      <p class="center" style="margin-top:1rem">Your cart is empty.</p>
-      <div class="flex-cta center" style="margin-top:1rem"><a class="btn btn--terracotta btn--lg" href="/collections/all">Browse passes</a></div>
-    {%- else -%}
-      {%- form 'cart', cart -%}
-        {%- for item in cart.items -%}
-          <div style="display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,.08)">
-            <div style="flex:1"><strong>{{ item.product.title }}</strong><br><small>{{ item.final_price | money }}</small></div>
-            <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity" style="width:64px;padding:.4rem">
-            <a href="{{ item.url_to_remove }}" aria-label="Remove">✕</a>
-          </div>
-        {%- endfor -%}
-        <p style="margin-top:1.2rem;text-align:right"><strong>Subtotal: {{ cart.total_price | money }}</strong></p>
-        <div class="flex-cta" style="justify-content:flex-end;margin-top:1rem">
-          <button class="btn btn--ghost" type="submit" name="update">Update</button>
-          <button class="btn btn--terracotta btn--lg btn--pop" type="submit" name="checkout">Checkout</button>
+    <div class="lt-cart">
+      <div class="center reveal">
+        <span class="eyebrow">Almost time to play</span>
+        <h1>Your <span class="hl">order</span></h1>
+      </div>
+
+      {%- if cart.item_count == 0 -%}
+      <div class="lt-cart-card lt-cart-empty reveal" style="margin-top:1.6rem">
+        <span class="lt-cart-empty-ic" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="34" height="34"></span>
+        <h2>Nothing in here yet!</h2>
+        <p>Grab a Day Pass for today's adventure, or a membership for all the days after.</p>
+        <div class="flex-cta" style="justify-content:center">
+          <a class="btn btn--terracotta btn--pop" href="/pages/play-pricing">Day passes</a>
+          <a class="btn btn--ghost" href="/pages/memberships">Memberships</a>
         </div>
-      {%- endform -%}
-    {%- endif -%}
+      </div>
+      {%- else -%}
+
+      <div class="lt-cart-card reveal" style="margin-top:1.6rem">
+        <ul class="lt-cart-items">
+          {%- for item in cart.items -%}
+          <li class="lt-cart-item">
+            {%- if item.image -%}
+              <span class="lt-cart-thumb"><img src="{{ item.image | image_url: width: 120 }}" alt="" width="60" height="60" loading="lazy"></span>
+            {%- elsif item.product.handle contains 'sock' -%}
+              <span class="lt-cart-thumb"><img class="lt-cart-ico" src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="30" height="30"></span>
+            {%- else -%}
+              <span class="lt-cart-thumb"><img class="lt-cart-ico" src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="30" height="30"></span>
+            {%- endif -%}
+            <div class="lt-cart-body">
+              <span class="lt-cart-name">{{ item.product.title }}</span>
+              {%- if item.variant.title != 'Default Title' -%}<span class="lt-cart-sub">{{ item.variant.title }}</span>{%- endif -%}
+              {%- if item.selling_plan_allocation -%}<span class="lt-cart-sub">{{ item.selling_plan_allocation.selling_plan.name }}</span>{%- endif -%}
+              {%- for p in item.properties -%}{%- unless p.last == blank or p.first == 'Agreement' -%}<span class="lt-cart-sub">{{ p.first }}: {{ p.last }}</span>{%- endunless -%}{%- endfor -%}
+              <div class="lt-cart-line2">
+                <span class="lt-cart-qty">
+                  <a class="lt-cart-step" href="/cart/change?line={{ forloop.index }}&amp;quantity={{ item.quantity | minus: 1 }}" aria-label="One fewer {{ item.product.title | escape }}">&minus;</a>
+                  <span aria-label="Quantity">{{ item.quantity }}</span>
+                  <a class="lt-cart-step" href="/cart/change?line={{ forloop.index }}&amp;quantity={{ item.quantity | plus: 1 }}" aria-label="One more {{ item.product.title | escape }}">+</a>
+                </span>
+                <a class="lt-cart-remove" href="{{ item.url_to_remove }}">Remove</a>
+              </div>
+            </div>
+            <span class="lt-cart-price">{{ item.final_line_price | money }}</span>
+          </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- comment -%} Socks add-on, right where they're reviewing the order —
+            the last easy chance to grab a pair. Hidden once socks are in the
+            cart (the stepper handles quantity from there) or if the product
+            isn't published. {%- endcomment -%}
+        {%- assign lt_c_socks = all_products['socks'] -%}
+        {%- if lt_c_socks == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'sock' -%}{%- assign lt_c_socks = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+        {%- assign lt_c_socks_v = blank -%}{%- if lt_c_socks != blank -%}{%- assign lt_c_socks_v = lt_c_socks.variants[0] -%}{%- endif -%}
+        {%- assign lt_has_socks = false -%}
+        {%- for item in cart.items -%}{%- if item.product.handle contains 'sock' -%}{%- assign lt_has_socks = true -%}{%- endif -%}{%- endfor -%}
+        {%- if lt_c_socks_v != blank and lt_has_socks == false -%}
+        <div class="lt-cart-addon">
+          <span class="lt-cart-addon-ic" aria-hidden="true"><img src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="24" height="24"></span>
+          <div class="lt-cart-addon-body">
+            <strong>Don't forget socks!</strong>
+            <small>Socks only on the play floor — {{ lt_c_socks_v.price | money }} a pair, ready for you at Little Town.</small>
+          </div>
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="id" value="{{ lt_c_socks_v.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="return_to" value="/cart">
+            <button class="btn btn--terracotta" type="submit">Add a pair</button>
+          </form>
+        </div>
+        {%- endif -%}
+
+        <div class="lt-cart-summary">
+          <div class="lt-cart-total"><span>Total</span><strong>{{ cart.total_price | money }}</strong></div>
+          <p class="lt-cart-note">Next you'll accept our participant agreement, then it's straight to secure checkout.</p>
+          {%- form 'cart', cart -%}
+            <button class="btn btn--block btn--terracotta btn--lg btn--pop" type="submit" name="checkout">Checkout &middot; {{ cart.total_price | money }}</button>
+          {%- endform -%}
+        </div>
+      </div>
+
+      <a class="lt-cart-back" href="/pages/play-pricing">&larr; Keep looking around</a>
+      {%- endif -%}
+    </div>
   </div>
 </main>
 `

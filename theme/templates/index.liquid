@@ -343,9 +343,9 @@
             <div class="cp-tier">
               <label class="cp-tier-label" for="daypass-tier-home">How many children are playing?</label>
               <select class="cp-tier-select" id="daypass-tier-home" data-daypass-select aria-label="Choose how many children are playing">
-                <option value="1" data-daypass-opt="1" data-price="$10" data-unit="for 1 child" data-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- endif -%}">1 child — $10</option>
-                <option value="2" data-daypass-opt="2" data-price="$18" data-unit="for 2 children" data-href="{%- if dp_v2 != blank -%}/cart/{{ dp_v2.id }}:1{%- endif -%}">2 children — $18</option>
-                <option value="3" data-daypass-opt="3" data-price="$25" data-unit="for 3+ children" data-href="{%- if dp_v3 != blank -%}/cart/{{ dp_v3.id }}:1{%- endif -%}">3 or more children — $25</option>
+                <option value="1" data-daypass-opt="1" data-price="$10" data-unit="for 1 child" data-href="{%- if dp_v1 != blank -%}/cart/add?items[][id]={{ dp_v1.id }}&amp;items[][quantity]=1&amp;return_to=/cart{%- endif -%}">1 child — $10</option>
+                <option value="2" data-daypass-opt="2" data-price="$18" data-unit="for 2 children" data-href="{%- if dp_v2 != blank -%}/cart/add?items[][id]={{ dp_v2.id }}&amp;items[][quantity]=1&amp;return_to=/cart{%- endif -%}">2 children — $18</option>
+                <option value="3" data-daypass-opt="3" data-price="$25" data-unit="for 3+ children" data-href="{%- if dp_v3 != blank -%}/cart/add?items[][id]={{ dp_v3.id }}&amp;items[][quantity]=1&amp;return_to=/cart{%- endif -%}">3 or more children — $25</option>
               </select>
             </div>
             <ul class="cp-list">
@@ -354,7 +354,7 @@
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Infants free entry — no pass needed</li>
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Grown-ups always free</li>
             </ul>
-            <a class="cp-cta" data-daypass-buy href="/products/day-pass" data-buy-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- endif -%}">Buy Day Pass</a>
+            <a class="cp-cta" data-daypass-buy href="/products/day-pass" data-buy-href="{%- if dp_v1 != blank -%}/cart/add?items[][id]={{ dp_v1.id }}&amp;items[][quantity]=1&amp;return_to=/cart{%- endif -%}">Buy Day Pass</a>
           </article>
 
           <!-- Membership (featured) -->

@@ -1,24 +1,140 @@
+{%- comment -%}
+  The order-review step. Day Pass / membership / socks buys all land here
+  (return_to=/cart on every buy URL) so a customer can combine items, fix
+  quantities, or drop something — Shopify's checkout itself has no cart
+  controls, which is why this page is in the flow at all. The Checkout button
+  carries name="checkout": main.js gates it behind the participant agreement
+  (stamp-without-clear path), so nothing reaches checkout ungated. Quantity
+  steppers and remove are plain /cart/change links — no JS required.
+{%- endcomment -%}
+<style>
+  .lt-cart{max-width:660px;margin:0 auto;padding:0 2px}
+  .lt-cart-card{background:var(--white,#fff);border:2px solid var(--ink,#3a3128);border-radius:var(--r-lg,20px);box-shadow:5px 5px 0 0 var(--ink,#3a3128);padding:clamp(1.1rem,3.5vw,1.7rem)}
+  .lt-cart-items{list-style:none;margin:1.6rem 0 0;padding:0}
+  .lt-cart-item{display:flex;gap:.95rem;align-items:center;padding:1.05rem 0;border-bottom:2px dashed rgba(58,49,40,.16)}
+  .lt-cart-item:first-child{padding-top:.2rem}
+  .lt-cart-item:last-child{border-bottom:0;padding-bottom:.2rem}
+  .lt-cart-thumb{width:60px;height:60px;flex:0 0 60px;border:2px solid var(--ink,#3a3128);border-radius:14px;background:var(--sun-tint,#fdf3dc);display:grid;place-items:center;overflow:hidden}
+  .lt-cart-thumb img{width:100%;height:100%;object-fit:cover}
+  .lt-cart-thumb img.lt-cart-ico{width:30px;height:30px;object-fit:contain}
+  .lt-cart-body{flex:1;min-width:0}
+  .lt-cart-name{font-weight:700;line-height:1.25}
+  .lt-cart-sub{display:block;font-size:.82rem;color:var(--ink-soft,#6f675b);margin-top:.15rem}
+  .lt-cart-line2{display:flex;align-items:center;gap:.8rem;margin-top:.55rem;flex-wrap:wrap}
+  .lt-cart-qty{display:inline-flex;align-items:center;gap:.15rem;border:2px solid var(--ink,#3a3128);border-radius:999px;padding:.1rem .3rem;background:var(--white,#fff)}
+  .lt-cart-step{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font-weight:700;font-size:1.05rem;color:var(--ink,#3a3128);text-decoration:none;line-height:1}
+  .lt-cart-step:hover{background:var(--sun-tint,#fdf3dc)}
+  .lt-cart-qty span{min-width:1.4ch;text-align:center;font-weight:700;font-size:.95rem}
+  .lt-cart-remove{font-size:.82rem;color:var(--ink-soft,#6f675b);text-decoration:underline;text-underline-offset:2px}
+  .lt-cart-remove:hover{color:var(--ink,#3a3128)}
+  .lt-cart-price{font-weight:700;white-space:nowrap;margin-left:auto;align-self:flex-start;padding-top:.15rem}
+  .lt-cart-addon{display:flex;gap:.9rem;align-items:center;margin-top:1.1rem;padding:.95rem 1.05rem;border:2px dashed var(--accent,#d9774e);border-radius:var(--r-md,16px);background:var(--terra-tint,#fbeee7)}
+  .lt-cart-addon-ic{width:44px;height:44px;flex:0 0 44px;border-radius:50%;background:var(--white,#fff);border:2px solid var(--ink,#3a3128);display:grid;place-items:center}
+  .lt-cart-addon-body{flex:1;min-width:0}
+  .lt-cart-addon-body strong{display:block;line-height:1.2}
+  .lt-cart-addon-body small{color:var(--ink-soft,#6f675b);line-height:1.35;display:block;margin-top:.1rem}
+  .lt-cart-addon .btn{padding:.55rem 1rem;font-size:.9rem;white-space:nowrap}
+  .lt-cart-summary{margin-top:1.4rem}
+  .lt-cart-total{display:flex;justify-content:space-between;align-items:baseline;font-size:1.05rem;padding-bottom:1rem;border-bottom:2px dashed rgba(58,49,40,.16);margin-bottom:1rem}
+  .lt-cart-total strong{font-size:1.45rem}
+  .lt-cart-note{font-size:.85rem;color:var(--ink-soft,#6f675b);margin:0 0 1rem;line-height:1.45}
+  .lt-cart-back{display:block;text-align:center;margin-top:1.3rem;font-weight:600;color:var(--ink-soft,#6f675b);text-decoration:none}
+  .lt-cart-back:hover{color:var(--ink,#3a3128);text-decoration:underline;text-underline-offset:3px}
+  .lt-cart-empty{text-align:center;padding:clamp(1.8rem,5vw,2.6rem)}
+  .lt-cart-empty-ic{width:72px;height:72px;border-radius:50%;background:var(--sun-tint,#fdf3dc);border:2px solid var(--ink,#3a3128);display:grid;place-items:center;margin:0 auto 1rem}
+  .lt-cart-empty h2{margin:0 0 .4rem}
+  .lt-cart-empty p{color:var(--ink-soft,#6f675b);margin:0 auto 1.3rem;max-width:34ch}
+  @media (max-width:430px){
+    .lt-cart-addon{flex-wrap:wrap}
+    .lt-cart-addon .btn{flex:1 1 100%}
+  }
+</style>
 <main class="section">
   <div class="container">
-    <div class="center reveal"><span class="eyebrow">Almost there</span><h1>Your cart</h1></div>
-    {%- if cart.item_count == 0 -%}
-      <p class="center" style="margin-top:1rem">Your cart is empty.</p>
-      <div class="flex-cta center" style="margin-top:1rem"><a class="btn btn--terracotta btn--lg" href="/collections/all">Browse passes</a></div>
-    {%- else -%}
-      {%- form 'cart', cart -%}
-        {%- for item in cart.items -%}
-          <div style="display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,.08)">
-            <div style="flex:1"><strong>{{ item.product.title }}</strong><br><small>{{ item.final_price | money }}</small></div>
-            <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity" style="width:64px;padding:.4rem">
-            <a href="{{ item.url_to_remove }}" aria-label="Remove">✕</a>
-          </div>
-        {%- endfor -%}
-        <p style="margin-top:1.2rem;text-align:right"><strong>Subtotal: {{ cart.total_price | money }}</strong></p>
-        <div class="flex-cta" style="justify-content:flex-end;margin-top:1rem">
-          <button class="btn btn--ghost" type="submit" name="update">Update</button>
-          <button class="btn btn--terracotta btn--lg btn--pop" type="submit" name="checkout">Checkout</button>
+    <div class="lt-cart">
+      <div class="center reveal">
+        <span class="eyebrow">Almost time to play</span>
+        <h1>Your <span class="hl">order</span></h1>
+      </div>
+
+      {%- if cart.item_count == 0 -%}
+      <div class="lt-cart-card lt-cart-empty reveal" style="margin-top:1.6rem">
+        <span class="lt-cart-empty-ic" aria-hidden="true"><img src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="34" height="34"></span>
+        <h2>Nothing in here yet!</h2>
+        <p>Grab a Day Pass for today's adventure, or a membership for all the days after.</p>
+        <div class="flex-cta" style="justify-content:center">
+          <a class="btn btn--terracotta btn--pop" href="/pages/play-pricing">Day passes</a>
+          <a class="btn btn--ghost" href="/pages/memberships">Memberships</a>
         </div>
-      {%- endform -%}
-    {%- endif -%}
+      </div>
+      {%- else -%}
+
+      <div class="lt-cart-card reveal" style="margin-top:1.6rem">
+        <ul class="lt-cart-items">
+          {%- for item in cart.items -%}
+          <li class="lt-cart-item">
+            {%- if item.image -%}
+              <span class="lt-cart-thumb"><img src="{{ item.image | image_url: width: 120 }}" alt="" width="60" height="60" loading="lazy"></span>
+            {%- elsif item.product.handle contains 'sock' -%}
+              <span class="lt-cart-thumb"><img class="lt-cart-ico" src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="30" height="30"></span>
+            {%- else -%}
+              <span class="lt-cart-thumb"><img class="lt-cart-ico" src="{{ 'icon-ticket.svg' | asset_url }}" alt="" width="30" height="30"></span>
+            {%- endif -%}
+            <div class="lt-cart-body">
+              <span class="lt-cart-name">{{ item.product.title }}</span>
+              {%- if item.variant.title != 'Default Title' -%}<span class="lt-cart-sub">{{ item.variant.title }}</span>{%- endif -%}
+              {%- if item.selling_plan_allocation -%}<span class="lt-cart-sub">{{ item.selling_plan_allocation.selling_plan.name }}</span>{%- endif -%}
+              {%- for p in item.properties -%}{%- unless p.last == blank or p.first == 'Agreement' -%}<span class="lt-cart-sub">{{ p.first }}: {{ p.last }}</span>{%- endunless -%}{%- endfor -%}
+              <div class="lt-cart-line2">
+                <span class="lt-cart-qty">
+                  <a class="lt-cart-step" href="/cart/change?line={{ forloop.index }}&amp;quantity={{ item.quantity | minus: 1 }}" aria-label="One fewer {{ item.product.title | escape }}">&minus;</a>
+                  <span aria-label="Quantity">{{ item.quantity }}</span>
+                  <a class="lt-cart-step" href="/cart/change?line={{ forloop.index }}&amp;quantity={{ item.quantity | plus: 1 }}" aria-label="One more {{ item.product.title | escape }}">+</a>
+                </span>
+                <a class="lt-cart-remove" href="{{ item.url_to_remove }}">Remove</a>
+              </div>
+            </div>
+            <span class="lt-cart-price">{{ item.final_line_price | money }}</span>
+          </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- comment -%} Socks add-on, right where they're reviewing the order —
+            the last easy chance to grab a pair. Hidden once socks are in the
+            cart (the stepper handles quantity from there) or if the product
+            isn't published. {%- endcomment -%}
+        {%- assign lt_c_socks = all_products['socks'] -%}
+        {%- if lt_c_socks == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'sock' -%}{%- assign lt_c_socks = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+        {%- assign lt_c_socks_v = blank -%}{%- if lt_c_socks != blank -%}{%- assign lt_c_socks_v = lt_c_socks.variants[0] -%}{%- endif -%}
+        {%- assign lt_has_socks = false -%}
+        {%- for item in cart.items -%}{%- if item.product.handle contains 'sock' -%}{%- assign lt_has_socks = true -%}{%- endif -%}{%- endfor -%}
+        {%- if lt_c_socks_v != blank and lt_has_socks == false -%}
+        <div class="lt-cart-addon">
+          <span class="lt-cart-addon-ic" aria-hidden="true"><img src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="24" height="24"></span>
+          <div class="lt-cart-addon-body">
+            <strong>Don't forget socks!</strong>
+            <small>Socks only on the play floor — {{ lt_c_socks_v.price | money }} a pair, ready for you at Little Town.</small>
+          </div>
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="id" value="{{ lt_c_socks_v.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="return_to" value="/cart">
+            <button class="btn btn--terracotta" type="submit">Add a pair</button>
+          </form>
+        </div>
+        {%- endif -%}
+
+        <div class="lt-cart-summary">
+          <div class="lt-cart-total"><span>Total</span><strong>{{ cart.total_price | money }}</strong></div>
+          <p class="lt-cart-note">Next you'll accept our participant agreement, then it's straight to secure checkout.</p>
+          {%- form 'cart', cart -%}
+            <button class="btn btn--block btn--terracotta btn--lg btn--pop" type="submit" name="checkout">Checkout &middot; {{ cart.total_price | money }}</button>
+          {%- endform -%}
+        </div>
+      </div>
+
+      <a class="lt-cart-back" href="/pages/play-pricing">&larr; Keep looking around</a>
+      {%- endif -%}
+    </div>
   </div>
 </main>
