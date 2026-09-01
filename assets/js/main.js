@@ -1137,6 +1137,8 @@
 
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    var dragEndedAt = 0;
+
     /* ---- click a photo to see it big ---- */
     var lb = null, lastFocus = null, hideTimer = 0;
 
@@ -1237,56 +1239,166 @@
       btn.className = "lt-flow-open";
       btn.setAttribute("aria-label", label ? "See larger: " + label : "See this photo larger");
       fig.appendChild(btn);
-      btn.addEventListener("click", function () { openLb(fig); });
+      btn.addEventListener("click", function (e) {
+        /* Swallow the click that ends a drag, so dragging past a photo does
+           not open it. */
+        if (dragEndedAt && Date.now() - dragEndedAt < 350) { e.preventDefault(); return; }
+        openLb(fig);
+      });
     });
 
     if (reduce) return;   /* leave it as a row the visitor scrolls themselves */
 
-    /* ---- the continuous flow ---- */
-    var clone = null;
+    /* ---- the continuous flow ----
+       The strip is a real scroll container and the flow is this loop nudging
+       scrollLeft. A CSS transform animation cannot share an element with
+       native scrolling, and being able to grab, swipe or wheel through the
+       photos is worth more than putting the movement on the compositor.
+
+       Three copies of the list, parked on the middle one: that leaves a whole
+       copy of runway in each direction, so scrolling either way wraps instead
+       of hitting a wall. */
+    var COPIES = 3;
+    var span = 0;          /* width of one copy, the wrap distance */
+    var running = false;
+    var idleUntil = 0;     /* pause auto-flow until this timestamp */
+    var selfSet = -1;      /* the scrollLeft we last wrote, to spot user scrolls */
+    var raf = 0, last = 0;
 
     function measure() {
-      /* Width of one copy, including the gap that follows its last item. */
-      var span = 0;
-      for (var i = 0; i < originals.length; i++) span += originals[i].getBoundingClientRect().width;
-      var styles = window.getComputedStyle(track);
-      var gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
-      span += gap * originals.length;
-      return span;
+      var w = 0;
+      for (var i = 0; i < originals.length; i++) w += originals[i].getBoundingClientRect().width;
+      var st = window.getComputedStyle(track);
+      var gap = parseFloat(st.columnGap || st.gap || "0") || 0;
+      return w + gap * originals.length;
     }
 
-    function apply() {
-      var span = measure();
+    function setScroll(x) {
+      root.scrollLeft = x;
+      selfSet = root.scrollLeft;
+    }
+
+    /* Keep the viewport inside the middle copy so there is always a full copy
+       of content on either side. The jump is exactly one copy, and the copies
+       are identical, so it is invisible. */
+    function wrap() {
       if (!span) return;
-      root.style.setProperty("--lt-flow-span", span + "px");
-      root.style.setProperty("--lt-flow-secs", Math.max(20, Math.round(span / PX_PER_SECOND)) + "s");
+      if (root.scrollLeft >= span * 2) setScroll(root.scrollLeft - span);
+      else if (root.scrollLeft < span) setScroll(root.scrollLeft + span);
+    }
+
+    function frame(now) {
+      raf = window.requestAnimationFrame(frame);
+      var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
+      last = now;
+      if (!running || !span) return;
+      if (now < idleUntil) return;
+      setScroll(root.scrollLeft + PX_PER_SECOND * dt);
+      wrap();
+    }
+
+    function start() {
+      if (raf) return;
+      last = 0;
+      raf = window.requestAnimationFrame(frame);
+    }
+    function stop() {
+      if (!raf) return;
+      window.cancelAnimationFrame(raf);
+      raf = 0;
+    }
+
+    /* Hold the flow while someone is looking, then let it drift on again. */
+    function hold(ms) { idleUntil = Math.max(idleUntil, performance.now() + (ms || 1400)); }
+
+    root.addEventListener("pointerenter", function () { hold(1e9); });
+    root.addEventListener("pointerleave", function () { idleUntil = 0; });
+    root.addEventListener("focusin", function () { hold(1e9); });
+    root.addEventListener("focusout", function () { idleUntil = 0; });
+
+    /* Any scroll the visitor caused pauses the drift briefly, so it never
+       fights a swipe or a wheel. */
+    root.addEventListener("scroll", function () {
+      if (Math.abs(root.scrollLeft - selfSet) > 2) { hold(); wrap(); }
+    }, { passive: true });
+    root.addEventListener("wheel", function () { hold(); }, { passive: true });
+    root.addEventListener("touchstart", function () { hold(); }, { passive: true });
+    root.addEventListener("touchend", function () { hold(); }, { passive: true });
+
+    /* Grab and drag with a mouse — there is no visible scrollbar, so without
+       this a desktop visitor has no way to move it by hand. */
+    var drag = null;
+    root.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      drag = { id: e.pointerId, x: e.clientX, left: root.scrollLeft, moved: 0 };
+      hold(1e9);
+    });
+    root.addEventListener("pointermove", function (e) {
+      if (!drag || drag.id !== e.pointerId) return;
+      var dx = e.clientX - drag.x;
+      drag.moved = Math.max(drag.moved, Math.abs(dx));
+      if (drag.moved > 4 && !root.classList.contains("is-dragging")) {
+        root.classList.add("is-dragging");
+        try { root.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      if (!root.classList.contains("is-dragging")) return;
+      setScroll(drag.left - dx);
+      wrap();
+    });
+    function endDrag(e) {
+      if (!drag || (e && e.pointerId != null && drag.id !== e.pointerId)) return;
+      var wasDrag = root.classList.contains("is-dragging");
+      if (wasDrag) { try { root.releasePointerCapture(drag.id); } catch (err) {} }
+      drag = null;
+      root.classList.remove("is-dragging");
+      /* A real drag must not also count as a click on the photo underneath. */
+      if (wasDrag) { dragEndedAt = Date.now(); hold(); }
+    }
+    root.addEventListener("pointerup", endDrag);
+    root.addEventListener("pointercancel", endDrag);
+
+    /* Nothing to animate while the tab is in the background. */
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    function apply() {
+      var s = measure();
+      if (!s) return;
+      span = s;
+      wrap();
     }
 
     function build() {
-      if (!clone) {
+      if (!running) {
         var frag = document.createDocumentFragment();
-        originals.forEach(function (li) {
-          var c = li.cloneNode(true);
-          c.setAttribute("aria-hidden", "true");
-          /* A clone must never be reachable by keyboard or read aloud —
-             otherwise the gallery announces twelve photos twice. */
-          var b = c.querySelector(".lt-flow-open");
-          if (b) b.parentNode.removeChild(b);
-          Array.prototype.forEach.call(c.querySelectorAll("img"), function (im) {
-            im.setAttribute("aria-hidden", "true");
-            im.setAttribute("alt", "");
+        for (var c = 1; c < COPIES; c++) {
+          originals.forEach(function (li) {
+            var cl = li.cloneNode(true);
+            cl.setAttribute("aria-hidden", "true");
+            /* A clone must never be reachable by keyboard or read aloud —
+               otherwise the gallery announces every photo three times. */
+            var b = cl.querySelector(".lt-flow-open");
+            if (b) b.parentNode.removeChild(b);
+            Array.prototype.forEach.call(cl.querySelectorAll("img"), function (im) {
+              im.setAttribute("aria-hidden", "true");
+              im.setAttribute("alt", "");
+            });
+            frag.appendChild(cl);
           });
-          frag.appendChild(c);
-        });
-        clone = true;
+        }
         track.appendChild(frag);
+        running = true;
       }
-      apply();
       root.classList.add("is-live");
+      span = measure();
+      /* Park on the middle copy so there is runway in both directions. */
+      setScroll(span);
+      start();
     }
 
-    /* Wait for the leading images, or the measured width is wrong and the
-       loop visibly jumps on the first repeat. */
+    /* Wait for the leading images, or the copy width is measured wrong and the
+       wrap lands in the wrong place. */
     var leading = Array.prototype.slice.call(track.querySelectorAll("img")).slice(0, 4);
     var pending = leading.filter(function (im) { return !im.complete; });
     if (!pending.length) build();
@@ -1298,7 +1410,7 @@
         im.addEventListener("error", done, { once: true });
       });
       /* Never let a stuck image keep the strip from ever starting. */
-      window.setTimeout(function () { if (!root.classList.contains("is-live")) build(); }, 2500);
+      window.setTimeout(function () { if (!running) build(); }, 2500);
     }
 
     var rt;

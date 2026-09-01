@@ -360,7 +360,7 @@
 }
 
 .lt-flow::-webkit-scrollbar { display: none; }
-.lt-flow.is-live { overflow: hidden; }
+
 
 .lt-flow-track {
   display: flex;
@@ -409,23 +409,22 @@
 }
 .lt-flow-open:focus-visible { outline: 3px solid var(--accent, #d9774e); outline-offset: -4px; }
 
-/* ---- the motion ---- */
-.lt-flow.is-live .lt-flow-track {
-  overflow: visible;
-  animation: lt-flow-slide var(--lt-flow-secs, 60s) linear infinite;
-  will-change: transform;
+/* ---- the motion ----
+   The strip is a real scroll container that scrolls itself. Auto-flow is JS
+   nudging scrollLeft each frame rather than a CSS transform, because a
+   transform animation and native scrolling cannot share the same element —
+   and being able to grab, swipe or wheel through the photos matters more
+   than getting the movement onto the compositor. */
+.lt-flow.is-live {
+  cursor: grab;
+  overscroll-behavior-x: contain;
 }
-@keyframes lt-flow-slide {
-  from { transform: translate3d(0, 0, 0); }
-  /* One full copy of the list. The clone that follows takes its place
-     at exactly the moment it resets, so the loop is seamless. */
-  to   { transform: translate3d(calc(-1 * var(--lt-flow-span, 50%)), 0, 0); }
+.lt-flow.is-live.is-dragging {
+  cursor: grabbing;
+  /* Kill snapping and text selection mid-drag. */
+  user-select: none;
 }
-/* Slow right down rather than stopping dead, so it never feels broken. */
-.lt-flow.is-live:hover .lt-flow-track,
-.lt-flow.is-live:focus-within .lt-flow-track {
-  animation-play-state: paused;
-}
+.lt-flow.is-live .lt-flow-track { overflow: visible; }
 
 @media (min-width: 1500px) { .lt-flow { --lt-row: 440px; } }
 @media (max-width: 899px)  { .lt-flow { --lt-row: 300px; } }
@@ -436,10 +435,10 @@
 /* Reduced motion: no auto-scroll at all. The row stays a plain scrollable
    strip the visitor moves themselves. */
 @media (prefers-reduced-motion: reduce) {
-  .lt-flow, .lt-flow.is-live { overflow-x: auto; }
-  .lt-flow.is-live .lt-flow-track { animation: none; }
+  /* Nothing moves on its own; the row is still there to be scrolled. */
   .lt-flow { scroll-snap-type: x proximity; }
   .lt-flow-item { scroll-snap-align: center; }
+  .lt-flow.is-live { cursor: default; }
 }
 
 /* ---- lightbox ---- */
