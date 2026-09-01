@@ -238,10 +238,13 @@
   /* Take the rest of the page out of the tab order + the a11y tree while the
      dialog is open, so a screen reader can't wander behind it. Each sibling's
      previous state is stashed and restored — the mobile drawer manages its own
-     aria-hidden/inert, and we must not stomp on it. */
-  function setBackgroundInert(on) {
+     aria-hidden/inert, and we must not stomp on it. `modalEl` defaults to the
+     agreement dialog; the socks upsell (a second, separate dialog) passes
+     itself so it isn't the one hidden from itself. */
+  function setBackgroundInert(on, modalEl) {
+    var skip = modalEl || agreeEl;
     Array.prototype.forEach.call(document.body.children, function (child) {
-      if (child === agreeEl) return;
+      if (child === skip) return;
       if (on) {
         child.__agreeAria = child.getAttribute("aria-hidden");
         child.__agreeInert = !!child.inert;
@@ -296,6 +299,138 @@
       try { agreeLastFocus.focus({ preventScroll: true }); } catch (e) { agreeLastFocus.focus(); }
     }
     agreeLastFocus = null;
+  }
+
+  /* ============================================================
+     "Don't forget socks!" upsell
+     ------------------------------------------------------------
+     Fires once, right after the agreement is accepted, for Day Pass and
+     membership buys only (data-daypass-buy / data-membership-buy — set by
+     gateEveryBuy below). A separate dialog from the agreement box, reusing its
+     .lt-agree* styling so it doesn't need its own CSS, but its own element:
+     the two can't be the same instance since one leads straight into the
+     other on the same click.
+
+     Skipping (Esc, backdrop, "No thanks") and adding both resolve with a
+     quantity — 0 for skip — so the caller always gets a definite answer and
+     never hangs waiting on a dialog the customer walked away from.
+
+     If the socks product isn't published yet (LT_SOCKS_VARIANT_ID is null,
+     set in layout/theme.liquid), the upsell is skipped entirely rather than
+     offering something that can't reach checkout. ============================================================ */
+
+  var upsellEl = null;
+  var upsellAccept = null;   // function(qty) — run once, on skip or add
+  var upsellLastFocus = null;
+
+  function buildUpsellModal() {
+    var base = parseFloat(window.LT_SOCKS_PRICE) || 4.00;
+    var opts = [1, 2, 3, 4].map(function (n) {
+      var price = (base * n).toFixed(2);
+      return '<option value="' + n + '"' + (n === 1 ? " selected" : "") + ">" +
+        n + (n === 1 ? " pair" : " pairs") + " — $" + price + "</option>";
+    }).join("");
+
+    var el = document.createElement("div");
+    el.className = "lt-agree lt-upsell";
+    el.hidden = true;
+    el.innerHTML =
+      '<div class="lt-agree__backdrop" data-upsell-skip></div>' +
+      '<div class="lt-agree__box" role="dialog" aria-modal="true" aria-labelledby="lt-upsell-title" tabindex="-1">' +
+        '<button type="button" class="lt-agree__x" data-upsell-skip aria-label="Close">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+        "</button>" +
+        '<h2 class="lt-agree__title" id="lt-upsell-title">Don’t forget socks!</h2>' +
+        '<p class="lt-agree__intro">Socks only on the play floor, no shoes allowed. Add a pair or two now and skip the trip back out to the car.</p>' +
+        '<div class="cp-tier" style="margin:0 0 1.1rem">' +
+          '<label class="cp-tier-label" for="upsell-qty">How many pairs?</label>' +
+          '<select class="cp-tier-select" id="upsell-qty" data-upsell-qty>' + opts + "</select>" +
+        "</div>" +
+        '<div class="lt-agree__actions">' +
+          '<button type="button" class="btn btn--block btn--coral btn--pop" data-upsell-add>Add socks &amp; continue</button>' +
+          '<button type="button" class="lt-agree__cancel" data-upsell-skip>No thanks, just checkout</button>' +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(el);
+
+    el.querySelectorAll("[data-upsell-skip]").forEach(function (b) {
+      b.addEventListener("click", function () { closeUpsell(0, true); });
+    });
+    el.querySelector("[data-upsell-add]").addEventListener("click", function () {
+      var qty = parseInt(el.querySelector("[data-upsell-qty]").value, 10) || 0;
+      closeUpsell(qty, false);
+    });
+
+    // Esc cancels (= skip); Tab is trapped inside the dialog while it's open —
+    // same pattern as the agreement box above.
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); closeUpsell(0, true); return; }
+      if (e.key !== "Tab") return;
+      var f = el.querySelectorAll('a[href], button:not([disabled]), select, input:not([disabled])');
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      var at = document.activeElement;
+      var onAControl = Array.prototype.indexOf.call(f, at) !== -1;
+      if (!onAControl) { e.preventDefault(); (e.shiftKey ? last : first).focus(); return; }
+      if (e.shiftKey && at === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && at === last) { e.preventDefault(); first.focus(); }
+    });
+
+    return el;
+  }
+
+  function openUpsell(onDone, force) {
+    if (!force && !window.LT_SOCKS_VARIANT_ID) { onDone(0); return; }
+    if (!upsellEl) upsellEl = buildUpsellModal();
+    upsellAccept = onDone;
+    upsellLastFocus = document.activeElement;
+    upsellEl.querySelector("[data-upsell-qty]").value = "1";
+
+    upsellEl.hidden = false;
+    setBackgroundInert(true, upsellEl);
+    requestAnimationFrame(function () { upsellEl.classList.add("is-open"); });
+    var gap = window.innerWidth - document.documentElement.clientWidth;
+    if (gap > 0) document.documentElement.style.paddingRight = gap + "px";
+    document.documentElement.classList.add("agree-open");
+    var dialog = upsellEl.querySelector(".lt-agree__box");
+    try { dialog.focus({ preventScroll: true }); } catch (e) { dialog.focus(); }
+  }
+
+  function closeUpsell(qty, returnFocus) {
+    if (!upsellEl || upsellEl.hidden) return;
+    var run = upsellAccept;
+    upsellAccept = null;
+    upsellEl.classList.remove("is-open");
+    document.documentElement.classList.remove("agree-open");
+    document.documentElement.style.paddingRight = "";
+    upsellEl.hidden = true;
+    setBackgroundInert(false, upsellEl);
+    if (returnFocus && upsellLastFocus && upsellLastFocus.focus) {
+      try { upsellLastFocus.focus({ preventScroll: true }); } catch (e) { upsellLastFocus.focus(); }
+    }
+    upsellLastFocus = null;
+    if (run) run(qty);
+  }
+
+  /* Add `qty` pairs of socks to the cart (already-cleared by this point), then
+     continue. Runs AFTER clearCartThenGo and BEFORE the day-pass/membership
+     item is added, so both land in the same cart — permalinks and /cart/add
+     merge into whatever's already there rather than replacing it (see
+     clearCartThenGo above). qty 0 (skipped, or socks unavailable) is a no-op.
+     Fails open on its own deadline, same as the other cart writes here: a
+     stalled upsell add must never block the sale the customer already agreed to. */
+  function addSocksThenGo(qty, cb) {
+    if (!qty || !window.LT_SOCKS_VARIANT_ID) { cb(); return; }
+    var done = false;
+    function once() { if (done) return; done = true; cb(); }
+    setTimeout(once, 1200);
+    try {
+      fetch("/cart/add.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: window.LT_SOCKS_VARIANT_ID, quantity: qty })
+      }).then(once, once);
+    } catch (e) { once(); }
   }
 
   /* Write the acceptance onto the order, then continue. The line-item property
@@ -354,16 +489,26 @@
     });
   }
 
-  /* The one entry point every buy path uses: agree -> empty the cart -> stamp
-     the acceptance -> go. `form` is the form being submitted, or null for the
-     one-tap permalink links. */
-  function gatedBuy(form, go) {
+  /* The one entry point every buy path uses: agree -> (Day Pass/membership
+     only: offer socks) -> empty the cart -> add any socks -> stamp the
+     acceptance -> go. `form` is the form being submitted, or null for the
+     one-tap permalink links. `offerSocks` gates the upsell dialog — only the
+     Day Pass and membership buy paths pass it true (see gateEveryBuy below);
+     everything else (parties, socks' own buy button, the safety-net permalink
+     handler) proceeds straight through as before. */
+  function gatedBuy(form, go, offerSocks) {
     if (buyInFlight) return;
     openAgree(function () {
       if (buyInFlight) return;   // double-tap landed while the agreement was open
-      buyInFlight = true;
-      lockBuyControls();
-      clearCartThenGo(function () { stampAgreementThenGo(form, go); });
+      function proceed(sockQty) {
+        if (buyInFlight) return;   // could also land while the upsell was open
+        buyInFlight = true;
+        lockBuyControls();
+        clearCartThenGo(function () {
+          addSocksThenGo(sockQty, function () { stampAgreementThenGo(form, go); });
+        });
+      }
+      if (offerSocks) openUpsell(proceed); else proceed(0);
     });
   }
 
@@ -655,7 +800,10 @@
         var href = a.getAttribute("data-buy-href");
         if (!href) return;
         e.preventDefault();
-        gatedBuy(null, function () { window.location.href = href; });
+        // Day Pass and membership buys offer the socks upsell right after the
+        // agreement; socks' own buy button obviously doesn't upsell itself.
+        var offerSocks = a.hasAttribute("data-daypass-buy") || a.hasAttribute("data-membership-buy");
+        gatedBuy(null, function () { window.location.href = href; }, offerSocks);
       });
     });
 
@@ -679,7 +827,10 @@
     if (pdp) {
       pdp.addEventListener("submit", function (e) {
         e.preventDefault();
-        gatedBuy(pdp, function () { pdp.submit(); });
+        // data-pdp-offer-socks is only rendered for the day-pass/membership
+        // products (see product.liquid) — not socks' own PDP or the buyout.
+        var offerSocks = !!pdp.querySelector("[data-pdp-offer-socks]");
+        gatedBuy(pdp, function () { pdp.submit(); }, offerSocks);
       });
     }
 
@@ -722,8 +873,18 @@
        Agreeing just closes the box — on the real site that's the moment the
        browser leaves for Shopify checkout. openAgree (not gatedBuy) on purpose:
        there's no cart to clear or stamp here. */
-    document.querySelectorAll("[data-noop][data-daypass-buy], [data-noop][data-socks-buy], [data-noop][data-tier]").forEach(function (btn) {
+    document.querySelectorAll("[data-noop][data-socks-buy]").forEach(function (btn) {
       btn.addEventListener("click", function () { openAgree(function () {}); });
+    });
+
+    /* Day Pass and membership demo buttons also preview the socks upsell that
+       follows the agreement on the real site — force:true skips the
+       LT_SOCKS_VARIANT_ID check (unset here; there's no Shopify behind the
+       static preview) so the popup is reviewable without a live product. */
+    document.querySelectorAll("[data-noop][data-daypass-buy], [data-noop][data-tier]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openAgree(function () { openUpsell(function () {}, true); });
+      });
     });
   })();
 

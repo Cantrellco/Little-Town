@@ -37,6 +37,8 @@
         {%- form 'product', product, id: 'pdp-form' -%}
           {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
           <input type="hidden" name="return_to" value="/checkout">
+          {%- comment -%} Mirrors data-daypass-buy / data-membership-buy on the one-tap buttons: only day passes and memberships get the socks upsell, not socks' own PDP or the buyout. {%- endcomment -%}
+          {%- if product.handle == 'day-pass' or product.handle contains 'membership' -%}<input type="hidden" data-pdp-offer-socks value="1">{%- endif -%}
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">

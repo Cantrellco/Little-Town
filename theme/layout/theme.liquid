@@ -48,6 +48,22 @@
   {% section 'header' %}
   {{ content_for_layout }}
   {% section 'footer' %}
+  {%- comment -%}
+    Site-wide socks lookup, for the "Don't forget socks!" upsell that fires
+    after the agreement is accepted on a Day Pass or membership buy (see
+    data-daypass-buy / data-membership-buy in main.js). Lives here rather than
+    in socksPrelude() (which only runs on Play & Pricing) so the upsell also
+    works from the home page's Day Pass card and from Memberships. A blank
+    variant id means the socks product isn't published yet; main.js skips the
+    upsell in that case rather than offering something it can't sell.
+  {%- endcomment -%}
+  {%- assign lt_socks_prod = all_products['socks'] -%}
+  {%- if lt_socks_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'sock' -%}{%- assign lt_socks_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+  {%- assign lt_socks_v = blank -%}{%- if lt_socks_prod != blank -%}{%- assign lt_socks_v = lt_socks_prod.variants[0] -%}{%- endif -%}
+  <script>
+    window.LT_SOCKS_VARIANT_ID = {%- if lt_socks_v != blank -%}{{ lt_socks_v.id | json }}{%- else -%}null{%- endif -%};
+    window.LT_SOCKS_PRICE = {%- if lt_socks_v != blank -%}{{ lt_socks_v.price | divided_by: 100.0 | json }}{%- else -%}4.00{%- endif -%};
+  </script>
   <script src="{{ 'main.js' | asset_url }}" defer></script>
 </body>
 </html>

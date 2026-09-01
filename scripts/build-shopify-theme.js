@@ -115,7 +115,7 @@ function memberCta(prod, plan, label, idx, handle, text) {
     `{%- for v in ${prod}.variants -%}{%- if v.title contains '${label}' -%}{%- assign _v = v -%}{%- break -%}{%- endif -%}{%- endfor -%}` +
     `{%- if _v == blank -%}{%- assign _v = ${prod}.variants[${idx}] -%}{%- endif -%}` +
     `{%- endif -%}` +
-    `<a class="$1" href="/products/${handle}" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if ${plan} != blank %}&amp;items[][selling_plan]={{ ${plan} }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">${text}</a>`
+    `<a class="$1" data-membership-buy href="/products/${handle}" data-buy-href="{%- if _v != blank -%}/cart/add?items[][id]={{ _v.id }}&amp;items[][quantity]=1{%- if ${plan} != blank %}&amp;items[][selling_plan]={{ ${plan} }}{%- endif -%}&amp;return_to=/checkout{%- endif -%}">${text}</a>`
   );
 }
 
@@ -173,7 +173,7 @@ function wireDayPass(html) {
     );
 }
 
-// Socks are one product, one variant, one price ($2.65 a pair). There are no
+// Socks are one product, one variant, one price ($4.00 a pair). There are no
 // sizes, so the card's dropdown only chooses HOW MANY pairs — which the short
 // /cart/{variant}:{qty} permalink already carries. That keeps the Shopify side to
 // a single product with no variants for the owner to maintain.
@@ -190,7 +190,7 @@ function socksPrelude() {
     "{%- if socks_prod == blank -%}",
     '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
     "  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Socks</em> product, so its buy button can't reach checkout yet. ",
-    '  Check its <strong>URL handle</strong> is <code>socks</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it is priced $2.65 with no variants.',
+    '  Check its <strong>URL handle</strong> is <code>socks</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it is priced $4.00 with no variants.',
     "</div>",
     "{%- endif -%}",
     "",
@@ -421,6 +421,22 @@ ${metaCase}
   {% section 'header' %}
   {{ content_for_layout }}
   {% section 'footer' %}
+  {%- comment -%}
+    Site-wide socks lookup, for the "Don't forget socks!" upsell that fires
+    after the agreement is accepted on a Day Pass or membership buy (see
+    data-daypass-buy / data-membership-buy in main.js). Lives here rather than
+    in socksPrelude() (which only runs on Play & Pricing) so the upsell also
+    works from the home page's Day Pass card and from Memberships. A blank
+    variant id means the socks product isn't published yet; main.js skips the
+    upsell in that case rather than offering something it can't sell.
+  {%- endcomment -%}
+  {%- assign lt_socks_prod = all_products['socks'] -%}
+  {%- if lt_socks_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'sock' -%}{%- assign lt_socks_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+  {%- assign lt_socks_v = blank -%}{%- if lt_socks_prod != blank -%}{%- assign lt_socks_v = lt_socks_prod.variants[0] -%}{%- endif -%}
+  <script>
+    window.LT_SOCKS_VARIANT_ID = {%- if lt_socks_v != blank -%}{{ lt_socks_v.id | json }}{%- else -%}null{%- endif -%};
+    window.LT_SOCKS_PRICE = {%- if lt_socks_v != blank -%}{{ lt_socks_v.price | divided_by: 100.0 | json }}{%- else -%}4.00{%- endif -%};
+  </script>
   <script src="{{ 'main.js' | asset_url }}" defer></script>
 </body>
 </html>
@@ -653,6 +669,8 @@ write(
         {%- form 'product', product, id: 'pdp-form' -%}
           {%- comment -%} Skip the cart: add then go straight to checkout, so this fallback path matches the one-tap buy buttons {%- endcomment -%}
           <input type="hidden" name="return_to" value="/checkout">
+          {%- comment -%} Mirrors data-daypass-buy / data-membership-buy on the one-tap buttons: only day passes and memberships get the socks upsell, not socks' own PDP or the buyout. {%- endcomment -%}
+          {%- if product.handle == 'day-pass' or product.handle contains 'membership' -%}<input type="hidden" data-pdp-offer-socks value="1">{%- endif -%}
           {%- comment -%} Variant picker — e.g. membership child-tiers (1 / 2 / 3+) {%- endcomment -%}
           {%- if product.variants.size > 1 -%}
             <label class="pdp-field">

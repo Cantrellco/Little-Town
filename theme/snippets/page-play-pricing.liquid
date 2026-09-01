@@ -20,7 +20,7 @@
 {%- if socks_prod == blank -%}
 <div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">
   <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Socks</em> product, so its buy button can't reach checkout yet. 
-  Check its <strong>URL handle</strong> is <code>socks</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it is priced $2.65 with no variants.
+  Check its <strong>URL handle</strong> is <code>socks</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it is priced $4.00 with no variants.
 </div>
 {%- endif -%}
 <main>
@@ -100,7 +100,7 @@
             <a class="cp-cta" data-daypass-buy href="/products/day-pass" data-buy-href="{%- if dp_v1 != blank -%}/cart/{{ dp_v1.id }}:1{%- endif -%}">Buy Day Pass</a>
           </article>
 
-          <!-- Socks — one product, one $2.65 pair; the dropdown just multiplies quantity -->
+          <!-- Socks — one product, one $4.00 pair; the dropdown just multiplies quantity -->
           <article class="cp-card reveal" data-delay="1" aria-label="Socks pricing">
             <span class="cp-icon cp-icon--coral" aria-hidden="true">
               <img src="{{ 'icon-socks.svg' | asset_url }}" alt="" width="26" height="26">
@@ -108,16 +108,16 @@
             <h3 class="cp-name">Forgot socks?</h3>
             <p class="cp-blurb">Nobody plays in bare feet or shoes, so we keep pairs on hand at Little Town. Pay for what you need here and pick them up when you arrive.</p>
             <div class="cp-price">
-              <span class="cp-price-amount" data-socks-price>$2.65</span>
+              <span class="cp-price-amount" data-socks-price>$4.00</span>
               <span class="cp-price-unit" data-socks-unit>for 1 pair</span>
             </div>
             <div class="cp-tier">
               <label class="cp-tier-label" for="socks-qty">How many pairs?</label>
               <select class="cp-tier-select" id="socks-qty" data-socks-select aria-label="Choose how many pairs of socks">
-                <option value="1" data-socks-opt="1" data-price="$2.65" data-unit="for 1 pair" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:1{%- endif -%}">1 pair — $2.65</option>
-                <option value="2" data-socks-opt="2" data-price="$5.30" data-unit="for 2 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:2{%- endif -%}">2 pairs — $5.30</option>
-                <option value="3" data-socks-opt="3" data-price="$7.95" data-unit="for 3 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:3{%- endif -%}">3 pairs — $7.95</option>
-                <option value="4" data-socks-opt="4" data-price="$10.60" data-unit="for 4 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:4{%- endif -%}">4 pairs — $10.60</option>
+                <option value="1" data-socks-opt="1" data-price="$4.00" data-unit="for 1 pair" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:1{%- endif -%}">1 pair — $4.00</option>
+                <option value="2" data-socks-opt="2" data-price="$8.00" data-unit="for 2 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:2{%- endif -%}">2 pairs — $8.00</option>
+                <option value="3" data-socks-opt="3" data-price="$12.00" data-unit="for 3 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:3{%- endif -%}">3 pairs — $12.00</option>
+                <option value="4" data-socks-opt="4" data-price="$16.00" data-unit="for 4 pairs" data-href="{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:4{%- endif -%}">4 pairs — $16.00</option>
               </select>
             </div>
             <ul class="cp-list">
