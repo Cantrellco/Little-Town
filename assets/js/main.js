@@ -469,8 +469,17 @@
      stampAgreementThenGo another 900ms — during which nothing on screen changes.
      On a slow phone that reads as "it didn't work", so people tap again. Each tap
      used to run its own POST /cart/add, the line merged to quantity 2, and
-     checkout showed $370 for one party. Latch on first accept, and stay latched:
-     the page is on its way out, so there is no state to release. */
+     checkout showed $370 for one party. Latch on first accept, and leave it
+     latched while the browser is on its way out.
+
+     It used to stay latched forever after that, on the assumption there was no
+     page left to release it on. That broke once Play & Pricing started selling
+     two separate things (Day Pass, socks): buy the Day Pass, then use the
+     browser's Back button to return (Shopify keeps the store open in a normal
+     tab), and the browser can restore the page from its back/forward cache —
+     JS state and all — instead of reloading it. buyInFlight came back still
+     true, so the Socks button looked permanently greyed out and un-clickable.
+     The "pageshow" listener below (bfcacheRestore) is what un-sticks it. */
   var buyInFlight = false;
 
   /* Grey out every buy control once a purchase is committed, so the pending tap
@@ -479,15 +488,40 @@
      path re-submits via requestSubmit(btn), which needs the button enabled to
      carry its own name. Safe for the forms here — they submit programmatically,
      which never serialises the submitter, and each carries its variant in a
-     hidden name="id" input. */
+     hidden name="id" input.
+
+     Buttons already disabled for their own reason (e.g. a party package whose
+     Fusion date is booked — see applyFusionAvailability) are left untouched and
+     unmarked, so bfcacheRestore below knows not to claim them. */
   function lockBuyControls() {
     document.querySelectorAll("[data-bk-form] button[type=submit], #pdp-form button[type=submit]").forEach(function (b) {
+      if (b.disabled) return;
       b.disabled = true;
+      b.setAttribute("data-locked-by-buy", "1");
     });
     document.querySelectorAll("[data-bk-form], #pdp-form, a[data-buy-href]").forEach(function (el) {
       el.classList.add("is-buying");
     });
   }
+
+  /* Undo exactly what lockBuyControls did, and release the buyInFlight latch.
+     Runs when the page is revived from the browser's back/forward cache
+     (pageshow with persisted:true) rather than freshly loaded — the one case
+     where a customer can be looking at buy controls this same script already
+     latched shut on an earlier visit to this page. A normal navigation to this
+     page fires pageshow with persisted:false and is left alone: buyInFlight
+     already starts false there. */
+  window.addEventListener("pageshow", function (e) {
+    if (!e.persisted) return;
+    buyInFlight = false;
+    document.querySelectorAll('[data-locked-by-buy="1"]').forEach(function (b) {
+      b.disabled = false;
+      b.removeAttribute("data-locked-by-buy");
+    });
+    document.querySelectorAll("[data-bk-form], #pdp-form, a[data-buy-href]").forEach(function (el) {
+      el.classList.remove("is-buying");
+    });
+  });
 
   /* The one entry point every buy path uses: agree -> (Day Pass/membership
      only: offer socks) -> empty the cart -> add any socks -> stamp the
