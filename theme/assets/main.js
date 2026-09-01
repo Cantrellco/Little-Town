@@ -665,35 +665,38 @@
        Agreeing just closes the box — on the real site that's the moment the
        browser leaves for Shopify checkout. openAgree (not gatedBuy) on purpose:
        there's no cart to clear or stamp here. */
-    document.querySelectorAll("[data-noop][data-daypass-buy], [data-noop][data-tier]").forEach(function (btn) {
+    document.querySelectorAll("[data-noop][data-daypass-buy], [data-noop][data-socks-buy], [data-noop][data-tier]").forEach(function (btn) {
       btn.addEventListener("click", function () { openAgree(function () {}); });
     });
   })();
 
-  /* ---- Day Pass tier picker: the dropdown drives the visible price + unit and,
-     on Shopify, the buy button's checkout permalink (the build injects each
-     option's data-href for its variant). Scoped per card so the home + Play &
-     Pricing cards each work independently. On the static preview there's no
-     data-href, so the button stays inert (data-noop) and only the price preview
-     moves. The permalink is written to data-buy-href — never href, which stays
-     on the product page so an open-in-new-tab can't skip the agreement gate.
-     gateEveryBuy binds the anchor once and reads data-buy-href live at click,
-     so swapping it here still routes to the chosen tier. ---- */
-  (function dayPassPicker() {
-    document.querySelectorAll("[data-daypass-select]").forEach(function (sel) {
-      var card = sel.closest(".cp-card") || document;
-      var priceEl = card.querySelector("[data-daypass-price]");
-      var unitEl = card.querySelector("[data-daypass-unit]");
-      var buyEl = card.querySelector("[data-daypass-buy]");
-      function sync() {
-        var opt = sel.options[sel.selectedIndex];
-        if (!opt) return;
-        if (priceEl && opt.dataset.price) priceEl.textContent = opt.dataset.price;
-        if (unitEl && opt.dataset.unit) unitEl.textContent = opt.dataset.unit;
-        if (buyEl && opt.dataset.href) buyEl.setAttribute("data-buy-href", opt.dataset.href);
-      }
-      sel.addEventListener("change", sync);
-      sync();
+  /* ---- Price pickers (Day Pass tiers, socks quantity): the dropdown drives the
+     visible price + unit and, on Shopify, the buy button's checkout permalink
+     (the build injects each option's data-href for its variant/quantity). Scoped
+     per card so the home + Play & Pricing cards each work independently. On the
+     static preview there's no data-href, so the button stays inert (data-noop)
+     and only the price preview moves. The permalink is written to data-buy-href —
+     never href, which stays on the product page so an open-in-new-tab can't skip
+     the agreement gate. gateEveryBuy binds the anchor once and reads
+     data-buy-href live at click, so swapping it here still routes to the choice.
+     ---- */
+  (function pricePickers() {
+    ["daypass", "socks"].forEach(function (kind) {
+      document.querySelectorAll("[data-" + kind + "-select]").forEach(function (sel) {
+        var card = sel.closest(".cp-card") || document;
+        var priceEl = card.querySelector("[data-" + kind + "-price]");
+        var unitEl = card.querySelector("[data-" + kind + "-unit]");
+        var buyEl = card.querySelector("[data-" + kind + "-buy]");
+        function sync() {
+          var opt = sel.options[sel.selectedIndex];
+          if (!opt) return;
+          if (priceEl && opt.dataset.price) priceEl.textContent = opt.dataset.price;
+          if (unitEl && opt.dataset.unit) unitEl.textContent = opt.dataset.unit;
+          if (buyEl && opt.dataset.href) buyEl.setAttribute("data-buy-href", opt.dataset.href);
+        }
+        sel.addEventListener("change", sync);
+        sync();
+      });
     });
   })();
 

@@ -173,6 +173,53 @@ function wireDayPass(html) {
     );
 }
 
+// Socks are one product, one variant, one price ($2.65 a pair). There are no
+// sizes, so the card's dropdown only chooses HOW MANY pairs — which the short
+// /cart/{variant}:{qty} permalink already carries. That keeps the Shopify side to
+// a single product with no variants for the owner to maintain.
+//
+// Resolve 'socks' by exact handle first, then any handle containing 'sock', and
+// take variant[0] (the default variant Shopify creates for a single-price
+// product). Banner shows on Play & Pricing until the product is published.
+function socksPrelude() {
+  return [
+    "{%- assign socks_prod = all_products['socks'] -%}",
+    "{%- if socks_prod == blank -%}{%- for p in collections.all.products -%}{%- if p.handle contains 'sock' -%}{%- assign socks_prod = p -%}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}",
+    "{%- assign socks_v = blank -%}",
+    "{%- if socks_prod != blank -%}{%- assign socks_v = socks_prod.variants[0] -%}{%- endif -%}",
+    "{%- if socks_prod == blank -%}",
+    '<div role="status" style="background:#fcecd8;color:#3a3128;padding:1rem 1.2rem;margin:1.2rem auto;max-width:960px;border-radius:14px;text-align:left;font-size:0.95rem;border:2px dashed rgba(217,119,78,.55)">',
+    "  <strong>⚠ Setup needed.</strong> The storefront can't see the <em>Socks</em> product, so its buy button can't reach checkout yet. ",
+    '  Check its <strong>URL handle</strong> is <code>socks</code> (Search engine listing), that it is <strong>published to Online Store</strong>, and that it is priced $2.65 with no variants.',
+    "</div>",
+    "{%- endif -%}",
+    "",
+  ].join("\n");
+}
+
+// Point the socks quantity <option>s + buy button at real checkout permalinks.
+// Each option carries data-socks-opt="1|2|3|4"; we add data-href with that many
+// pairs of the one variant. The button defaults to 1 pair; pricePickers() in
+// main.js copies the selected option's data-href onto it as the dropdown moves.
+//
+// Same href / data-buy-href split as the Day Pass: the permalink never sits in
+// href, so an open-in-new-tab can't walk past the agreement gate, and a JS
+// failure leaves a working product-page link rather than a dead button.
+function wireSocks(html) {
+  const buy = (qty) => `{%- if socks_v != blank -%}/cart/{{ socks_v.id }}:${qty}{%- endif -%}`;
+  let out = html;
+  for (const qty of [1, 2, 3, 4]) {
+    out = out.replace(
+      new RegExp(`(<option [^>]*\\bdata-socks-opt="${qty}"[^>]*)>`, "g"),
+      `$1 data-href="${buy(qty)}">`
+    );
+  }
+  return out.replace(
+    /<button class="([^"]*)" type="button" data-noop data-socks-buy[^>]*>Buy socks<\/button>/g,
+    `<a class="$1" data-socks-buy href="/products/socks" data-buy-href="${buy(1)}">Buy socks</a>`
+  );
+}
+
 // Commerce wiring: turn placeholder "buy" buttons into one-tap checkout links.
 // Every buy button skips the product page AND the cart, landing the customer
 // straight on Shopify checkout via a cart permalink. Handles below must match the
@@ -230,7 +277,9 @@ function wireCommerce(html, key) {
     // into its 2-/3+-child tiers). The dropdown holds the choice and the buy
     // button goes straight to the selected tier's checkout; a setup banner shows
     // until the product + its three variants exist and are published.
-    html = dayPassPrelude(true) + wireDayPass(html);
+    // Socks ride alongside as their own single-variant product; the dropdown
+    // there picks a quantity rather than a variant.
+    html = dayPassPrelude(true) + socksPrelude() + wireSocks(wireDayPass(html));
   }
   if (key === "parties") {
     // One bookable product `private-buyout` carries both prices as variants:

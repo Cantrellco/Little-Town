@@ -94,7 +94,7 @@
           <p class="section-lead">You pay for the children who are playing. Grown-ups always play free — no limit per child — and infants get free entry. Socks only on the play floor, no shoes — for kids and grown-ups alike.</p>
         </div>
 
-        <div class="cp-grid cp-grid--1">
+        <div class="cp-grid cp-grid--2">
 
           <!-- Day Pass — one product, child-count tiers picked from the dropdown -->
           <article class="cp-card cp-card--featured reveal" aria-label="Day Pass pricing">
@@ -123,6 +123,35 @@
               <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>No booking — walk in any open day</li>
             </ul>
             <button class="cp-cta" type="button" data-noop data-daypass-buy aria-label="Buy a Day Pass (demo button)">Buy Day Pass</button>
+          </article>
+
+          <!-- Socks — one product, one $2.65 pair; the dropdown just multiplies quantity -->
+          <article class="cp-card reveal" data-delay="1" aria-label="Socks pricing">
+            <span class="cp-icon cp-icon--coral" aria-hidden="true">
+              <img src="assets/img/icon-socks.svg" alt="" width="26" height="26">
+            </span>
+            <h3 class="cp-name">Forgot socks?</h3>
+            <p class="cp-blurb">Nobody plays in bare feet or shoes, so we keep pairs on hand at Little Town. Pay for what you need here and pick them up when you arrive.</p>
+            <div class="cp-price">
+              <span class="cp-price-amount" data-socks-price>$2.65</span>
+              <span class="cp-price-unit" data-socks-unit>for 1 pair</span>
+            </div>
+            <div class="cp-tier">
+              <label class="cp-tier-label" for="socks-qty">How many pairs?</label>
+              <select class="cp-tier-select" id="socks-qty" data-socks-select aria-label="Choose how many pairs of socks">
+                <option value="1" data-socks-opt="1" data-price="$2.65" data-unit="for 1 pair">1 pair — $2.65</option>
+                <option value="2" data-socks-opt="2" data-price="$5.30" data-unit="for 2 pairs">2 pairs — $5.30</option>
+                <option value="3" data-socks-opt="3" data-price="$7.95" data-unit="for 3 pairs">3 pairs — $7.95</option>
+                <option value="4" data-socks-opt="4" data-price="$10.60" data-unit="for 4 pairs">4 pairs — $10.60</option>
+              </select>
+            </div>
+            <ul class="cp-list">
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>One size, for little feet and grown-up ones</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Pick them up at Little Town when you arrive</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Yours to keep, so bring them back next visit</li>
+              <li><span class="cp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Bought on its own, separate from your Day Pass</li>
+            </ul>
+            <button class="cp-cta" type="button" data-noop data-socks-buy aria-label="Buy socks (demo button)">Buy socks</button>
           </article>
 
         </div>
@@ -268,7 +297,7 @@
               <h3>Play-floor rules</h3>
             </div>
             <ul>
-              <li>Socks only on the play floor — no shoes for kids or adults.</li>
+              <li>Socks only on the play floor — no shoes for kids or adults. Forgot a pair? Buy one above and pick it up here.</li>
               <li>Gentle hands and kind voices — we all share the town.</li>
               <li>Please keep little ones home if they're feeling unwell.</li>
             </ul>
